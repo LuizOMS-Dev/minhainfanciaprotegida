@@ -9,8 +9,62 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SinaisRouteImport } from './routes/sinais'
+import { Route as MapaRouteImport } from './routes/mapa'
+import { Route as MaioLaranjaRouteImport } from './routes/maio-laranja'
+import { Route as LegislacaoRouteImport } from './routes/legislacao'
+import { Route as GaleriaRouteImport } from './routes/galeria'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as DenunciaRouteImport } from './routes/denuncia'
+import { Route as ComoAjudarRouteImport } from './routes/como-ajudar'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SinaisRoute = SinaisRouteImport.update({
+  id: '/sinais',
+  path: '/sinais',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MapaRoute = MapaRouteImport.update({
+  id: '/mapa',
+  path: '/mapa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MaioLaranjaRoute = MaioLaranjaRouteImport.update({
+  id: '/maio-laranja',
+  path: '/maio-laranja',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegislacaoRoute = LegislacaoRouteImport.update({
+  id: '/legislacao',
+  path: '/legislacao',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GaleriaRoute = GaleriaRouteImport.update({
+  id: '/galeria',
+  path: '/galeria',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DenunciaRoute = DenunciaRouteImport.update({
+  id: '/denuncia',
+  path: '/denuncia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComoAjudarRoute = ComoAjudarRouteImport.update({
+  id: '/como-ajudar',
+  path: '/como-ajudar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +73,158 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/como-ajudar': typeof ComoAjudarRoute
+  '/denuncia': typeof DenunciaRoute
+  '/faq': typeof FaqRoute
+  '/galeria': typeof GaleriaRoute
+  '/legislacao': typeof LegislacaoRoute
+  '/maio-laranja': typeof MaioLaranjaRoute
+  '/mapa': typeof MapaRoute
+  '/sinais': typeof SinaisRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/como-ajudar': typeof ComoAjudarRoute
+  '/denuncia': typeof DenunciaRoute
+  '/faq': typeof FaqRoute
+  '/galeria': typeof GaleriaRoute
+  '/legislacao': typeof LegislacaoRoute
+  '/maio-laranja': typeof MaioLaranjaRoute
+  '/mapa': typeof MapaRoute
+  '/sinais': typeof SinaisRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/como-ajudar': typeof ComoAjudarRoute
+  '/denuncia': typeof DenunciaRoute
+  '/faq': typeof FaqRoute
+  '/galeria': typeof GaleriaRoute
+  '/legislacao': typeof LegislacaoRoute
+  '/maio-laranja': typeof MaioLaranjaRoute
+  '/mapa': typeof MapaRoute
+  '/sinais': typeof SinaisRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/como-ajudar'
+    | '/denuncia'
+    | '/faq'
+    | '/galeria'
+    | '/legislacao'
+    | '/maio-laranja'
+    | '/mapa'
+    | '/sinais'
+    | '/sitemap.xml'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/como-ajudar'
+    | '/denuncia'
+    | '/faq'
+    | '/galeria'
+    | '/legislacao'
+    | '/maio-laranja'
+    | '/mapa'
+    | '/sinais'
+    | '/sitemap.xml'
+  id:
+    | '__root__'
+    | '/'
+    | '/como-ajudar'
+    | '/denuncia'
+    | '/faq'
+    | '/galeria'
+    | '/legislacao'
+    | '/maio-laranja'
+    | '/mapa'
+    | '/sinais'
+    | '/sitemap.xml'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ComoAjudarRoute: typeof ComoAjudarRoute
+  DenunciaRoute: typeof DenunciaRoute
+  FaqRoute: typeof FaqRoute
+  GaleriaRoute: typeof GaleriaRoute
+  LegislacaoRoute: typeof LegislacaoRoute
+  MaioLaranjaRoute: typeof MaioLaranjaRoute
+  MapaRoute: typeof MapaRoute
+  SinaisRoute: typeof SinaisRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sinais': {
+      id: '/sinais'
+      path: '/sinais'
+      fullPath: '/sinais'
+      preLoaderRoute: typeof SinaisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mapa': {
+      id: '/mapa'
+      path: '/mapa'
+      fullPath: '/mapa'
+      preLoaderRoute: typeof MapaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/maio-laranja': {
+      id: '/maio-laranja'
+      path: '/maio-laranja'
+      fullPath: '/maio-laranja'
+      preLoaderRoute: typeof MaioLaranjaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legislacao': {
+      id: '/legislacao'
+      path: '/legislacao'
+      fullPath: '/legislacao'
+      preLoaderRoute: typeof LegislacaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/galeria': {
+      id: '/galeria'
+      path: '/galeria'
+      fullPath: '/galeria'
+      preLoaderRoute: typeof GaleriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/denuncia': {
+      id: '/denuncia'
+      path: '/denuncia'
+      fullPath: '/denuncia'
+      preLoaderRoute: typeof DenunciaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/como-ajudar': {
+      id: '/como-ajudar'
+      path: '/como-ajudar'
+      fullPath: '/como-ajudar'
+      preLoaderRoute: typeof ComoAjudarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,17 +237,16 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ComoAjudarRoute: ComoAjudarRoute,
+  DenunciaRoute: DenunciaRoute,
+  FaqRoute: FaqRoute,
+  GaleriaRoute: GaleriaRoute,
+  LegislacaoRoute: LegislacaoRoute,
+  MaioLaranjaRoute: MaioLaranjaRoute,
+  MapaRoute: MapaRoute,
+  SinaisRoute: SinaisRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
