@@ -7,10 +7,12 @@ import {
   Heart,
   MapPin,
   MessageCircle,
+  Newspaper,
   Phone,
   Scale,
   ShieldAlert,
   Sparkles,
+  Wifi,
 } from "lucide-react";
 import heroImg from "@/assets/hero-protection.jpg";
 import silenceImg from "@/assets/silence.jpg";
@@ -287,10 +289,13 @@ function Index() {
             {[
               { to: "/maio-laranja", icon: Heart, title: "Maio Laranja", desc: "Origem, história e por que o dia 18 de maio importa.", img: ribbonImg },
               { to: "/sinais", icon: Eye, title: "Identificar Sinais", desc: "Mudanças de comportamento que merecem atenção.", img: joyImg },
-              { to: "/como-ajudar", icon: HandHeart, title: "Como Ajudar", desc: "Escutar, acolher, não julgar, proteger e denunciar.", img: heroImg },
+              { to: "/riscos-online", icon: Wifi, title: "Riscos Online", desc: "Adultização, grooming e deepfakes — casos Felca e Mineblox.", img: silenceImg },
+              { to: "/casos", icon: BookOpen, title: "Casos Reais", desc: "Histórias verificadas que mudaram leis no Brasil.", img: heroImg },
+              { to: "/noticias", icon: Newspaper, title: "Notícias", desc: "Atualizações sobre o combate à violência infantil.", img: ribbonImg },
+              { to: "/como-ajudar", icon: HandHeart, title: "Como Ajudar", desc: "Escutar, acolher, não julgar, proteger e denunciar.", img: joyImg },
               { to: "/denuncia", icon: Phone, title: "Canais de Denúncia", desc: "Telefones oficiais que funcionam 24 horas.", img: silenceImg },
-              { to: "/legislacao", icon: Scale, title: "Legislação", desc: "ECA, Constituição e direitos fundamentais.", img: ribbonImg },
-              { to: "/mapa", icon: MapPin, title: "Mapa de Ajuda", desc: "Conselhos tutelares, delegacias e centros de apoio.", img: joyImg },
+              { to: "/legislacao", icon: Scale, title: "Legislação", desc: "ECA, Constituição e o novo ECA Digital (Lei 15.211/2025).", img: ribbonImg },
+              { to: "/mapa", icon: MapPin, title: "Mapa de Ajuda", desc: "Conselhos tutelares, delegacias e centros de apoio.", img: heroImg },
             ].map((c, i) => (
               <Reveal key={c.to} delay={i * 70}>
                 <Link to={c.to} className="block h-full">
