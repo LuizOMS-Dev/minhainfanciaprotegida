@@ -13,7 +13,10 @@ export function Reveal({ children, delay = 0, className = "", as: Tag = "div" }:
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
-    if (typeof IntersectionObserver === "undefined") {
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced || typeof IntersectionObserver === "undefined") {
       node.classList.add("is-visible");
       return;
     }

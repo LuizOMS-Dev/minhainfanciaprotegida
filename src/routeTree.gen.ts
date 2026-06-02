@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SinaisRouteImport } from './routes/sinais'
+import { Route as RiscosOnlineRouteImport } from './routes/riscos-online'
+import { Route as NoticiasRouteImport } from './routes/noticias'
 import { Route as MapaRouteImport } from './routes/mapa'
 import { Route as MaioLaranjaRouteImport } from './routes/maio-laranja'
 import { Route as LegislacaoRouteImport } from './routes/legislacao'
@@ -18,6 +20,7 @@ import { Route as GaleriaRouteImport } from './routes/galeria'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as DenunciaRouteImport } from './routes/denuncia'
 import { Route as ComoAjudarRouteImport } from './routes/como-ajudar'
+import { Route as CasosRouteImport } from './routes/casos'
 import { Route as IndexRouteImport } from './routes/index'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -28,6 +31,16 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const SinaisRoute = SinaisRouteImport.update({
   id: '/sinais',
   path: '/sinais',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RiscosOnlineRoute = RiscosOnlineRouteImport.update({
+  id: '/riscos-online',
+  path: '/riscos-online',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NoticiasRoute = NoticiasRouteImport.update({
+  id: '/noticias',
+  path: '/noticias',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MapaRoute = MapaRouteImport.update({
@@ -65,6 +78,11 @@ const ComoAjudarRoute = ComoAjudarRouteImport.update({
   path: '/como-ajudar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CasosRoute = CasosRouteImport.update({
+  id: '/casos',
+  path: '/casos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -73,6 +91,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/casos': typeof CasosRoute
   '/como-ajudar': typeof ComoAjudarRoute
   '/denuncia': typeof DenunciaRoute
   '/faq': typeof FaqRoute
@@ -80,11 +99,14 @@ export interface FileRoutesByFullPath {
   '/legislacao': typeof LegislacaoRoute
   '/maio-laranja': typeof MaioLaranjaRoute
   '/mapa': typeof MapaRoute
+  '/noticias': typeof NoticiasRoute
+  '/riscos-online': typeof RiscosOnlineRoute
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/casos': typeof CasosRoute
   '/como-ajudar': typeof ComoAjudarRoute
   '/denuncia': typeof DenunciaRoute
   '/faq': typeof FaqRoute
@@ -92,12 +114,15 @@ export interface FileRoutesByTo {
   '/legislacao': typeof LegislacaoRoute
   '/maio-laranja': typeof MaioLaranjaRoute
   '/mapa': typeof MapaRoute
+  '/noticias': typeof NoticiasRoute
+  '/riscos-online': typeof RiscosOnlineRoute
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/casos': typeof CasosRoute
   '/como-ajudar': typeof ComoAjudarRoute
   '/denuncia': typeof DenunciaRoute
   '/faq': typeof FaqRoute
@@ -105,6 +130,8 @@ export interface FileRoutesById {
   '/legislacao': typeof LegislacaoRoute
   '/maio-laranja': typeof MaioLaranjaRoute
   '/mapa': typeof MapaRoute
+  '/noticias': typeof NoticiasRoute
+  '/riscos-online': typeof RiscosOnlineRoute
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
 }
@@ -112,6 +139,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/casos'
     | '/como-ajudar'
     | '/denuncia'
     | '/faq'
@@ -119,11 +147,14 @@ export interface FileRouteTypes {
     | '/legislacao'
     | '/maio-laranja'
     | '/mapa'
+    | '/noticias'
+    | '/riscos-online'
     | '/sinais'
     | '/sitemap.xml'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/casos'
     | '/como-ajudar'
     | '/denuncia'
     | '/faq'
@@ -131,11 +162,14 @@ export interface FileRouteTypes {
     | '/legislacao'
     | '/maio-laranja'
     | '/mapa'
+    | '/noticias'
+    | '/riscos-online'
     | '/sinais'
     | '/sitemap.xml'
   id:
     | '__root__'
     | '/'
+    | '/casos'
     | '/como-ajudar'
     | '/denuncia'
     | '/faq'
@@ -143,12 +177,15 @@ export interface FileRouteTypes {
     | '/legislacao'
     | '/maio-laranja'
     | '/mapa'
+    | '/noticias'
+    | '/riscos-online'
     | '/sinais'
     | '/sitemap.xml'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CasosRoute: typeof CasosRoute
   ComoAjudarRoute: typeof ComoAjudarRoute
   DenunciaRoute: typeof DenunciaRoute
   FaqRoute: typeof FaqRoute
@@ -156,6 +193,8 @@ export interface RootRouteChildren {
   LegislacaoRoute: typeof LegislacaoRoute
   MaioLaranjaRoute: typeof MaioLaranjaRoute
   MapaRoute: typeof MapaRoute
+  NoticiasRoute: typeof NoticiasRoute
+  RiscosOnlineRoute: typeof RiscosOnlineRoute
   SinaisRoute: typeof SinaisRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
@@ -174,6 +213,20 @@ declare module '@tanstack/react-router' {
       path: '/sinais'
       fullPath: '/sinais'
       preLoaderRoute: typeof SinaisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/riscos-online': {
+      id: '/riscos-online'
+      path: '/riscos-online'
+      fullPath: '/riscos-online'
+      preLoaderRoute: typeof RiscosOnlineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/noticias': {
+      id: '/noticias'
+      path: '/noticias'
+      fullPath: '/noticias'
+      preLoaderRoute: typeof NoticiasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mapa': {
@@ -225,6 +278,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ComoAjudarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/casos': {
+      id: '/casos'
+      path: '/casos'
+      fullPath: '/casos'
+      preLoaderRoute: typeof CasosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -237,6 +297,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CasosRoute: CasosRoute,
   ComoAjudarRoute: ComoAjudarRoute,
   DenunciaRoute: DenunciaRoute,
   FaqRoute: FaqRoute,
@@ -244,9 +305,21 @@ const rootRouteChildren: RootRouteChildren = {
   LegislacaoRoute: LegislacaoRoute,
   MaioLaranjaRoute: MaioLaranjaRoute,
   MapaRoute: MapaRoute,
+  NoticiasRoute: NoticiasRoute,
+  RiscosOnlineRoute: RiscosOnlineRoute,
   SinaisRoute: SinaisRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
