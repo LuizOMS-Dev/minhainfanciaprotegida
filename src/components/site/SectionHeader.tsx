@@ -6,10 +6,12 @@ interface SectionHeaderProps {
   title: ReactNode;
   description?: ReactNode;
   align?: "left" | "center";
+  invert?: boolean;
 }
 
-export function SectionHeader({ eyebrow, title, description, align = "left" }: SectionHeaderProps) {
+export function SectionHeader({ eyebrow, title, description, align = "left", invert = false }: SectionHeaderProps) {
   const alignment = align === "center" ? "text-center mx-auto" : "";
+  const descColor = invert ? "text-white/80" : "text-muted-foreground";
   return (
     <Reveal>
       <div className={`max-w-3xl ${alignment}`}>
@@ -23,7 +25,7 @@ export function SectionHeader({ eyebrow, title, description, align = "left" }: S
           {title}
         </h2>
         {description && (
-          <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed text-pretty">
+          <p className={`mt-4 text-base sm:text-lg ${descColor} leading-relaxed text-pretty`}>
             {description}
           </p>
         )}

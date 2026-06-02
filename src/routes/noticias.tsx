@@ -1,0 +1,88 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { useMemo, useState } from "react";
+import { news } from "@/content/news";
+import { ArticleCard } from "@/components/site/ArticleCard";
+import { SectionHeader } from "@/components/site/SectionHeader";
+import { Reveal } from "@/components/site/Reveal";
+
+export const Route = createFileRoute("/noticias")({
+  head: () => ({
+    meta: [
+      { title: "Notícias e conscientização — Infância Protegida" },
+      {
+        name: "description",
+        content:
+          "Atualizações, pesquisas, novas leis e ações sobre o combate à violência sexual contra crianças e adolescentes. Conteúdo atualizado e baseado em fontes oficiais.",
+      },
+      { property: "og:title", content: "Notícias — Infância Protegida" },
+      {
+        property: "og:description",
+        content: "Acompanhe pesquisas, leis e mobilizações pelo direito à infância protegida.",
+      },
+    ],
+    links: [{ rel: "canonical", href: "/noticias" }],
+  }),
+  component: NoticiasPage,
+});
+
+const CATEGORIES = ["Todas", "Legislação", "Campanha", "Pesquisa", "Internet", "Direitos"] as const;
+
+function NoticiasPage() {
+  const [cat, setCat] = useState<(typeof CATEGORIES)[number]>("Todas");
+  const list = useMemo(() => {
+    const filtered = cat === "Todas" ? news : news.filter((n) => n.category === cat);
+    return [...filtered].sort((a, b) => +new Date(b.date) - +new Date(a.date));
+  }, [cat]);
+
+  return (
+    <>
+      <section className="bg-gradient-orange text-[color:var(--navy-deep)] py-16 sm:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Notícias e conscientização"
+            title="O que está acontecendo agora"
+            description="Notícias verificadas, pesquisas e atualizações legais. Esta área é atualizada continuamente."
+          />
+        </div>
+      </section>
+
+      <section className="py-12 sm:py-16 bg-background">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap gap-2 mb-10" role="tablist" aria-label="Filtrar por categoria">
+            {CATEGORIES.map((c) => (
+              <button
+                key={c}
+                role="tab"
+                aria-selected={cat === c}
+                onClick={() => setCat(c)}
+                className={`px-4 py-2 rounded-full text-sm font-semibold border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)] ${
+                  cat === c
+                    ? "bg-[color:var(--orange)] text-[color:var(--navy-deep)] border-[color:var(--orange)]"
+                    : "bg-card text-foreground border-border hover:border-[color:var(--orange)]"
+                }`}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {list.map((n, i) => (
+              <Reveal key={n.slug} delay={i * 60}>
+                <ArticleCard
+                  title={n.title}
+                  date={n.date}
+                  excerpt={n.excerpt}
+                  image={n.image}
+                  tag={n.category}
+                  source={n.source}
+                  href={n.source.url}
+                />
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}

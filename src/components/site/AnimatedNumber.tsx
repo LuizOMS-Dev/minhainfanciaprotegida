@@ -24,6 +24,14 @@ export function AnimatedNumber({
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) {
+      setDisplay(value);
+      started.current = true;
+      return;
+    }
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {

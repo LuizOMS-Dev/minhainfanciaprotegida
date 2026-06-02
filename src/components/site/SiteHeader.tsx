@@ -6,10 +6,12 @@ const nav = [
   { to: "/", label: "Início" },
   { to: "/maio-laranja", label: "Maio Laranja" },
   { to: "/sinais", label: "Sinais" },
+  { to: "/riscos-online", label: "Riscos Online" },
+  { to: "/casos", label: "Casos" },
+  { to: "/noticias", label: "Notícias" },
   { to: "/como-ajudar", label: "Como Ajudar" },
   { to: "/legislacao", label: "Legislação" },
-  { to: "/mapa", label: "Mapa de Ajuda" },
-  { to: "/galeria", label: "Galeria" },
+  { to: "/mapa", label: "Mapa" },
   { to: "/faq", label: "FAQ" },
 ] as const;
 
