@@ -147,7 +147,7 @@ export const importAdminLocationsCsv = createServerFn({ method: "POST" })
       const lng = raw.lng ? Number(raw.lng.replace(",", ".")) : null;
       const candidate = {
         name: (raw.name ?? "").trim(),
-        type: (raw.type ?? "outro").trim() as LocationType,
+        type: (raw.type ?? "conselho_tutelar").trim() as LocationType,
         state: (raw.state ?? "").trim().toUpperCase(),
         city: (raw.city ?? "").trim(),
         address: clean(raw.address),
