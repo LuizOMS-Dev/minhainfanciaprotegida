@@ -31,6 +31,11 @@ import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 import { Route as CasosSlugRouteImport } from './routes/casos.$slug'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedAdminUsuariosIndexRouteImport } from './routes/_authenticated/admin/usuarios/index'
+import { Route as AuthenticatedAdminMapaIndexRouteImport } from './routes/_authenticated/admin/mapa/index'
+import { Route as AuthenticatedAdminBibliotecaIndexRouteImport } from './routes/_authenticated/admin/biblioteca/index'
+import { Route as AuthenticatedAdminMapaIdRouteImport } from './routes/_authenticated/admin/mapa/$id'
+import { Route as AuthenticatedAdminBibliotecaIdRouteImport } from './routes/_authenticated/admin/biblioteca/$id'
 import { Route as AuthenticatedAdminArticleIdRouteImport } from './routes/_authenticated/admin/article.$id'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -142,6 +147,36 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRouteRoute,
 } as any)
+const AuthenticatedAdminUsuariosIndexRoute =
+  AuthenticatedAdminUsuariosIndexRouteImport.update({
+    id: '/usuarios/',
+    path: '/usuarios/',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminMapaIndexRoute =
+  AuthenticatedAdminMapaIndexRouteImport.update({
+    id: '/mapa/',
+    path: '/mapa/',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminBibliotecaIndexRoute =
+  AuthenticatedAdminBibliotecaIndexRouteImport.update({
+    id: '/biblioteca/',
+    path: '/biblioteca/',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminMapaIdRoute =
+  AuthenticatedAdminMapaIdRouteImport.update({
+    id: '/mapa/$id',
+    path: '/mapa/$id',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminBibliotecaIdRoute =
+  AuthenticatedAdminBibliotecaIdRouteImport.update({
+    id: '/biblioteca/$id',
+    path: '/biblioteca/$id',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminArticleIdRoute =
   AuthenticatedAdminArticleIdRouteImport.update({
     id: '/article/$id',
@@ -172,6 +207,11 @@ export interface FileRoutesByFullPath {
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
+  '/admin/biblioteca/$id': typeof AuthenticatedAdminBibliotecaIdRoute
+  '/admin/mapa/$id': typeof AuthenticatedAdminMapaIdRoute
+  '/admin/biblioteca/': typeof AuthenticatedAdminBibliotecaIndexRoute
+  '/admin/mapa/': typeof AuthenticatedAdminMapaIndexRoute
+  '/admin/usuarios/': typeof AuthenticatedAdminUsuariosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -195,6 +235,11 @@ export interface FileRoutesByTo {
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
+  '/admin/biblioteca/$id': typeof AuthenticatedAdminBibliotecaIdRoute
+  '/admin/mapa/$id': typeof AuthenticatedAdminMapaIdRoute
+  '/admin/biblioteca': typeof AuthenticatedAdminBibliotecaIndexRoute
+  '/admin/mapa': typeof AuthenticatedAdminMapaIndexRoute
+  '/admin/usuarios': typeof AuthenticatedAdminUsuariosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -221,6 +266,11 @@ export interface FileRoutesById {
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
+  '/_authenticated/admin/biblioteca/$id': typeof AuthenticatedAdminBibliotecaIdRoute
+  '/_authenticated/admin/mapa/$id': typeof AuthenticatedAdminMapaIdRoute
+  '/_authenticated/admin/biblioteca/': typeof AuthenticatedAdminBibliotecaIndexRoute
+  '/_authenticated/admin/mapa/': typeof AuthenticatedAdminMapaIndexRoute
+  '/_authenticated/admin/usuarios/': typeof AuthenticatedAdminUsuariosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -247,6 +297,11 @@ export interface FileRouteTypes {
     | '/noticias/$slug'
     | '/admin/'
     | '/admin/article/$id'
+    | '/admin/biblioteca/$id'
+    | '/admin/mapa/$id'
+    | '/admin/biblioteca/'
+    | '/admin/mapa/'
+    | '/admin/usuarios/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -270,6 +325,11 @@ export interface FileRouteTypes {
     | '/noticias/$slug'
     | '/admin'
     | '/admin/article/$id'
+    | '/admin/biblioteca/$id'
+    | '/admin/mapa/$id'
+    | '/admin/biblioteca'
+    | '/admin/mapa'
+    | '/admin/usuarios'
   id:
     | '__root__'
     | '/'
@@ -295,6 +355,11 @@ export interface FileRouteTypes {
     | '/noticias/$slug'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/article/$id'
+    | '/_authenticated/admin/biblioteca/$id'
+    | '/_authenticated/admin/mapa/$id'
+    | '/_authenticated/admin/biblioteca/'
+    | '/_authenticated/admin/mapa/'
+    | '/_authenticated/admin/usuarios/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -474,6 +539,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/usuarios/': {
+      id: '/_authenticated/admin/usuarios/'
+      path: '/usuarios'
+      fullPath: '/admin/usuarios/'
+      preLoaderRoute: typeof AuthenticatedAdminUsuariosIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/mapa/': {
+      id: '/_authenticated/admin/mapa/'
+      path: '/mapa'
+      fullPath: '/admin/mapa/'
+      preLoaderRoute: typeof AuthenticatedAdminMapaIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/biblioteca/': {
+      id: '/_authenticated/admin/biblioteca/'
+      path: '/biblioteca'
+      fullPath: '/admin/biblioteca/'
+      preLoaderRoute: typeof AuthenticatedAdminBibliotecaIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/mapa/$id': {
+      id: '/_authenticated/admin/mapa/$id'
+      path: '/mapa/$id'
+      fullPath: '/admin/mapa/$id'
+      preLoaderRoute: typeof AuthenticatedAdminMapaIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/biblioteca/$id': {
+      id: '/_authenticated/admin/biblioteca/$id'
+      path: '/biblioteca/$id'
+      fullPath: '/admin/biblioteca/$id'
+      preLoaderRoute: typeof AuthenticatedAdminBibliotecaIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/article/$id': {
       id: '/_authenticated/admin/article/$id'
       path: '/article/$id'
@@ -487,12 +587,23 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedAdminArticleIdRoute: typeof AuthenticatedAdminArticleIdRoute
+  AuthenticatedAdminBibliotecaIdRoute: typeof AuthenticatedAdminBibliotecaIdRoute
+  AuthenticatedAdminMapaIdRoute: typeof AuthenticatedAdminMapaIdRoute
+  AuthenticatedAdminBibliotecaIndexRoute: typeof AuthenticatedAdminBibliotecaIndexRoute
+  AuthenticatedAdminMapaIndexRoute: typeof AuthenticatedAdminMapaIndexRoute
+  AuthenticatedAdminUsuariosIndexRoute: typeof AuthenticatedAdminUsuariosIndexRoute
 }
 
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
     AuthenticatedAdminArticleIdRoute: AuthenticatedAdminArticleIdRoute,
+    AuthenticatedAdminBibliotecaIdRoute: AuthenticatedAdminBibliotecaIdRoute,
+    AuthenticatedAdminMapaIdRoute: AuthenticatedAdminMapaIdRoute,
+    AuthenticatedAdminBibliotecaIndexRoute:
+      AuthenticatedAdminBibliotecaIndexRoute,
+    AuthenticatedAdminMapaIndexRoute: AuthenticatedAdminMapaIndexRoute,
+    AuthenticatedAdminUsuariosIndexRoute: AuthenticatedAdminUsuariosIndexRoute,
   }
 
 const AuthenticatedAdminRouteRouteWithChildren =
@@ -556,3 +667,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
