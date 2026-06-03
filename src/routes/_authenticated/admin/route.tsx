@@ -12,12 +12,12 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminShell,
 });
 
-const nav = [
+const nav: { to: string; label: string; icon: typeof Newspaper; exact?: boolean }[] = [
   { to: "/admin", label: "Conteúdos", icon: Newspaper, exact: true },
   { to: "/admin/biblioteca", label: "Biblioteca", icon: BookOpen },
   { to: "/admin/mapa", label: "Mapa de ajuda", icon: MapPin },
   { to: "/admin/usuarios", label: "Usuários", icon: Users },
-] as const;
+];
 
 function AdminShell() {
   const router = useRouter();
