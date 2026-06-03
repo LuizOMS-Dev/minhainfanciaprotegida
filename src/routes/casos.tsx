@@ -1,9 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { cases } from "@/content/cases";
 import { ArticleCard } from "@/components/site/ArticleCard";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { Reveal } from "@/components/site/Reveal";
+import { listPublishedArticles } from "@/lib/content.functions";
+import journalismImg from "@/assets/journalism.jpg";
 
 export const Route = createFileRoute("/casos")({
   head: () => ({
@@ -29,7 +33,18 @@ const TAGS = ["Todos", "Histórico", "Legislação", "Repercussão nacional", "A
 
 function CasosPage() {
   const [tag, setTag] = useState<(typeof TAGS)[number]>("Todos");
-  const list = useMemo(() => {
+  const fetchPublished = useServerFn(listPublishedArticles);
+  const { data: published } = useQuery({
+    queryKey: ["published-articles", "case"],
+    queryFn: () => fetchPublished({ data: { type: "case", limit: 50 } }),
+  });
+
+  const dbList = useMemo(() => {
+    const items = published?.articles ?? [];
+    return tag === "Todos" ? items : items.filter((c) => c.category === tag);
+  }, [published, tag]);
+
+  const staticList = useMemo(() => {
     const filtered = tag === "Todos" ? cases : cases.filter((c) => c.tag === tag);
     return [...filtered].sort((a, b) => +new Date(b.date) - +new Date(a.date));
   }, [tag]);
@@ -68,8 +83,25 @@ function CasosPage() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {list.map((c, i) => (
-              <Reveal key={c.slug} delay={i * 60}>
+            {dbList.map((a, i) => (
+              <Reveal key={a.id} delay={i * 60}>
+                <Link to="/casos/$slug" params={{ slug: a.slug }} className="block h-full">
+                  <ArticleCard
+                    title={a.title}
+                    date={a.publish_at ?? a.updated_at}
+                    excerpt={a.subtitle ?? ""}
+                    image={a.cover_url || journalismImg}
+                    tag={a.category ?? "Caso"}
+                    source={{
+                      name: a.primary_source_label ?? "Infância Protegida",
+                      url: a.primary_source_url ?? "/casos",
+                    }}
+                  />
+                </Link>
+              </Reveal>
+            ))}
+            {staticList.map((c, i) => (
+              <Reveal key={c.slug} delay={(dbList.length + i) * 60}>
                 <ArticleCard
                   title={c.title}
                   date={c.date}
@@ -83,7 +115,7 @@ function CasosPage() {
             ))}
           </div>
 
-          {list.length === 0 && (
+          {dbList.length === 0 && staticList.length === 0 && (
             <p className="text-center text-muted-foreground py-12">Nenhum caso nesta categoria.</p>
           )}
         </div>
