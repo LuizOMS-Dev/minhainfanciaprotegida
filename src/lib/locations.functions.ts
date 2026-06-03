@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-const locationTypes = ["conselho_tutelar", "creas", "cras", "delegacia", "outro"] as const;
+const locationTypes = ["conselho_tutelar", "creas", "cras", "delegacia", "disque", "mp"] as const;
 export type LocationType = (typeof locationTypes)[number];
 
 export interface AdminHelpLocation {
