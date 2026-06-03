@@ -54,6 +54,14 @@ export const getAdminArticle = createServerFn({ method: "GET" })
     return { article: row as AdminArticle | null };
   });
 
+// Only allow safe web URL protocols to prevent stored XSS via javascript:/data: URIs
+const safeHttpUrl = z
+  .string()
+  .url()
+  .refine((v) => /^https?:\/\//i.test(v), {
+    message: "Apenas URLs http(s) são permitidas.",
+  });
+
 const upsertSchema = z.object({
   id: z.string().uuid().optional(),
   type: articleTypeSchema,
@@ -62,9 +70,9 @@ const upsertSchema = z.object({
   slug: z.string().min(2).max(180).regex(/^[a-z0-9-]+$/),
   category: z.string().max(80).optional().nullable(),
   body: z.string().max(20000).optional().nullable(),
-  cover_url: z.string().url().optional().nullable().or(z.literal("")),
+  cover_url: safeHttpUrl.optional().nullable().or(z.literal("")),
   primary_source_label: z.string().max(255).optional().nullable(),
-  primary_source_url: z.string().url().optional().nullable().or(z.literal("")),
+  primary_source_url: safeHttpUrl.optional().nullable().or(z.literal("")),
   status: statusSchema,
   publish_at: z.string().datetime().optional().nullable().or(z.literal("")),
   last_verified_at: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().nullable().or(z.literal("")),
