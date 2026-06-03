@@ -25,6 +25,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { AnimatedNumber } from "@/components/site/AnimatedNumber";
 import { SourceTag } from "@/components/site/SourceTag";
+import { LatestUpdates } from "@/components/site/LatestUpdates";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -333,7 +334,10 @@ function Index() {
         </div>
       </section>
 
+      <LatestUpdates />
+
       {/* CTA FINAL */}
+
       <section className="relative isolate overflow-hidden py-24 sm:py-32 bg-gradient-red text-white">
         <div className="absolute inset-0 opacity-20" aria-hidden>
           <div className="absolute -top-32 left-1/3 size-[30rem] rounded-full bg-white blur-3xl" />

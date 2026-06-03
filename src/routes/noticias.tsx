@@ -1,9 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { news } from "@/content/news";
 import { ArticleCard } from "@/components/site/ArticleCard";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { Reveal } from "@/components/site/Reveal";
+import { listPublishedArticles } from "@/lib/content.functions";
+import journalismImg from "@/assets/journalism.jpg";
 
 export const Route = createFileRoute("/noticias")({
   head: () => ({
@@ -29,7 +33,18 @@ const CATEGORIES = ["Todas", "Legislação", "Campanha", "Pesquisa", "Internet",
 
 function NoticiasPage() {
   const [cat, setCat] = useState<(typeof CATEGORIES)[number]>("Todas");
-  const list = useMemo(() => {
+  const fetchPublished = useServerFn(listPublishedArticles);
+  const { data: published } = useQuery({
+    queryKey: ["published-articles", "news"],
+    queryFn: () => fetchPublished({ data: { type: "news", limit: 50 } }),
+  });
+
+  const dbList = useMemo(() => {
+    const items = published?.articles ?? [];
+    return cat === "Todas" ? items : items.filter((n) => n.category === cat);
+  }, [published, cat]);
+
+  const staticList = useMemo(() => {
     const filtered = cat === "Todas" ? news : news.filter((n) => n.category === cat);
     return [...filtered].sort((a, b) => +new Date(b.date) - +new Date(a.date));
   }, [cat]);
@@ -41,7 +56,7 @@ function NoticiasPage() {
           <SectionHeader
             eyebrow="Notícias e conscientização"
             title="O que está acontecendo agora"
-            description="Notícias verificadas, pesquisas e atualizações legais. Esta área é atualizada continuamente."
+            description="Notícias verificadas, pesquisas e atualizações legais. Esta área é atualizada continuamente pelo painel editorial."
           />
         </div>
       </section>
@@ -67,8 +82,25 @@ function NoticiasPage() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {list.map((n, i) => (
-              <Reveal key={n.slug} delay={i * 60}>
+            {dbList.map((a, i) => (
+              <Reveal key={a.id} delay={i * 60}>
+                <Link to="/noticias/$slug" params={{ slug: a.slug }} className="block h-full">
+                  <ArticleCard
+                    title={a.title}
+                    date={a.publish_at ?? a.updated_at}
+                    excerpt={a.subtitle ?? ""}
+                    image={a.cover_url || journalismImg}
+                    tag={a.category ?? "Notícia"}
+                    source={{
+                      name: a.primary_source_label ?? "Infância Protegida",
+                      url: a.primary_source_url ?? "/noticias",
+                    }}
+                  />
+                </Link>
+              </Reveal>
+            ))}
+            {staticList.map((n, i) => (
+              <Reveal key={n.slug} delay={(dbList.length + i) * 60}>
                 <ArticleCard
                   title={n.title}
                   date={n.date}
