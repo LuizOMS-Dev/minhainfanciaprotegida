@@ -27,6 +27,8 @@ import { Route as BibliotecaRouteImport } from './routes/biblioteca'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
+import { Route as CasosSlugRouteImport } from './routes/casos.$slug'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedAdminArticleIdRouteImport } from './routes/_authenticated/admin/article.$id'
 
@@ -119,6 +121,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NoticiasSlugRoute = NoticiasSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => NoticiasRoute,
+} as any)
+const CasosSlugRoute = CasosSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => CasosRoute,
+} as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
@@ -135,7 +147,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/biblioteca': typeof BibliotecaRoute
-  '/casos': typeof CasosRoute
+  '/casos': typeof CasosRouteWithChildren
   '/como-ajudar': typeof ComoAjudarRoute
   '/denuncia': typeof DenunciaRoute
   '/escolas': typeof EscolasRoute
@@ -144,11 +156,13 @@ export interface FileRoutesByFullPath {
   '/legislacao': typeof LegislacaoRoute
   '/maio-laranja': typeof MaioLaranjaRoute
   '/mapa': typeof MapaRoute
-  '/noticias': typeof NoticiasRoute
+  '/noticias': typeof NoticiasRouteWithChildren
   '/pais': typeof PaisRoute
   '/riscos-online': typeof RiscosOnlineRoute
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/casos/$slug': typeof CasosSlugRoute
+  '/noticias/$slug': typeof NoticiasSlugRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
 }
@@ -156,7 +170,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/biblioteca': typeof BibliotecaRoute
-  '/casos': typeof CasosRoute
+  '/casos': typeof CasosRouteWithChildren
   '/como-ajudar': typeof ComoAjudarRoute
   '/denuncia': typeof DenunciaRoute
   '/escolas': typeof EscolasRoute
@@ -165,11 +179,13 @@ export interface FileRoutesByTo {
   '/legislacao': typeof LegislacaoRoute
   '/maio-laranja': typeof MaioLaranjaRoute
   '/mapa': typeof MapaRoute
-  '/noticias': typeof NoticiasRoute
+  '/noticias': typeof NoticiasRouteWithChildren
   '/pais': typeof PaisRoute
   '/riscos-online': typeof RiscosOnlineRoute
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/casos/$slug': typeof CasosSlugRoute
+  '/noticias/$slug': typeof NoticiasSlugRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
 }
@@ -179,7 +195,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/biblioteca': typeof BibliotecaRoute
-  '/casos': typeof CasosRoute
+  '/casos': typeof CasosRouteWithChildren
   '/como-ajudar': typeof ComoAjudarRoute
   '/denuncia': typeof DenunciaRoute
   '/escolas': typeof EscolasRoute
@@ -188,11 +204,13 @@ export interface FileRoutesById {
   '/legislacao': typeof LegislacaoRoute
   '/maio-laranja': typeof MaioLaranjaRoute
   '/mapa': typeof MapaRoute
-  '/noticias': typeof NoticiasRoute
+  '/noticias': typeof NoticiasRouteWithChildren
   '/pais': typeof PaisRoute
   '/riscos-online': typeof RiscosOnlineRoute
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/casos/$slug': typeof CasosSlugRoute
+  '/noticias/$slug': typeof NoticiasSlugRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
 }
@@ -216,6 +234,8 @@ export interface FileRouteTypes {
     | '/riscos-online'
     | '/sinais'
     | '/sitemap.xml'
+    | '/casos/$slug'
+    | '/noticias/$slug'
     | '/admin/'
     | '/admin/article/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -237,6 +257,8 @@ export interface FileRouteTypes {
     | '/riscos-online'
     | '/sinais'
     | '/sitemap.xml'
+    | '/casos/$slug'
+    | '/noticias/$slug'
     | '/admin'
     | '/admin/article/$id'
   id:
@@ -259,6 +281,8 @@ export interface FileRouteTypes {
     | '/riscos-online'
     | '/sinais'
     | '/sitemap.xml'
+    | '/casos/$slug'
+    | '/noticias/$slug'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/article/$id'
   fileRoutesById: FileRoutesById
@@ -268,7 +292,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   BibliotecaRoute: typeof BibliotecaRoute
-  CasosRoute: typeof CasosRoute
+  CasosRoute: typeof CasosRouteWithChildren
   ComoAjudarRoute: typeof ComoAjudarRoute
   DenunciaRoute: typeof DenunciaRoute
   EscolasRoute: typeof EscolasRoute
@@ -277,7 +301,7 @@ export interface RootRouteChildren {
   LegislacaoRoute: typeof LegislacaoRoute
   MaioLaranjaRoute: typeof MaioLaranjaRoute
   MapaRoute: typeof MapaRoute
-  NoticiasRoute: typeof NoticiasRoute
+  NoticiasRoute: typeof NoticiasRouteWithChildren
   PaisRoute: typeof PaisRoute
   RiscosOnlineRoute: typeof RiscosOnlineRoute
   SinaisRoute: typeof SinaisRoute
@@ -412,6 +436,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/noticias/$slug': {
+      id: '/noticias/$slug'
+      path: '/$slug'
+      fullPath: '/noticias/$slug'
+      preLoaderRoute: typeof NoticiasSlugRouteImport
+      parentRoute: typeof NoticiasRoute
+    }
+    '/casos/$slug': {
+      id: '/casos/$slug'
+      path: '/$slug'
+      fullPath: '/casos/$slug'
+      preLoaderRoute: typeof CasosSlugRouteImport
+      parentRoute: typeof CasosRoute
+    }
     '/_authenticated/admin/': {
       id: '/_authenticated/admin/'
       path: '/admin'
@@ -442,12 +480,34 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface CasosRouteChildren {
+  CasosSlugRoute: typeof CasosSlugRoute
+}
+
+const CasosRouteChildren: CasosRouteChildren = {
+  CasosSlugRoute: CasosSlugRoute,
+}
+
+const CasosRouteWithChildren = CasosRoute._addFileChildren(CasosRouteChildren)
+
+interface NoticiasRouteChildren {
+  NoticiasSlugRoute: typeof NoticiasSlugRoute
+}
+
+const NoticiasRouteChildren: NoticiasRouteChildren = {
+  NoticiasSlugRoute: NoticiasSlugRoute,
+}
+
+const NoticiasRouteWithChildren = NoticiasRoute._addFileChildren(
+  NoticiasRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   BibliotecaRoute: BibliotecaRoute,
-  CasosRoute: CasosRoute,
+  CasosRoute: CasosRouteWithChildren,
   ComoAjudarRoute: ComoAjudarRoute,
   DenunciaRoute: DenunciaRoute,
   EscolasRoute: EscolasRoute,
@@ -456,7 +516,7 @@ const rootRouteChildren: RootRouteChildren = {
   LegislacaoRoute: LegislacaoRoute,
   MaioLaranjaRoute: MaioLaranjaRoute,
   MapaRoute: MapaRoute,
-  NoticiasRoute: NoticiasRoute,
+  NoticiasRoute: NoticiasRouteWithChildren,
   PaisRoute: PaisRoute,
   RiscosOnlineRoute: RiscosOnlineRoute,
   SinaisRoute: SinaisRoute,
