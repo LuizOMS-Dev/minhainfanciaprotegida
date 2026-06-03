@@ -80,7 +80,7 @@ function AdminDashboard() {
           </div>
           <div className="flex items-center gap-2">
             <Link
-              to="/_authenticated/admin/article/$id" as any
+              to="/admin/article/$id"
               params={{ id: "new" }}
               className="inline-flex items-center gap-2 rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-4 py-2 text-sm font-semibold"
             >
@@ -140,7 +140,7 @@ function AdminDashboard() {
                     </td>
                     <td className="px-4 py-3 text-right">
                       <Link
-                        to="/_authenticated/admin/article/$id" as any
+                        to="/admin/article/$id"
                         params={{ id: a.id }}
                         className="text-sm font-semibold text-[color:var(--red-inst)] hover:underline mr-3"
                       >

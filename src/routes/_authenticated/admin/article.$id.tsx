@@ -97,11 +97,11 @@ function ArticleEditor() {
   }, [q.data]);
 
   const save = useMutation({
-    mutationFn: (payload: Parameters<typeof upsertFn>[0]["data"]) =>
-      upsertFn({ data: payload }),
+    mutationFn: (payload: Record<string, unknown>) =>
+      upsertFn({ data: payload as never }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin-articles"] });
-      navigate({ to: "/_authenticated/admin/" as any });
+      navigate({ to: "/admin" });
     },
     onError: (e: Error) => setError(e.message),
   });
@@ -138,7 +138,7 @@ function ArticleEditor() {
     <section className="bg-background min-h-[80vh] py-12">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <Link
-          to="/_authenticated/admin/" as any
+          to="/admin"
           className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="size-4" /> Voltar
@@ -220,7 +220,7 @@ function ArticleEditor() {
           {error && <p className="text-sm text-[color:var(--red-inst)]">{error}</p>}
 
           <div className="flex justify-end gap-3 pt-4">
-            <Link to="/_authenticated/admin/" as any className="inline-flex items-center rounded-full border border-border px-5 py-2.5 text-sm font-semibold">
+            <Link to="/admin" className="inline-flex items-center rounded-full border border-border px-5 py-2.5 text-sm font-semibold">
               Cancelar
             </Link>
             <button
