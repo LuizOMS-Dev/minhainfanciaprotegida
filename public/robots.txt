@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: /sitemap.xml
+Sitemap: https://minhainfanciaprotegida.lovable.app/sitemap.xml
