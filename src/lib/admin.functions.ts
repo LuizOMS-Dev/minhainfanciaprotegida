@@ -117,19 +117,27 @@ export const deleteAdminArticle = createServerFn({ method: "POST" })
 export const claimFirstAdmin = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { count, error: countErr } = await context.supabase
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    // Use the admin client so RLS doesn't hide existing admin rows from the
+    // current user (which would otherwise let any signed-in user claim admin).
+    const { count, error: countErr } = await supabaseAdmin
       .from("user_roles")
       .select("*", { count: "exact", head: true })
       .eq("role", "admin");
-    if (countErr) throw new Error(countErr.message);
+    if (countErr) {
+      console.error("[claimFirstAdmin] count error", countErr);
+      throw new Error("Não foi possível validar a reivindicação de administrador.");
+    }
     if ((count ?? 0) > 0) {
       return { claimed: false, reason: "already_has_admin" as const };
     }
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin
       .from("user_roles")
       .insert({ user_id: context.userId, role: "admin" });
-    if (error) throw new Error(error.message);
+    if (error) {
+      console.error("[claimFirstAdmin] insert error", error);
+      throw new Error("Não foi possível registrar o administrador inicial.");
+    }
     return { claimed: true };
   });
 
