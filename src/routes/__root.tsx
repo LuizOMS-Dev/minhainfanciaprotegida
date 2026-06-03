@@ -81,7 +81,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "theme-color", content: "#0b1a3a" },
-      { title: "Infância Protegida — Campanha Maio Laranja" },
+      { title: "Infância Protegida | Maio Laranja | Combate ao Abuso Infanti" },
       {
         name: "description",
         content:
@@ -89,7 +89,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "author", content: "Infância Protegida" },
       { name: "robots", content: "index, follow" },
-      { property: "og:title", content: "Infância Protegida — Campanha Maio Laranja" },
+      { property: "og:title", content: "Infância Protegida | Maio Laranja | Combate ao Abuso Infanti" },
       {
         property: "og:description",
         content:
@@ -98,6 +98,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_BR" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Infância Protegida | Maio Laranja | Combate ao Abuso Infanti" },
+      { name: "description", content: "Informação, prevenção e denúncia. Conheça os sinais, direitos, riscos online, canais oficiais de ajuda e conteúdos educativos para proteger crianças e adolescen" },
+      { property: "og:description", content: "Informação, prevenção e denúncia. Conheça os sinais, direitos, riscos online, canais oficiais de ajuda e conteúdos educativos para proteger crianças e adolescen" },
+      { name: "twitter:description", content: "Informação, prevenção e denúncia. Conheça os sinais, direitos, riscos online, canais oficiais de ajuda e conteúdos educativos para proteger crianças e adolescen" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/dIthxDk1U7cPxVmxiEiawtmAk1z2/social-images/social-1780446924477-ChatGPT_Image_2_de_jun._de_2026,_21_34_29.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/dIthxDk1U7cPxVmxiEiawtmAk1z2/social-images/social-1780446924477-ChatGPT_Image_2_de_jun._de_2026,_21_34_29.webp" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
