@@ -4,15 +4,15 @@ import { useEffect, useState } from "react";
 
 const nav = [
   { to: "/", label: "Início" },
-  { to: "/maio-laranja", label: "Maio Laranja" },
   { to: "/sinais", label: "Sinais" },
   { to: "/riscos-online", label: "Riscos Online" },
+  { to: "/pais", label: "Para Pais" },
+  { to: "/escolas", label: "Para Escolas" },
   { to: "/casos", label: "Casos" },
   { to: "/noticias", label: "Notícias" },
-  { to: "/como-ajudar", label: "Como Ajudar" },
+  { to: "/biblioteca", label: "Biblioteca" },
   { to: "/legislacao", label: "Legislação" },
   { to: "/mapa", label: "Mapa" },
-  { to: "/faq", label: "FAQ" },
 ] as const;
 
 export function SiteHeader() {
