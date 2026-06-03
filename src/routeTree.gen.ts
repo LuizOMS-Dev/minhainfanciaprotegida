@@ -29,7 +29,13 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 import { Route as CasosSlugRouteImport } from './routes/casos.$slug'
+import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedAdminUsuariosIndexRouteImport } from './routes/_authenticated/admin/usuarios/index'
+import { Route as AuthenticatedAdminMapaIndexRouteImport } from './routes/_authenticated/admin/mapa/index'
+import { Route as AuthenticatedAdminBibliotecaIndexRouteImport } from './routes/_authenticated/admin/biblioteca/index'
+import { Route as AuthenticatedAdminMapaIdRouteImport } from './routes/_authenticated/admin/mapa/$id'
+import { Route as AuthenticatedAdminBibliotecaIdRouteImport } from './routes/_authenticated/admin/biblioteca/$id'
 import { Route as AuthenticatedAdminArticleIdRouteImport } from './routes/_authenticated/admin/article.$id'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -131,16 +137,51 @@ const CasosSlugRoute = CasosSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => CasosRoute,
 } as any)
-const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
+const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminUsuariosIndexRoute =
+  AuthenticatedAdminUsuariosIndexRouteImport.update({
+    id: '/usuarios/',
+    path: '/usuarios/',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminMapaIndexRoute =
+  AuthenticatedAdminMapaIndexRouteImport.update({
+    id: '/mapa/',
+    path: '/mapa/',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminBibliotecaIndexRoute =
+  AuthenticatedAdminBibliotecaIndexRouteImport.update({
+    id: '/biblioteca/',
+    path: '/biblioteca/',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminMapaIdRoute =
+  AuthenticatedAdminMapaIdRouteImport.update({
+    id: '/mapa/$id',
+    path: '/mapa/$id',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminBibliotecaIdRoute =
+  AuthenticatedAdminBibliotecaIdRouteImport.update({
+    id: '/biblioteca/$id',
+    path: '/biblioteca/$id',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminArticleIdRoute =
   AuthenticatedAdminArticleIdRouteImport.update({
-    id: '/admin/article/$id',
-    path: '/admin/article/$id',
-    getParentRoute: () => AuthenticatedRouteRoute,
+    id: '/article/$id',
+    path: '/article/$id',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -161,10 +202,16 @@ export interface FileRoutesByFullPath {
   '/riscos-online': typeof RiscosOnlineRoute
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
+  '/admin/biblioteca/$id': typeof AuthenticatedAdminBibliotecaIdRoute
+  '/admin/mapa/$id': typeof AuthenticatedAdminMapaIdRoute
+  '/admin/biblioteca/': typeof AuthenticatedAdminBibliotecaIndexRoute
+  '/admin/mapa/': typeof AuthenticatedAdminMapaIndexRoute
+  '/admin/usuarios/': typeof AuthenticatedAdminUsuariosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -188,6 +235,11 @@ export interface FileRoutesByTo {
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
+  '/admin/biblioteca/$id': typeof AuthenticatedAdminBibliotecaIdRoute
+  '/admin/mapa/$id': typeof AuthenticatedAdminMapaIdRoute
+  '/admin/biblioteca': typeof AuthenticatedAdminBibliotecaIndexRoute
+  '/admin/mapa': typeof AuthenticatedAdminMapaIndexRoute
+  '/admin/usuarios': typeof AuthenticatedAdminUsuariosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -209,10 +261,16 @@ export interface FileRoutesById {
   '/riscos-online': typeof RiscosOnlineRoute
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
+  '/_authenticated/admin/biblioteca/$id': typeof AuthenticatedAdminBibliotecaIdRoute
+  '/_authenticated/admin/mapa/$id': typeof AuthenticatedAdminMapaIdRoute
+  '/_authenticated/admin/biblioteca/': typeof AuthenticatedAdminBibliotecaIndexRoute
+  '/_authenticated/admin/mapa/': typeof AuthenticatedAdminMapaIndexRoute
+  '/_authenticated/admin/usuarios/': typeof AuthenticatedAdminUsuariosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -234,10 +292,16 @@ export interface FileRouteTypes {
     | '/riscos-online'
     | '/sinais'
     | '/sitemap.xml'
+    | '/admin'
     | '/casos/$slug'
     | '/noticias/$slug'
     | '/admin/'
     | '/admin/article/$id'
+    | '/admin/biblioteca/$id'
+    | '/admin/mapa/$id'
+    | '/admin/biblioteca/'
+    | '/admin/mapa/'
+    | '/admin/usuarios/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -261,6 +325,11 @@ export interface FileRouteTypes {
     | '/noticias/$slug'
     | '/admin'
     | '/admin/article/$id'
+    | '/admin/biblioteca/$id'
+    | '/admin/mapa/$id'
+    | '/admin/biblioteca'
+    | '/admin/mapa'
+    | '/admin/usuarios'
   id:
     | '__root__'
     | '/'
@@ -281,10 +350,16 @@ export interface FileRouteTypes {
     | '/riscos-online'
     | '/sinais'
     | '/sitemap.xml'
+    | '/_authenticated/admin'
     | '/casos/$slug'
     | '/noticias/$slug'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/article/$id'
+    | '/_authenticated/admin/biblioteca/$id'
+    | '/_authenticated/admin/mapa/$id'
+    | '/_authenticated/admin/biblioteca/'
+    | '/_authenticated/admin/mapa/'
+    | '/_authenticated/admin/usuarios/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -450,31 +525,98 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CasosSlugRouteImport
       parentRoute: typeof CasosRoute
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin/': {
       id: '/_authenticated/admin/'
-      path: '/admin'
+      path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/usuarios/': {
+      id: '/_authenticated/admin/usuarios/'
+      path: '/usuarios'
+      fullPath: '/admin/usuarios/'
+      preLoaderRoute: typeof AuthenticatedAdminUsuariosIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/mapa/': {
+      id: '/_authenticated/admin/mapa/'
+      path: '/mapa'
+      fullPath: '/admin/mapa/'
+      preLoaderRoute: typeof AuthenticatedAdminMapaIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/biblioteca/': {
+      id: '/_authenticated/admin/biblioteca/'
+      path: '/biblioteca'
+      fullPath: '/admin/biblioteca/'
+      preLoaderRoute: typeof AuthenticatedAdminBibliotecaIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/mapa/$id': {
+      id: '/_authenticated/admin/mapa/$id'
+      path: '/mapa/$id'
+      fullPath: '/admin/mapa/$id'
+      preLoaderRoute: typeof AuthenticatedAdminMapaIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/biblioteca/$id': {
+      id: '/_authenticated/admin/biblioteca/$id'
+      path: '/biblioteca/$id'
+      fullPath: '/admin/biblioteca/$id'
+      preLoaderRoute: typeof AuthenticatedAdminBibliotecaIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/admin/article/$id': {
       id: '/_authenticated/admin/article/$id'
-      path: '/admin/article/$id'
+      path: '/article/$id'
       fullPath: '/admin/article/$id'
       preLoaderRoute: typeof AuthenticatedAdminArticleIdRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+      parentRoute: typeof AuthenticatedAdminRouteRoute
     }
   }
 }
 
-interface AuthenticatedRouteRouteChildren {
+interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedAdminArticleIdRoute: typeof AuthenticatedAdminArticleIdRoute
+  AuthenticatedAdminBibliotecaIdRoute: typeof AuthenticatedAdminBibliotecaIdRoute
+  AuthenticatedAdminMapaIdRoute: typeof AuthenticatedAdminMapaIdRoute
+  AuthenticatedAdminBibliotecaIndexRoute: typeof AuthenticatedAdminBibliotecaIndexRoute
+  AuthenticatedAdminMapaIndexRoute: typeof AuthenticatedAdminMapaIndexRoute
+  AuthenticatedAdminUsuariosIndexRoute: typeof AuthenticatedAdminUsuariosIndexRoute
+}
+
+const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
+  {
+    AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+    AuthenticatedAdminArticleIdRoute: AuthenticatedAdminArticleIdRoute,
+    AuthenticatedAdminBibliotecaIdRoute: AuthenticatedAdminBibliotecaIdRoute,
+    AuthenticatedAdminMapaIdRoute: AuthenticatedAdminMapaIdRoute,
+    AuthenticatedAdminBibliotecaIndexRoute:
+      AuthenticatedAdminBibliotecaIndexRoute,
+    AuthenticatedAdminMapaIndexRoute: AuthenticatedAdminMapaIndexRoute,
+    AuthenticatedAdminUsuariosIndexRoute: AuthenticatedAdminUsuariosIndexRoute,
+  }
+
+const AuthenticatedAdminRouteRouteWithChildren =
+  AuthenticatedAdminRouteRoute._addFileChildren(
+    AuthenticatedAdminRouteRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
-  AuthenticatedAdminArticleIdRoute: AuthenticatedAdminArticleIdRoute,
+  AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
