@@ -1,0 +1,21 @@
+# Infância Protegida
+
+> Campanha educativa brasileira sobre o enfrentamento da violência sexual contra crianças e adolescentes (Maio Laranja). Informação, prevenção, sinais de alerta, legislação, riscos online e canais oficiais de denúncia.
+
+## Pages
+
+- [Início](/): Visão geral da campanha, dados e principais recursos.
+- [Maio Laranja](/maio-laranja): Origem, símbolos e objetivos da campanha nacional.
+- [Sinais de alerta](/sinais): Como identificar sinais de abuso em crianças e adolescentes.
+- [Como ajudar](/como-ajudar): Orientações práticas para famílias, escolas e comunidades.
+- [Denúncia](/denuncia): Canais oficiais — Disque 100, polícia e Conselho Tutelar.
+- [Legislação](/legislacao): ECA, ECA Digital (Lei 15.211/2025) e demais leis de proteção.
+- [Riscos online](/riscos-online): Aliciamento, sextorsão, deepfakes e desafios virais.
+- [Casos](/casos): Casos públicos recentes com fontes verificadas.
+- [Notícias](/noticias): Atualizações sobre proteção infantil no Brasil.
+- [Para pais e responsáveis](/pais): Controle parental, diálogo e plataformas (Roblox, Discord, TikTok).
+- [Para escolas](/escolas): Protocolo de escuta protegida (Lei 13.431/2017) e formação.
+- [Biblioteca](/biblioteca): Materiais oficiais de UNICEF, SaferNet, MDHC, Childhood Brasil.
+- [Mapa de ajuda](/mapa): Conselhos Tutelares, DECCA e DEAM por estado.
+- [Galeria](/galeria): Imagens e materiais da campanha.
+- [Perguntas frequentes](/faq): Dúvidas comuns sobre proteção infantil.
