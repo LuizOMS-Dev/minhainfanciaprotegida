@@ -50,7 +50,7 @@ export const listPublishedArticles = createServerFn({ method: "GET" })
     if (data.type) q = q.eq("type", data.type);
 
     const { data: rows, error } = await q;
-    if (error) throw new Error(error.message);
+    if (error) { console.error("[content] supabase error", error); throw new Error("Não foi possível carregar o conteúdo."); }
 
     const ids = Array.from(
       new Set(
@@ -104,7 +104,7 @@ export const getPublishedArticle = createServerFn({ method: "GET" })
       .eq("status", "published")
       .or(`publish_at.is.null,publish_at.lte.${nowIso}`)
       .maybeSingle();
-    if (error) throw new Error(error.message);
+    if (error) { console.error("[content] supabase error", error); throw new Error("Não foi possível carregar o conteúdo."); }
     if (!row) return { article: null };
 
     const [{ data: sources }, { data: profs }] = await Promise.all([
@@ -162,6 +162,6 @@ export const listLatestForHome = createServerFn({ method: "GET" }).handler(async
     .order("publish_at", { ascending: false, nullsFirst: false })
     .order("updated_at", { ascending: false })
     .limit(5);
-  if (error) throw new Error(error.message);
+  if (error) { console.error("[content] supabase error", error); throw new Error("Não foi possível carregar o conteúdo."); }
   return { latest: data ?? [] };
 });
