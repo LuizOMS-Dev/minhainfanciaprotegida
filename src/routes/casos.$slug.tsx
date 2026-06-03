@@ -45,10 +45,10 @@ export const Route = createFileRoute("/casos/$slug")({
     };
   },
   component: CaseDetail,
-  errorComponent: ({ error }) => (
+  errorComponent: () => (
     <div className="mx-auto max-w-2xl px-4 py-24 text-center">
       <h1 className="font-display text-2xl font-bold">Não foi possível carregar este caso</h1>
-      <p className="mt-3 text-muted-foreground">{error.message}</p>
+      <p className="mt-3 text-muted-foreground">Tente novamente em alguns instantes.</p>
       <Link to="/casos" className="mt-6 inline-block text-[color:var(--red-inst)] underline">
         Voltar para Casos
       </Link>
