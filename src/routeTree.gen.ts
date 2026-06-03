@@ -24,7 +24,11 @@ import { Route as DenunciaRouteImport } from './routes/denuncia'
 import { Route as ComoAjudarRouteImport } from './routes/como-ajudar'
 import { Route as CasosRouteImport } from './routes/casos'
 import { Route as BibliotecaRouteImport } from './routes/biblioteca'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedAdminArticleIdRouteImport } from './routes/_authenticated/admin/article.$id'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -101,14 +105,35 @@ const BibliotecaRoute = BibliotecaRouteImport.update({
   path: '/biblioteca',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminArticleIdRoute =
+  AuthenticatedAdminArticleIdRouteImport.update({
+    id: '/admin/article/$id',
+    path: '/admin/article/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/biblioteca': typeof BibliotecaRoute
   '/casos': typeof CasosRoute
   '/como-ajudar': typeof ComoAjudarRoute
@@ -124,9 +149,12 @@ export interface FileRoutesByFullPath {
   '/riscos-online': typeof RiscosOnlineRoute
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/biblioteca': typeof BibliotecaRoute
   '/casos': typeof CasosRoute
   '/como-ajudar': typeof ComoAjudarRoute
@@ -142,10 +170,14 @@ export interface FileRoutesByTo {
   '/riscos-online': typeof RiscosOnlineRoute
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
+  '/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/biblioteca': typeof BibliotecaRoute
   '/casos': typeof CasosRoute
   '/como-ajudar': typeof ComoAjudarRoute
@@ -161,11 +193,14 @@ export interface FileRoutesById {
   '/riscos-online': typeof RiscosOnlineRoute
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/biblioteca'
     | '/casos'
     | '/como-ajudar'
@@ -181,9 +216,12 @@ export interface FileRouteTypes {
     | '/riscos-online'
     | '/sinais'
     | '/sitemap.xml'
+    | '/admin/'
+    | '/admin/article/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/biblioteca'
     | '/casos'
     | '/como-ajudar'
@@ -199,9 +237,13 @@ export interface FileRouteTypes {
     | '/riscos-online'
     | '/sinais'
     | '/sitemap.xml'
+    | '/admin'
+    | '/admin/article/$id'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
+    | '/auth'
     | '/biblioteca'
     | '/casos'
     | '/como-ajudar'
@@ -217,10 +259,14 @@ export interface FileRouteTypes {
     | '/riscos-online'
     | '/sinais'
     | '/sitemap.xml'
+    | '/_authenticated/admin/'
+    | '/_authenticated/admin/article/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   BibliotecaRoute: typeof BibliotecaRoute
   CasosRoute: typeof CasosRoute
   ComoAjudarRoute: typeof ComoAjudarRoute
@@ -345,6 +391,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BibliotecaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -352,11 +412,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/article/$id': {
+      id: '/_authenticated/admin/article/$id'
+      path: '/admin/article/$id'
+      fullPath: '/admin/article/$id'
+      preLoaderRoute: typeof AuthenticatedAdminArticleIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+  AuthenticatedAdminArticleIdRoute: typeof AuthenticatedAdminArticleIdRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  AuthenticatedAdminArticleIdRoute: AuthenticatedAdminArticleIdRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   BibliotecaRoute: BibliotecaRoute,
   CasosRoute: CasosRoute,
   ComoAjudarRoute: ComoAjudarRoute,
