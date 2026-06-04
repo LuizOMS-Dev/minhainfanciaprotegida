@@ -26,6 +26,8 @@ import { SectionHeader } from "@/components/site/SectionHeader";
 import { AnimatedNumber } from "@/components/site/AnimatedNumber";
 import { SourceTag } from "@/components/site/SourceTag";
 import { LatestUpdates } from "@/components/site/LatestUpdates";
+import { MonthlyAlert } from "@/components/site/MonthlyAlert";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -184,7 +186,11 @@ function Index() {
         </div>
       </section>
 
+      {/* ALERTA MENSAL / DIA 18 */}
+      <MonthlyAlert />
+
       {/* MARQUEE OFICIAL */}
+
       <section className="bg-[color:var(--orange)] text-[color:var(--navy-deep)] py-4 overflow-hidden border-y border-[color:var(--navy-deep)]/10">
         <div className="flex gap-12 whitespace-nowrap animate-marquee font-display text-lg sm:text-xl font-semibold">
           {Array.from({ length: 2 }).map((_, i) => (

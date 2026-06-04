@@ -63,13 +63,13 @@ export function SiteHeader() {
             </span>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Navegação principal">
+          <nav className="hidden xl:flex items-center gap-0.5" aria-label="Navegação principal">
             {nav.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
-                className="px-3 py-2 text-sm font-medium text-foreground/80 hover:text-foreground rounded-md hover:bg-muted transition-colors"
-                activeProps={{ className: "text-[color:var(--orange)]" }}
+                className="px-2.5 py-2 text-[13px] font-medium text-foreground/75 hover:text-foreground rounded-md hover:bg-muted transition-colors whitespace-nowrap"
+                activeProps={{ className: "text-[color:var(--orange)] bg-muted/60" }}
                 activeOptions={{ exact: item.to === "/" }}
               >
                 {item.label}
@@ -80,14 +80,14 @@ export function SiteHeader() {
           <div className="flex items-center gap-2">
             <Link
               to="/denuncia"
-              className="hidden sm:inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-4 py-2 text-sm font-semibold hover:opacity-95 transition shadow-sm"
+              className="hidden sm:inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-4 py-2 text-sm font-semibold hover:opacity-95 transition shadow-sm whitespace-nowrap"
             >
               <Phone className="size-4" aria-hidden />
               Denunciar
             </Link>
             <button
               onClick={() => setOpen((v) => !v)}
-              className="lg:hidden inline-flex size-10 items-center justify-center rounded-md hover:bg-muted"
+              className="xl:hidden inline-flex size-10 items-center justify-center rounded-md hover:bg-muted"
               aria-label={open ? "Fechar menu" : "Abrir menu"}
               aria-expanded={open}
             >
@@ -97,8 +97,8 @@ export function SiteHeader() {
         </div>
 
         {open && (
-          <div className="lg:hidden border-t border-border bg-background animate-fade-in">
-            <nav className="px-4 py-4 flex flex-col gap-1" aria-label="Navegação móvel">
+          <div className="xl:hidden border-t border-border bg-background animate-fade-in">
+            <nav className="px-4 py-4 flex flex-col gap-1 max-h-[80vh] overflow-y-auto" aria-label="Navegação móvel">
               {nav.map((item) => (
                 <Link
                   key={item.to}
