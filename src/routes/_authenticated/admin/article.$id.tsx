@@ -2,12 +2,15 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState, type FormEvent } from "react";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Save, Eye } from "lucide-react";
 import {
   getAdminArticle,
   upsertAdminArticle,
   type AdminArticle,
 } from "@/lib/admin.functions";
+import { RichTextEditor } from "@/components/site/RichTextEditor";
+import { SafeHtml, readingTimeMinutes } from "@/components/site/SafeHtml";
+
 
 export const Route = createFileRoute("/_authenticated/admin/article/$id")({
   head: () => ({
@@ -69,6 +72,8 @@ function ArticleEditor() {
 
   const [form, setForm] = useState<FormState>(empty);
   const [error, setError] = useState<string | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
+
 
   const q = useQuery({
     queryKey: ["admin-article", id],
@@ -195,9 +200,25 @@ function ArticleEditor() {
             <input type="url" value={form.cover_url} onChange={(e) => update("cover_url", e.target.value)} className={inputCls} placeholder="https://..." />
           </Field>
 
-          <Field label="Conteúdo (texto)">
-            <textarea value={form.body} onChange={(e) => update("body", e.target.value)} rows={10} className={`${inputCls} font-mono text-sm`} />
+          <Field label="Conteúdo">
+            <RichTextEditor value={form.body} onChange={(html) => update("body", html)} placeholder="Escreva o conteúdo da publicação..." />
+            <div className="mt-2 flex items-center justify-between text-[11px] text-muted-foreground">
+              <span>{readingTimeMinutes(form.body)} min de leitura</span>
+              <button
+                type="button"
+                onClick={() => setShowPreview((v) => !v)}
+                className="inline-flex items-center gap-1 hover:text-foreground"
+              >
+                <Eye className="size-3" /> {showPreview ? "Ocultar preview" : "Visualizar preview"}
+              </button>
+            </div>
+            {showPreview && form.body && (
+              <div className="mt-3 rounded-xl border border-border bg-card p-5">
+                <SafeHtml html={form.body} className="prose prose-neutral max-w-none" />
+              </div>
+            )}
           </Field>
+
 
           <div className="grid sm:grid-cols-2 gap-4">
             <Field label="Fonte principal — rótulo">
