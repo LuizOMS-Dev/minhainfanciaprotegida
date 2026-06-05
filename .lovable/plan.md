@@ -1,82 +1,132 @@
-# Plano de evolução — Administração, automação e CRUD
+## Objetivo
 
-Identidade visual atual 100% preservada. Todo o trabalho é em backend, painel `/admin`, server functions e novas rotas de leitura/detalhe.
+Concluir os 14 itens pendentes do portal **e popular o banco com notícias e casos REAIS verificados**, garantindo páginas internas ricas, bem organizadas e indexáveis. Zero alteração visual.
 
-## Fase 1 — Fundação de administração (entrega imediata)
+---
 
-1. **Usuário administrador principal**
-   - Criar conta `luizotaviomscv@gmail.com` via Supabase Auth (sem expor senha — convite por e-mail com link de definição de senha).
-   - Inserir papel `admin` em `user_roles`.
-   - Login: e-mail/senha + Google (via broker Lovable, já configurado).
+## Bloco A — Conteúdo real (notícias + casos)
 
-2. **Conectar `/noticias` ao banco**
-   - Server fn pública (`supabaseAdmin` em handler) listando `articles` onde `type='news'` e `status='published'` e `publish_at <= now()`.
-   - Cards exibem fonte, data, revisão e autor (join leve em `profiles`).
-   - Página individual `/noticias/$slug` com corpo, `article_sources`, JSON-LD Article.
+Vou inserir no banco (tabela `articles`) **conteúdo real e verificável** sobre proteção da infância no Brasil, com fonte oficial em cada item.
 
-3. **Conectar `/casos` ao banco**
-   - Mesma estrutura, `type='case'`, página `/casos/$slug`, bloco de referências oficiais.
+**Notícias reais (mín. 8):**
+- Lei 14.811/2024 — Bullying e cyberbullying como crime (Planalto)
+- Lei 13.431/2017 — Escuta especializada e depoimento especial
+- Disque 100 — balanço anual mais recente (MDH/Ouvidoria)
+- Operação Caçador (PF) — combate à exploração sexual infantil online
+- SaferNet Brasil — relatório anual de denúncias
+- CPI das Bets / impacto em adolescentes (Senado/Câmara)
+- Maio Laranja — campanha nacional 18/05
+- ECA — atualizações recentes (Lei 8.069/90 + emendas)
 
-4. **Home dinâmica**
-   - Bloco "Últimas atualizações" na `/` consumindo as 3 notícias e 2 casos publicados mais recentes.
+**Casos reais (mín. 6) tratados com **respeito, sem sensacionalismo**, sempre apontando o aprendizado/lei resultante:**
+- Caso Araceli (origem do 18 de maio)
+- Caso Bernardo Boldrini
+- Caso Henry Borel → Lei Henry Borel (14.344/2022)
+- Caso Isabella Nardoni → mudanças no ECA
+- Caso Ana Hickmann (alienação digital) — referência educativa
+- Caso Realengo (impacto escolar e prevenção)
 
-5. **Agendamento automático**
-   - RLS já filtra `publish_at <= now()`; itens com data futura ficam invisíveis ao público até a hora marcada.
+Cada artigo terá: `title`, `subtitle`, `slug`, `category`, `body` (HTML rico com h2/h3, listas, citações, "O que a lei diz", "Como agir", "Onde denunciar"), `cover_url` (Unsplash/Wikimedia com atribuição), `primary_source_label`, `primary_source_url`, `status='published'`, `publish_at`, `last_verified_at`.
 
-## Fase 2 — CRUD do painel `/admin`
+Inserção via `supabase--insert` (não migração), mantendo os existentes.
 
-6. **Layout `/admin` (rota `_authenticated/admin`)** com navegação lateral: Notícias, Casos, Riscos, Biblioteca, Mapa, Usuários, Métricas, SEO.
+---
 
-7. **CRUD Notícias / Casos / Riscos / Guias** — formulário único (mesma tabela `articles`, campo `type`): título, slug, subtítulo, capa, corpo (markdown), categoria, status (rascunho/revisão/agendado/publicado), `publish_at`, `last_verified_at`, fonte primária, fontes adicionais (`article_sources`).
+## Bloco B — Páginas ricas de notícia/caso (refino do que já existe)
 
-8. **CRUD Biblioteca** — upload PDF para bucket `media` (signed upload), campos: título, descrição, categoria, tags, público-alvo, fonte oficial, ano, URL.
+As rotas `/noticias/$slug` e `/casos/$slug` já têm reading time, share, relacionados e siblings. Vou adicionar:
 
-9. **CRUD Mapa de Ajuda** — adicionar/editar/excluir Conselho Tutelar, CREAS, CRAS, Delegacia + **importação CSV** (parse client-side, insert em lote via server fn admin).
+- **Sumário automático (TOC)** gerado dos `<h2>` do corpo
+- **Bloco "Fontes e referências"** estruturado (lista `article_sources`)
+- **Bloco "O que fazer agora"** com 3 CTAs fixos (Denunciar, Sinais de alerta, Biblioteca)
+- **Breadcrumbs** semânticos + JSON-LD `BreadcrumbList`
+- **Última verificação editorial** visível ("Verificado em DD/MM/AAAA")
+- **Cover responsivo** com `loading="eager"` + `fetchpriority="high"` apenas na primeira dobra
 
-10. **Gerenciamento de usuários** — listar perfis, atribuir papéis (`admin`, `editor`, `revisor`).
+---
 
-## Fase 3 — Busca, métricas e telemetria
+## Bloco C — Mapa real (item 3) + CSV (item 4)
 
-11. **Busca global `/buscar`** — Postgres `tsvector` sobre `articles` + `library_items`; filtros tema, categoria, faixa etária, ano, tipo.
+- `bun add leaflet react-leaflet leaflet.markercluster @types/leaflet`
+- Novo `MapaInterativo.tsx` (CSR-only via dynamic import) com:
+  - Tiles OpenStreetMap (sem chave)
+  - MarkerCluster por estado
+  - Popup com nome, endereço, telefone, horário, link oficial, botão "Como chegar" (Google Maps directions)
+  - Filtros laterais por tipo (CT, DPCA, CREAS, Vara da Infância, Disque 100) e por estado
+- Rota `/mapa` passa a usar o componente real; mantém fallback de lista.
+- Admin `/admin/mapa` já tem import CSV — vou ampliar com **template baixável**, **preview da primeira linha** e **relatório de linhas com erro**.
 
-12. **Eventos de telemetria** — tabela `analytics_events` (page_view, search, outbound_click com tipo: `disque100|conselho|whatsapp|external|library_download`). Listener leve no frontend dispara via server fn pública com rate-limit por IP.
+---
 
-13. **Painel de métricas `/admin/metricas`** — agregados: notícias/casos mais acessados, materiais mais baixados, buscas, cliques Disque 100/Conselho/WhatsApp/externos, páginas mais visitadas, tempo médio (derivado dos page_views já vindos do GA4 — exibir top-list local + link para GA4).
+## Bloco D — Busca global (item 8)
 
-## Fase 4 — Páginas institucionais
+- Server fn `searchAll({ q })` que consulta em paralelo `articles`, `library_items`, `help_locations` com `ilike` em colunas-chave (status=published nas articles).
+- `SiteHeader`: ícone de busca abre `<Dialog>` (cmdk) com input, resultados agrupados por tipo, navegação por teclado.
+- Atalho `Ctrl/Cmd + K`.
 
-14. **`/sobre`** — objetivo, missão, critérios de revisão, política de fontes, aviso de iniciativa educativa independente.
+---
 
-15. **`/transparencia`** — metodologia, fontes, últimas atualizações (consulta `articles.last_verified_at` ordenado desc), critérios de verificação.
+## Bloco E — Telemetria leve (item 9)
 
-## Detalhes técnicos
+- Nova tabela `event_log (id, kind, target_id, target_type, path, created_at, ua)` com RLS: INSERT anon permitido; SELECT só admin/editor.
+- Server fn `logEvent({kind, ...})` chamada nos handlers de: clique em "Denunciar", download da biblioteca, abertura de caso/notícia, clique no mapa.
+- Painel `/admin/metricas`: contagem por tipo (últimos 7/30 dias), top 10 conteúdos, top 10 locais.
 
-**Banco** (migrations novas, sem quebrar schema atual):
-- Trigger `set_updated_at` em `articles` e `library_items`.
-- Coluna `tags text[]`, `audience text`, `age_range text` em `library_items` (já existe `audience`; adicionar `tags`).
-- Tabela `analytics_events(id, type, path, label, meta jsonb, ip_hash, created_at)` — insert público com rate-limit, leitura só admin.
-- Índice `tsvector` em `articles(title, subtitle, body)` e `library_items(title, description)`.
-- Storage bucket `media` já existe (privado) — adicionar políticas: leitura pública dos paths em `library/*`, escrita só por `admin|editor`.
+---
 
-**Server functions** (em `src/lib/*.functions.ts`, `supabaseAdmin` apenas dentro de `.handler()`):
-- `listPublishedArticles({ type, limit, offset })`
-- `getArticleBySlug({ type, slug })`
-- `searchContent({ q, filters })`
-- `trackEvent({ type, path, label, meta })`
-- `adminUpsertArticle`, `adminDeleteArticle`, `adminUpsertLibrary`, `adminUpsertHelpLocation`, `adminImportHelpLocationsCsv`, `adminAssignRole`, `adminMetricsSummary` — todas com `requireSupabaseAuth` + checagem `has_role`.
+## Bloco F — UX/Nav (item 5 restante)
 
-**Frontend**:
-- Painel usa `@/components/ui/*` existentes (shadcn) — identidade preservada.
-- Rotas públicas novas: `/noticias/$slug`, `/casos/$slug`, `/buscar`, `/sobre`, `/transparencia`.
-- Rotas protegidas: `/_authenticated/admin/*` (gate da integração).
+- `Breadcrumbs.tsx` em todas as páginas internas
+- Botão "Voltar ao topo" global (após 600px de scroll)
+- Skeletons unificados em listas (notícias, casos, biblioteca, mapa)
+- Estados vazios padronizados (`EmptyState.tsx`)
 
-**Sitemap**: incluir slugs publicados (server route já existente passa a buscar do banco).
+---
+
+## Bloco G — SEO final (item 12)
+
+- Auditar `head()` de **todas** as rotas: title único, description, og:* completos, canonical em folha.
+- JSON-LD: `Article`/`NewsArticle` nas leituras (já feito), `BreadcrumbList` em todas as profundas, `FAQPage` em `/faq`, `Organization` no root.
+- Rodar `seo_chat--trigger_scan` no final e marcar fixes.
+
+---
+
+## Bloco H — Segurança final (item 13)
+
+- **Headers** no `src/server.ts`: `Content-Security-Policy` (estrito, allow Supabase + OSM tiles + unsplash), `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`, `X-Content-Type-Options: nosniff`, `Strict-Transport-Security`.
+- **Rate limit** simples em server fns públicas (denúncia, busca, logEvent) usando tabela `rate_limit` com janela deslizante por IP-hash.
+- Rodar `security--run_security_scan`, corrigir e marcar findings.
+
+---
+
+## Bloco I — Relatório final (item 14)
+
+Checklist Markdown na resposta final agrupado por:
+✅ Implementado · ✅ Corrigido · ✅ Testado · ✅ Validado · ⚠️ Ação manual (ex.: confirmar Google OAuth, revisar conteúdo dos artigos, configurar custom domain se desejar).
+
+---
+
+## Detalhes técnicos importantes
+
+- **Identidade visual intocada**: nenhuma mudança em `styles.css`, fontes, cores, espaçamentos.
+- **Inserts vs migrations**: tabelas novas (`event_log`, `rate_limit`) via migration com GRANTs; conteúdo via insert tool.
+- **Leaflet em Worker SSR**: import dinâmico só no cliente (`useEffect`) para evitar `window is not defined`.
+- **CSP**: precisa liberar `tile.openstreetmap.org`, `*.supabase.co`, `images.unsplash.com`, `upload.wikimedia.org`.
+- **Conteúdo dos casos**: tom respeitoso, foco em prevenção e legislação, evita detalhes mórbidos, sempre com fonte oficial (Planalto, MDH, SaferNet, Agência Câmara/Senado).
+
+---
 
 ## Ordem de execução
 
-Vou começar pela **Fase 1** assim que aprovar — entrega o admin logado e o conteúdo dinâmico funcionando. Fase 2 entra na rodada seguinte para evitar uma única migration gigante.
+1. Migrations (event_log, rate_limit) + GRANTs
+2. Inserts de notícias e casos reais (com fontes)
+3. Refino páginas de leitura (TOC, breadcrumbs, fontes)
+4. Mapa Leaflet + import CSV refinado
+5. Busca global (cmdk + atalho)
+6. Telemetria + painel /admin/metricas
+7. UX (breadcrumbs, voltar ao topo, skeletons)
+8. SEO sweep + headers de segurança + rate limit
+9. Scans (SEO + segurança) e correções
+10. Relatório final
 
-## Confirmação
-
-- Posso enviar o **convite por e-mail** para `luizotaviomscv@gmail.com` (definir senha pelo link)? Se preferir senha provisória, me diga.
-- Confirma seguir nesta ordem (Fase 1 agora; Fases 2–4 nas próximas rodadas)?
+Posso começar pelo Bloco A (conteúdo real) já na primeira leva?
