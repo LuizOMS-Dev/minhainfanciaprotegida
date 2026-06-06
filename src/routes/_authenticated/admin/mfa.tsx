@@ -4,6 +4,10 @@ import { useServerFn } from "@tanstack/react-start";
 import { ShieldCheck, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { recordMfaEvent } from "@/lib/security.functions";
+import {
+  generateRecoveryCodes,
+  getRecoveryCodesStatus,
+} from "@/lib/recovery-codes.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/mfa")({
   head: () => ({
@@ -264,13 +268,8 @@ function MfaPage() {
 }
 
 function RecoveryCodesSection() {
-  const getStatus = useServerFn(
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    require("@/lib/recovery-codes.functions").getRecoveryCodesStatus,
-  );
-  const generate = useServerFn(
-    require("@/lib/recovery-codes.functions").generateRecoveryCodes,
-  );
+  const getStatus = useServerFn(getRecoveryCodesStatus);
+  const generate = useServerFn(generateRecoveryCodes);
   const [status, setStatus] = useState<{
     total: number;
     remaining: number;
