@@ -94,7 +94,7 @@ export function SiteHeader() {
       >
         <div className="w-full px-5 sm:px-8 lg:px-10 h-16 grid grid-cols-[1fr_auto_1fr] items-center gap-6">
           {/* ÁREA 1 — Logo */}
-          <Link to="/" className="flex items-center gap-2.5 group shrink-0 min-w-0" aria-label="Página inicial">
+          <Link to="/" className="flex items-center gap-2.5 group shrink-0 min-w-0 justify-self-start" aria-label="Página inicial">
             <span className="relative inline-flex size-9 items-center justify-center rounded-full bg-gradient-orange shadow-orange shrink-0">
               <span className="absolute inset-0 rounded-full bg-[color:var(--orange)]/40 animate-ping-slow" />
               <ShieldAlert className="size-4 text-[color:var(--navy-deep)]" aria-hidden />
