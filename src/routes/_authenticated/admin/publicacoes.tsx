@@ -39,7 +39,7 @@ const searchSchema = z.object({
 });
 
 export const Route = createFileRoute("/_authenticated/admin/publicacoes")({
-  validateSearch: zodValidator(searchSchema),
+  validateSearch: (s: Record<string, unknown>) => searchSchema.parse(s),
   component: PublicacoesPage,
 });
 
