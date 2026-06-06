@@ -1,93 +1,135 @@
-## Painel Administrativo V3 — plano de execução
+## Objetivo
 
-Mantém intactos: segurança (MFA, Turnstile, rate-limit, CSP, headers, auditoria), SEO público, site público e identidade visual. Toda a reformulação é interna ao `/admin`, reaproveitando os tokens visuais já usados na tela "Conteúdos" (gradiente navy, chips laranja, cards arredondados, KPIs).
+Transformar `/noticias/$slug` e `/casos/$slug` em hubs editoriais profundos, mantendo identidade visual, menus e layout global. Editorial híbrido: editor digita conteúdo curado; servidor calcula relacionamentos automáticos.
 
-### 1. Shell do painel
-- Reescrever a barra lateral de `src/routes/_authenticated/admin/route.tsx` em grupos:
-  - **Visão geral** → Dashboard
-  - **Publicações** (expansível) → Todos · Notícias · Casos · Riscos · Guias · Para Pais · Para Escolas
-  - **Conteúdo institucional** → Biblioteca · Mapa de ajuda
-  - **Operação** → Usuários · Auditoria · Sessões · Segurança · Backup
-  - **Conta** → Verificação MFA · Sair
-- "Para Pais" / "Para Escolas" são filtros baseados em `articles.category` (sem migração).
-- Header ganha: **busca global** (Cmd/Ctrl K), atalhos rápidos e badge do papel.
+## 1. Banco de dados (uma migration)
 
-### 2. Dashboard executivo (`/admin`)
-- Substituir a tabela de conteúdos pelo dashboard real.
-- Nova server fn `getAdminOverview` agrega contagens: publicados, revisão, agendados, rascunhos, biblioteca, locais, usuários ativos (profiles), sessões admin (24 h e ativas), tentativas de login (24 h), bloqueios ativos.
-- Grid de KPIs (mesmo estilo dos atuais) + bloco **Atividade recente** (últimos 15 eventos do `audit_log` com ícone por categoria, link para auditoria).
-- Bloco **Ações rápidas**: Nova publicação · Novo material · Novo local · Novo usuário · Auditoria · Segurança.
+Novas colunas em `public.articles` (todas opcionais — nada quebra para artigos existentes):
 
-### 3. Central Editorial
-- Nova rota `/admin/publicacoes` (lista master com filtros por tipo + categoria + status + busca; reaproveita layout/tabela atual de "Conteúdos").
-- Sub-rotas filtradas (`/admin/publicacoes/noticias`, `/casos`, `/riscos`, `/guias`, `/para-pais`, `/para-escolas`) — apenas pré-aplicam filtro/categoria.
-- Editor (`article.$id.tsx`) ganha barra de status com fluxo visual **Rascunho → Revisão → Agendamento → Publicação** e botão **Pré-visualizar** (abre artigo público em nova aba; só publicados/agendados respeitam RLS).
+```
+reading_minutes      int                  -- opcional; fallback calculado do body
+understand           text                 -- "Entenda o assunto" (HTML curto)
+lessons              text                 -- "O que aprendemos" (apenas casos)
+timeline             jsonb                -- [{date, title, text}]
+faq                  jsonb                -- [{q, a}]
+related_laws         text[]               -- slugs: "eca-art-227", "lei-13431", "cp-art-217a"...
+related_signal_tags  text[]               -- tags em /sinais
+national_context     text[]               -- ["maio-laranja","eca","seguranca-digital"...]
+```
 
-### 4. Central de Segurança (nova) `/admin/seguranca`
-- Server fn `getSecurityOverview`: contadores de bloqueios ativos, tentativas falhas 24 h, eventos críticos 7 d, últimos logins.
-- Painel com selos: MFA · Turnstile · Rate limit · E-mail verificado · CSP · Security Headers · Auditoria · Backup (cada selo lê configuração real, não hard-coded).
-- Listas: contas bloqueadas (`account_lockouts`), top IPs com falhas, últimos eventos críticos, últimos logins (`login_attempts` success=true).
+Sem CHECK em jsonb (regra de migrations). Sem novos GRANTs (tabela já liberada). Tipos do Supabase regenerados após aprovação.
 
-### 5. Auditoria visual `/admin/auditoria`
-- Refazer a tela com **timeline** (agrupada por dia), chips de categoria (Autenticação · MFA · Usuários · Publicações · Sistema · Segurança), filtros rápidos (24 h / 7 d / 30 d) e filtros avançados (usuário, ação, alvo, intervalo).
-- Eventos críticos (`brute_force_detected`, `unauthorized_access`, `csp_violation`, `role_change`, etc.) ganham realce vermelho.
-- Paginação server-side via nova server fn `listAuditEvents({ filters, page })`.
+## 2. Server functions (`src/lib/content.functions.ts`)
 
-### 6. Central de Usuários `/admin/usuarios`
-- Visual em cards/tabela com avatar (iniciais), badges coloridos por papel, status MFA, e-mail verificado, último login (`login_attempts` mais recente success), data de criação.
-- Server fn `listAdminUsers` une `profiles` + `user_roles` + último `login_attempts` + flag MFA (via admin client).
+- `getPublishedArticle` passa a devolver os novos campos no `PublicArticleDetail`.
+- Nova `getArticleRelations({ id, type, category, related_laws, related_signal_tags })` retorna em uma chamada:
+  - `library`: até 4 itens de `library_items` cuja `category`/`audience` casa com `category` do artigo
+  - `signals`: itens estáticos de `src/content/signals.ts` filtrados por `related_signal_tags`
+  - `laws`: itens estáticos de `src/content/laws.ts` (ECA, CP, Lei 13.431, Marco Civil) por slug
+  - `forParents`, `forSchools`, `forRisks`: 1–2 cards por seção, casados por `category`
+  - `relatedNews`, `relatedCases`: 3 itens cruzados (notícia → casos do mesmo tema e vice-versa)
+- Tudo via `supabaseAdmin` em paralelo (`Promise.all`); retorno é DTO plano.
 
-### 7. Biblioteca premium `/admin/biblioteca`
-- Toggle **Cards ↔ Tabela** (persistido em `localStorage`).
-- Filtros: categoria, ano, público-alvo, fonte; busca por título.
-- Cards com capa/ícone, metadados e ações editar/excluir.
+## 3. Conteúdo estático curado
 
-### 8. Mapa de ajuda profissional `/admin/mapa`
-- Cabeçalho de stats: total de locais, estados cobertos, categorias.
-- Filtros: estado, cidade, categoria.
-- Estrutura visual idêntica à de "Conteúdos" (KPIs + tabela + chips).
+```
+src/content/laws.ts      -- { slug, label, summary, url } para ECA art. 5/17/18/227, CP 217-A/218-B, Lei 13.431, Marco Civil
+src/content/signals.ts   -- já existe; expor helper getByTags(tags)
+src/content/nationalContext.ts -- chaves: maio-laranja, eca, direitos-crianca, educacao-preventiva, seguranca-digital → { label, blurb, href }
+```
 
-### 9. Central de Backup `/admin/backup`
-- Tela com cards por dataset (Artigos · Biblioteca · Usuários · Auditoria · Locais), botões CSV/JSON, indicação do registro.
-- **Histórico** lê `audit_log` filtrando `action = 'admin_export'` (sem nova tabela), com quem exportou, dataset, formato e data.
+## 4. Novos componentes (`src/components/site/`)
 
-### 10. Sessões administrativas `/admin/sessoes`
-- Cards/tabela com usuário, papel, IP, navegador (parse simples do user-agent), login, logout, **duração**, badge **Ativa** vs **Encerrada**.
-- Fonte: `admin_sessions`.
+Reusam tokens existentes (navy/orange, font-display, rounded-3xl).
 
-### 11. Pesquisa global
-- Componente `<GlobalSearch />` no header (atalho ⌘K) que chama `adminGlobalSearch({ q })` — busca em artigos, biblioteca, locais, usuários e auditoria, retornando top 5 por categoria com link direto.
+- `ArticleMeta` — cabeçalho com categoria, data, autor, revisor, tempo de leitura
+- `UnderstandBlock` — card laranja com "O que aconteceu / Por que importa / Impacto em crianças"
+- `LessonsBlock` — variante para casos
+- `NationalContextChips` — chips horizontais clicáveis
+- `Timeline` — já existe, evoluir para aceitar `title` + ícone marco
+- `LegislationBlock` — cards das leis (label, resumo, link oficial)
+- `SignalsBlock` — grid resumo com link para `/sinais#tag`
+- `ReportChannels` — Disque 100, Conselho Tutelar, Delegacia, MP, Mapa de Ajuda (botões grandes)
+- `RelatedMaterials` — cards da biblioteca
+- `FaqBlock` — accordion acessível (`<details>`), id por pergunta
+- `RecommendedReading` — 3–4 cards "Para Pais / Para Escolas / Riscos / Biblioteca"
+- `CaseTimeline` — wrapper do Timeline com etapas fixas (ocorrência → atual)
+- Reaproveita: `ShareButtons`, `RelatedArticles`, `ReferencesBlock`, `JsonLd`, `SafeHtml`
 
-### 12. Estados visuais e responsividade
-- Componentes utilitários `<AdminSkeleton />`, `<AdminEmpty />`, `<AdminError />`, `<AdminSuccessToast />` (reusa shadcn `Skeleton`, `Alert`, `sonner`).
-- Layout do shell migra para grid responsivo: sidebar vira drawer no mobile (≤ md), grid de KPIs colapsa 2→3→4→5 colunas, tabelas usam `overflow-x-auto`; todas as novas telas auditadas em desktop/notebook/tablet/mobile.
+## 5. Páginas reformuladas
 
-### 13. Correção final de XSS
-- Reauditar `src/lib/sanitize-html.ts`, `src/components/site/SafeHtml.tsx` e `upsertAdminArticle` (sanitização server-side já adicionada no turno anterior).
-- Adicionar teste manual: salvar artigo com payload `<script>` e validar que o HTML persistido está limpo.
-- Reexecutar `security--run_security_scan`.
+**`/noticias/$slug`** ordem: Header premium → Imagem → Matéria (`SafeHtml`) → UnderstandBlock → NationalContextChips → Timeline (se houver) → LegislationBlock → SignalsBlock → ReportChannels → RelatedMaterials → FaqBlock → RecommendedReading → RelatedArticles → ReferencesBlock → ShareButtons.
 
-### 14. Findings RLS atuais (write policies)
-Os 4 warnings `MISSING_RLS_PROTECTION` (`account_lockouts`, `admin_sessions`, `login_attempts`, `mfa_recovery_codes`) são por design — todas as escritas passam pelo `service_role` em server fns, RLS bloqueia escrita anon/authenticated por default. Vão ser marcados como **ignored** com justificativa e registrados na `@security-memory`.
+**`/casos/$slug`** ordem: Header (anonimizado) → Resumo → CaseTimeline → LessonsBlock → SignalsBlock → RecommendedReading (Para Pais/Escolas/Riscos) → LegislationBlock → ReportChannels → RelatedArticles (casos) → RelatedNews → RelatedMaterials → FaqBlock → ReferencesBlock.
 
-### 15. Relatório final
-Ao concluir, entrego:
-- telas reformuladas e novas rotas
-- novas server fns criadas
-- melhorias de UX/editoriais/visuais/produtividade
-- resultado do novo scan de segurança
-- pendências e recomendações futuras
+Blocos só renderizam quando há dado. Layout colapsa elegantemente em artigos antigos.
 
----
+## 6. SEO e IA generativa
 
-### Resumo técnico (rápido)
+Cada página emite (via `head().scripts`):
 
-**Arquivos novos**
-- `src/lib/admin-overview.functions.ts` (dashboard + segurança + global search + auditoria paginada + usuários enriquecidos)
-- `src/components/admin/` → `AdminSidebar.tsx`, `AdminHeader.tsx`, `GlobalSearch.tsx`, `QuickActions.tsx`, `RecentActivity.tsx`, `KpiCard.tsx`, `StatusFlow.tsx`, `SecurityBadge.tsx`, `AuditTimeline.tsx`, `UserCard.tsx`, `LibraryCard.tsx`, `SessionCard.tsx`, `AdminSkeleton.tsx`, `AdminEmpty.tsx`, `AdminError.tsx`
-- Rotas: `/admin/seguranca`, `/admin/publicacoes`, `/admin/publicacoes/$tipo` (ou 6 arquivos filtrados), `/admin/dashboard` (caso o usuário prefira manter `/admin` listando conteúdo — proposta atual: `/admin` = dashboard)
-- Reescrita: `route.tsx`, `index.tsx`, `auditoria.tsx`, `backup.tsx`, `sessoes.tsx`, `usuarios/index.tsx`, `biblioteca/index.tsx`, `mapa/index.tsx`
+- `NewsArticle` (notícias) ou `Article` (casos), já existente — agora com `articleSection`, `keywords`, `inLanguage: pt-BR`
+- `BreadcrumbList` — Home → Notícias|Casos → Título
+- `FAQPage` — quando `faq.length > 0`
+- `SpeakableSpecification` apontando para `h1` + `.understand`
+- `ItemList` agregando matérias relacionadas
+- meta `description` derivada do `subtitle` ou primeiros 155 chars de `understand`
+- `og:image` apenas no leaf, do `cover_url`
+- Trecho semântico no `__root.tsx` JSON-LD `Organization.description` reforçando o posicionamento ("portal brasileiro especializado em prevenção…") — só se ainda não estiver lá
 
-**Banco**: nenhuma migração necessária (apenas leituras agregadas).
+## 7. Casos reais — política de anonimização
 
-**Segurança**: sem alterações em RLS/MFA/CSP/headers; só correções/justificativas.
+- Helper `assertAnonymized(text)` no editor avisa se detectar nomes de menores ou padrões CPF/RG (regex client-side, não bloqueia)
+- Componente `AnonymizedNotice` no topo dos casos: "Identidades de vítimas preservadas. Dados conforme registros públicos."
+- Documentação no painel `/admin/article/$id` aba Conteúdo com checklist editorial
+
+## 8. Editor (`/admin/article/$id`) — abas
+
+Substitui scroll único por abas (tablist acessível, sem rota nova):
+
+1. **Conteúdo** — title, subtitle, slug, category, cover, body (RichText)
+2. **Mídia & SEO** — cover_url, primary source, last_verified, reading_minutes (opcional)
+3. **Entenda / Aprendemos** — `understand` (RichText curto), `lessons` (só casos)
+4. **Linha do tempo** — repeater {date, title, text}
+5. **FAQ** — repeater {q, a}
+6. **Relacionamentos** — multi-select de `related_laws` (catálogo de `laws.ts`), `related_signal_tags`, `national_context`
+7. **Publicação** — status, publish_at, reviewer, fontes adicionais
+
+`upsertAdminArticle` aceita os novos campos (validação Zod expandida). Persistência atômica.
+
+## 9. Acessibilidade & performance
+
+- FAQ usa `<details>`/`<summary>` nativos (sem JS)
+- Timeline com `aria-label` "Linha do tempo do caso"
+- Imagens lazy + `aspect-ratio` para evitar CLS
+- Todos os blocos novos são server-rendered (sem hydration extra)
+- `staleTime` 5 min nas queries de relations
+
+## 10. Riscos & não-objetivos
+
+- **Não** altera homepage, header, footer, menus, cores, tipografia
+- **Não** mexe em segurança/MFA/CSP/auditoria
+- **Não** introduz IA generativa nesta entrega (decisão do usuário: editorial híbrido)
+- Artigos antigos continuam exibindo apenas o que têm; nenhum bloco placeholder
+
+## 11. Detalhes técnicos
+
+- Stack: TanStack Start, server fns em `*.functions.ts`, leitura via `useSuspenseQuery` no loader já existente
+- Migration única adicionando colunas + comentários SQL
+- Regen `src/integrations/supabase/types.ts` automática após migration aprovada
+- Sitemap já cobre `/noticias/$slug` e `/casos/$slug`; nada a mudar
+- Sem dependências novas
+
+## 12. Entregáveis do relatório final
+
+Vou reportar: campos criados, server fns novas, componentes novos, blocos por página, schemas JSON-LD emitidos, mudanças no editor, política de anonimização, impacto esperado (SEO semântico + AI Overview + tempo de permanência), e recomendações futuras (IA generativa opcional, página "Tema" agregando notícias+casos+leis por tag, newsletter).
+
+## Ordem de execução
+
+1. Migration (aprovação do usuário) → tipos regenerados
+2. `content/laws.ts`, `content/nationalContext.ts`, helpers de signals
+3. `content.functions.ts`: estender DTO + `getArticleRelations`
+4. Componentes novos em `src/components/site/`
+5. Reformular `noticias.$slug.tsx` e `casos.$slug.tsx`
+6. Estender `admin/article.$id.tsx` com tabs e `admin.functions.ts` upsert
+7. Verificar build, rodar SEO scan e reportar
