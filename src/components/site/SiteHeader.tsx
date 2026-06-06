@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Menu, Phone, ShieldAlert, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { GlobalSearch } from "@/components/site/GlobalSearch";
 
 const nav = [
   { to: "/", label: "Início" },
@@ -78,6 +79,7 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <GlobalSearch />
             <Link
               to="/denuncia"
               className="hidden sm:inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-4 py-2 text-sm font-semibold hover:opacity-95 transition shadow-sm whitespace-nowrap"
