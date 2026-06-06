@@ -1,5 +1,10 @@
 import { CheckCircle2, ExternalLink, ScrollText } from "lucide-react";
 
+function isSafeHttpUrl(u: string | undefined | null): u is string {
+  if (!u) return false;
+  return /^https?:\/\//i.test(u.trim());
+}
+
 export interface Reference {
   label: string;
   url: string;
@@ -37,43 +42,49 @@ export function ReferencesBlock({
       </div>
 
       <div className="mt-4 grid gap-5 md:grid-cols-2">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Fonte principal
-          </p>
-          <a
-            href={primary.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-1.5 inline-flex items-start gap-1.5 font-semibold text-foreground hover:text-[color:var(--red-inst)] underline-offset-4 hover:underline"
-          >
-            {primary.label}
-            <ExternalLink className="size-3.5 mt-1 shrink-0" aria-hidden />
-          </a>
-        </div>
-
-        {secondary.length > 0 && (
+        {isSafeHttpUrl(primary?.url) && (
           <div>
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Fontes complementares
+              Fonte principal
             </p>
-            <ul className="mt-1.5 space-y-1.5 text-sm">
-              {secondary.map((s) => (
-                <li key={s.url}>
-                  <a
-                    href={s.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-start gap-1.5 text-foreground/85 hover:text-[color:var(--red-inst)] underline-offset-4 hover:underline"
-                  >
-                    {s.label}
-                    <ExternalLink className="size-3 mt-1 shrink-0" aria-hidden />
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <a
+              href={primary.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1.5 inline-flex items-start gap-1.5 font-semibold text-foreground hover:text-[color:var(--red-inst)] underline-offset-4 hover:underline"
+            >
+              {primary.label}
+              <ExternalLink className="size-3.5 mt-1 shrink-0" aria-hidden />
+            </a>
           </div>
         )}
+
+        {(() => {
+          const safe = secondary.filter((s) => isSafeHttpUrl(s.url));
+          if (safe.length === 0) return null;
+          return (
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Fontes complementares
+              </p>
+              <ul className="mt-1.5 space-y-1.5 text-sm">
+                {safe.map((s) => (
+                  <li key={s.url}>
+                    <a
+                      href={s.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-start gap-1.5 text-foreground/85 hover:text-[color:var(--red-inst)] underline-offset-4 hover:underline"
+                    >
+                      {s.label}
+                      <ExternalLink className="size-3 mt-1 shrink-0" aria-hidden />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })()}
       </div>
 
       <div className="mt-6 pt-5 border-t border-border flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
