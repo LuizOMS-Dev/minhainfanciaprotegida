@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet, redirect, useLocation, useNavigate, useRouter } from "@tanstack/react-router";
+import { createFileRoute, isRedirect, Link, Outlet, redirect, useLocation, useNavigate, useRouter } from "@tanstack/react-router";
 import { BookOpen, LogOut, MapPin, Newspaper, ScrollText, ShieldAlert, Users } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -24,8 +24,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
         throw redirect({ to: "/auth" });
       }
     } catch (e) {
-      // Re-throw redirects; swallow other errors and force re-auth.
-      if ((e as { isRedirect?: boolean })?.isRedirect) throw e;
+      if (isRedirect(e)) throw e;
       throw redirect({ to: "/auth" });
     }
   },
