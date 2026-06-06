@@ -38,6 +38,8 @@ import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as ApiPublicCspReportRouteImport } from './routes/api/public/csp-report'
 import { Route as AuthenticatedAdminSessoesRouteImport } from './routes/_authenticated/admin/sessoes'
+import { Route as AuthenticatedAdminSegurancaRouteImport } from './routes/_authenticated/admin/seguranca'
+import { Route as AuthenticatedAdminPublicacoesRouteImport } from './routes/_authenticated/admin/publicacoes'
 import { Route as AuthenticatedAdminMfaRouteImport } from './routes/_authenticated/admin/mfa'
 import { Route as AuthenticatedAdminBackupRouteImport } from './routes/_authenticated/admin/backup'
 import { Route as AuthenticatedAdminAuditoriaRouteImport } from './routes/_authenticated/admin/auditoria'
@@ -193,6 +195,18 @@ const AuthenticatedAdminSessoesRoute =
     path: '/sessoes',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminSegurancaRoute =
+  AuthenticatedAdminSegurancaRouteImport.update({
+    id: '/seguranca',
+    path: '/seguranca',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminPublicacoesRoute =
+  AuthenticatedAdminPublicacoesRouteImport.update({
+    id: '/publicacoes',
+    path: '/publicacoes',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminMfaRoute = AuthenticatedAdminMfaRouteImport.update({
   id: '/mfa',
   path: '/mfa',
@@ -276,6 +290,8 @@ export interface FileRoutesByFullPath {
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/admin/backup': typeof AuthenticatedAdminBackupRoute
   '/admin/mfa': typeof AuthenticatedAdminMfaRoute
+  '/admin/publicacoes': typeof AuthenticatedAdminPublicacoesRoute
+  '/admin/seguranca': typeof AuthenticatedAdminSegurancaRoute
   '/admin/sessoes': typeof AuthenticatedAdminSessoesRoute
   '/api/public/csp-report': typeof ApiPublicCspReportRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
@@ -314,6 +330,8 @@ export interface FileRoutesByTo {
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/admin/backup': typeof AuthenticatedAdminBackupRoute
   '/admin/mfa': typeof AuthenticatedAdminMfaRoute
+  '/admin/publicacoes': typeof AuthenticatedAdminPublicacoesRoute
+  '/admin/seguranca': typeof AuthenticatedAdminSegurancaRoute
   '/admin/sessoes': typeof AuthenticatedAdminSessoesRoute
   '/api/public/csp-report': typeof ApiPublicCspReportRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
@@ -355,6 +373,8 @@ export interface FileRoutesById {
   '/_authenticated/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/_authenticated/admin/backup': typeof AuthenticatedAdminBackupRoute
   '/_authenticated/admin/mfa': typeof AuthenticatedAdminMfaRoute
+  '/_authenticated/admin/publicacoes': typeof AuthenticatedAdminPublicacoesRoute
+  '/_authenticated/admin/seguranca': typeof AuthenticatedAdminSegurancaRoute
   '/_authenticated/admin/sessoes': typeof AuthenticatedAdminSessoesRoute
   '/api/public/csp-report': typeof ApiPublicCspReportRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
@@ -396,6 +416,8 @@ export interface FileRouteTypes {
     | '/admin/auditoria'
     | '/admin/backup'
     | '/admin/mfa'
+    | '/admin/publicacoes'
+    | '/admin/seguranca'
     | '/admin/sessoes'
     | '/api/public/csp-report'
     | '/admin/'
@@ -434,6 +456,8 @@ export interface FileRouteTypes {
     | '/admin/auditoria'
     | '/admin/backup'
     | '/admin/mfa'
+    | '/admin/publicacoes'
+    | '/admin/seguranca'
     | '/admin/sessoes'
     | '/api/public/csp-report'
     | '/admin'
@@ -474,6 +498,8 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/auditoria'
     | '/_authenticated/admin/backup'
     | '/_authenticated/admin/mfa'
+    | '/_authenticated/admin/publicacoes'
+    | '/_authenticated/admin/seguranca'
     | '/_authenticated/admin/sessoes'
     | '/api/public/csp-report'
     | '/_authenticated/admin/'
@@ -716,6 +742,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminSessoesRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/seguranca': {
+      id: '/_authenticated/admin/seguranca'
+      path: '/seguranca'
+      fullPath: '/admin/seguranca'
+      preLoaderRoute: typeof AuthenticatedAdminSegurancaRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/publicacoes': {
+      id: '/_authenticated/admin/publicacoes'
+      path: '/publicacoes'
+      fullPath: '/admin/publicacoes'
+      preLoaderRoute: typeof AuthenticatedAdminPublicacoesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/mfa': {
       id: '/_authenticated/admin/mfa'
       path: '/mfa'
@@ -786,6 +826,8 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminAuditoriaRoute: typeof AuthenticatedAdminAuditoriaRoute
   AuthenticatedAdminBackupRoute: typeof AuthenticatedAdminBackupRoute
   AuthenticatedAdminMfaRoute: typeof AuthenticatedAdminMfaRoute
+  AuthenticatedAdminPublicacoesRoute: typeof AuthenticatedAdminPublicacoesRoute
+  AuthenticatedAdminSegurancaRoute: typeof AuthenticatedAdminSegurancaRoute
   AuthenticatedAdminSessoesRoute: typeof AuthenticatedAdminSessoesRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedAdminArticleIdRoute: typeof AuthenticatedAdminArticleIdRoute
@@ -801,6 +843,8 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminAuditoriaRoute: AuthenticatedAdminAuditoriaRoute,
     AuthenticatedAdminBackupRoute: AuthenticatedAdminBackupRoute,
     AuthenticatedAdminMfaRoute: AuthenticatedAdminMfaRoute,
+    AuthenticatedAdminPublicacoesRoute: AuthenticatedAdminPublicacoesRoute,
+    AuthenticatedAdminSegurancaRoute: AuthenticatedAdminSegurancaRoute,
     AuthenticatedAdminSessoesRoute: AuthenticatedAdminSessoesRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
     AuthenticatedAdminArticleIdRoute: AuthenticatedAdminArticleIdRoute,
