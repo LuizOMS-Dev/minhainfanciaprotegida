@@ -1,46 +1,24 @@
-## Correções no `SiteHeader.tsx`
+## Ajustes visuais no header (área direita)
 
-### 1. Nome do projeto visível novamente
-Hoje o bloco "Infância Protegida / Campanha Maio Laranja" só aparece em `xl` (≥1280px). Vou mostrá-lo a partir de `md` (≥768px) para que apareça em 1045px e acima. Em telas menores, fica só o ícone.
+### 1. Separador entre busca e botão "Denuncie Agora"
+Adicionar um divisor vertical fino entre o botão de busca e o botão vermelho de denúncia, usando um `<span>` decorativo de 1px (`w-px h-5 bg-border`) com `aria-hidden`. Só aparece em `sm+` (onde o botão de denúncia também aparece), para não ficar solto no mobile.
 
-### 2. Dropdown "Mais" funcionando
-O motivo de não abrir/cortar: a `<nav>` está com `overflow-hidden`, o que clipa o painel flutuante do dropdown. Vou:
-- Remover `overflow-hidden` da nav.
-- Usar `flex-wrap: nowrap` + `min-w-0` na área central para evitar quebra.
-- Manter o painel com `z-50` e posicionamento absoluto correto.
-- Garantir que o clique fora e `Esc` continuem fechando (já implementado).
+### 2. Caixa "Buscar no site" mais bonita
+Refinar o botão-gatilho da busca em `GlobalSearch.tsx`:
 
-### 3. Itens do menu "Mais"
-Substituir o conteúdo atual por exatamente:
+- Aumentar levemente a largura mínima e padding (visual de input, não de pílula apertada).
+- Borda mais suave (`border-border/70`) com hover `border-[color:var(--orange)]/50` e leve sombra ao passar o mouse.
+- Ícone de lupa em destaque (cor `--orange`) à esquerda.
+- Texto "Buscar no site…" em `text-muted-foreground` mais claro.
+- `kbd ⌘K` com visual de tecla real: fundo `bg-muted`, borda inferior mais escura, fonte mono, padding equilibrado.
+- Transição suave em hover/focus + `focus-visible:ring` na cor laranja.
 
-1. Maio Laranja → `/maio-laranja` ✅ (rota existe)
-2. Mapa de Ajuda → `/mapa` ✅
-3. FAQ → `/faq` ✅
-4. Sobre o Projeto → `/sobre` ⚠️ (rota não existe)
-5. Objetivos → `/objetivos` ⚠️ (rota não existe)
-6. Metodologia → `/metodologia` ⚠️ (rota não existe)
-7. Fontes Utilizadas → `/fontes` ⚠️ (rota não existe)
+Também refinar o modal aberto (mínimas melhorias):
+- Input interno com placeholder mais sutil.
+- Header do modal com leve gradiente.
 
-Para os 4 itens sem rota, vou **criar páginas novas** com conteúdo institucional inicial (hero + texto base) seguindo o padrão `PageHero` já usado nas demais seções. Cada uma terá `head()` próprio (title/description/og) conforme exigido pela arquitetura de rotas.
-
-> Observação: "Como Ajudar" sai do menu "Mais" (não está na nova lista solicitada). A rota `/como-ajudar` continua existindo, apenas deixa de aparecer no dropdown.
-
-### 4. Botão "Denuncie Agora"
-Renomear o texto do botão vermelho à direita de "Denunciar" para "Denuncie Agora". Mantém ícone de telefone, cor e link para `/denuncia`.
-
-### 5. Validação
-Após as mudanças, verificar visualmente em 1920 / 1366 / 1280 / 1045 (atual) / tablet / mobile que:
-- Nome aparece a partir de md.
-- "Mais" abre o painel sem ser cortado.
-- Nenhuma área invade a outra.
-- Botão mostra "Denuncie Agora" sem quebrar linha.
+Sem alterar comportamento, atalhos ou resultados — somente estética.
 
 ### Arquivos afetados
-- `src/components/site/SiteHeader.tsx` — edição
-- `src/routes/sobre.tsx` — novo
-- `src/routes/objetivos.tsx` — novo
-- `src/routes/metodologia.tsx` — novo
-- `src/routes/fontes.tsx` — novo
-- `src/components/site/GlobalSearch.tsx` — adicionar as 4 páginas novas ao índice de busca
-- `src/components/site/SiteFooter.tsx` — opcional: incluir links nas seções institucionais
-- `src/routes/sitemap[.]xml.ts` — incluir as 4 novas URLs
+- `src/components/site/SiteHeader.tsx` — adicionar separador `|`.
+- `src/components/site/GlobalSearch.tsx` — restyle do botão-gatilho e leve polimento do modal.

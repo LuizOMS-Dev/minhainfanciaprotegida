@@ -145,6 +145,10 @@ export function SiteHeader() {
           {/* ÁREA 3 — Busca + Denunciar */}
           <div className="flex items-center gap-2 shrink-0 justify-self-end">
             <GlobalSearch />
+            <span
+              aria-hidden
+              className="hidden sm:block w-px h-6 bg-border/80 mx-1"
+            />
             <Link
               to="/denuncia"
               className="hidden sm:inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-4 py-2 text-sm font-semibold hover:opacity-95 transition shadow-sm whitespace-nowrap"
