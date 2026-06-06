@@ -81,38 +81,30 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "theme-color", content: "#0b1a3a" },
-      { title: "Infância Protegida — Maio Laranja | Proteção Infantil" },
-      {
-        name: "description",
-        content:
-          "Campanha educativa pelo enfrentamento da violência sexual contra crianças e adolescentes. Sinais, leis, riscos online e Disque 100.",
-      },
       { name: "author", content: "Infância Protegida" },
-      { name: "robots", content: "index, follow" },
-      { property: "og:title", content: "Infância Protegida — Maio Laranja | Proteção Infantil" },
-      {
-        property: "og:description",
-        content:
-          "Informação, prevenção e denúncia para proteger crianças e adolescentes. Sinais, direitos, riscos online e canais oficiais de ajuda.",
-      },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
+      { name: "application-name", content: "Infância Protegida" },
+      { name: "apple-mobile-web-app-title", content: "Infância Protegida" },
+      { property: "og:site_name", content: "Infância Protegida" },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_BR" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Infância Protegida — Maio Laranja | Proteção Infantil" },
+      // Defaults — every leaf route overrides title / description / og:* with route-specific values.
+      { title: "Infância Protegida — Proteção Infantil, Maio Laranja e Disque 100" },
       {
-        name: "twitter:description",
+        name: "description",
         content:
-          "Informação, prevenção e denúncia para proteger crianças e adolescentes. Sinais, direitos, riscos online e canais oficiais de ajuda.",
+          "Portal brasileiro de conscientização, prevenção e combate ao abuso e à exploração sexual de crianças e adolescentes. Sinais, leis, riscos online e Disque 100.",
       },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/dIthxDk1U7cPxVmxiEiawtmAk1z2/social-images/social-1780446924477-ChatGPT_Image_2_de_jun._de_2026,_21_34_29.webp" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/dIthxDk1U7cPxVmxiEiawtmAk1z2/social-images/social-1780446924477-ChatGPT_Image_2_de_jun._de_2026,_21_34_29.webp" },
-      { name: "description", content: "Portal de prevenção ao abuso e exploração sexual infantil, com orientações, denúncias, leis, notícias e apoio à proteção de crianças." },
-      { property: "og:description", content: "Portal de prevenção ao abuso e exploração sexual infantil, com orientações, denúncias, leis, notícias e apoio à proteção de crianças." },
-      { name: "twitter:description", content: "Portal de prevenção ao abuso e exploração sexual infantil, com orientações, denúncias, leis, notícias e apoio à proteção de crianças." },
     ],
 
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+      { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16x16.png" },
+      { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
+      { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
+      { rel: "manifest", href: "/site.webmanifest" },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap",
@@ -123,19 +115,54 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     scripts: [
       {
         type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          name: "Infância Protegida",
-          description:
-            "Campanha educativa de conscientização sobre o enfrentamento à violência sexual contra crianças e adolescentes.",
-          areaServed: "BR",
-          sameAs: [
-            "https://www.gov.br/mdh/pt-br/disque100",
-            "https://www.unicef.org/brazil/",
-            "https://www.childhood.org.br/",
-          ],
-        }),
+        children: JSON.stringify([
+          {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "@id": "https://minhainfanciaprotegida.com.br/#organization",
+            name: "Infância Protegida",
+            url: "https://minhainfanciaprotegida.com.br",
+            logo: "https://minhainfanciaprotegida.com.br/android-chrome-512x512.png",
+            description:
+              "Portal brasileiro de conscientização, prevenção, educação e combate ao abuso e à exploração sexual de crianças e adolescentes.",
+            areaServed: "BR",
+            knowsLanguage: "pt-BR",
+            sameAs: [
+              "https://www.gov.br/mdh/pt-br/disque100",
+              "https://www.unicef.org/brazil/",
+              "https://www.childhood.org.br/",
+              "https://new.safernet.org.br/",
+            ],
+            contactPoint: [
+              {
+                "@type": "ContactPoint",
+                contactType: "Denúncia de violações de direitos humanos",
+                telephone: "+55-100",
+                availableLanguage: ["Portuguese"],
+                areaServed: "BR",
+                description:
+                  "Disque 100 — canal federal de denúncia de violações de direitos humanos, gratuito, anônimo, 24 horas.",
+              },
+            ],
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "@id": "https://minhainfanciaprotegida.com.br/#website",
+            url: "https://minhainfanciaprotegida.com.br",
+            name: "Infância Protegida",
+            inLanguage: "pt-BR",
+            publisher: { "@id": "https://minhainfanciaprotegida.com.br/#organization" },
+            potentialAction: {
+              "@type": "SearchAction",
+              target: {
+                "@type": "EntryPoint",
+                urlTemplate: "https://minhainfanciaprotegida.com.br/?q={search_term_string}",
+              },
+              "query-input": "required name=search_term_string",
+            },
+          },
+        ]),
       },
       // Google Analytics 4
       {
@@ -158,6 +185,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
+
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
