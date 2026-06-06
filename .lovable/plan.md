@@ -1,63 +1,124 @@
-## Plano: Knowledge Graph + Schemas Semânticos + Manifest
+## Objetivo
 
-Objetivo: fortalecer a marca "Infância Protegida" como entidade reconhecível por Google Knowledge Graph, AI Overviews e LLMs (ChatGPT, Gemini, Claude, Copilot, Perplexity), além de validar o Web App Manifest e adicionar schemas de busca e navegação.
+Fechar o painel administrativo: remover cadastro público, garantir RBAC, e implementar auditoria completa. Sem alterações em layout público ou UX do portal.
 
-### 1. Knowledge Graph — Entidade "Infância Protegida"
+---
 
-Criar `src/lib/structured-data.ts` centralizando schemas reutilizáveis com `@id` consistentes (ancoragem de entidade).
+## 1. Bloquear cadastro público
 
-**Em `__root.tsx`** — expandir o JSON-LD global:
-- `Organization` ganha: `alternateName` ("Portal Infância Protegida"), `foundingDate`, `slogan` ("Informação confiável salva vidas"), `keywords` (proteção infantil, Maio Laranja, Disque 100, ECA, abuso infantil, exploração sexual infantil, direitos da criança, educação preventiva), `knowsAbout` (lista de entidades-tópico), `memberOf`/`subjectOf` referenciando Maio Laranja como `Event` recorrente.
-- Novo nó `Event` para **Maio Laranja** (`@id: .../#maio-laranja`) com `about`, `organizer` referenciando a Organization, `eventSchedule` anual.
-- Novo nó `DefinedTermSet` "Glossário Infância Protegida" com `DefinedTerm` para: Proteção Infantil, Maio Laranja, Abuso Sexual Infantil, Exploração Sexual Infantil, Direitos da Criança, Educação Preventiva, Grooming, Disque 100, ECA — cada um com `@id` próprio e `sameAs` apontando para Wikipedia/gov.br/UNICEF quando aplicável.
+**`src/routes/auth.tsx`**
+- Remover modo `signup`: tirar toggle "Entrar / Criar conta", o campo nome, a chamada `supabase.auth.signUp` e o `state` `mode`.
+- Manter apenas formulário de login (email + senha) + botão Google.
+- Mensagem de rodapé: "Acesso restrito. Solicite a um administrador a criação do seu usuário."
 
-### 2. SiteNavigationElement Schema
+**Supabase Auth**
+- Chamar `supabase--configure_auth` com `disable_signup: true` para travar signup também no nível do servidor (defesa em profundidade — Google OAuth continua funcionando para usuários já provisionados; novos usuários Google sem registro prévio serão bloqueados pela ausência de papel em `user_roles`).
 
-Adicionar no `__root.tsx` (aparece em todas as páginas) um array `ItemList` de `SiteNavigationElement` mapeando as 14 entradas da navegação principal (Início, Maio Laranja, Identificar Sinais, Riscos Online, Para Pais, Para Escolas, Biblioteca, Casos Reais, Notícias, Como Ajudar, Denúncia, Legislação, Mapa de Ajuda, FAQ) — cada item com `name`, `url`, `position`.
+**Gate de papel** (já existe em `_authenticated/route.tsx` via `requireSupabaseAuth`?). Reforçar em `_authenticated/admin/route.tsx`: redirecionar para `/auth` se o usuário autenticado não tiver nenhum papel (`admin | editor | revisor`), registrando o evento `unauthorized_admin_access` no audit log.
 
-### 3. SearchAction Schema (refinar)
+---
 
-Já existe `SearchAction` no WebSite. Vou:
-- Confirmar/ajustar a rota de busca: hoje aponta para `/?q=`. Verificar se `index.tsx` consome `?q=`; se não, ajustar para `/biblioteca?q=` (página que tem busca real) **ou** implementar leitura do `?q=` no index com redirect. Pergunto via plano: usar a busca da Biblioteca como endpoint do SearchAction.
+## 2. RBAC — validação final
 
-### 4. Consistência Semântica entre páginas institucionais
+Revisar `src/lib/require-role.ts` e funções server:
+- `admin`: tudo (CRUD usuários, papéis, exclusão de conteúdo, auditoria).
+- `editor`: criar/editar conteúdo, biblioteca, mapa — sem deletar usuários nem alterar papéis.
+- `revisor`: somente leitura + aprovar (mudar status `draft → published`).
+- `visitante` (sem papel): redirect para `/auth`.
 
-Em **Sobre, Objetivos, Metodologia, Fontes, Index** — adicionar nos `head().scripts`:
-- `AboutPage` / `WebPage` com `mainEntity: { @id: .../#organization }` reforçando que cada página fala da mesma entidade.
-- `BreadcrumbList` consistente.
-- `mentions` listando as entidades-tópico (Maio Laranja, ECA, Disque 100) com `@id`.
+UI do admin (`_authenticated/admin/index.tsx`) já esconde ações por papel; confirmar e ajustar onde faltar.
 
-Resultado: todas as páginas institucionais referenciam o **mesmo `@id` de Organization**, sinal forte de entidade única para o Knowledge Graph.
+---
 
-### 5. Web App Manifest — validação e ampliação
+## 3. Tabela `audit_log` (migration)
 
-Atualizar `public/site.webmanifest`:
-- Adicionar `id: "/"`, `categories: ["education", "news", "social"]`, `orientation: "portrait-primary"`, `dir: "ltr"`.
-- Separar ícone `maskable` em entrada distinta (hoje usa o mesmo 512 — manter funcional, marcar `purpose` corretamente como `"any"` e `"maskable"`).
-- Adicionar `shortcuts` para: Denúncia, Identificar Sinais, Mapa de Ajuda, Biblioteca.
-- Adicionar `screenshots` (opcional — só se já existirem assets; caso contrário, omitir para não quebrar validação).
-- Garantir tags no `__root.tsx`: `apple-mobile-web-app-capable`, `mobile-web-app-capable`, `apple-mobile-web-app-status-bar-style`.
+```sql
+CREATE TYPE audit_action AS ENUM (
+  'login','logout','login_failed','unauthorized_access',
+  'content_create','content_update','content_delete',
+  'content_publish','content_unpublish',
+  'user_create','user_update','user_delete',
+  'role_change','password_reset','csv_import',
+  'library_change','location_change'
+);
 
-### 6. Detalhes técnicos
+CREATE TABLE public.audit_log (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid REFERENCES auth.users(id) ON DELETE SET NULL,
+  user_email text,
+  user_role text,
+  action audit_action NOT NULL,
+  target_type text,
+  target_id text,
+  target_title text,
+  ip_address text,
+  user_agent text,
+  metadata jsonb,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
 
-**Arquivos a criar:**
-- `src/lib/structured-data.ts` — helpers `orgSchema()`, `websiteSchema()`, `navigationSchema()`, `definedTermsSchema()`, `aboutPageSchema(url, name)`, `breadcrumbSchema(items)`.
+CREATE INDEX ON public.audit_log (created_at DESC);
+CREATE INDEX ON public.audit_log (user_id);
+CREATE INDEX ON public.audit_log (action);
 
-**Arquivos a editar:**
-- `src/routes/__root.tsx` — usar helpers; adicionar SiteNavigationElement, DefinedTermSet, Event(Maio Laranja); meta tags PWA extras.
-- `src/routes/index.tsx`, `sobre.tsx`, `objetivos.tsx`, `metodologia.tsx`, `fontes.tsx` — adicionar `AboutPage`/`WebPage` + `BreadcrumbList` referenciando `#organization`.
-- `public/site.webmanifest` — campos adicionais + shortcuts.
+GRANT SELECT ON public.audit_log TO authenticated;
+GRANT ALL ON public.audit_log TO service_role;
+ALTER TABLE public.audit_log ENABLE ROW LEVEL SECURITY;
 
-**Não alterar:** identidade visual, estilo, conteúdo das páginas, navegação existente, rotas, componentes UI.
+-- Somente admin lê; ninguém via Data API escreve/edita/deleta.
+CREATE POLICY "Admins read audit" ON public.audit_log
+  FOR SELECT TO authenticated USING (public.has_role(auth.uid(), 'admin'));
+-- Sem policies de INSERT/UPDATE/DELETE → bloqueado para authenticated.
+-- Escrita exclusiva via service_role (server functions).
+```
 
-### 7. Relatório final (entregue após implementação)
+Logs são **append-only** por contrato (sem policies de UPDATE/DELETE para nenhum papel).
 
-Problemas encontrados, problemas corrigidos, melhorias SEO/E-E-A-T/IA/Knowledge Graph/performance/indexação/acessibilidade, pendências dependentes de Google/Bing, pontuação SEO antes/depois (via `seo--trigger_scan`), previsão de impacto orgânico e recomendações para 6 meses.
+---
 
-### Pergunta de decisão
+## 4. Registro de eventos
 
-Para o **SearchAction**, o destino atual é `/?q={search_term_string}` mas a home não processa esse parâmetro. Devo:
-- (A) Apontar o SearchAction para `/biblioteca?q={search_term_string}` (página que já tem busca), ou
-- (B) Implementar leitura de `?q=` na home com redirect para `/biblioteca`?
+**`src/lib/audit.server.ts`** — helper `logAudit({ action, target, metadata }, context)` usando `supabaseAdmin`. Captura IP via `getRequestHeader('x-forwarded-for')` e `user-agent`.
 
-Sigo com **(A)** por padrão se você só aprovar o plano sem responder.
+Instrumentar:
+- `src/routes/auth.tsx` — login sucesso/falha (via nova server fn `recordLoginAttempt`).
+- Listener `onAuthStateChange` no `__root.tsx` — `SIGNED_OUT` → server fn `recordLogout`.
+- `admin.functions.ts`, `library.functions.ts`, `locations.functions.ts`, `users.functions.ts`, `content.functions.ts` — todas as mutações chamam `logAudit` após sucesso.
+- Gate admin — registra `unauthorized_access` quando papel falta.
+
+---
+
+## 5. Tela de auditoria
+
+**`src/routes/_authenticated/admin/auditoria.tsx`** (somente admin via `requireRole('admin')` no loader + server fn `listAuditLog`):
+- Tabela paginada (50/página) com colunas: data, usuário, papel, ação, alvo, IP.
+- Filtros: usuário (select), ação (select), intervalo de datas, tipo de alvo.
+- Busca textual em `target_title` / `user_email`.
+- Link no menu lateral do admin (visível só para admin).
+
+---
+
+## 6. Relatório final
+
+Após implementar, entregar resumo:
+- Pontos onde signup foi removido (auth.tsx + Supabase config).
+- Novo fluxo de criação (admin → `/admin/usuarios` → cria + atribui papel).
+- Matriz de papéis aplicada.
+- DDL da `audit_log` + policies.
+- Lista de eventos monitorados.
+- Riscos eliminados (auto-cadastro, escalada de papel, edição/remoção de logs).
+- Nível de segurança antes/depois.
+
+---
+
+## Detalhes técnicos
+
+- Sem alterações no portal público.
+- `disable_signup` na Auth do Supabase é mudança de config (não migration).
+- Audit log usa `supabaseAdmin` server-side; nunca exposto ao cliente.
+- IP/UA capturados em server fn — nunca via cliente.
+- Política RLS proíbe UPDATE/DELETE em `audit_log` por construção (ausência de policies = bloqueio).
+
+## Pergunta antes de implementar
+
+Há alguma ação adicional específica do seu fluxo (ex.: exportação CSV de logs, retenção/expiração automática de logs antigos, webhook de alerta para múltiplas falhas de login) que devo incluir? Se não, prossigo com o escopo acima.
