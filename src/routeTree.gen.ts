@@ -36,6 +36,7 @@ import { Route as CasosSlugRouteImport } from './routes/casos.$slug'
 import { Route as BibliotecaSlugRouteImport } from './routes/biblioteca.$slug'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as ApiPublicCspReportRouteImport } from './routes/api/public/csp-report'
 import { Route as AuthenticatedAdminSessoesRouteImport } from './routes/_authenticated/admin/sessoes'
 import { Route as AuthenticatedAdminMfaRouteImport } from './routes/_authenticated/admin/mfa'
 import { Route as AuthenticatedAdminBackupRouteImport } from './routes/_authenticated/admin/backup'
@@ -181,6 +182,11 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRouteRoute,
 } as any)
+const ApiPublicCspReportRoute = ApiPublicCspReportRouteImport.update({
+  id: '/api/public/csp-report',
+  path: '/api/public/csp-report',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminSessoesRoute =
   AuthenticatedAdminSessoesRouteImport.update({
     id: '/sessoes',
@@ -271,6 +277,7 @@ export interface FileRoutesByFullPath {
   '/admin/backup': typeof AuthenticatedAdminBackupRoute
   '/admin/mfa': typeof AuthenticatedAdminMfaRoute
   '/admin/sessoes': typeof AuthenticatedAdminSessoesRoute
+  '/api/public/csp-report': typeof ApiPublicCspReportRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
   '/admin/biblioteca/$id': typeof AuthenticatedAdminBibliotecaIdRoute
@@ -308,6 +315,7 @@ export interface FileRoutesByTo {
   '/admin/backup': typeof AuthenticatedAdminBackupRoute
   '/admin/mfa': typeof AuthenticatedAdminMfaRoute
   '/admin/sessoes': typeof AuthenticatedAdminSessoesRoute
+  '/api/public/csp-report': typeof ApiPublicCspReportRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
   '/admin/biblioteca/$id': typeof AuthenticatedAdminBibliotecaIdRoute
@@ -348,6 +356,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/backup': typeof AuthenticatedAdminBackupRoute
   '/_authenticated/admin/mfa': typeof AuthenticatedAdminMfaRoute
   '/_authenticated/admin/sessoes': typeof AuthenticatedAdminSessoesRoute
+  '/api/public/csp-report': typeof ApiPublicCspReportRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
   '/_authenticated/admin/biblioteca/$id': typeof AuthenticatedAdminBibliotecaIdRoute
@@ -388,6 +397,7 @@ export interface FileRouteTypes {
     | '/admin/backup'
     | '/admin/mfa'
     | '/admin/sessoes'
+    | '/api/public/csp-report'
     | '/admin/'
     | '/admin/article/$id'
     | '/admin/biblioteca/$id'
@@ -425,6 +435,7 @@ export interface FileRouteTypes {
     | '/admin/backup'
     | '/admin/mfa'
     | '/admin/sessoes'
+    | '/api/public/csp-report'
     | '/admin'
     | '/admin/article/$id'
     | '/admin/biblioteca/$id'
@@ -464,6 +475,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/backup'
     | '/_authenticated/admin/mfa'
     | '/_authenticated/admin/sessoes'
+    | '/api/public/csp-report'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/article/$id'
     | '/_authenticated/admin/biblioteca/$id'
@@ -496,6 +508,7 @@ export interface RootRouteChildren {
   SinaisRoute: typeof SinaisRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
+  ApiPublicCspReportRoute: typeof ApiPublicCspReportRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -689,6 +702,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/api/public/csp-report': {
+      id: '/api/public/csp-report'
+      path: '/api/public/csp-report'
+      fullPath: '/api/public/csp-report'
+      preLoaderRoute: typeof ApiPublicCspReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin/sessoes': {
       id: '/_authenticated/admin/sessoes'
       path: '/sessoes'
@@ -865,6 +885,7 @@ const rootRouteChildren: RootRouteChildren = {
   SinaisRoute: SinaisRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SobreRoute: SobreRoute,
+  ApiPublicCspReportRoute: ApiPublicCspReportRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
