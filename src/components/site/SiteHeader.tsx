@@ -128,15 +128,15 @@ export function SiteHeader() {
           </nav>
 
           {/* ÁREA 3 — Busca + Denunciar + Mais */}
-          <div className="flex items-center gap-2 shrink-0 justify-self-end">
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0 lg:justify-self-end">
             <GlobalSearch />
             <span
               aria-hidden
-              className="hidden sm:block w-px h-6 bg-border/80 mx-1"
+              className="hidden lg:block w-px h-6 bg-border/80 mx-1"
             />
             <Link
               to="/denuncia"
-              className="hidden sm:inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-4 py-2 text-sm font-semibold hover:opacity-95 transition shadow-sm whitespace-nowrap"
+              className="hidden md:inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-3 lg:px-4 py-2 text-xs lg:text-sm font-semibold hover:opacity-95 transition shadow-sm whitespace-nowrap"
             >
               <Phone className="size-4" aria-hidden />
               Denuncie Agora
