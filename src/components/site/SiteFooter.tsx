@@ -61,7 +61,10 @@ export function SiteFooter() {
               ["/denuncia", "Denúncia"],
               ["/legislacao", "Legislação"],
               ["/mapa", "Mapa de ajuda"],
-              
+              ["/sobre", "Sobre o projeto"],
+              ["/objetivos", "Nossa missão"],
+              ["/metodologia", "Metodologia"],
+              ["/fontes", "Fontes utilizadas"],
               ["/faq", "FAQ"],
             ].map(([to, label]) => (
               <li key={to}>
