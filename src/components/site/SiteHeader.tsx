@@ -92,7 +92,7 @@ export function SiteHeader() {
             : "bg-background/60 backdrop-blur-md"
         }`}
       >
-        <div className="mx-auto max-w-[1400px] w-full px-4 sm:px-6 lg:px-8 h-16 grid grid-cols-[auto_1fr_auto] items-center gap-4 lg:gap-6">
+        <div className="mx-auto max-w-[1400px] w-full px-4 sm:px-6 lg:px-8 h-16 grid grid-cols-[auto_1fr_auto] items-center gap-6 lg:gap-10">
           {/* ÁREA 1 — Logo */}
           <Link to="/" className="flex items-center gap-2.5 group shrink-0 min-w-0" aria-label="Página inicial">
             <span className="relative inline-flex size-9 items-center justify-center rounded-full bg-gradient-orange shadow-orange shrink-0">
