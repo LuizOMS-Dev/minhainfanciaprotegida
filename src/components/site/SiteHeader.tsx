@@ -16,10 +16,13 @@ const primaryNav = [
 ] as const;
 
 const moreNav = [
-  { to: "/mapa", label: "Mapa de Ajuda", desc: "Conselhos, delegacias e centros de apoio" },
   { to: "/maio-laranja", label: "Maio Laranja", desc: "Sobre a campanha 18 de maio" },
-  { to: "/como-ajudar", label: "Como Ajudar", desc: "Voluntariado e mobilização" },
-  { to: "/faq", label: "Perguntas Frequentes", desc: "Dúvidas comuns" },
+  { to: "/mapa", label: "Mapa de Ajuda", desc: "Conselhos, delegacias e centros de apoio" },
+  { to: "/faq", label: "Perguntas Frequentes", desc: "Dúvidas comuns sobre denúncia e proteção" },
+  { to: "/sobre", label: "Sobre o Projeto", desc: "Quem somos e por que existimos" },
+  { to: "/objetivos", label: "Objetivos", desc: "Missão e metas da campanha" },
+  { to: "/metodologia", label: "Metodologia", desc: "Como produzimos o conteúdo" },
+  { to: "/fontes", label: "Fontes Utilizadas", desc: "Referências oficiais consultadas" },
 ] as const;
 
 const mobileNav = [...primaryNav, ...moreNav.map((m) => ({ to: m.to, label: m.label }))] as const;
@@ -80,7 +83,7 @@ export function SiteHeader() {
               <span className="absolute inset-0 rounded-full bg-[color:var(--orange)]/40 animate-ping-slow" />
               <ShieldAlert className="size-4 text-[color:var(--navy-deep)]" aria-hidden />
             </span>
-            <span className="hidden xl:flex flex-col leading-tight whitespace-nowrap">
+            <span className="hidden md:flex flex-col leading-tight whitespace-nowrap">
               <span className="font-display text-[15px] font-semibold tracking-tight">
                 Infância Protegida
               </span>
@@ -92,7 +95,7 @@ export function SiteHeader() {
 
           {/* ÁREA 2 — Menu principal */}
           <nav
-            className="hidden lg:flex items-center justify-center gap-0.5 min-w-0 overflow-hidden"
+            className="hidden lg:flex items-center justify-center gap-0.5 min-w-0"
             aria-label="Navegação principal"
           >
             {primaryNav.map((item) => (
@@ -147,7 +150,7 @@ export function SiteHeader() {
               className="hidden sm:inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-4 py-2 text-sm font-semibold hover:opacity-95 transition shadow-sm whitespace-nowrap"
             >
               <Phone className="size-4" aria-hidden />
-              Denunciar
+              Denuncie Agora
             </Link>
             <button
               onClick={() => setOpen((v) => !v)}

@@ -28,6 +28,10 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/pais", changefreq: "monthly", priority: "0.9" },
           { path: "/escolas", changefreq: "monthly", priority: "0.9" },
           { path: "/biblioteca", changefreq: "weekly", priority: "0.8" },
+          { path: "/sobre", changefreq: "monthly", priority: "0.6" },
+          { path: "/objetivos", changefreq: "monthly", priority: "0.6" },
+          { path: "/metodologia", changefreq: "monthly", priority: "0.6" },
+          { path: "/fontes", changefreq: "monthly", priority: "0.6" },
         ];
 
         const urls = entries.map((e) =>

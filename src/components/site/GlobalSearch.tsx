@@ -37,7 +37,11 @@ const pages: Entry[] = [
   { group: "Páginas", title: "Denuncie agora", to: "/denuncia", haystack: "denuncia disque 100 conselho tutelar", icon: ShieldAlert },
   { group: "Páginas", title: "Maio Laranja", to: "/maio-laranja", haystack: "maio laranja campanha 18 maio", icon: ShieldAlert },
   { group: "Páginas", title: "Perguntas frequentes", to: "/faq", haystack: "faq duvidas perguntas frequentes", icon: ShieldAlert },
-  
+  { group: "Páginas", title: "Sobre o projeto", to: "/sobre", haystack: "sobre projeto missao quem somos", icon: ShieldAlert },
+  { group: "Páginas", title: "Objetivos", to: "/objetivos", haystack: "objetivos metas missao", icon: ShieldAlert },
+  { group: "Páginas", title: "Metodologia", to: "/metodologia", haystack: "metodologia editorial fontes verificacao", icon: ShieldAlert },
+  { group: "Páginas", title: "Fontes utilizadas", to: "/fontes", haystack: "fontes referencias bibliografia", icon: ShieldAlert },
+  { group: "Páginas", title: "Mapa de ajuda", to: "/mapa", haystack: "mapa conselho tutelar delegacia centro apoio", icon: MapPin },
 ];
 
 function norm(s: string) {
