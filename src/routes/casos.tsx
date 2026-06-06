@@ -101,15 +101,16 @@ function CasosPage() {
             ))}
             {staticList.map((c, i) => (
               <Reveal key={c.slug} delay={(dbList.length + i) * 60}>
-                <ArticleCard
-                  title={c.title}
-                  date={c.date}
-                  excerpt={`${c.summary}\n\nImpacto: ${c.impact}`}
-                  image={c.image}
-                  tag={c.tag}
-                  source={c.source}
-                  href={c.source.url}
-                />
+                <Link to="/casos/$slug" params={{ slug: c.slug }} className="block h-full">
+                  <ArticleCard
+                    title={c.title}
+                    date={c.date}
+                    excerpt={`${c.summary}\n\nImpacto: ${c.impact}`}
+                    image={c.image}
+                    tag={c.tag}
+                    source={c.source}
+                  />
+                </Link>
               </Reveal>
             ))}
           </div>

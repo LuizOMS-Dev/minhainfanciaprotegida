@@ -101,15 +101,16 @@ function NoticiasPage() {
             ))}
             {staticList.map((n, i) => (
               <Reveal key={n.slug} delay={(dbList.length + i) * 60}>
-                <ArticleCard
-                  title={n.title}
-                  date={n.date}
-                  excerpt={n.excerpt}
-                  image={n.image}
-                  tag={n.category}
-                  source={n.source}
-                  href={n.source.url}
-                />
+                <Link to="/noticias/$slug" params={{ slug: n.slug }} className="block h-full">
+                  <ArticleCard
+                    title={n.title}
+                    date={n.date}
+                    excerpt={n.excerpt}
+                    image={n.image}
+                    tag={n.category}
+                    source={n.source}
+                  />
+                </Link>
               </Reveal>
             ))}
           </div>
