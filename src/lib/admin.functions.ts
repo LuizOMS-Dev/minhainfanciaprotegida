@@ -121,7 +121,7 @@ export const upsertAdminArticle = createServerFn({ method: "POST" })
       const { data: row, error } = await context.supabase
         .from("articles")
         .update(payload)
-        .eq("id", articleId)
+        .eq("id", articleId as string)
         .select()
         .single();
       if (error) {
