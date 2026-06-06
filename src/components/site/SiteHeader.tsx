@@ -1,9 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { Menu, Phone, ShieldAlert, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ChevronDown, Menu, Phone, ShieldAlert, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { GlobalSearch } from "@/components/site/GlobalSearch";
 
-const nav = [
+const primaryNav = [
   { to: "/", label: "Início" },
   { to: "/sinais", label: "Sinais" },
   { to: "/riscos-online", label: "Riscos Online" },
@@ -16,15 +16,40 @@ const nav = [
   { to: "/mapa", label: "Mapa" },
 ] as const;
 
+const moreNav = [
+  { to: "/maio-laranja", label: "Maio Laranja", desc: "Sobre a campanha 18 de maio" },
+  { to: "/como-ajudar", label: "Como Ajudar", desc: "Voluntariado e mobilização" },
+  { to: "/faq", label: "Perguntas Frequentes", desc: "Dúvidas comuns" },
+] as const;
+
+const mobileNav = [...primaryNav, ...moreNav.map((m) => ({ to: m.to, label: m.label }))] as const;
+
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const moreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    function onClickOutside(e: MouseEvent) {
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) setMoreOpen(false);
+    }
+    function onEsc(e: KeyboardEvent) {
+      if (e.key === "Escape") setMoreOpen(false);
+    }
+    document.addEventListener("mousedown", onClickOutside);
+    document.addEventListener("keydown", onEsc);
+    return () => {
+      document.removeEventListener("mousedown", onClickOutside);
+      document.removeEventListener("keydown", onEsc);
+    };
   }, []);
 
   return (
@@ -48,14 +73,14 @@ export function SiteHeader() {
             : "bg-background/60 backdrop-blur-md"
         }`}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-          <Link to="/" className="flex items-center gap-2.5 group" aria-label="Página inicial">
-            <span className="relative inline-flex size-9 items-center justify-center rounded-full bg-gradient-orange shadow-orange">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+          <Link to="/" className="flex items-center gap-2.5 group shrink-0" aria-label="Página inicial">
+            <span className="relative inline-flex size-9 items-center justify-center rounded-full bg-gradient-orange shadow-orange shrink-0">
               <span className="absolute inset-0 rounded-full bg-[color:var(--orange)]/40 animate-ping-slow" />
               <ShieldAlert className="size-4 text-[color:var(--navy-deep)]" aria-hidden />
             </span>
-            <span className="flex flex-col leading-tight">
-              <span className="font-display text-base sm:text-lg font-semibold tracking-tight">
+            <span className="hidden sm:flex flex-col leading-tight whitespace-nowrap">
+              <span className="font-display text-base lg:text-[17px] font-semibold tracking-tight">
                 Infância Protegida
               </span>
               <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
@@ -64,21 +89,52 @@ export function SiteHeader() {
             </span>
           </Link>
 
-          <nav className="hidden xl:flex items-center gap-0.5" aria-label="Navegação principal">
-            {nav.map((item) => (
+          <nav className="hidden lg:flex items-center gap-0.5 min-w-0" aria-label="Navegação principal">
+            {primaryNav.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
-                className="px-2.5 py-2 text-[13px] font-medium text-foreground/75 hover:text-foreground rounded-md hover:bg-muted transition-colors whitespace-nowrap"
+                className="px-2 py-2 text-[13px] font-medium text-foreground/75 hover:text-foreground rounded-md hover:bg-muted transition-colors whitespace-nowrap"
                 activeProps={{ className: "text-[color:var(--orange)] bg-muted/60" }}
                 activeOptions={{ exact: item.to === "/" }}
               >
                 {item.label}
               </Link>
             ))}
+            <div className="relative" ref={moreRef}>
+              <button
+                type="button"
+                onClick={() => setMoreOpen((v) => !v)}
+                aria-haspopup="menu"
+                aria-expanded={moreOpen}
+                className="inline-flex items-center gap-1 px-2 py-2 text-[13px] font-medium text-foreground/75 hover:text-foreground rounded-md hover:bg-muted transition-colors whitespace-nowrap"
+              >
+                Mais <ChevronDown className={`size-3.5 transition-transform ${moreOpen ? "rotate-180" : ""}`} aria-hidden />
+              </button>
+              {moreOpen && (
+                <div
+                  role="menu"
+                  className="absolute right-0 mt-2 w-64 rounded-xl border border-border bg-background shadow-lg p-1 animate-fade-in z-50"
+                >
+                  {moreNav.map((m) => (
+                    <Link
+                      key={m.to}
+                      to={m.to}
+                      role="menuitem"
+                      onClick={() => setMoreOpen(false)}
+                      className="block px-3 py-2.5 rounded-lg hover:bg-muted"
+                      activeProps={{ className: "bg-muted" }}
+                    >
+                      <span className="block text-sm font-semibold text-foreground">{m.label}</span>
+                      <span className="block text-xs text-muted-foreground">{m.desc}</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <GlobalSearch />
             <Link
               to="/denuncia"
@@ -89,7 +145,7 @@ export function SiteHeader() {
             </Link>
             <button
               onClick={() => setOpen((v) => !v)}
-              className="xl:hidden inline-flex size-10 items-center justify-center rounded-md hover:bg-muted"
+              className="lg:hidden inline-flex size-10 items-center justify-center rounded-md hover:bg-muted"
               aria-label={open ? "Fechar menu" : "Abrir menu"}
               aria-expanded={open}
             >
@@ -99,9 +155,9 @@ export function SiteHeader() {
         </div>
 
         {open && (
-          <div className="xl:hidden border-t border-border bg-background animate-fade-in">
+          <div className="lg:hidden border-t border-border bg-background animate-fade-in">
             <nav className="px-4 py-4 flex flex-col gap-1 max-h-[80vh] overflow-y-auto" aria-label="Navegação móvel">
-              {nav.map((item) => (
+              {mobileNav.map((item) => (
                 <Link
                   key={item.to}
                   to={item.to}

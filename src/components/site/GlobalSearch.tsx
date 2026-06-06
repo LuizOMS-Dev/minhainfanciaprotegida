@@ -37,7 +37,7 @@ const pages: Entry[] = [
   { group: "Páginas", title: "Denuncie agora", to: "/denuncia", haystack: "denuncia disque 100 conselho tutelar", icon: ShieldAlert },
   { group: "Páginas", title: "Maio Laranja", to: "/maio-laranja", haystack: "maio laranja campanha 18 maio", icon: ShieldAlert },
   { group: "Páginas", title: "Perguntas frequentes", to: "/faq", haystack: "faq duvidas perguntas frequentes", icon: ShieldAlert },
-  { group: "Páginas", title: "Galeria", to: "/galeria", haystack: "galeria imagens", icon: ShieldAlert },
+  
 ];
 
 function norm(s: string) {
