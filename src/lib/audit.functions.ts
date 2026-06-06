@@ -25,6 +25,8 @@ const actionEnum = z.enum([
 
 export type AuditActionType = z.infer<typeof actionEnum>;
 
+type AuditMetadata = null | { [key: string]: string | number | boolean | null };
+
 export interface AuditLogRow {
   id: string;
   user_id: string | null;
@@ -36,7 +38,7 @@ export interface AuditLogRow {
   target_title: string | null;
   ip_address: string | null;
   user_agent: string | null;
-  metadata: unknown;
+  metadata: AuditMetadata;
   created_at: string;
 }
 
