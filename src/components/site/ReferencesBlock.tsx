@@ -1,6 +1,14 @@
 import { CheckCircle2, ExternalLink, ScrollText } from "lucide-react";
 
+function isSafeHttpUrl(u: string | undefined | null): u is string {
+  if (!u) return false;
+  return /^https?:\/\//i.test(u.trim());
+}
+
 export interface Reference {
+  label: string;
+  url: string;
+}
   label: string;
   url: string;
 }
