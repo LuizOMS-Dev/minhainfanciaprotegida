@@ -37,7 +37,10 @@ export const listAdminArticles = createServerFn({ method: "GET" })
       .order("updated_at", { ascending: false });
     if (data.type) q = q.eq("type", data.type);
     const { data: rows, error } = await q;
-    if (error) throw new Error(error.message);
+    if (error) {
+      console.error("[admin.listArticles] supabase error", error);
+      throw new Error("Não foi possível carregar os conteúdos.");
+    }
     return { articles: (rows ?? []) as AdminArticle[] };
   });
 
@@ -50,7 +53,10 @@ export const getAdminArticle = createServerFn({ method: "GET" })
       .select("*")
       .eq("id", data.id)
       .maybeSingle();
-    if (error) throw new Error(error.message);
+    if (error) {
+      console.error("[admin.getArticle] supabase error", error);
+      throw new Error("Não foi possível carregar o conteúdo.");
+    }
     return { article: row as AdminArticle | null };
   });
 
@@ -61,6 +67,12 @@ const safeHttpUrl = z
   .refine((v) => /^https?:\/\//i.test(v), {
     message: "Apenas URLs http(s) são permitidas.",
   });
+
+const sourceSchema = z.object({
+  label: z.string().min(1).max(255),
+  url: safeHttpUrl,
+  position: z.number().int().min(0).max(999).default(0),
+});
 
 const upsertSchema = z.object({
   id: z.string().uuid().optional(),
@@ -76,37 +88,85 @@ const upsertSchema = z.object({
   status: statusSchema,
   publish_at: z.string().datetime().optional().nullable().or(z.literal("")),
   last_verified_at: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().nullable().or(z.literal("")),
+  sources: z.array(sourceSchema).max(50).optional(),
 });
 
 export const upsertAdminArticle = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => upsertSchema.parse(input))
   .handler(async ({ data, context }) => {
+    const { sources, ...rest } = data;
     const payload = {
-      ...data,
-      cover_url: data.cover_url || null,
-      primary_source_url: data.primary_source_url || null,
-      publish_at: data.publish_at || null,
-      last_verified_at: data.last_verified_at || null,
+      ...rest,
+      cover_url: rest.cover_url || null,
+      primary_source_url: rest.primary_source_url || null,
+      publish_at: rest.publish_at || null,
+      last_verified_at: rest.last_verified_at || null,
       author_id: context.userId,
     };
-    if (data.id) {
+    let articleId = data.id;
+    if (articleId) {
       const { data: row, error } = await context.supabase
         .from("articles")
         .update(payload)
-        .eq("id", data.id)
+        .eq("id", articleId)
         .select()
         .single();
-      if (error) throw new Error(error.message);
-      return { article: row as AdminArticle };
+      if (error) {
+        console.error("[admin.upsertArticle] update error", error);
+        throw new Error("Não foi possível salvar o conteúdo.");
+      }
+      articleId = row.id;
+    } else {
+      const { data: row, error } = await context.supabase
+        .from("articles")
+        .insert(payload)
+        .select()
+        .single();
+      if (error) {
+        console.error("[admin.upsertArticle] insert error", error);
+        throw new Error("Não foi possível salvar o conteúdo.");
+      }
+      articleId = row.id;
     }
-    const { data: row, error } = await context.supabase
+
+    if (sources) {
+      const { error: delErr } = await context.supabase
+        .from("article_sources")
+        .delete()
+        .eq("article_id", articleId);
+      if (delErr) {
+        console.error("[admin.upsertArticle] sources delete error", delErr);
+        throw new Error("Não foi possível atualizar as fontes.");
+      }
+      if (sources.length > 0) {
+        const { error: insErr } = await context.supabase
+          .from("article_sources")
+          .insert(
+            sources.map((s, i) => ({
+              article_id: articleId,
+              label: s.label,
+              url: s.url,
+              position: s.position ?? i,
+            })),
+          );
+        if (insErr) {
+          console.error("[admin.upsertArticle] sources insert error", insErr);
+          throw new Error("Não foi possível salvar as fontes.");
+        }
+      }
+    }
+
+    const { data: full, error: fetchErr } = await context.supabase
       .from("articles")
-      .insert(payload)
-      .select()
+      .select("*")
+      .eq("id", articleId)
       .single();
-    if (error) throw new Error(error.message);
-    return { article: row as AdminArticle };
+    if (fetchErr) {
+      console.error("[admin.upsertArticle] refetch error", fetchErr);
+      throw new Error("Não foi possível recarregar o conteúdo salvo.");
+    }
+    return { article: full as AdminArticle };
   });
 
 export const deleteAdminArticle = createServerFn({ method: "POST" })
@@ -114,7 +174,10 @@ export const deleteAdminArticle = createServerFn({ method: "POST" })
   .inputValidator((input) => z.object({ id: z.string().uuid() }).parse(input))
   .handler(async ({ data, context }) => {
     const { error } = await context.supabase.from("articles").delete().eq("id", data.id);
-    if (error) throw new Error(error.message);
+    if (error) {
+      console.error("[admin.deleteArticle] supabase error", error);
+      throw new Error("Não foi possível excluir o conteúdo.");
+    }
     return { ok: true };
   });
 
@@ -156,6 +219,9 @@ export const getMyRoles = createServerFn({ method: "GET" })
       .from("user_roles")
       .select("role")
       .eq("user_id", context.userId);
-    if (error) throw new Error(error.message);
+    if (error) {
+      console.error("[getMyRoles] supabase error", error);
+      throw new Error("Não foi possível carregar os papéis.");
+    }
     return { roles: (data ?? []).map((r) => r.role as string) };
   });
