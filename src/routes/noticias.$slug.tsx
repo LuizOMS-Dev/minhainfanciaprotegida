@@ -12,6 +12,7 @@ import { JsonLd } from "@/components/site/JsonLd";
 import { SafeHtml, readingTimeMinutes } from "@/components/site/SafeHtml";
 import { ShareButtons } from "@/components/site/ShareButtons";
 import { RelatedArticles, ArticleSiblingNav } from "@/components/site/RelatedArticles";
+import { CaseActions } from "@/components/site/CaseActions";
 
 const fmt = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
 const SITE = "https://minhainfanciaprotegida.lovable.app";
@@ -113,6 +114,7 @@ function NewsDetail() {
           <img src={a.cover_url} alt="" className="mb-10 w-full rounded-2xl border border-border object-cover aspect-[16/9]" />
         )}
         {a.body && <SafeHtml html={a.body} className="prose prose-neutral max-w-none text-foreground/90 leading-relaxed" />}
+        <CaseActions />
 
         {a.primary_source_url && a.primary_source_label && (
           <div className="mt-12">

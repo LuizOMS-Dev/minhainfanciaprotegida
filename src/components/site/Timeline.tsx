@@ -1,4 +1,5 @@
 import { CalendarDays } from "lucide-react";
+import { useState } from "react";
 
 const fmt = new Intl.DateTimeFormat("pt-BR", {
   day: "2-digit",
@@ -7,7 +8,6 @@ const fmt = new Intl.DateTimeFormat("pt-BR", {
 });
 
 function safeFormat(input: string): string {
-  // Aceita "YYYY", "YYYY-MM" e "YYYY-MM-DD"; quando incompleto, retorna o próprio texto.
   if (/^\d{4}$/.test(input)) return input;
   if (/^\d{4}-\d{2}$/.test(input)) {
     const [y, m] = input.split("-");
@@ -19,25 +19,45 @@ function safeFormat(input: string): string {
 }
 
 export function Timeline({ items }: { items: { date: string; text: string }[] }) {
+  const [active, setActive] = useState<number>(0);
   if (!items?.length) return null;
   return (
     <section className="mt-12 rounded-2xl border border-border bg-card p-6 sm:p-8">
       <h2 className="font-display text-2xl font-bold flex items-center gap-2">
         <CalendarDays className="size-5 text-[color:var(--orange)]" aria-hidden /> Linha do tempo
       </h2>
-      <ol className="mt-6 relative border-l-2 border-[color:var(--orange)]/40 pl-6 space-y-6">
-        {items.map((it, i) => (
-          <li key={i} className="relative">
-            <span
-              aria-hidden
-              className="absolute -left-[31px] top-1.5 size-4 rounded-full border-2 border-[color:var(--orange)] bg-background"
-            />
-            <p className="text-xs font-semibold uppercase tracking-wider text-[color:var(--orange)]">
-              {safeFormat(it.date)}
-            </p>
-            <p className="mt-1 text-foreground/90 leading-relaxed">{it.text}</p>
-          </li>
-        ))}
+      <p className="mt-1 text-sm text-muted-foreground">Clique em um marco para destacá-lo na cronologia.</p>
+      <ol className="mt-6 relative border-l-2 border-[color:var(--orange)]/40 pl-6 space-y-4">
+        {items.map((it, i) => {
+          const isActive = i === active;
+          return (
+            <li key={i} className="relative">
+              <button
+                type="button"
+                onClick={() => setActive(i)}
+                aria-pressed={isActive}
+                className={`w-full text-left rounded-xl px-4 py-3 transition border ${
+                  isActive
+                    ? "border-[color:var(--orange)] bg-[color:var(--orange)]/10 shadow-sm"
+                    : "border-transparent hover:bg-muted/50"
+                }`}
+              >
+                <span
+                  aria-hidden
+                  className={`absolute -left-[31px] top-5 size-4 rounded-full border-2 transition ${
+                    isActive
+                      ? "border-[color:var(--orange)] bg-[color:var(--orange)] scale-125"
+                      : "border-[color:var(--orange)] bg-background"
+                  }`}
+                />
+                <p className="text-xs font-semibold uppercase tracking-wider text-[color:var(--orange)]">
+                  {safeFormat(it.date)}
+                </p>
+                <p className="mt-1 text-foreground/90 leading-relaxed">{it.text}</p>
+              </button>
+            </li>
+          );
+        })}
       </ol>
     </section>
   );
