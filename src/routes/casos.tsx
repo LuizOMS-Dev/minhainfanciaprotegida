@@ -2,12 +2,14 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
+import { BookOpen } from "lucide-react";
 import { cases } from "@/content/cases";
 import { ArticleCard } from "@/components/site/ArticleCard";
-import { SectionHeader } from "@/components/site/SectionHeader";
 import { Reveal } from "@/components/site/Reveal";
+import { PageHero } from "@/components/site/PageHero";
 import { listPublishedArticles } from "@/lib/content.functions";
 import journalismImg from "@/assets/journalism.jpg";
+import heroCasos from "@/assets/hero-casos.jpg";
 
 export const Route = createFileRoute("/casos")({
   head: () => ({
@@ -51,16 +53,13 @@ function CasosPage() {
 
   return (
     <>
-      <section className="bg-[color:var(--navy-deep)] text-white py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Casos e reportagens"
-            title="Histórias reais que mudaram leis"
-            description="Cada caso reúne dados verificados, repercussão social e impacto legislativo. Todas as referências levam a fontes oficiais."
-            invert
-          />
-        </div>
-      </section>
+      <PageHero
+        image={heroCasos}
+        eyebrow="Casos e reportagens"
+        icon={<BookOpen className="size-3.5 text-[color:var(--orange)]" />}
+        title="Histórias reais que mudaram leis"
+        description="Cada caso reúne dados verificados, repercussão social e impacto legislativo. Todas as referências levam a fontes oficiais."
+      />
 
       <section className="py-12 sm:py-16 bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

@@ -2,12 +2,14 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
+import { Newspaper } from "lucide-react";
 import { news } from "@/content/news";
 import { ArticleCard } from "@/components/site/ArticleCard";
-import { SectionHeader } from "@/components/site/SectionHeader";
 import { Reveal } from "@/components/site/Reveal";
+import { PageHero } from "@/components/site/PageHero";
 import { listPublishedArticles } from "@/lib/content.functions";
 import journalismImg from "@/assets/journalism.jpg";
+import heroNoticias from "@/assets/hero-noticias.jpg";
 
 export const Route = createFileRoute("/noticias")({
   head: () => ({
@@ -51,15 +53,13 @@ function NoticiasPage() {
 
   return (
     <>
-      <section className="bg-gradient-orange text-[color:var(--navy-deep)] py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Notícias e conscientização"
-            title="O que está acontecendo agora"
-            description="Notícias verificadas, pesquisas e atualizações legais. Esta área é atualizada continuamente pelo painel editorial."
-          />
-        </div>
-      </section>
+      <PageHero
+        image={heroNoticias}
+        eyebrow="Notícias e conscientização"
+        icon={<Newspaper className="size-3.5 text-[color:var(--orange)]" />}
+        title="O que está acontecendo agora"
+        description="Notícias verificadas, pesquisas e atualizações legais. Esta área é atualizada continuamente pelo painel editorial."
+      />
 
       <section className="py-12 sm:py-16 bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
