@@ -1,382 +1,310 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { useEffect, useMemo, useState } from "react";
 import {
+  Activity,
+  AlertTriangle,
   BookOpen,
   CheckCircle2,
   Clock,
+  Database,
   FileText,
+  KeyRound,
   MapPin,
+  MonitorSmartphone,
   Newspaper,
   Pencil,
   Plus,
-  Search,
+  ScrollText,
   ShieldCheck,
   Sparkles,
-  Trash2,
   Users,
-  Wifi,
 } from "lucide-react";
 import {
-  claimFirstAdmin,
-  deleteAdminArticle,
-  getMyRoles,
-  listAdminArticles,
-  type AdminArticle,
-} from "@/lib/admin.functions";
+  getAdminOverview,
+  getRecentActivity,
+  type RecentActivityItem,
+} from "@/lib/admin-overview.functions";
+import { getMyRoles } from "@/lib/admin.functions";
+import {
+  AdminError,
+  AdminSkeleton,
+  KpiCard,
+  QuickActionCard,
+  SectionCard,
+} from "@/components/admin/AdminUI";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
-  component: AdminDashboard,
+  component: DashboardPage,
 });
 
-const typeMeta = {
-  news: { label: "Notícia", icon: Newspaper, color: "text-blue-600" },
-  case: { label: "Caso", icon: BookOpen, color: "text-purple-600" },
-  risk: { label: "Risco", icon: Wifi, color: "text-amber-600" },
-  guide: { label: "Guia", icon: FileText, color: "text-emerald-600" },
-} as const;
-
-const filters = [
-  { key: "all", label: "Todos" },
-  { key: "news", label: "Notícias" },
-  { key: "case", label: "Casos" },
-  { key: "risk", label: "Riscos" },
-  { key: "guide", label: "Guias" },
-] as const;
-
-type FilterKey = (typeof filters)[number]["key"];
-
-const roleStyles: Record<string, string> = {
-  admin: "bg-[color:var(--red-inst)]/10 text-[color:var(--red-inst)] ring-1 ring-[color:var(--red-inst)]/30",
-  editor: "bg-[color:var(--orange)]/15 text-[color:var(--navy-deep)] ring-1 ring-[color:var(--orange)]/40",
-  revisor: "bg-blue-50 text-blue-700 ring-1 ring-blue-200",
+const ACTION_LABEL: Record<string, string> = {
+  login: "Login",
+  logout: "Logout",
+  login_failed: "Falha de login",
+  unauthorized_access: "Acesso negado",
+  content_create: "Conteúdo criado",
+  content_update: "Conteúdo editado",
+  content_delete: "Conteúdo excluído",
+  content_publish: "Publicação",
+  content_unpublish: "Despublicação",
+  user_create: "Usuário criado",
+  user_update: "Usuário atualizado",
+  user_delete: "Usuário excluído",
+  role_change: "Papel alterado",
+  password_reset: "Senha redefinida",
+  csv_import: "Importação CSV",
+  library_change: "Biblioteca",
+  location_change: "Mapa",
+  email_not_verified_login_attempt: "E-mail não verificado",
+  brute_force_detected: "Força bruta detectada",
+  account_locked: "Conta bloqueada",
+  account_unlocked: "Conta desbloqueada",
+  captcha_failed: "Falha de CAPTCHA",
+  captcha_bypassed_attempt: "Tentativa de burlar CAPTCHA",
+  login_blocked_by_captcha: "Login bloqueado por CAPTCHA",
+  mfa_enabled: "MFA habilitado",
+  mfa_disabled: "MFA desabilitado",
+  mfa_success: "MFA validado",
+  mfa_failed: "MFA falhou",
+  mfa_reset: "MFA resetado",
+  admin_export: "Exportação administrativa",
+  recovery_code_generated: "Recovery codes gerados",
+  recovery_code_regenerated: "Recovery codes regerados",
+  recovery_code_used: "Recovery code usado",
+  csp_violation: "Violação de CSP",
 };
 
-function statusStyle(s: string) {
-  switch (s) {
-    case "published":
-      return "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200";
-    case "scheduled":
-      return "bg-blue-50 text-blue-700 ring-1 ring-blue-200";
-    case "review":
-      return "bg-amber-50 text-amber-800 ring-1 ring-amber-200";
-    case "archived":
-      return "bg-zinc-100 text-zinc-600 ring-1 ring-zinc-200";
-    default:
-      return "bg-muted text-muted-foreground ring-1 ring-border";
-  }
+const CRITICAL = new Set([
+  "brute_force_detected",
+  "account_locked",
+  "unauthorized_access",
+  "captcha_failed",
+  "captcha_bypassed_attempt",
+  "csp_violation",
+  "mfa_failed",
+  "mfa_disabled",
+]);
+
+function categoryFor(action: string): { label: string; color: string } {
+  if (action.startsWith("content_")) return { label: "Publicação", color: "bg-blue-50 text-blue-700" };
+  if (action.startsWith("mfa_") || action.startsWith("recovery_code_"))
+    return { label: "MFA", color: "bg-purple-50 text-purple-700" };
+  if (action.startsWith("user_") || action === "role_change")
+    return { label: "Usuário", color: "bg-amber-50 text-amber-700" };
+  if (
+    action === "library_change" ||
+    action === "location_change" ||
+    action === "csv_import" ||
+    action === "admin_export"
+  )
+    return { label: "Conteúdo", color: "bg-emerald-50 text-emerald-700" };
+  if (CRITICAL.has(action) || action === "login_failed")
+    return { label: "Segurança", color: "bg-[color:var(--red-inst)]/10 text-[color:var(--red-inst)]" };
+  return { label: "Sistema", color: "bg-muted text-muted-foreground" };
 }
 
-function AdminDashboard() {
-  const qc = useQueryClient();
-  const listFn = useServerFn(listAdminArticles);
-  const claimFn = useServerFn(claimFirstAdmin);
-  const rolesFn = useServerFn(getMyRoles);
-  const deleteFn = useServerFn(deleteAdminArticle);
-  const [filter, setFilter] = useState<FilterKey>("all");
-  const [search, setSearch] = useState("");
-
-  const rolesQ = useQuery({ queryKey: ["my-roles"], queryFn: () => rolesFn() });
-  const articlesQ = useQuery({
-    queryKey: ["admin-articles"],
-    queryFn: () => listFn({ data: {} }),
+function DashboardPage() {
+  const overviewFn = useServerFn(getAdminOverview);
+  const activityFn = useServerFn(getRecentActivity);
+  const overviewQ = useQuery({
+    queryKey: ["admin-overview"],
+    queryFn: () => overviewFn(),
+    refetchInterval: 60_000,
   });
-
-  useEffect(() => {
-    if (rolesQ.data && rolesQ.data.roles.length === 0) {
-      claimFn()
-        .then(() => qc.invalidateQueries({ queryKey: ["my-roles"] }))
-        .catch(() => void 0);
-    }
-  }, [rolesQ.data, claimFn, qc]);
-
-  const del = useMutation({
-    mutationFn: (id: string) => deleteFn({ data: { id } }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-articles"] }),
+  const activityQ = useQuery({
+    queryKey: ["admin-recent-activity"],
+    queryFn: () => activityFn({ data: { limit: 15 } }),
+    refetchInterval: 60_000,
   });
-
-  const allArticles = (articlesQ.data?.articles ?? []) as AdminArticle[];
-
-  const stats = useMemo(() => {
-    const total = allArticles.length;
-    const published = allArticles.filter((a) => a.status === "published").length;
-    const drafts = allArticles.filter((a) => a.status === "draft").length;
-    const scheduled = allArticles.filter((a) => a.status === "scheduled").length;
-    const review = allArticles.filter((a) => a.status === "review").length;
-    return { total, published, drafts, scheduled, review };
-  }, [allArticles]);
-
-  const articles = useMemo(() => {
-    const term = search.trim().toLowerCase();
-    return allArticles
-      .filter((a) => (filter === "all" ? true : a.type === filter))
-      .filter((a) =>
-        term ? `${a.title} ${a.slug} ${a.category ?? ""}`.toLowerCase().includes(term) : true,
-      );
-  }, [allArticles, filter, search]);
-
+  const rolesQ = useQuery({ queryKey: ["my-roles"], queryFn: () => getMyRoles() });
   const roles = rolesQ.data?.roles ?? [];
+  const isAdmin = roles.includes("admin");
   const canEdit = roles.some((r) => r === "admin" || r === "editor");
-  const canDelete = roles.includes("admin");
+
+  const o = overviewQ.data;
 
   return (
     <section className="space-y-8">
-      {/* Welcome / Identity bar */}
       <div className="rounded-3xl border border-border bg-gradient-to-br from-[color:var(--navy-deep)] to-[color:var(--navy)] text-white p-6 sm:p-8 shadow-elegant">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-white/70 font-semibold">
-              <Sparkles className="size-3.5" /> Painel editorial
-            </p>
-            <h2 className="mt-2 font-display text-2xl sm:text-3xl font-semibold">
-              Bem-vindo(a) ao centro de controle
-            </h2>
-            <p className="mt-2 text-sm text-white/70 max-w-xl">
-              Publique notícias, mantenha a biblioteca atualizada e gerencie a rede de ajuda — tudo em um só lugar.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {roles.length === 0 ? (
-              <span className="rounded-full bg-white/10 px-3 py-1 text-xs">Carregando papéis…</span>
-            ) : (
-              roles.map((r) => (
-                <span
-                  key={r}
-                  className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider ${
-                    roleStyles[r] ?? "bg-white/10 text-white"
-                  }`}
-                >
-                  <ShieldCheck className="inline size-3 mr-1" />
-                  {r}
-                </span>
-              ))
-            )}
-          </div>
+        <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-white/70 font-semibold">
+          <Sparkles className="size-3.5" /> Visão executiva
+        </p>
+        <h2 className="mt-2 font-display text-2xl sm:text-3xl font-semibold">
+          Bem-vindo(a) à central de operações
+        </h2>
+        <p className="mt-2 text-sm text-white/70 max-w-2xl">
+          Acompanhe a saúde editorial, a segurança do painel e os principais
+          eventos administrativos em tempo real.
+        </p>
+      </div>
+
+      {overviewQ.isError && (
+        <AdminError message="Falha ao carregar os indicadores." />
+      )}
+
+      {/* KPIs editoriais */}
+      <div>
+        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+          Conteúdo editorial
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          <KpiCard label="Publicados" value={o?.articles.published ?? "—"} icon={CheckCircle2} tone="text-emerald-600" />
+          <KpiCard label="Em revisão" value={o?.articles.review ?? "—"} icon={ShieldCheck} tone="text-amber-600" />
+          <KpiCard label="Agendados" value={o?.articles.scheduled ?? "—"} icon={Clock} tone="text-blue-600" />
+          <KpiCard label="Rascunhos" value={o?.articles.drafts ?? "—"} icon={Pencil} tone="text-muted-foreground" />
+          <KpiCard label="Total" value={o?.articles.total ?? "—"} icon={FileText} tone="text-foreground" />
         </div>
       </div>
 
-      {/* KPI grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-        <KPI label="Total" value={stats.total} icon={FileText} tone="text-foreground" />
-        <KPI label="Publicados" value={stats.published} icon={CheckCircle2} tone="text-emerald-600" />
-        <KPI label="Rascunhos" value={stats.drafts} icon={Pencil} tone="text-muted-foreground" />
-        <KPI label="Em revisão" value={stats.review} icon={ShieldCheck} tone="text-amber-600" />
-        <KPI label="Agendados" value={stats.scheduled} icon={Clock} tone="text-blue-600" />
+      {/* KPIs operacionais */}
+      <div>
+        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+          Operação e segurança
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          <KpiCard label="Materiais" value={o?.library ?? "—"} icon={BookOpen} />
+          <KpiCard label="Locais" value={o?.locations ?? "—"} icon={MapPin} />
+          <KpiCard label="Usuários" value={o?.users ?? "—"} icon={Users} />
+          <KpiCard
+            label="Sessões ativas"
+            value={o?.sessions.active ?? "—"}
+            icon={MonitorSmartphone}
+            hint={`${o?.sessions.last24h ?? 0} nas últimas 24h`}
+          />
+          <KpiCard
+            label="Falhas 24h"
+            value={o?.failedLogins24h ?? "—"}
+            icon={AlertTriangle}
+            tone={(o?.failedLogins24h ?? 0) > 0 ? "text-[color:var(--red-inst)]" : "text-muted-foreground"}
+            hint={`${o?.activeLockouts ?? 0} bloqueio(s) ativo(s)`}
+          />
+        </div>
       </div>
 
       {/* Quick actions */}
-      <div className="grid sm:grid-cols-3 gap-3">
-        <QuickAction
-          to="/admin/biblioteca"
-          icon={BookOpen}
-          title="Biblioteca"
-          description="Materiais, cartilhas e guias institucionais"
-        />
-        <QuickAction
-          to="/admin/mapa"
-          icon={MapPin}
-          title="Mapa de ajuda"
-          description="Conselhos tutelares, CREAS, delegacias"
-        />
-        <QuickAction
-          to="/admin/usuarios"
-          icon={Users}
-          title="Usuários"
-          description="Atribuir papéis e gerenciar acessos"
-        />
-      </div>
+      <SectionCard title="Ações rápidas" description="Crie ou gerencie em um clique.">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {canEdit && (
+            <QuickActionCard
+              to="/admin/article/$id"
+              params={{ id: "new" }}
+              icon={Plus}
+              title="Nova publicação"
+              description="Notícia, caso, risco ou guia"
+            />
+          )}
+          {canEdit && (
+            <QuickActionCard
+              to="/admin/biblioteca/$id"
+              params={{ id: "new" }}
+              icon={BookOpen}
+              title="Novo material"
+              description="Cartilhas e documentos"
+            />
+          )}
+          {canEdit && (
+            <QuickActionCard
+              to="/admin/mapa/$id"
+              params={{ id: "new" }}
+              icon={MapPin}
+              title="Novo local"
+              description="Conselhos, CREAS, delegacias"
+            />
+          )}
+          {isAdmin && (
+            <QuickActionCard
+              to="/admin/usuarios"
+              icon={Users}
+              title="Usuários"
+              description="Criar e atribuir papéis"
+            />
+          )}
+          {isAdmin && (
+            <QuickActionCard
+              to="/admin/auditoria"
+              icon={ScrollText}
+              title="Auditoria"
+              description="Investigar eventos"
+            />
+          )}
+          {isAdmin && (
+            <QuickActionCard
+              to="/admin/seguranca"
+              icon={ShieldCheck}
+              title="Central de segurança"
+              description="Status, lockouts, ameaças"
+            />
+          )}
+          {isAdmin && (
+            <QuickActionCard
+              to="/admin/backup"
+              icon={Database}
+              title="Backup"
+              description="Exportar dados"
+            />
+          )}
+          <QuickActionCard
+            to="/admin/mfa"
+            icon={KeyRound}
+            title="Verificação MFA"
+            description="Gerenciar TOTP e recovery codes"
+          />
+        </div>
+      </SectionCard>
 
-      {/* Articles section */}
-      <div className="rounded-3xl border border-border bg-card overflow-hidden">
-        <div className="p-6 sm:p-7 border-b border-border">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h3 className="font-display text-lg sm:text-xl font-semibold">Conteúdos</h3>
-              <p className="text-sm text-muted-foreground">
-                Notícias, casos, riscos online e guias publicados no portal.
-              </p>
-            </div>
-            {canEdit && (
-              <Link
-                to="/admin/article/$id"
-                params={{ id: "new" }}
-                className="inline-flex items-center gap-2 rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-4 py-2 text-sm font-semibold hover:brightness-95"
-              >
-                <Plus className="size-4" /> Novo conteúdo
-              </Link>
-            )}
-          </div>
-
-          <div className="mt-5 flex flex-wrap items-center gap-3">
-            <div className="flex flex-wrap gap-2">
-              {filters.map((f) => (
-                <button
-                  key={f.key}
-                  onClick={() => setFilter(f.key)}
-                  className={`rounded-full px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider transition-colors ${
-                    filter === f.key
-                      ? "bg-[color:var(--navy-deep)] text-white"
-                      : "bg-muted text-muted-foreground hover:bg-muted/70"
-                  }`}
+      {/* Recent activity */}
+      <SectionCard
+        title="Atividade recente"
+        description="Últimos eventos registrados na auditoria."
+        action={
+          <Link
+            to="/admin/auditoria"
+            className="text-sm font-semibold text-[color:var(--navy-deep)] hover:underline inline-flex items-center gap-1"
+          >
+            Ver tudo <Activity className="size-3.5" />
+          </Link>
+        }
+      >
+        {activityQ.isLoading && <AdminSkeleton rows={6} />}
+        {activityQ.isError && <AdminError message="Falha ao carregar atividade." />}
+        {!activityQ.isLoading && (activityQ.data?.items ?? []).length === 0 && (
+          <p className="text-sm text-muted-foreground text-center py-6">
+            Nenhum evento ainda.
+          </p>
+        )}
+        <ul className="divide-y divide-border">
+          {(activityQ.data?.items ?? []).map((it: RecentActivityItem) => {
+            const cat = categoryFor(it.action);
+            const isCritical = CRITICAL.has(it.action);
+            return (
+              <li key={it.id} className="py-3 flex items-start gap-3">
+                <span
+                  className={`mt-0.5 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${cat.color}`}
                 >
-                  {f.label}
-                </button>
-              ))}
-            </div>
-            <div className="relative ml-auto w-full sm:w-72">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" aria-hidden />
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Buscar por título, slug ou categoria"
-                className="w-full rounded-full border border-border bg-background pl-9 pr-3 py-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
-              />
-            </div>
-          </div>
-        </div>
+                  {cat.label}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className={`text-sm font-medium ${isCritical ? "text-[color:var(--red-inst)]" : ""}`}>
+                    {ACTION_LABEL[it.action] ?? it.action}
+                    {it.target_title && (
+                      <span className="text-muted-foreground font-normal"> · {it.target_title}</span>
+                    )}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {it.user_email ?? "sistema"} · {new Date(it.created_at).toLocaleString("pt-BR")}
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </SectionCard>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-muted/40 text-xs uppercase tracking-wider text-muted-foreground">
-              <tr>
-                <th className="text-left px-4 py-3">Tipo</th>
-                <th className="text-left px-4 py-3">Título</th>
-                <th className="text-left px-4 py-3">Status</th>
-                <th className="text-left px-4 py-3">Atualizado</th>
-                <th className="text-right px-4 py-3">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {articlesQ.isLoading && (
-                <tr>
-                  <td colSpan={5} className="px-4 py-10 text-center text-muted-foreground">
-                    Carregando…
-                  </td>
-                </tr>
-              )}
-              {articlesQ.isError && (
-                <tr>
-                  <td colSpan={5} className="px-4 py-10 text-center text-[color:var(--red-inst)]">
-                    Erro ao carregar conteúdos. Verifique suas permissões.
-                  </td>
-                </tr>
-              )}
-              {!articlesQ.isLoading && articles.length === 0 && (
-                <tr>
-                  <td colSpan={5} className="px-4 py-10 text-center text-muted-foreground">
-                    Nenhum conteúdo encontrado.
-                    {canEdit && ' Clique em "Novo conteúdo" para criar.'}
-                  </td>
-                </tr>
-              )}
-              {articles.map((a) => {
-                const meta = typeMeta[a.type];
-                return (
-                  <tr key={a.id} className="border-t border-border hover:bg-muted/30 transition-colors">
-                    <td className="px-4 py-3">
-                      <span className="inline-flex items-center gap-2 text-xs font-semibold">
-                        <meta.icon className={`size-3.5 ${meta.color}`} aria-hidden /> {meta.label}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="font-medium text-foreground">{a.title}</div>
-                      <div className="text-xs text-muted-foreground">/{a.slug}</div>
-                    </td>
-                    <td className="px-4 py-3">
-                      <span
-                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase ${statusStyle(a.status)}`}
-                      >
-                        {a.status}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
-                      {new Date(a.updated_at).toLocaleDateString("pt-BR")}
-                    </td>
-                    <td className="px-4 py-3 text-right whitespace-nowrap">
-                      {canEdit && (
-                        <Link
-                          to="/admin/article/$id"
-                          params={{ id: a.id }}
-                          className="inline-flex items-center gap-1 text-sm font-semibold text-[color:var(--navy-deep)] hover:underline mr-3"
-                        >
-                          <Pencil className="size-3.5" /> Editar
-                        </Link>
-                      )}
-                      {canDelete && (
-                        <button
-                          onClick={() => {
-                            if (confirm(`Excluir "${a.title}"? Esta ação não pode ser desfeita.`))
-                              del.mutate(a.id);
-                          }}
-                          className="inline-flex items-center gap-1 text-sm font-semibold text-muted-foreground hover:text-[color:var(--red-inst)]"
-                        >
-                          <Trash2 className="size-3.5" /> Excluir
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <p className="text-center text-xs text-muted-foreground pt-4">
+        Dica: pressione <kbd className="rounded border border-border px-1 font-mono">⌘K</kbd> /{" "}
+        <kbd className="rounded border border-border px-1 font-mono">Ctrl K</kbd> para pesquisar.
+      </p>
     </section>
-  );
-}
-
-function KPI({
-  label,
-  value,
-  icon: Icon,
-  tone,
-}: {
-  label: string;
-  value: number;
-  icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
-  tone: string;
-}) {
-  return (
-    <div className="rounded-2xl border border-border bg-card p-4 flex items-center gap-3">
-      <div className="rounded-xl bg-muted p-2.5">
-        <Icon className={`size-5 ${tone}`} aria-hidden />
-      </div>
-      <div>
-        <div className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">{label}</div>
-        <div className="font-display text-2xl font-semibold leading-tight">{value}</div>
-      </div>
-    </div>
-  );
-}
-
-function QuickAction({
-  to,
-  icon: Icon,
-  title,
-  description,
-}: {
-  to: "/admin/biblioteca" | "/admin/mapa" | "/admin/usuarios";
-  icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
-  title: string;
-  description: string;
-}) {
-  return (
-    <Link
-      to={to}
-      className="group rounded-2xl border border-border bg-card p-5 hover:border-[color:var(--orange)] hover:shadow-elegant transition-all"
-    >
-      <div className="flex items-start gap-3">
-        <div className="rounded-xl bg-[color:var(--navy-deep)] text-white p-2.5">
-          <Icon className="size-5" aria-hidden />
-        </div>
-        <div>
-          <div className="font-display text-base font-semibold group-hover:text-[color:var(--navy-deep)]">
-            {title}
-          </div>
-          <div className="text-sm text-muted-foreground">{description}</div>
-        </div>
-      </div>
-    </Link>
   );
 }
