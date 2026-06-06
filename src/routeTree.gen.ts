@@ -29,6 +29,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 import { Route as CasosSlugRouteImport } from './routes/casos.$slug'
+import { Route as BibliotecaSlugRouteImport } from './routes/biblioteca.$slug'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedAdminUsuariosIndexRouteImport } from './routes/_authenticated/admin/usuarios/index'
@@ -137,6 +138,11 @@ const CasosSlugRoute = CasosSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => CasosRoute,
 } as any)
+const BibliotecaSlugRoute = BibliotecaSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BibliotecaRoute,
+} as any)
 const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -187,7 +193,7 @@ const AuthenticatedAdminArticleIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/biblioteca': typeof BibliotecaRoute
+  '/biblioteca': typeof BibliotecaRouteWithChildren
   '/casos': typeof CasosRouteWithChildren
   '/como-ajudar': typeof ComoAjudarRoute
   '/denuncia': typeof DenunciaRoute
@@ -203,6 +209,7 @@ export interface FileRoutesByFullPath {
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
@@ -216,7 +223,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/biblioteca': typeof BibliotecaRoute
+  '/biblioteca': typeof BibliotecaRouteWithChildren
   '/casos': typeof CasosRouteWithChildren
   '/como-ajudar': typeof ComoAjudarRoute
   '/denuncia': typeof DenunciaRoute
@@ -231,6 +238,7 @@ export interface FileRoutesByTo {
   '/riscos-online': typeof RiscosOnlineRoute
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
@@ -246,7 +254,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
-  '/biblioteca': typeof BibliotecaRoute
+  '/biblioteca': typeof BibliotecaRouteWithChildren
   '/casos': typeof CasosRouteWithChildren
   '/como-ajudar': typeof ComoAjudarRoute
   '/denuncia': typeof DenunciaRoute
@@ -262,6 +270,7 @@ export interface FileRoutesById {
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
@@ -293,6 +302,7 @@ export interface FileRouteTypes {
     | '/sinais'
     | '/sitemap.xml'
     | '/admin'
+    | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
     | '/admin/'
@@ -321,6 +331,7 @@ export interface FileRouteTypes {
     | '/riscos-online'
     | '/sinais'
     | '/sitemap.xml'
+    | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
     | '/admin'
@@ -351,6 +362,7 @@ export interface FileRouteTypes {
     | '/sinais'
     | '/sitemap.xml'
     | '/_authenticated/admin'
+    | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
     | '/_authenticated/admin/'
@@ -366,7 +378,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
-  BibliotecaRoute: typeof BibliotecaRoute
+  BibliotecaRoute: typeof BibliotecaRouteWithChildren
   CasosRoute: typeof CasosRouteWithChildren
   ComoAjudarRoute: typeof ComoAjudarRoute
   DenunciaRoute: typeof DenunciaRoute
@@ -525,6 +537,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CasosSlugRouteImport
       parentRoute: typeof CasosRoute
     }
+    '/biblioteca/$slug': {
+      id: '/biblioteca/$slug'
+      path: '/$slug'
+      fullPath: '/biblioteca/$slug'
+      preLoaderRoute: typeof BibliotecaSlugRouteImport
+      parentRoute: typeof BibliotecaRoute
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
@@ -622,6 +641,18 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface BibliotecaRouteChildren {
+  BibliotecaSlugRoute: typeof BibliotecaSlugRoute
+}
+
+const BibliotecaRouteChildren: BibliotecaRouteChildren = {
+  BibliotecaSlugRoute: BibliotecaSlugRoute,
+}
+
+const BibliotecaRouteWithChildren = BibliotecaRoute._addFileChildren(
+  BibliotecaRouteChildren,
+)
+
 interface CasosRouteChildren {
   CasosSlugRoute: typeof CasosSlugRoute
 }
@@ -648,7 +679,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
-  BibliotecaRoute: BibliotecaRoute,
+  BibliotecaRoute: BibliotecaRouteWithChildren,
   CasosRoute: CasosRouteWithChildren,
   ComoAjudarRoute: ComoAjudarRoute,
   DenunciaRoute: DenunciaRoute,
@@ -667,13 +698,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

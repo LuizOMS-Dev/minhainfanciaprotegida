@@ -158,8 +158,7 @@ export function GlobalSearch() {
 
   const go = (e: Entry) => {
     setOpen(false);
-    // @ts-expect-error — dynamic typed routes
-    navigate({ to: e.to, params: e.params });
+    navigate({ to: e.to, params: e.params } as never);
   };
 
   const onInputKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
