@@ -18,7 +18,20 @@ export type AuditAction =
   | "password_reset"
   | "csv_import"
   | "library_change"
-  | "location_change";
+  | "location_change"
+  | "email_not_verified_login_attempt"
+  | "brute_force_detected"
+  | "account_locked"
+  | "account_unlocked"
+  | "captcha_failed"
+  | "captcha_bypassed_attempt"
+  | "login_blocked_by_captcha"
+  | "mfa_enabled"
+  | "mfa_disabled"
+  | "mfa_success"
+  | "mfa_failed"
+  | "mfa_reset"
+  | "admin_export";
 
 export interface LogAuditInput {
   action: AuditAction;
@@ -39,10 +52,14 @@ function safeHeader(name: string): string | null {
   }
 }
 
-function extractIp(): string | null {
+export function extractIp(): string | null {
   const xff = safeHeader("x-forwarded-for");
   if (xff) return xff.split(",")[0]?.trim() || null;
   return safeHeader("cf-connecting-ip") ?? safeHeader("x-real-ip");
+}
+
+export function extractUserAgent(): string | null {
+  return safeHeader("user-agent");
 }
 
 /**
@@ -57,7 +74,6 @@ export async function logAudit(input: LogAuditInput): Promise<void> {
     let role = input.userRole ?? null;
 
     if (input.userId && (!email || !role)) {
-      // Best-effort enrichment
       if (!email) {
         try {
           const { data } = await supabaseAdmin.auth.admin.getUserById(input.userId);
@@ -84,7 +100,7 @@ export async function logAudit(input: LogAuditInput): Promise<void> {
       target_id: input.targetId ?? null,
       target_title: input.targetTitle ?? null,
       ip_address: extractIp(),
-      user_agent: safeHeader("user-agent"),
+      user_agent: extractUserAgent(),
       metadata: (input.metadata ?? null) as never,
     });
     if (error) console.warn("[audit] insert failed", error.message);

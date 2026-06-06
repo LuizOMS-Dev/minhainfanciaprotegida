@@ -1,43 +1,94 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /auth
 Disallow: /relatorio-seo
 Disallow: /_authenticated/
 
 # Bots de IA generativa — permissão explícita
 User-agent: GPTBot
+Disallow: /admin
+Disallow: /admin/
+Disallow: /auth
+Disallow: /relatorio-seo
 Allow: /
 
 User-agent: ChatGPT-User
+Disallow: /admin
+Disallow: /admin/
+Disallow: /auth
+Disallow: /relatorio-seo
 Allow: /
 
 User-agent: OAI-SearchBot
+Disallow: /admin
+Disallow: /admin/
+Disallow: /auth
+Disallow: /relatorio-seo
 Allow: /
 
 User-agent: Google-Extended
+Disallow: /admin
+Disallow: /admin/
+Disallow: /auth
+Disallow: /relatorio-seo
 Allow: /
 
 User-agent: Googlebot
+Disallow: /admin
+Disallow: /admin/
+Disallow: /auth
+Disallow: /relatorio-seo
 Allow: /
 
 User-agent: Bingbot
+Disallow: /admin
+Disallow: /admin/
+Disallow: /auth
+Disallow: /relatorio-seo
 Allow: /
 
 User-agent: PerplexityBot
+Disallow: /admin
+Disallow: /admin/
+Disallow: /auth
+Disallow: /relatorio-seo
 Allow: /
 
 User-agent: ClaudeBot
+Disallow: /admin
+Disallow: /admin/
+Disallow: /auth
+Disallow: /relatorio-seo
 Allow: /
 
 User-agent: anthropic-ai
+Disallow: /admin
+Disallow: /admin/
+Disallow: /auth
+Disallow: /relatorio-seo
 Allow: /
 
 User-agent: CCBot
+Disallow: /admin
+Disallow: /admin/
+Disallow: /auth
+Disallow: /relatorio-seo
 Allow: /
 
 User-agent: Applebot
+Disallow: /admin
+Disallow: /admin/
+Disallow: /auth
+Disallow: /relatorio-seo
 Allow: /
 
 User-agent: Applebot-Extended
+Disallow: /admin
+Disallow: /admin/
+Disallow: /auth
+Disallow: /relatorio-seo
 Allow: /
 
 # Mídia explícita / scraping abusivo — bloquear

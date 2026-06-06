@@ -8,26 +8,6 @@ export const Route = createFileRoute("/_authenticated/admin/auditoria")({
   component: AuditoriaPage,
 });
 
-const ACTIONS: AuditActionType[] = [
-  "login",
-  "logout",
-  "login_failed",
-  "unauthorized_access",
-  "content_create",
-  "content_update",
-  "content_delete",
-  "content_publish",
-  "content_unpublish",
-  "user_create",
-  "user_update",
-  "user_delete",
-  "role_change",
-  "password_reset",
-  "csv_import",
-  "library_change",
-  "location_change",
-];
-
 const ACTION_LABEL: Record<AuditActionType, string> = {
   login: "Login",
   logout: "Logout",
@@ -46,7 +26,22 @@ const ACTION_LABEL: Record<AuditActionType, string> = {
   csv_import: "Importação CSV",
   library_change: "Biblioteca",
   location_change: "Mapa de ajuda",
+  email_not_verified_login_attempt: "E-mail não verificado",
+  brute_force_detected: "Força bruta detectada",
+  account_locked: "Conta bloqueada",
+  account_unlocked: "Conta desbloqueada",
+  captcha_failed: "Falha de CAPTCHA",
+  captcha_bypassed_attempt: "Tentativa de burlar CAPTCHA",
+  login_blocked_by_captcha: "Login bloqueado por CAPTCHA",
+  mfa_enabled: "MFA habilitado",
+  mfa_disabled: "MFA desabilitado",
+  mfa_success: "MFA validado",
+  mfa_failed: "MFA falhou",
+  mfa_reset: "MFA resetado",
+  admin_export: "Exportação administrativa",
 };
+
+const ACTIONS: AuditActionType[] = Object.keys(ACTION_LABEL) as AuditActionType[];
 
 function fmt(d: string) {
   return new Date(d).toLocaleString("pt-BR");

@@ -21,6 +21,19 @@ const actionEnum = z.enum([
   "csv_import",
   "library_change",
   "location_change",
+  "email_not_verified_login_attempt",
+  "brute_force_detected",
+  "account_locked",
+  "account_unlocked",
+  "captcha_failed",
+  "captcha_bypassed_attempt",
+  "login_blocked_by_captcha",
+  "mfa_enabled",
+  "mfa_disabled",
+  "mfa_success",
+  "mfa_failed",
+  "mfa_reset",
+  "admin_export",
 ]);
 
 export type AuditActionType = z.infer<typeof actionEnum>;
@@ -43,8 +56,9 @@ export interface AuditLogRow {
 }
 
 /**
- * Public unauthenticated server fn — records login outcomes.
- * Safe to call without a session: it only inserts an audit row.
+ * Legacy public unauthenticated login attempt audit — kept for backward
+ * compatibility. New code should call `recordLoginAttemptV2` from
+ * `security.functions.ts` which handles CAPTCHA + lockout.
  */
 export const recordLoginAttempt = createServerFn({ method: "POST" })
   .inputValidator((i) =>
@@ -60,18 +74,15 @@ export const recordLoginAttempt = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { logAudit } = await import("@/lib/audit.server");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-
     let userId: string | null = null;
     if (data.success && data.email) {
       try {
-        // Best-effort: find user id by email (auth admin API).
         const { data: list } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 200 });
         userId = list?.users.find((u) => u.email?.toLowerCase() === data.email!.toLowerCase())?.id ?? null;
       } catch {
         /* ignore */
       }
     }
-
     await logAudit({
       action: data.success ? "login" : "login_failed",
       userId,
@@ -85,6 +96,8 @@ export const recordLogout = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { logAudit } = await import("@/lib/audit.server");
+    const { closeAdminSession } = await import("@/lib/security.server");
+    await closeAdminSession(context.userId);
     await logAudit({ action: "logout", userId: context.userId });
     return { ok: true };
   });

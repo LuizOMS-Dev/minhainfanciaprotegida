@@ -1,27 +1,77 @@
-import { createFileRoute, isRedirect, Link, Outlet, redirect, useLocation, useNavigate, useRouter } from "@tanstack/react-router";
-import { BookOpen, LogOut, MapPin, Newspaper, ScrollText, ShieldAlert, Users } from "lucide-react";
+import {
+  createFileRoute,
+  isRedirect,
+  Link,
+  Outlet,
+  redirect,
+  useLocation,
+  useNavigate,
+  useRouter,
+} from "@tanstack/react-router";
+import {
+  BookOpen,
+  Database,
+  LogOut,
+  MapPin,
+  MonitorSmartphone,
+  Newspaper,
+  ScrollText,
+  ShieldAlert,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { getMyRoles } from "@/lib/admin.functions";
-import { recordLogout, recordUnauthorizedAccess } from "@/lib/audit.functions";
+import { recordUnauthorizedAccess } from "@/lib/audit.functions";
+import { recordAdminLogout } from "@/lib/security.functions";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
     meta: [
       { title: "Painel editorial — Infância Protegida" },
-      { name: "robots", content: "noindex,nofollow" },
+      { name: "robots", content: "noindex,nofollow,noarchive,nosnippet" },
     ],
   }),
   beforeLoad: async ({ location }) => {
-    // Role gate — only users with admin/editor/revisor may enter /admin/*.
     try {
+      // 1) Active user + e-mail verified
+      const { data: userRes, error: userErr } = await supabase.auth.getUser();
+      if (userErr || !userRes.user) throw redirect({ to: "/auth" });
+      if (!userRes.user.email_confirmed_at) {
+        recordUnauthorizedAccess({
+          data: { path: `email_not_verified:${location.pathname}` },
+        }).catch(() => {});
+        await supabase.auth.signOut();
+        throw redirect({ to: "/auth" });
+      }
+
+      // 2) Role gate
       const { roles } = await getMyRoles();
       if (!roles || roles.length === 0) {
-        // Log the unauthorized attempt (fire-and-forget) then bounce out.
         recordUnauthorizedAccess({ data: { path: location.pathname } }).catch(() => {});
         await supabase.auth.signOut();
         throw redirect({ to: "/auth" });
+      }
+
+      // 3) MFA gate (AAL2)
+      const aal = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+      const needsMfa = aal.data?.nextLevel === "aal2" && aal.data?.currentLevel !== "aal2";
+
+      if (needsMfa) {
+        const { data: factors } = await supabase.auth.mfa.listFactors();
+        const hasVerified = (factors?.totp ?? []).some((f) => f.status === "verified");
+
+        if (hasVerified) {
+          // Has factor but didn't complete challenge → force re-auth via /auth
+          await supabase.auth.signOut();
+          throw redirect({ to: "/auth" });
+        }
+        // No verified factor → only allow /admin/mfa (enrollment)
+        if (location.pathname !== "/admin/mfa") {
+          throw redirect({ to: "/admin/mfa" });
+        }
       }
     } catch (e) {
       if (isRedirect(e)) throw e;
@@ -45,6 +95,9 @@ const nav: NavItem[] = [
   { to: "/admin/mapa", label: "Mapa de ajuda", icon: MapPin },
   { to: "/admin/usuarios", label: "Usuários", icon: Users, adminOnly: true },
   { to: "/admin/auditoria", label: "Auditoria", icon: ScrollText, adminOnly: true },
+  { to: "/admin/sessoes", label: "Sessões", icon: MonitorSmartphone, adminOnly: true },
+  { to: "/admin/backup", label: "Backup", icon: Database, adminOnly: true },
+  { to: "/admin/mfa", label: "Verificação MFA", icon: ShieldCheck },
 ];
 
 function AdminShell() {
@@ -52,7 +105,7 @@ function AdminShell() {
   const navigate = useNavigate();
   const loc = useLocation();
   const qc = useQueryClient();
-  const logoutFn = useServerFn(recordLogout);
+  const logoutFn = useServerFn(recordAdminLogout);
 
   const rolesQ = useQuery({
     queryKey: ["my-roles"],
@@ -63,7 +116,6 @@ function AdminShell() {
   const isAdmin = roles.includes("admin");
 
   async function logout() {
-    // Log first (still authenticated), then sign out.
     await logoutFn().catch(() => {});
     await qc.cancelQueries();
     qc.clear();

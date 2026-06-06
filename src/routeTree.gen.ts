@@ -36,6 +36,9 @@ import { Route as CasosSlugRouteImport } from './routes/casos.$slug'
 import { Route as BibliotecaSlugRouteImport } from './routes/biblioteca.$slug'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedAdminSessoesRouteImport } from './routes/_authenticated/admin/sessoes'
+import { Route as AuthenticatedAdminMfaRouteImport } from './routes/_authenticated/admin/mfa'
+import { Route as AuthenticatedAdminBackupRouteImport } from './routes/_authenticated/admin/backup'
 import { Route as AuthenticatedAdminAuditoriaRouteImport } from './routes/_authenticated/admin/auditoria'
 import { Route as AuthenticatedAdminUsuariosIndexRouteImport } from './routes/_authenticated/admin/usuarios/index'
 import { Route as AuthenticatedAdminMapaIndexRouteImport } from './routes/_authenticated/admin/mapa/index'
@@ -178,6 +181,23 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRouteRoute,
 } as any)
+const AuthenticatedAdminSessoesRoute =
+  AuthenticatedAdminSessoesRouteImport.update({
+    id: '/sessoes',
+    path: '/sessoes',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminMfaRoute = AuthenticatedAdminMfaRouteImport.update({
+  id: '/mfa',
+  path: '/mfa',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminBackupRoute =
+  AuthenticatedAdminBackupRouteImport.update({
+    id: '/backup',
+    path: '/backup',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminAuditoriaRoute =
   AuthenticatedAdminAuditoriaRouteImport.update({
     id: '/auditoria',
@@ -248,6 +268,9 @@ export interface FileRoutesByFullPath {
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
+  '/admin/backup': typeof AuthenticatedAdminBackupRoute
+  '/admin/mfa': typeof AuthenticatedAdminMfaRoute
+  '/admin/sessoes': typeof AuthenticatedAdminSessoesRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
   '/admin/biblioteca/$id': typeof AuthenticatedAdminBibliotecaIdRoute
@@ -282,6 +305,9 @@ export interface FileRoutesByTo {
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
+  '/admin/backup': typeof AuthenticatedAdminBackupRoute
+  '/admin/mfa': typeof AuthenticatedAdminMfaRoute
+  '/admin/sessoes': typeof AuthenticatedAdminSessoesRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
   '/admin/biblioteca/$id': typeof AuthenticatedAdminBibliotecaIdRoute
@@ -319,6 +345,9 @@ export interface FileRoutesById {
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/_authenticated/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
+  '/_authenticated/admin/backup': typeof AuthenticatedAdminBackupRoute
+  '/_authenticated/admin/mfa': typeof AuthenticatedAdminMfaRoute
+  '/_authenticated/admin/sessoes': typeof AuthenticatedAdminSessoesRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
   '/_authenticated/admin/biblioteca/$id': typeof AuthenticatedAdminBibliotecaIdRoute
@@ -356,6 +385,9 @@ export interface FileRouteTypes {
     | '/casos/$slug'
     | '/noticias/$slug'
     | '/admin/auditoria'
+    | '/admin/backup'
+    | '/admin/mfa'
+    | '/admin/sessoes'
     | '/admin/'
     | '/admin/article/$id'
     | '/admin/biblioteca/$id'
@@ -390,6 +422,9 @@ export interface FileRouteTypes {
     | '/casos/$slug'
     | '/noticias/$slug'
     | '/admin/auditoria'
+    | '/admin/backup'
+    | '/admin/mfa'
+    | '/admin/sessoes'
     | '/admin'
     | '/admin/article/$id'
     | '/admin/biblioteca/$id'
@@ -426,6 +461,9 @@ export interface FileRouteTypes {
     | '/casos/$slug'
     | '/noticias/$slug'
     | '/_authenticated/admin/auditoria'
+    | '/_authenticated/admin/backup'
+    | '/_authenticated/admin/mfa'
+    | '/_authenticated/admin/sessoes'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/article/$id'
     | '/_authenticated/admin/biblioteca/$id'
@@ -651,6 +689,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/sessoes': {
+      id: '/_authenticated/admin/sessoes'
+      path: '/sessoes'
+      fullPath: '/admin/sessoes'
+      preLoaderRoute: typeof AuthenticatedAdminSessoesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/mfa': {
+      id: '/_authenticated/admin/mfa'
+      path: '/mfa'
+      fullPath: '/admin/mfa'
+      preLoaderRoute: typeof AuthenticatedAdminMfaRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/backup': {
+      id: '/_authenticated/admin/backup'
+      path: '/backup'
+      fullPath: '/admin/backup'
+      preLoaderRoute: typeof AuthenticatedAdminBackupRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/auditoria': {
       id: '/_authenticated/admin/auditoria'
       path: '/auditoria'
@@ -705,6 +764,9 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminAuditoriaRoute: typeof AuthenticatedAdminAuditoriaRoute
+  AuthenticatedAdminBackupRoute: typeof AuthenticatedAdminBackupRoute
+  AuthenticatedAdminMfaRoute: typeof AuthenticatedAdminMfaRoute
+  AuthenticatedAdminSessoesRoute: typeof AuthenticatedAdminSessoesRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedAdminArticleIdRoute: typeof AuthenticatedAdminArticleIdRoute
   AuthenticatedAdminBibliotecaIdRoute: typeof AuthenticatedAdminBibliotecaIdRoute
@@ -717,6 +779,9 @@ interface AuthenticatedAdminRouteRouteChildren {
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
     AuthenticatedAdminAuditoriaRoute: AuthenticatedAdminAuditoriaRoute,
+    AuthenticatedAdminBackupRoute: AuthenticatedAdminBackupRoute,
+    AuthenticatedAdminMfaRoute: AuthenticatedAdminMfaRoute,
+    AuthenticatedAdminSessoesRoute: AuthenticatedAdminSessoesRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
     AuthenticatedAdminArticleIdRoute: AuthenticatedAdminArticleIdRoute,
     AuthenticatedAdminBibliotecaIdRoute: AuthenticatedAdminBibliotecaIdRoute,
