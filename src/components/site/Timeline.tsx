@@ -18,15 +18,33 @@ function safeFormat(input: string): string {
   return isNaN(d.getTime()) ? input : fmt.format(d);
 }
 
-export function Timeline({ items }: { items: { date: string; text: string }[] }) {
+export interface TimelineItem {
+  date: string;
+  text: string;
+  /** Marco opcional: título curto do evento. */
+  title?: string;
+}
+
+export function Timeline({
+  items,
+  heading = "Linha do tempo",
+}: {
+  items: TimelineItem[];
+  heading?: string;
+}) {
   const [active, setActive] = useState<number>(0);
   if (!items?.length) return null;
   return (
-    <section className="mt-12 rounded-2xl border border-border bg-card p-6 sm:p-8">
-      <h2 className="font-display text-2xl font-bold flex items-center gap-2">
-        <CalendarDays className="size-5 text-[color:var(--orange)]" aria-hidden /> Linha do tempo
+    <section
+      aria-label={heading}
+      className="mt-12 rounded-3xl border border-border bg-card p-6 sm:p-8"
+    >
+      <h2 className="font-display text-2xl font-bold flex items-center gap-2 text-[color:var(--navy-deep)]">
+        <CalendarDays className="size-5 text-[color:var(--orange)]" aria-hidden /> {heading}
       </h2>
-      <p className="mt-1 text-sm text-muted-foreground">Clique em um marco para destacá-lo na cronologia.</p>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Clique em um marco para destacá-lo na cronologia.
+      </p>
       <ol className="mt-6 relative border-l-2 border-[color:var(--orange)]/40 pl-6 space-y-4">
         {items.map((it, i) => {
           const isActive = i === active;
@@ -53,6 +71,11 @@ export function Timeline({ items }: { items: { date: string; text: string }[] })
                 <p className="text-xs font-semibold uppercase tracking-wider text-[color:var(--orange)]">
                   {safeFormat(it.date)}
                 </p>
+                {it.title && (
+                  <p className="mt-1 font-display font-semibold text-[color:var(--navy-deep)] leading-snug">
+                    {it.title}
+                  </p>
+                )}
                 <p className="mt-1 text-foreground/90 leading-relaxed">{it.text}</p>
               </button>
             </li>
