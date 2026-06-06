@@ -127,5 +127,132 @@ export const assignAdminRole = createServerFn({ method: "POST" })
         throw new Error("Não foi possível remover o papel.");
       }
     }
+    const { logAudit } = await import("@/lib/audit.server");
+    logAudit({
+      action: "role_change",
+      userId: context.userId,
+      targetType: "user",
+      targetId: data.user_id,
+      metadata: { role: data.role, op: data.action },
+    });
+    return { ok: true };
+  });
+
+export const createAdminUser = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i) =>
+    z
+      .object({
+        email: z.string().email().max(255),
+        password: z.string().min(8).max(128),
+        display_name: z.string().min(1).max(120).optional(),
+        role: roleSchema,
+      })
+      .parse(i),
+  )
+  .handler(async ({ data, context }) => {
+    await ensureAdmin(context.supabase, context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const { data: created, error } = await supabaseAdmin.auth.admin.createUser({
+      email: data.email,
+      password: data.password,
+      email_confirm: true,
+      user_metadata: { full_name: data.display_name ?? null },
+    });
+    if (error || !created.user) {
+      console.error("[users.create]", error);
+      throw new Error(error?.message ?? "Não foi possível criar o usuário.");
+    }
+    const newUserId = created.user.id;
+
+    // Ensure profile exists (trigger should handle it, but make sure).
+    await supabaseAdmin
+      .from("profiles")
+      .upsert({ id: newUserId, display_name: data.display_name ?? data.email });
+
+    const { error: roleErr } = await supabaseAdmin
+      .from("user_roles")
+      .insert({ user_id: newUserId, role: data.role });
+    if (roleErr && !String(roleErr.message).toLowerCase().includes("duplicate")) {
+      console.error("[users.create.role]", roleErr);
+      throw new Error("Usuário criado, mas não foi possível atribuir o papel.");
+    }
+
+    const { logAudit } = await import("@/lib/audit.server");
+    logAudit({
+      action: "user_create",
+      userId: context.userId,
+      targetType: "user",
+      targetId: newUserId,
+      targetTitle: data.email,
+      metadata: { role: data.role },
+    });
+    return { ok: true, user_id: newUserId };
+  });
+
+export const deleteAdminUser = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i) => z.object({ user_id: z.string().uuid() }).parse(i))
+  .handler(async ({ data, context }) => {
+    await ensureAdmin(context.supabase, context.userId);
+    if (data.user_id === context.userId) {
+      throw new Error("Você não pode excluir a si mesmo.");
+    }
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    // Refuse to delete the last admin
+    const { data: targetRoles } = await supabaseAdmin
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", data.user_id);
+    const isAdminTarget = (targetRoles ?? []).some((r) => r.role === "admin");
+    if (isAdminTarget) {
+      const { count } = await supabaseAdmin
+        .from("user_roles")
+        .select("*", { count: "exact", head: true })
+        .eq("role", "admin");
+      if ((count ?? 0) <= 1) {
+        throw new Error("Não é possível excluir o último administrador.");
+      }
+    }
+
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(data.user_id);
+    if (error) {
+      console.error("[users.delete]", error);
+      throw new Error("Não foi possível excluir o usuário.");
+    }
+    const { logAudit } = await import("@/lib/audit.server");
+    logAudit({
+      action: "user_delete",
+      userId: context.userId,
+      targetType: "user",
+      targetId: data.user_id,
+    });
+    return { ok: true };
+  });
+
+export const resetUserPassword = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i) =>
+    z.object({ user_id: z.string().uuid(), password: z.string().min(8).max(128) }).parse(i),
+  )
+  .handler(async ({ data, context }) => {
+    await ensureAdmin(context.supabase, context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.auth.admin.updateUserById(data.user_id, {
+      password: data.password,
+    });
+    if (error) {
+      console.error("[users.resetPassword]", error);
+      throw new Error("Não foi possível redefinir a senha.");
+    }
+    const { logAudit } = await import("@/lib/audit.server");
+    logAudit({
+      action: "password_reset",
+      userId: context.userId,
+      targetType: "user",
+      targetId: data.user_id,
+    });
     return { ok: true };
   });
