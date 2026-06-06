@@ -125,40 +125,9 @@ export function SiteHeader() {
                 {item.label}
               </Link>
             ))}
-            <div className="relative" ref={moreRef}>
-              <button
-                type="button"
-                onClick={() => setMoreOpen((v) => !v)}
-                aria-haspopup="menu"
-                aria-expanded={moreOpen}
-                className="inline-flex items-center gap-1 px-2 py-2 text-[13px] font-medium text-foreground/75 hover:text-foreground rounded-md hover:bg-muted transition-colors whitespace-nowrap"
-              >
-                Mais <ChevronDown className={`size-3.5 transition-transform ${moreOpen ? "rotate-180" : ""}`} aria-hidden />
-              </button>
-              {moreOpen && (
-                <div
-                  role="menu"
-                  className="absolute right-0 mt-2 w-64 rounded-xl border border-border bg-background shadow-lg p-1 animate-fade-in z-50"
-                >
-                  {moreNav.map((m) => (
-                    <Link
-                      key={m.to}
-                      to={m.to}
-                      role="menuitem"
-                      onClick={() => setMoreOpen(false)}
-                      className="block px-3 py-2.5 rounded-lg hover:bg-muted"
-                      activeProps={{ className: "bg-muted" }}
-                    >
-                      <span className="block text-sm font-semibold text-foreground">{m.label}</span>
-                      <span className="block text-xs text-muted-foreground">{m.desc}</span>
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
           </nav>
 
-          {/* ÁREA 3 — Busca + Denunciar */}
+          {/* ÁREA 3 — Busca + Denunciar + Mais */}
           <div className="flex items-center gap-2 shrink-0 justify-self-end">
             <GlobalSearch />
             <span
@@ -172,6 +141,65 @@ export function SiteHeader() {
               <Phone className="size-4" aria-hidden />
               Denuncie Agora
             </Link>
+
+            <div className="relative hidden lg:block" ref={moreRef}>
+              <button
+                type="button"
+                onClick={() => setMoreOpen((v) => !v)}
+                aria-haspopup="menu"
+                aria-expanded={moreOpen}
+                className="inline-flex items-center gap-1 px-3 py-2 text-[13px] font-medium text-foreground/80 hover:text-foreground rounded-full border border-border/70 hover:border-[color:var(--orange)]/50 bg-card/70 hover:bg-card hover:shadow-sm transition-all whitespace-nowrap"
+              >
+                Mais
+                <ChevronDown
+                  className={`size-3.5 transition-transform ${moreOpen ? "rotate-180" : ""}`}
+                  aria-hidden
+                />
+              </button>
+              {moreOpen && (
+                <div
+                  role="menu"
+                  className="absolute right-0 mt-3 w-[340px] rounded-2xl border border-border bg-background/95 backdrop-blur-xl shadow-2xl shadow-black/10 overflow-hidden animate-fade-in z-50"
+                >
+                  <div className="px-4 py-3 border-b border-border bg-gradient-to-br from-[color:var(--orange-soft)] to-transparent">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--orange)]">
+                      Explorar
+                    </p>
+                    <p className="text-sm font-medium text-foreground/80 mt-0.5">
+                      Mais sobre o projeto
+                    </p>
+                  </div>
+                  <div className="p-2 max-h-[70vh] overflow-y-auto">
+                    {moreNav.map((m) => {
+                      const Icon = m.icon;
+                      return (
+                        <Link
+                          key={m.to}
+                          to={m.to}
+                          role="menuitem"
+                          onClick={() => setMoreOpen(false)}
+                          className="group flex items-start gap-3 px-3 py-2.5 rounded-xl hover:bg-muted transition-colors"
+                          activeProps={{ className: "bg-muted" }}
+                        >
+                          <span className="mt-0.5 inline-flex size-9 items-center justify-center rounded-lg bg-[color:var(--orange-soft)] text-[color:var(--orange)] group-hover:bg-gradient-orange group-hover:text-[color:var(--navy-deep)] transition-colors shrink-0">
+                            <Icon className="size-4" aria-hidden />
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block text-sm font-semibold text-foreground">
+                              {m.label}
+                            </span>
+                            <span className="block text-xs text-muted-foreground leading-snug mt-0.5">
+                              {m.desc}
+                            </span>
+                          </span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
             <button
               onClick={() => setOpen((v) => !v)}
               className="lg:hidden inline-flex size-10 items-center justify-center rounded-md hover:bg-muted"
