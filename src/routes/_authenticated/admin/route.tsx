@@ -1,6 +1,10 @@
-import { createFileRoute, Link, Outlet, useLocation, useNavigate, useRouter } from "@tanstack/react-router";
-import { BookOpen, LogOut, MapPin, Newspaper, ShieldAlert, Users } from "lucide-react";
+import { createFileRoute, Link, Outlet, redirect, useLocation, useNavigate, useRouter } from "@tanstack/react-router";
+import { BookOpen, LogOut, MapPin, Newspaper, ScrollText, ShieldAlert, Users } from "lucide-react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
+import { getMyRoles } from "@/lib/admin.functions";
+import { recordLogout, recordUnauthorizedAccess } from "@/lib/audit.functions";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
@@ -9,25 +13,64 @@ export const Route = createFileRoute("/_authenticated/admin")({
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),
+  beforeLoad: async ({ location }) => {
+    // Role gate — only users with admin/editor/revisor may enter /admin/*.
+    try {
+      const { roles } = await getMyRoles();
+      if (!roles || roles.length === 0) {
+        // Log the unauthorized attempt (fire-and-forget) then bounce out.
+        recordUnauthorizedAccess({ data: { path: location.pathname } }).catch(() => {});
+        await supabase.auth.signOut();
+        throw redirect({ to: "/auth" });
+      }
+    } catch (e) {
+      // Re-throw redirects; swallow other errors and force re-auth.
+      if ((e as { isRedirect?: boolean })?.isRedirect) throw e;
+      throw redirect({ to: "/auth" });
+    }
+  },
   component: AdminShell,
 });
 
-const nav: { to: string; label: string; icon: typeof Newspaper; exact?: boolean }[] = [
+interface NavItem {
+  to: string;
+  label: string;
+  icon: typeof Newspaper;
+  exact?: boolean;
+  adminOnly?: boolean;
+}
+
+const nav: NavItem[] = [
   { to: "/admin", label: "Conteúdos", icon: Newspaper, exact: true },
   { to: "/admin/biblioteca", label: "Biblioteca", icon: BookOpen },
   { to: "/admin/mapa", label: "Mapa de ajuda", icon: MapPin },
-  { to: "/admin/usuarios", label: "Usuários", icon: Users },
+  { to: "/admin/usuarios", label: "Usuários", icon: Users, adminOnly: true },
+  { to: "/admin/auditoria", label: "Auditoria", icon: ScrollText, adminOnly: true },
 ];
 
 function AdminShell() {
   const router = useRouter();
   const navigate = useNavigate();
   const loc = useLocation();
+  const qc = useQueryClient();
+  const logoutFn = useServerFn(recordLogout);
+
+  const rolesQ = useQuery({
+    queryKey: ["my-roles"],
+    queryFn: () => getMyRoles(),
+    staleTime: 60_000,
+  });
+  const roles = rolesQ.data?.roles ?? [];
+  const isAdmin = roles.includes("admin");
 
   async function logout() {
+    // Log first (still authenticated), then sign out.
+    await logoutFn().catch(() => {});
+    await qc.cancelQueries();
+    qc.clear();
     await supabase.auth.signOut();
     router.invalidate();
-    navigate({ to: "/auth" });
+    navigate({ to: "/auth", replace: true });
   }
 
   return (
@@ -53,7 +96,7 @@ function AdminShell() {
         <div className="mt-8 grid gap-8 lg:grid-cols-[220px_1fr]">
           <nav className="lg:sticky lg:top-24 self-start">
             <ul className="flex lg:flex-col gap-1 overflow-x-auto lg:overflow-visible">
-              {nav.map((item) => {
+              {nav.filter((i) => !i.adminOnly || isAdmin).map((item) => {
                 const active = item.exact
                   ? loc.pathname === item.to ||
                     loc.pathname.startsWith("/admin/article")
