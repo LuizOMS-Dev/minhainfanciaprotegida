@@ -61,7 +61,10 @@ export function SiteHeader() {
       if (moreRef.current && !moreRef.current.contains(e.target as Node)) setMoreOpen(false);
     }
     function onEsc(e: KeyboardEvent) {
-      if (e.key === "Escape") setMoreOpen(false);
+      if (e.key === "Escape") {
+        setMoreOpen(false);
+        setOpen(false);
+      }
     }
     document.addEventListener("mousedown", onClickOutside);
     document.addEventListener("keydown", onEsc);
@@ -70,6 +73,17 @@ export function SiteHeader() {
       document.removeEventListener("keydown", onEsc);
     };
   }, []);
+
+  // Trava o scroll do body quando o menu mobile está aberto
+  useEffect(() => {
+    if (open) {
+      const original = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = original;
+      };
+    }
+  }, [open]);
 
   return (
     <>
@@ -202,24 +216,25 @@ export function SiteHeader() {
 
             <button
               onClick={() => setOpen((v) => !v)}
-              className="lg:hidden inline-flex size-10 items-center justify-center rounded-md hover:bg-muted"
-              aria-label={open ? "Fechar menu" : "Abrir menu"}
+              className="lg:hidden inline-flex size-11 min-h-11 min-w-11 items-center justify-center rounded-md text-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
+              aria-label={open ? "Fechar menu de navegação" : "Abrir menu de navegação"}
               aria-expanded={open}
+              aria-controls="mobile-nav"
             >
-              {open ? <X className="size-5" /> : <Menu className="size-5" />}
+              {open ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
             </button>
           </div>
         </div>
 
         {open && (
-          <div className="lg:hidden border-t border-border bg-background animate-fade-in">
-            <nav className="px-4 py-4 flex flex-col gap-1 max-h-[80vh] overflow-y-auto" aria-label="Navegação móvel">
+          <div id="mobile-nav" className="lg:hidden border-t border-border bg-background animate-fade-in">
+            <nav className="px-4 py-4 flex flex-col gap-1 max-h-[calc(100dvh-8rem)] overflow-y-auto" aria-label="Navegação móvel">
               {mobileNav.map((item) => (
                 <Link
                   key={item.to}
                   to={item.to}
                   onClick={() => setOpen(false)}
-                  className="px-3 py-3 rounded-md text-sm font-medium hover:bg-muted"
+                  className="px-3 py-3 min-h-11 rounded-md text-sm font-medium text-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
                   activeProps={{ className: "text-[color:var(--orange)] bg-muted" }}
                   activeOptions={{ exact: item.to === "/" }}
                 >
@@ -229,9 +244,9 @@ export function SiteHeader() {
               <Link
                 to="/denuncia"
                 onClick={() => setOpen(false)}
-                className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-4 py-3 font-semibold"
+                className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-4 py-3 min-h-11 font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
               >
-                <Phone className="size-4" /> Denunciar agora
+                <Phone className="size-4" aria-hidden /> Denunciar agora
               </Link>
             </nav>
           </div>
