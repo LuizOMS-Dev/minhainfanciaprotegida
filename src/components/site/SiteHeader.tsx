@@ -92,18 +92,18 @@ export function SiteHeader() {
             : "bg-background/60 backdrop-blur-md"
         }`}
       >
-        <div className="w-full px-5 sm:px-8 lg:px-10 h-16 grid grid-cols-[1fr_auto_1fr] items-center gap-6">
+        <div className="w-full px-3 sm:px-6 lg:px-10 h-16 flex lg:grid lg:grid-cols-[1fr_auto_1fr] items-center justify-between gap-2 sm:gap-4 lg:gap-6">
           {/* ÁREA 1 — Logo */}
-          <Link to="/" className="flex items-center gap-2.5 group shrink-0 min-w-0 justify-self-start" aria-label="Página inicial">
+          <Link to="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0 min-w-0 lg:justify-self-start" aria-label="Página inicial">
             <span className="relative inline-flex size-9 items-center justify-center rounded-full bg-gradient-orange shadow-orange shrink-0">
               <span className="absolute inset-0 rounded-full bg-[color:var(--orange)]/40 animate-ping-slow" />
               <ShieldAlert className="size-4 text-[color:var(--navy-deep)]" aria-hidden />
             </span>
-            <span className="hidden md:flex flex-col leading-tight whitespace-nowrap">
-              <span className="font-display text-[15px] font-semibold tracking-tight">
+            <span className="flex flex-col leading-tight min-w-0">
+              <span className="font-display text-[13px] sm:text-[15px] font-semibold tracking-tight truncate">
                 Infância Protegida
               </span>
-              <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+              <span className="hidden sm:block text-[10px] uppercase tracking-[0.18em] text-muted-foreground truncate">
                 Campanha Maio Laranja
               </span>
             </span>
@@ -128,15 +128,15 @@ export function SiteHeader() {
           </nav>
 
           {/* ÁREA 3 — Busca + Denunciar + Mais */}
-          <div className="flex items-center gap-2 shrink-0 justify-self-end">
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0 lg:justify-self-end">
             <GlobalSearch />
             <span
               aria-hidden
-              className="hidden sm:block w-px h-6 bg-border/80 mx-1"
+              className="hidden lg:block w-px h-6 bg-border/80 mx-1"
             />
             <Link
               to="/denuncia"
-              className="hidden sm:inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-4 py-2 text-sm font-semibold hover:opacity-95 transition shadow-sm whitespace-nowrap"
+              className="hidden md:inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-3 lg:px-4 py-2 text-xs lg:text-sm font-semibold hover:opacity-95 transition shadow-sm whitespace-nowrap"
             >
               <Phone className="size-4" aria-hidden />
               Denuncie Agora
