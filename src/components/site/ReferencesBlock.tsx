@@ -9,9 +9,6 @@ export interface Reference {
   label: string;
   url: string;
 }
-  label: string;
-  url: string;
-}
 
 interface ReferencesBlockProps {
   primary: Reference;
