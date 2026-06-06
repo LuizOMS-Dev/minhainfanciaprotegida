@@ -15,9 +15,9 @@ export const Route = createFileRoute("/faq")({
       },
       { property: "og:title", content: "FAQ — Perguntas Frequentes" },
       { property: "og:description", content: "Tire suas dúvidas sobre denúncia e proteção infantil." },
-      { property: "og:url", content: "/faq" },
+      { property: "og:url", content: "https://minhainfanciaprotegida.com.br/faq" },
     ],
-    links: [{ rel: "canonical", href: "/faq" }],
+    links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/faq" }],
     scripts: [
       {
         type: "application/ld+json",

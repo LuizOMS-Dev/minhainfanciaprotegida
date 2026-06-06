@@ -16,7 +16,7 @@ import { Timeline } from "@/components/site/Timeline";
 import { CaseActions } from "@/components/site/CaseActions";
 
 const fmt = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
-const SITE = "https://minhainfanciaprotegida.lovable.app";
+const SITE = "https://minhainfanciaprotegida.com.br";
 
 const articleQO = (slug: string) =>
   queryOptions({

@@ -23,7 +23,7 @@ export const Route = createFileRoute("/escolas")({
       },
       { property: "og:image", content: schoolImg },
     ],
-    links: [{ rel: "canonical", href: "/escolas" }],
+    links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/escolas" }],
   }),
   component: Page,
 });

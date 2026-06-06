@@ -15,9 +15,9 @@ export const Route = createFileRoute("/denuncia")({
       },
       { property: "og:title", content: "Canais Oficiais de Denúncia" },
       { property: "og:description", content: "Disque 100, 190, 192, Conselho Tutelar, MP. Ligue agora." },
-      { property: "og:url", content: "/denuncia" },
+      { property: "og:url", content: "https://minhainfanciaprotegida.com.br/denuncia" },
     ],
-    links: [{ rel: "canonical", href: "/denuncia" }],
+    links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/denuncia" }],
   }),
   component: Page,
 });

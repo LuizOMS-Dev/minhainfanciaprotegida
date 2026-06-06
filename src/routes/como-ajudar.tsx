@@ -15,9 +15,9 @@ export const Route = createFileRoute("/como-ajudar")({
       },
       { property: "og:title", content: "Como Ajudar — Acolhimento e proteção" },
       { property: "og:description", content: "Escute, acolha, não julgue, proteja, denuncie." },
-      { property: "og:url", content: "/como-ajudar" },
+      { property: "og:url", content: "https://minhainfanciaprotegida.com.br/como-ajudar" },
     ],
-    links: [{ rel: "canonical", href: "/como-ajudar" }],
+    links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/como-ajudar" }],
   }),
   component: Page,
 });

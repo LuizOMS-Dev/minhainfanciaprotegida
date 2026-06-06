@@ -44,10 +44,10 @@ export const Route = createFileRoute("/")({
         content:
           "Milhares de crianças sofrem em silêncio. Informação, atenção e denúncia salvam vidas.",
       },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: "https://minhainfanciaprotegida.com.br/" },
     ],
     links: [
-      { rel: "canonical", href: "/" },
+      { rel: "canonical", href: "https://minhainfanciaprotegida.com.br/" },
       { rel: "preload", as: "image", href: heroImg, fetchpriority: "high" },
     ],
   }),

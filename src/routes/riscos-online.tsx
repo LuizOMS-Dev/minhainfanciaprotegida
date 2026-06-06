@@ -21,7 +21,7 @@ export const Route = createFileRoute("/riscos-online")({
         content: "Guia completo sobre os principais riscos digitais para crianças e adolescentes.",
       },
     ],
-    links: [{ rel: "canonical", href: "/riscos-online" }],
+    links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/riscos-online" }],
   }),
   component: RiscosPage,
 });

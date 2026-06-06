@@ -26,7 +26,7 @@ export const Route = createFileRoute("/noticias")({
         content: "Acompanhe pesquisas, leis e mobilizações pelo direito à infância protegida.",
       },
     ],
-    links: [{ rel: "canonical", href: "/noticias" }],
+    links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/noticias" }],
   }),
   component: NoticiasPage,
 });
