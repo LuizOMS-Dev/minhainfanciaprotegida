@@ -17,7 +17,6 @@ import { Route as NoticiasRouteImport } from './routes/noticias'
 import { Route as MapaRouteImport } from './routes/mapa'
 import { Route as MaioLaranjaRouteImport } from './routes/maio-laranja'
 import { Route as LegislacaoRouteImport } from './routes/legislacao'
-import { Route as GaleriaRouteImport } from './routes/galeria'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as EscolasRouteImport } from './routes/escolas'
 import { Route as DenunciaRouteImport } from './routes/denuncia'
@@ -77,11 +76,6 @@ const MaioLaranjaRoute = MaioLaranjaRouteImport.update({
 const LegislacaoRoute = LegislacaoRouteImport.update({
   id: '/legislacao',
   path: '/legislacao',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GaleriaRoute = GaleriaRouteImport.update({
-  id: '/galeria',
-  path: '/galeria',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -199,7 +193,6 @@ export interface FileRoutesByFullPath {
   '/denuncia': typeof DenunciaRoute
   '/escolas': typeof EscolasRoute
   '/faq': typeof FaqRoute
-  '/galeria': typeof GaleriaRoute
   '/legislacao': typeof LegislacaoRoute
   '/maio-laranja': typeof MaioLaranjaRoute
   '/mapa': typeof MapaRoute
@@ -229,7 +222,6 @@ export interface FileRoutesByTo {
   '/denuncia': typeof DenunciaRoute
   '/escolas': typeof EscolasRoute
   '/faq': typeof FaqRoute
-  '/galeria': typeof GaleriaRoute
   '/legislacao': typeof LegislacaoRoute
   '/maio-laranja': typeof MaioLaranjaRoute
   '/mapa': typeof MapaRoute
@@ -260,7 +252,6 @@ export interface FileRoutesById {
   '/denuncia': typeof DenunciaRoute
   '/escolas': typeof EscolasRoute
   '/faq': typeof FaqRoute
-  '/galeria': typeof GaleriaRoute
   '/legislacao': typeof LegislacaoRoute
   '/maio-laranja': typeof MaioLaranjaRoute
   '/mapa': typeof MapaRoute
@@ -292,7 +283,6 @@ export interface FileRouteTypes {
     | '/denuncia'
     | '/escolas'
     | '/faq'
-    | '/galeria'
     | '/legislacao'
     | '/maio-laranja'
     | '/mapa'
@@ -322,7 +312,6 @@ export interface FileRouteTypes {
     | '/denuncia'
     | '/escolas'
     | '/faq'
-    | '/galeria'
     | '/legislacao'
     | '/maio-laranja'
     | '/mapa'
@@ -352,7 +341,6 @@ export interface FileRouteTypes {
     | '/denuncia'
     | '/escolas'
     | '/faq'
-    | '/galeria'
     | '/legislacao'
     | '/maio-laranja'
     | '/mapa'
@@ -384,7 +372,6 @@ export interface RootRouteChildren {
   DenunciaRoute: typeof DenunciaRoute
   EscolasRoute: typeof EscolasRoute
   FaqRoute: typeof FaqRoute
-  GaleriaRoute: typeof GaleriaRoute
   LegislacaoRoute: typeof LegislacaoRoute
   MaioLaranjaRoute: typeof MaioLaranjaRoute
   MapaRoute: typeof MapaRoute
@@ -451,13 +438,6 @@ declare module '@tanstack/react-router' {
       path: '/legislacao'
       fullPath: '/legislacao'
       preLoaderRoute: typeof LegislacaoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/galeria': {
-      id: '/galeria'
-      path: '/galeria'
-      fullPath: '/galeria'
-      preLoaderRoute: typeof GaleriaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -685,7 +665,6 @@ const rootRouteChildren: RootRouteChildren = {
   DenunciaRoute: DenunciaRoute,
   EscolasRoute: EscolasRoute,
   FaqRoute: FaqRoute,
-  GaleriaRoute: GaleriaRoute,
   LegislacaoRoute: LegislacaoRoute,
   MaioLaranjaRoute: MaioLaranjaRoute,
   MapaRoute: MapaRoute,
@@ -698,3 +677,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
