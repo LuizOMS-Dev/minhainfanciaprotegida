@@ -39,6 +39,10 @@ const ACTION_LABEL: Record<AuditActionType, string> = {
   mfa_failed: "MFA falhou",
   mfa_reset: "MFA resetado",
   admin_export: "Exportação administrativa",
+  recovery_code_generated: "Códigos de recuperação gerados",
+  recovery_code_regenerated: "Códigos de recuperação regerados",
+  recovery_code_used: "Código de recuperação utilizado",
+  csp_violation: "Violação de CSP",
 };
 
 const ACTIONS: AuditActionType[] = Object.keys(ACTION_LABEL) as AuditActionType[];
