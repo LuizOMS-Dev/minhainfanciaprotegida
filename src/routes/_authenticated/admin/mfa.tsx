@@ -42,8 +42,9 @@ function MfaPage() {
       setLoading(false);
       return;
     }
-    const verified = (data?.totp ?? []).find((f) => f.status === "verified");
-    const unverified = (data?.totp ?? []).find((f) => f.status === "unverified");
+    const totpFactors = (data?.all ?? []).filter((f) => f.factor_type === "totp");
+    const verified = totpFactors.find((f) => f.status === "verified");
+    const unverified = totpFactors.find((f) => f.status !== "verified");
     setEnrolled(verified ? { id: verified.id, createdAt: verified.created_at } : null);
     setPending(unverified ? { id: unverified.id, createdAt: unverified.created_at } : null);
     setLoading(false);
