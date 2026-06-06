@@ -55,7 +55,7 @@ export const risks: RiskItem[] = [
       "Denuncie à SaferNet (canal Helpline) e à Polícia Civil",
     ],
     legalBase: "ECA, art. 241-D — aliciar criança para fim libidinoso. Pena de 1 a 3 anos.",
-    example: "Caso \"Mineblox\" (2025) — adolescente aliciada por meio de comunidade de jogo.",
+    example: "Casos noticiados em 2025 envolvendo aliciamento de adolescentes por meio de comunidades de jogo.",
     source: {
       name: "SaferNet Brasil",
       url: "https://new.safernet.org.br/",
