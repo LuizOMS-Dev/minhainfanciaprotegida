@@ -13,10 +13,10 @@ const primaryNav = [
   { to: "/noticias", label: "Notícias" },
   { to: "/biblioteca", label: "Biblioteca" },
   { to: "/legislacao", label: "Legislação" },
-  { to: "/mapa", label: "Mapa" },
 ] as const;
 
 const moreNav = [
+  { to: "/mapa", label: "Mapa de Ajuda", desc: "Conselhos, delegacias e centros de apoio" },
   { to: "/maio-laranja", label: "Maio Laranja", desc: "Sobre a campanha 18 de maio" },
   { to: "/como-ajudar", label: "Como Ajudar", desc: "Voluntariado e mobilização" },
   { to: "/faq", label: "Perguntas Frequentes", desc: "Dúvidas comuns" },
