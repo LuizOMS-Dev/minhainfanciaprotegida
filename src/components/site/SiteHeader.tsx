@@ -73,14 +73,15 @@ export function SiteHeader() {
             : "bg-background/60 backdrop-blur-md"
         }`}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
-          <Link to="/" className="flex items-center gap-2.5 group shrink-0" aria-label="Página inicial">
+        <div className="mx-auto max-w-[1400px] w-full px-4 sm:px-6 lg:px-8 h-16 grid grid-cols-[auto_1fr_auto] items-center gap-4 lg:gap-6">
+          {/* ÁREA 1 — Logo */}
+          <Link to="/" className="flex items-center gap-2.5 group shrink-0 min-w-0" aria-label="Página inicial">
             <span className="relative inline-flex size-9 items-center justify-center rounded-full bg-gradient-orange shadow-orange shrink-0">
               <span className="absolute inset-0 rounded-full bg-[color:var(--orange)]/40 animate-ping-slow" />
               <ShieldAlert className="size-4 text-[color:var(--navy-deep)]" aria-hidden />
             </span>
-            <span className="hidden sm:flex flex-col leading-tight whitespace-nowrap">
-              <span className="font-display text-base lg:text-[17px] font-semibold tracking-tight">
+            <span className="hidden xl:flex flex-col leading-tight whitespace-nowrap">
+              <span className="font-display text-[15px] font-semibold tracking-tight">
                 Infância Protegida
               </span>
               <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
@@ -89,7 +90,11 @@ export function SiteHeader() {
             </span>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-0.5 min-w-0" aria-label="Navegação principal">
+          {/* ÁREA 2 — Menu principal */}
+          <nav
+            className="hidden lg:flex items-center justify-center gap-0.5 min-w-0 overflow-hidden"
+            aria-label="Navegação principal"
+          >
             {primaryNav.map((item) => (
               <Link
                 key={item.to}
@@ -134,7 +139,8 @@ export function SiteHeader() {
             </div>
           </nav>
 
-          <div className="flex items-center gap-2 shrink-0">
+          {/* ÁREA 3 — Busca + Denunciar */}
+          <div className="flex items-center gap-2 shrink-0 justify-self-end">
             <GlobalSearch />
             <Link
               to="/denuncia"
