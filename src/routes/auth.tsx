@@ -44,7 +44,13 @@ function AuthPage() {
       }
       navigate({ to: "/admin" });
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Erro ao autenticar");
+      // Log the real cause for debugging, but show a generic message to prevent user enumeration
+      if (e instanceof Error) console.warn("[auth] submit error:", e.message);
+      setError(
+        mode === "login"
+          ? "E-mail ou senha inválidos."
+          : "Não foi possível concluir o cadastro. Verifique o e-mail informado.",
+      );
     } finally {
       setLoading(false);
     }
