@@ -73,7 +73,7 @@ export function SiteHeader() {
             : "bg-background/60 backdrop-blur-md"
         }`}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-4 lg:gap-6">
           <Link to="/" className="flex items-center gap-2.5 group shrink-0" aria-label="Página inicial">
             <span className="relative inline-flex size-9 items-center justify-center rounded-full bg-gradient-orange shadow-orange shrink-0">
               <span className="absolute inset-0 rounded-full bg-[color:var(--orange)]/40 animate-ping-slow" />
@@ -89,12 +89,12 @@ export function SiteHeader() {
             </span>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-0.5 min-w-0" aria-label="Navegação principal">
+          <nav className="hidden lg:flex flex-1 items-center justify-center gap-0.5 min-w-0" aria-label="Navegação principal">
             {primaryNav.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
-                className="px-2 py-2 text-[13px] font-medium text-foreground/75 hover:text-foreground rounded-md hover:bg-muted transition-colors whitespace-nowrap"
+                className="px-2.5 py-2 text-[13px] font-medium text-foreground/75 hover:text-foreground rounded-md hover:bg-muted transition-colors whitespace-nowrap"
                 activeProps={{ className: "text-[color:var(--orange)] bg-muted/60" }}
                 activeOptions={{ exact: item.to === "/" }}
               >
@@ -107,7 +107,7 @@ export function SiteHeader() {
                 onClick={() => setMoreOpen((v) => !v)}
                 aria-haspopup="menu"
                 aria-expanded={moreOpen}
-                className="inline-flex items-center gap-1 px-2 py-2 text-[13px] font-medium text-foreground/75 hover:text-foreground rounded-md hover:bg-muted transition-colors whitespace-nowrap"
+                className="inline-flex items-center gap-1 px-2.5 py-2 text-[13px] font-medium text-foreground/75 hover:text-foreground rounded-md hover:bg-muted transition-colors whitespace-nowrap"
               >
                 Mais <ChevronDown className={`size-3.5 transition-transform ${moreOpen ? "rotate-180" : ""}`} aria-hidden />
               </button>
@@ -134,8 +134,10 @@ export function SiteHeader() {
             </div>
           </nav>
 
-          <div className="flex items-center gap-2 shrink-0">
+          {/* Cluster direito: busca + divisor + CTA */}
+          <div className="flex items-center gap-3 shrink-0 ml-auto lg:ml-0">
             <GlobalSearch />
+            <span aria-hidden className="hidden sm:block h-6 w-px bg-border" />
             <Link
               to="/denuncia"
               className="hidden sm:inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-4 py-2 text-sm font-semibold hover:opacity-95 transition shadow-sm whitespace-nowrap"
@@ -153,6 +155,7 @@ export function SiteHeader() {
             </button>
           </div>
         </div>
+
 
         {open && (
           <div className="lg:hidden border-t border-border bg-background animate-fade-in">
