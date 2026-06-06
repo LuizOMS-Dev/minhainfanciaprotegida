@@ -189,7 +189,7 @@ export const getSecurityOverview = createServerFn({ method: "GET" })
       admin
         .from("audit_log")
         .select("id, action, user_email, user_role, target_type, target_title, created_at")
-        .in("action", CRITICAL_ACTIONS as unknown as string[])
+        .in("action", [...CRITICAL_ACTIONS])
         .order("created_at", { ascending: false })
         .limit(15),
       admin
@@ -211,7 +211,7 @@ export const getSecurityOverview = createServerFn({ method: "GET" })
       admin
         .from("audit_log")
         .select("*", { count: "exact", head: true })
-        .in("action", CRITICAL_ACTIONS as unknown as string[])
+        .in("action", [...CRITICAL_ACTIONS])
         .gte("created_at", sinceIso(24 * 7)),
       admin
         .from("account_lockouts")
@@ -324,6 +324,3 @@ export const adminGlobalSearch = createServerFn({ method: "GET" })
       users,
     };
   });
-
-// re-export helper unused but referenced — silence linter
-void countTable;
