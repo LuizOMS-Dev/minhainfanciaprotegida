@@ -50,6 +50,32 @@ export const Route = createFileRoute("/")({
       { rel: "canonical", href: "https://minhainfanciaprotegida.com.br/" },
       { rel: "preload", as: "image", href: heroImg, fetchpriority: "high" },
     ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": "https://minhainfanciaprotegida.com.br/#homepage",
+          url: "https://minhainfanciaprotegida.com.br/",
+          name: "Infância Protegida — Maio Laranja · Campanha Nacional",
+          inLanguage: "pt-BR",
+          isPartOf: { "@id": "https://minhainfanciaprotegida.com.br/#website" },
+          about: { "@id": "https://minhainfanciaprotegida.com.br/#organization" },
+          mainEntity: { "@id": "https://minhainfanciaprotegida.com.br/#organization" },
+          primaryImageOfPage: {
+            "@type": "ImageObject",
+            url: "https://minhainfanciaprotegida.com.br/android-chrome-512x512.png",
+          },
+          mentions: [
+            { "@id": "https://minhainfanciaprotegida.com.br/#maio-laranja" },
+            { "@id": "https://minhainfanciaprotegida.com.br/#term-disque-100" },
+            { "@id": "https://minhainfanciaprotegida.com.br/#term-eca" },
+            { "@id": "https://minhainfanciaprotegida.com.br/#term-protecao-infantil" },
+          ],
+        }),
+      },
+    ],
   }),
   component: Index,
 });

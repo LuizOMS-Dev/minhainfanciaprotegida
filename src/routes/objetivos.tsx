@@ -82,6 +82,36 @@ export const Route = createFileRoute("/objetivos")({
           },
         }),
       },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify([
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Início", item: SITE_URL + "/" },
+              { "@type": "ListItem", position: 2, name: "Nossa Missão e Objetivos", item: PAGE_URL },
+            ],
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "@id": PAGE_URL + "#webpage",
+            url: PAGE_URL,
+            name: "Nossa Missão e Objetivos — Infância Protegida",
+            inLanguage: "pt-BR",
+            isPartOf: { "@id": SITE_URL + "/#website" },
+            about: { "@id": SITE_URL + "/#organization" },
+            mainEntity: { "@id": SITE_URL + "/#organization" },
+            mentions: [
+              { "@id": SITE_URL + "/#maio-laranja" },
+              { "@id": SITE_URL + "/#term-protecao-infantil" },
+              { "@id": SITE_URL + "/#term-educacao-preventiva" },
+              { "@id": SITE_URL + "/#term-disque-100" },
+            ],
+          },
+        ]),
+      },
     ],
   }),
   component: Page,

@@ -14,6 +14,13 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "../components/site/SiteHeader";
 import { SiteFooter } from "../components/site/SiteFooter";
 import { SkipLink } from "../components/site/SkipLink";
+import {
+  organizationSchema,
+  websiteSchema,
+  maioLaranjaEventSchema,
+  definedTermsSchema,
+  siteNavigationSchema,
+} from "../lib/structured-data";
 
 function NotFoundComponent() {
   return (
@@ -85,6 +92,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
       { name: "application-name", content: "Infância Protegida" },
       { name: "apple-mobile-web-app-title", content: "Infância Protegida" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { name: "format-detection", content: "telephone=yes" },
       { property: "og:site_name", content: "Infância Protegida" },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_BR" },
@@ -116,52 +127,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         type: "application/ld+json",
         children: JSON.stringify([
-          {
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            "@id": "https://minhainfanciaprotegida.com.br/#organization",
-            name: "Infância Protegida",
-            url: "https://minhainfanciaprotegida.com.br",
-            logo: "https://minhainfanciaprotegida.com.br/android-chrome-512x512.png",
-            description:
-              "Portal brasileiro de conscientização, prevenção, educação e combate ao abuso e à exploração sexual de crianças e adolescentes.",
-            areaServed: "BR",
-            knowsLanguage: "pt-BR",
-            sameAs: [
-              "https://www.gov.br/mdh/pt-br/disque100",
-              "https://www.unicef.org/brazil/",
-              "https://www.childhood.org.br/",
-              "https://new.safernet.org.br/",
-            ],
-            contactPoint: [
-              {
-                "@type": "ContactPoint",
-                contactType: "Denúncia de violações de direitos humanos",
-                telephone: "+55-100",
-                availableLanguage: ["Portuguese"],
-                areaServed: "BR",
-                description:
-                  "Disque 100 — canal federal de denúncia de violações de direitos humanos, gratuito, anônimo, 24 horas.",
-              },
-            ],
-          },
-          {
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            "@id": "https://minhainfanciaprotegida.com.br/#website",
-            url: "https://minhainfanciaprotegida.com.br",
-            name: "Infância Protegida",
-            inLanguage: "pt-BR",
-            publisher: { "@id": "https://minhainfanciaprotegida.com.br/#organization" },
-            potentialAction: {
-              "@type": "SearchAction",
-              target: {
-                "@type": "EntryPoint",
-                urlTemplate: "https://minhainfanciaprotegida.com.br/?q={search_term_string}",
-              },
-              "query-input": "required name=search_term_string",
-            },
-          },
+          organizationSchema,
+          websiteSchema,
+          maioLaranjaEventSchema,
+          definedTermsSchema,
+          siteNavigationSchema,
         ]),
       },
       // Google Analytics 4

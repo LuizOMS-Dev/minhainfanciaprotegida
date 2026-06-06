@@ -96,6 +96,35 @@ export const Route = createFileRoute("/metodologia")({
           },
         }),
       },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify([
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Início", item: SITE_URL + "/" },
+              { "@type": "ListItem", position: 2, name: "Metodologia", item: PAGE_URL },
+            ],
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "@id": PAGE_URL + "#webpage",
+            url: PAGE_URL,
+            name: "Metodologia — Infância Protegida",
+            inLanguage: "pt-BR",
+            isPartOf: { "@id": SITE_URL + "/#website" },
+            about: { "@id": SITE_URL + "/#organization" },
+            mainEntity: { "@id": SITE_URL + "/#organization" },
+            mentions: [
+              { "@id": SITE_URL + "/#maio-laranja" },
+              { "@id": SITE_URL + "/#term-eca" },
+              { "@id": SITE_URL + "/#term-protecao-infantil" },
+            ],
+          },
+        ]),
+      },
     ],
   }),
   component: Page,

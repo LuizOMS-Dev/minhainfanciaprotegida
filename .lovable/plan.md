@@ -1,224 +1,63 @@
-# Auditoria técnica + Otimização SEO avançada — Infância Protegida
+## Plano: Knowledge Graph + Schemas Semânticos + Manifest
 
-Sem alterar layout, cores, menus, responsividade ou UX. Todo o trabalho é nos
-bastidores: metadados, schema, canonicals, sitemap, robots, favicons,
-performance e acessibilidade.
+Objetivo: fortalecer a marca "Infância Protegida" como entidade reconhecível por Google Knowledge Graph, AI Overviews e LLMs (ChatGPT, Gemini, Claude, Copilot, Perplexity), além de validar o Web App Manifest e adicionar schemas de busca e navegação.
 
-Domínio canônico oficial: **https://minhainfanciaprotegida.com.br**
+### 1. Knowledge Graph — Entidade "Infância Protegida"
 
----
+Criar `src/lib/structured-data.ts` centralizando schemas reutilizáveis com `@id` consistentes (ancoragem de entidade).
 
-## 1. Correções imediatas de domínio canônico
+**Em `__root.tsx`** — expandir o JSON-LD global:
+- `Organization` ganha: `alternateName` ("Portal Infância Protegida"), `foundingDate`, `slogan` ("Informação confiável salva vidas"), `keywords` (proteção infantil, Maio Laranja, Disque 100, ECA, abuso infantil, exploração sexual infantil, direitos da criança, educação preventiva), `knowsAbout` (lista de entidades-tópico), `memberOf`/`subjectOf` referenciando Maio Laranja como `Event` recorrente.
+- Novo nó `Event` para **Maio Laranja** (`@id: .../#maio-laranja`) com `about`, `organizer` referenciando a Organization, `eventSchedule` anual.
+- Novo nó `DefinedTermSet` "Glossário Infância Protegida" com `DefinedTerm` para: Proteção Infantil, Maio Laranja, Abuso Sexual Infantil, Exploração Sexual Infantil, Direitos da Criança, Educação Preventiva, Grooming, Disque 100, ECA — cada um com `@id` próprio e `sameAs` apontando para Wikipedia/gov.br/UNICEF quando aplicável.
 
-Trocar todas as referências residuais de `minhainfanciaprotegida.lovable.app` por `minhainfanciaprotegida.com.br`:
+### 2. SiteNavigationElement Schema
 
-- `src/routes/sitemap[.]xml.ts` → `BASE_URL`
-- `public/robots.txt` → linha `Sitemap:`
-- `src/routes/casos.$slug.tsx` → constante `SITE`
-- `src/routes/noticias.$slug.tsx` → constante `SITE`
+Adicionar no `__root.tsx` (aparece em todas as páginas) um array `ItemList` de `SiteNavigationElement` mapeando as 14 entradas da navegação principal (Início, Maio Laranja, Identificar Sinais, Riscos Online, Para Pais, Para Escolas, Biblioteca, Casos Reais, Notícias, Como Ajudar, Denúncia, Legislação, Mapa de Ajuda, FAQ) — cada item com `name`, `url`, `position`.
 
-## 2. Remoção total da página "Galeria"
+### 3. SearchAction Schema (refinar)
 
-- Excluir referência em `public/llms.txt` (linha "Galeria").
-- `rg` confirma que não há rota, link interno, schema ou breadcrumb apontando para `/galeria` — só o llms.txt remanesce.
+Já existe `SearchAction` no WebSite. Vou:
+- Confirmar/ajustar a rota de busca: hoje aponta para `/?q=`. Verificar se `index.tsx` consome `?q=`; se não, ajustar para `/biblioteca?q=` (página que tem busca real) **ou** implementar leitura do `?q=` no index com redirect. Pergunto via plano: usar a busca da Biblioteca como endpoint do SearchAction.
 
-## 3. Limpeza de `src/routes/__root.tsx`
+### 4. Consistência Semântica entre páginas institucionais
 
-- Remover `og:image` / `twitter:image` da raiz (regra TanStack: leaf-only, raiz sobrescreve filhos).
-- Remover entradas duplicadas de `description`, `og:description`, `twitter:description`.
-- Manter só os defaults sitewide: charset, viewport, theme-color, robots, og:type=website, og:locale, twitter:card, author.
-- Adicionar `og:site_name`, `application-name`, `apple-mobile-web-app-title`.
-- Trocar o JSON-LD `Organization` por um array com **Organization + WebSite** (WebSite com `potentialAction` SearchAction apontando para `/?q={search_term_string}` para sitelinks searchbox).
+Em **Sobre, Objetivos, Metodologia, Fontes, Index** — adicionar nos `head().scripts`:
+- `AboutPage` / `WebPage` com `mainEntity: { @id: .../#organization }` reforçando que cada página fala da mesma entidade.
+- `BreadcrumbList` consistente.
+- `mentions` listando as entidades-tópico (Maio Laranja, ECA, Disque 100) com `@id`.
 
-## 4. Padronização do `head()` em todas as rotas-folha
+Resultado: todas as páginas institucionais referenciam o **mesmo `@id` de Organization**, sinal forte de entidade única para o Knowledge Graph.
 
-Criar um helper `src/lib/seo.ts` exportando `SITE_URL` e funções utilitárias:
+### 5. Web App Manifest — validação e ampliação
 
-```ts
-export const SITE_URL = "https://minhainfanciaprotegida.com.br";
-export function pageMeta({ path, title, description, image, type }): MetaDescriptor[]
-export function canonicalLink(path: string): LinkDescriptor
-```
+Atualizar `public/site.webmanifest`:
+- Adicionar `id: "/"`, `categories: ["education", "news", "social"]`, `orientation: "portrait-primary"`, `dir: "ltr"`.
+- Separar ícone `maskable` em entrada distinta (hoje usa o mesmo 512 — manter funcional, marcar `purpose` corretamente como `"any"` e `"maskable"`).
+- Adicionar `shortcuts` para: Denúncia, Identificar Sinais, Mapa de Ajuda, Biblioteca.
+- Adicionar `screenshots` (opcional — só se já existirem assets; caso contrário, omitir para não quebrar validação).
+- Garantir tags no `__root.tsx`: `apple-mobile-web-app-capable`, `mobile-web-app-capable`, `apple-mobile-web-app-status-bar-style`.
 
-Aplicar em cada rota o conjunto completo (title único, description 140–160, og:*, twitter:*, canonical absoluto). Rotas afetadas:
+### 6. Detalhes técnicos
 
-```text
-index, maio-laranja, sinais, riscos-online, pais, escolas,
-biblioteca, casos, noticias, como-ajudar, denuncia, legislacao,
-mapa, faq, sobre, objetivos, metodologia, fontes
-```
+**Arquivos a criar:**
+- `src/lib/structured-data.ts` — helpers `orgSchema()`, `websiteSchema()`, `navigationSchema()`, `definedTermsSchema()`, `aboutPageSchema(url, name)`, `breadcrumbSchema(items)`.
 
-Cada uma recebe palavras-chave temáticas distribuídas naturalmente
-(abuso infantil, exploração sexual, Maio Laranja, ECA, Disque 100,
-proteção infantil, segurança digital, cyberbullying, conselho tutelar,
-direitos da criança, etc.) — sem keyword stuffing.
+**Arquivos a editar:**
+- `src/routes/__root.tsx` — usar helpers; adicionar SiteNavigationElement, DefinedTermSet, Event(Maio Laranja); meta tags PWA extras.
+- `src/routes/index.tsx`, `sobre.tsx`, `objetivos.tsx`, `metodologia.tsx`, `fontes.tsx` — adicionar `AboutPage`/`WebPage` + `BreadcrumbList` referenciando `#organization`.
+- `public/site.webmanifest` — campos adicionais + shortcuts.
 
-## 5. JSON-LD por tipo de página
+**Não alterar:** identidade visual, estilo, conteúdo das páginas, navegação existente, rotas, componentes UI.
 
-- `index.tsx` → `WebPage` + reforço do `Organization`.
-- `sobre.tsx`, `objetivos.tsx`, `metodologia.tsx`, `fontes.tsx` → `AboutPage` (sobre já tem, padronizar os outros).
-- `faq.tsx` → `FAQPage` com `mainEntity` Q&A das perguntas reais da página.
-- `casos.tsx`, `noticias.tsx`, `biblioteca.tsx` → `CollectionPage` + `ItemList`.
-- `casos.$slug.tsx` e `noticias.$slug.tsx` → `Article`/`NewsArticle` com `BreadcrumbList`.
-- `pais.tsx`, `escolas.tsx` → `WebPage` com `audience` (`EducationalAudience` "Parent"/"Educator").
-- Todas as rotas-folha relevantes → `BreadcrumbList` (Início → Seção → Página).
-- `denuncia.tsx` → `WebPage` + `ContactPoint` no Organization (Disque 100).
+### 7. Relatório final (entregue após implementação)
 
-## 6. Sitemap.xml — alinhar à lista oficial
+Problemas encontrados, problemas corrigidos, melhorias SEO/E-E-A-T/IA/Knowledge Graph/performance/indexação/acessibilidade, pendências dependentes de Google/Bing, pontuação SEO antes/depois (via `seo--trigger_scan`), previsão de impacto orgânico e recomendações para 6 meses.
 
-`src/routes/sitemap[.]xml.ts`:
+### Pergunta de decisão
 
-- `BASE_URL` = domínio .com.br.
-- Adicionar `<lastmod>` (data ISO de build) em todas as entradas.
-- Confirmar lista exatamente igual ao mapeamento oficial do usuário (já está coberta; só padronizar prioridades).
-- Manter `Cache-Control` e `X-Content-Type-Options`.
-- Páginas dinâmicas (`casos/$slug`, `noticias/$slug`, `biblioteca/$slug`) — gerar dinamicamente a partir do mesmo dataset usado nas listagens.
+Para o **SearchAction**, o destino atual é `/?q={search_term_string}` mas a home não processa esse parâmetro. Devo:
+- (A) Apontar o SearchAction para `/biblioteca?q={search_term_string}` (página que já tem busca), ou
+- (B) Implementar leitura de `?q=` na home com redirect para `/biblioteca`?
 
-## 7. robots.txt
-
-```
-User-agent: *
-Allow: /
-
-# Bots de IA — permitir explicitamente
-User-agent: GPTBot
-Allow: /
-User-agent: ChatGPT-User
-Allow: /
-User-agent: Google-Extended
-Allow: /
-User-agent: PerplexityBot
-Allow: /
-User-agent: ClaudeBot
-Allow: /
-User-agent: anthropic-ai
-Allow: /
-User-agent: CCBot
-Allow: /
-User-agent: Bingbot
-Allow: /
-
-Sitemap: https://minhainfanciaprotegida.com.br/sitemap.xml
-```
-
-## 8. Favicons e identidade
-
-Adicionar em `public/`:
-
-- `favicon-16x16.png`, `favicon-32x32.png`
-- `apple-touch-icon.png` (180×180)
-- `android-chrome-192x192.png`, `android-chrome-512x512.png`
-- `site.webmanifest` com `name`, `short_name`, `theme_color`, `background_color`, ícones
-- `maskable-icon-512.png` (PWA-ready)
-
-Registrar todos em `__root.tsx > links` (rel="icon", "apple-touch-icon",
-"manifest", "mask-icon"). Imagens geradas com `imagegen` baseadas no
-escudo laranja da marca (transparente, sólido).
-
-## 9. Página 404
-
-- Em `NotFoundComponent` (root), declarar `<meta name="robots" content="noindex, follow">` via portal/effect (TanStack não roda head() no notFound; usar `useEffect` para set runtime no `<head>`).
-- Adicionar botões úteis: Início, Mapa de Ajuda, Denúncia, busca interna (`GlobalSearch` já existe — embutir).
-- Documentar que status HTTP 404 é controlado pelo runtime de SSR (Lovable retorna 200 para SPA fallback; sinalizar via meta robots).
-
-## 10. Linkagem interna semântica
-
-Criar componente `src/components/site/RelatedTopics.tsx` que renderiza um bloco "Tópicos relacionados" ao fim de cada página temática, com 3–5 links para rotas semanticamente próximas (matriz pré-definida). Exemplo:
-
-```text
-sinais ↔ pais, escolas, casos, faq, denuncia
-riscos-online ↔ pais, escolas, faq, biblioteca
-maio-laranja ↔ sobre, objetivos, sinais, como-ajudar
-```
-
-Garante "qualquer página em ≤ 3 cliques" e distribui PageRank interno
-sem mexer no header/footer já aprovados.
-
-## 11. SEO para IA generativa
-
-- Reescrever `public/llms.txt` removendo Galeria, adicionando descrições semânticas mais ricas e a frase-âncora:
-  *"Infância Protegida é um portal brasileiro de conscientização, prevenção, educação e combate ao abuso e à exploração sexual de crianças e adolescentes."*
-- Adicionar `public/llms-full.txt` (versão estendida com seções, escopo, fontes oficiais, datas de revisão).
-- Em cada rota temática, garantir 1º parágrafo com **definição clara da entidade** (padrão TL;DR — útil para snippets e citações por LLMs).
-- FAQ com `FAQPage` schema + perguntas factuais curtas (ideais para AI Overview).
-
-## 12. Performance / Core Web Vitals
-
-- `__root.tsx`: trocar `<link rel="stylesheet" Google Fonts>` por estratégia "preconnect + preload" do CSS de fonte, mantendo `display=swap` (reduz FOIT/CLS).
-- Adicionar `rel="preload" as="image"` na imagem hero do `index.tsx` (LCP candidate).
-- Validar `loading="lazy"` em todas as `<img>` fora do above-the-fold (auditoria via `rg`).
-- Adicionar `decoding="async"` e `fetchpriority` apropriado.
-- GA + Clarity já são `async`; mover Clarity para `defer` carregado após `load` se ainda atrapalhar INP.
-
-## 13. Acessibilidade (reforço)
-
-- Auditar `alt=""` x `alt="descritivo"` em todas as imagens.
-- Garantir `aria-current="page"` nos `<Link>` ativos do header (já parcial via `activeProps`).
-- Reforçar landmarks: `<main id="conteudo">` já presente; conferir `<nav aria-label>`, `<footer>` e `<header>` semânticos.
-- Skip link já existe.
-
-## 14. Open Graph & Twitter — imagens por rota
-
-Para as rotas institucionais e temáticas, garantir `og:image` específica
-(já há imagens nos heros importadas). Onde não houver imagem semanticamente
-adequada, herdar a imagem social existente (a hospedada em
-`storage.googleapis.com` que estava no root) — mas só por rota, no leaf.
-
-## 15. Verificação final
-
-- Confirmar build limpo.
-- Rodar `seo--list_findings` antes/depois e marcar fixed os que foram resolvidos.
-- Sugerir ao usuário: revalidar sitemap no Google Search Console e Bing Webmaster, registrar `llms.txt` mentalmente para auditoria periódica.
-
----
-
-## Detalhes técnicos (resumo)
-
-**Arquivos criados**
-- `src/lib/seo.ts` (helper de meta tags)
-- `src/components/site/RelatedTopics.tsx` (linkagem interna)
-- `public/favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png`,
-  `android-chrome-192x192.png`, `android-chrome-512x512.png`,
-  `maskable-icon-512.png`, `site.webmanifest`
-- `public/llms-full.txt`
-
-**Arquivos editados**
-- `src/routes/__root.tsx` (limpeza head + favicons + WebSite schema)
-- `src/routes/sitemap[.]xml.ts` (domínio + lastmod + dinâmicos)
-- `public/robots.txt` (domínio + bots IA)
-- `public/llms.txt` (remover Galeria, enriquecer)
-- Todas as rotas-folha citadas no item 4 (meta + JSON-LD por tipo)
-- `src/routes/casos.$slug.tsx`, `noticias.$slug.tsx` (domínio canônico + Article/Breadcrumb)
-
-**Não tocar**
-- `src/routeTree.gen.ts`
-- `src/integrations/supabase/*`
-- `src/components/site/SiteHeader.tsx`, `SiteFooter.tsx`, `PageHero.tsx`
-  (componentes visuais já aprovados — só adicionar `RelatedTopics` em
-  rotas, sem mexer em header/footer)
-
-## O que depende de fora
-
-Algumas coisas só dão resultado com ação no painel do Google/Bing/Cloudflare
-ou tempo de indexação — listadas no relatório final, não bloqueiam a entrega:
-
-- Verificação no Google Search Console (META tag — posso automatizar via
-  `google_search_console` se você autorizar a conexão).
-- Verificação no Bing Webmaster Tools (cadastro manual no painel).
-- Reindexação pelo Google após push do sitemap atualizado.
-- Aparecer em AI Overview / Perplexity / Gemini depende de autoridade
-  acumulada — preparamos o terreno técnico, mas o crawl/citação leva
-  semanas.
-
-## Relatório final
-
-Ao concluir, entrego um resumo com:
-
-1. Problemas encontrados (com gravidade).
-2. Problemas corrigidos (com diff resumido).
-3. Melhorias E-E-A-T aplicadas.
-4. Melhorias para IA generativa.
-5. Melhorias de performance / CWV.
-6. Cobertura de schema por página.
-7. Pendências dependentes de terceiros (Search Console, Bing, tempo).
-8. Roadmap orgânico de 6 meses (conteúdo, autoridade, backlinks, monitoramento).
+Sigo com **(A)** por padrão se você só aprovar o plano sem responder.
