@@ -13,6 +13,7 @@ import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SinaisRouteImport } from './routes/sinais'
 import { Route as RiscosOnlineRouteImport } from './routes/riscos-online'
+import { Route as RelatorioSeoRouteImport } from './routes/relatorio-seo'
 import { Route as PaisRouteImport } from './routes/pais'
 import { Route as ObjetivosRouteImport } from './routes/objetivos'
 import { Route as NoticiasRouteImport } from './routes/noticias'
@@ -60,6 +61,11 @@ const SinaisRoute = SinaisRouteImport.update({
 const RiscosOnlineRoute = RiscosOnlineRouteImport.update({
   id: '/riscos-online',
   path: '/riscos-online',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RelatorioSeoRoute = RelatorioSeoRouteImport.update({
+  id: '/relatorio-seo',
+  path: '/relatorio-seo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PaisRoute = PaisRouteImport.update({
@@ -225,6 +231,7 @@ export interface FileRoutesByFullPath {
   '/noticias': typeof NoticiasRouteWithChildren
   '/objetivos': typeof ObjetivosRoute
   '/pais': typeof PaisRoute
+  '/relatorio-seo': typeof RelatorioSeoRoute
   '/riscos-online': typeof RiscosOnlineRoute
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -258,6 +265,7 @@ export interface FileRoutesByTo {
   '/noticias': typeof NoticiasRouteWithChildren
   '/objetivos': typeof ObjetivosRoute
   '/pais': typeof PaisRoute
+  '/relatorio-seo': typeof RelatorioSeoRoute
   '/riscos-online': typeof RiscosOnlineRoute
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -292,6 +300,7 @@ export interface FileRoutesById {
   '/noticias': typeof NoticiasRouteWithChildren
   '/objetivos': typeof ObjetivosRoute
   '/pais': typeof PaisRoute
+  '/relatorio-seo': typeof RelatorioSeoRoute
   '/riscos-online': typeof RiscosOnlineRoute
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -327,6 +336,7 @@ export interface FileRouteTypes {
     | '/noticias'
     | '/objetivos'
     | '/pais'
+    | '/relatorio-seo'
     | '/riscos-online'
     | '/sinais'
     | '/sitemap.xml'
@@ -360,6 +370,7 @@ export interface FileRouteTypes {
     | '/noticias'
     | '/objetivos'
     | '/pais'
+    | '/relatorio-seo'
     | '/riscos-online'
     | '/sinais'
     | '/sitemap.xml'
@@ -393,6 +404,7 @@ export interface FileRouteTypes {
     | '/noticias'
     | '/objetivos'
     | '/pais'
+    | '/relatorio-seo'
     | '/riscos-online'
     | '/sinais'
     | '/sitemap.xml'
@@ -428,6 +440,7 @@ export interface RootRouteChildren {
   NoticiasRoute: typeof NoticiasRouteWithChildren
   ObjetivosRoute: typeof ObjetivosRoute
   PaisRoute: typeof PaisRoute
+  RelatorioSeoRoute: typeof RelatorioSeoRoute
   RiscosOnlineRoute: typeof RiscosOnlineRoute
   SinaisRoute: typeof SinaisRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -462,6 +475,13 @@ declare module '@tanstack/react-router' {
       path: '/riscos-online'
       fullPath: '/riscos-online'
       preLoaderRoute: typeof RiscosOnlineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/relatorio-seo': {
+      id: '/relatorio-seo'
+      path: '/relatorio-seo'
+      fullPath: '/relatorio-seo'
+      preLoaderRoute: typeof RelatorioSeoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pais': {
@@ -753,6 +773,7 @@ const rootRouteChildren: RootRouteChildren = {
   NoticiasRoute: NoticiasRouteWithChildren,
   ObjetivosRoute: ObjetivosRoute,
   PaisRoute: PaisRoute,
+  RelatorioSeoRoute: RelatorioSeoRoute,
   RiscosOnlineRoute: RiscosOnlineRoute,
   SinaisRoute: SinaisRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
