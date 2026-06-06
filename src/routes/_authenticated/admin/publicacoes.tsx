@@ -19,7 +19,6 @@ import {
   type AdminArticle,
 } from "@/lib/admin.functions";
 import { z } from "zod";
-import { zodValidator } from "@tanstack/zod-adapter";
 
 const tipoSchema = z.enum([
   "todos",
