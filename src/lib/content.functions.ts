@@ -23,6 +23,8 @@ export interface PublicArticleSummary {
 export interface PublicArticleDetail extends PublicArticleSummary {
   body: string | null;
   sources: { id: string; label: string; url: string; position: number }[];
+  /** Linha do tempo opcional — preenchida apenas para conteúdo estático/curado. */
+  timeline?: { date: string; text: string }[];
 }
 
 export const listPublishedArticles = createServerFn({ method: "GET" })
@@ -105,7 +107,15 @@ export const getPublishedArticle = createServerFn({ method: "GET" })
       .or(`publish_at.is.null,publish_at.lte.${nowIso}`)
       .maybeSingle();
     if (error) { console.error("[content] supabase error", error); throw new Error("Não foi possível carregar o conteúdo."); }
-    if (!row) return { article: null };
+    if (!row) {
+      // Fallback: conteúdo estático curado em src/content (casos/notícias).
+      if (data.type === "case" || data.type === "news") {
+        const { getStaticArticle } = await import("@/content/staticArticles");
+        const stat = getStaticArticle(data.type, data.slug);
+        if (stat) return { article: stat as PublicArticleDetail };
+      }
+      return { article: null };
+    }
 
     const [{ data: sources }, { data: profs }] = await Promise.all([
       supabaseAdmin

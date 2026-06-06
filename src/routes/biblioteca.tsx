@@ -1,10 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ExternalLink, FileText, Filter, Search } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { BookMarked, ExternalLink, FileText, Filter, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Reveal } from "@/components/site/Reveal";
-import { SectionHeader } from "@/components/site/SectionHeader";
+import { PageHero } from "@/components/site/PageHero";
 import { ReferencesBlock } from "@/components/site/ReferencesBlock";
 import { library, type LibraryItem } from "@/content/library";
+import heroBiblioteca from "@/assets/hero-biblioteca.jpg";
 
 export const Route = createFileRoute("/biblioteca")({
   head: () => ({
@@ -48,16 +50,13 @@ function Page() {
 
   return (
     <>
-      <section className="bg-[color:var(--navy-deep)] text-white py-20 sm:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Biblioteca digital"
-            title="Materiais oficiais para estudo e ação"
-            description="Cartilhas, leis, guias, pesquisas e estudos publicados por órgãos oficiais e organizações de referência. Tudo verificado e atualizado."
-            invert
-          />
-        </div>
-      </section>
+      <PageHero
+        image={heroBiblioteca}
+        eyebrow="Biblioteca digital"
+        icon={<BookMarked className="size-3.5 text-[color:var(--orange)]" />}
+        title="Materiais oficiais para estudo e ação"
+        description="Cartilhas, leis, guias, pesquisas e estudos publicados por órgãos oficiais e organizações de referência. Tudo verificado e atualizado."
+      />
 
       <section className="py-12 bg-background border-b border-border">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid gap-3 md:grid-cols-[1fr_auto_auto]">

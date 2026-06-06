@@ -4,7 +4,8 @@ import { Reveal } from "@/components/site/Reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { ReferencesBlock } from "@/components/site/ReferencesBlock";
 import { JsonLd, articleSchema, breadcrumb } from "@/components/site/JsonLd";
-import schoolImg from "@/assets/listening.jpg";
+import { PageHero } from "@/components/site/PageHero";
+import schoolImg from "@/assets/hero-escolas.jpg";
 
 export const Route = createFileRoute("/escolas")({
   head: () => ({
@@ -67,15 +68,13 @@ function Page() {
         }),
       ]} />
 
-      <section className="bg-gradient-orange text-[color:var(--navy-deep)] py-20 sm:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Para escolas e educadores"
-            title="A escola é a primeira porta de proteção"
-            description="Professores, gestores e profissionais da educação têm papel central — e obrigação legal — na identificação e notificação de casos de violência."
-          />
-        </div>
-      </section>
+      <PageHero
+        image={schoolImg}
+        eyebrow="Para escolas e educadores"
+        icon={<GraduationCap className="size-3.5 text-[color:var(--orange)]" />}
+        title="A escola é a primeira porta de proteção"
+        description="Professores, gestores e profissionais da educação têm papel central — e obrigação legal — na identificação e notificação de casos de violência."
+      />
 
       <section className="py-20 sm:py-28 bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
