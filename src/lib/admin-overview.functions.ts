@@ -4,6 +4,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { requireRole } from "@/lib/require-role";
+import type { AuditActionType } from "@/lib/audit.functions";
 
 export interface AdminOverview {
   articles: {
@@ -160,7 +161,7 @@ const CRITICAL_ACTIONS = [
   "mfa_disabled",
   "mfa_reset",
   "email_not_verified_login_attempt",
-];
+] as const satisfies readonly AuditActionType[];
 
 export const getSecurityOverview = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
