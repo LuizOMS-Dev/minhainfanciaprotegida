@@ -24,7 +24,15 @@ export interface PublicArticleDetail extends PublicArticleSummary {
   body: string | null;
   sources: { id: string; label: string; url: string; position: number }[];
   /** Linha do tempo opcional — preenchida apenas para conteúdo estático/curado. */
-  timeline?: { date: string; text: string }[];
+  timeline?: { date: string; text: string; title?: string }[];
+  /* Campos editoriais avançados (todos opcionais). */
+  reading_minutes?: number | null;
+  understand?: string | null;
+  lessons?: string | null;
+  faq?: { q: string; a: string }[] | null;
+  related_laws?: string[] | null;
+  related_signal_tags?: string[] | null;
+  national_context?: string[] | null;
 }
 
 export const listPublishedArticles = createServerFn({ method: "GET" })
@@ -89,6 +97,39 @@ export const listPublishedArticles = createServerFn({ method: "GET" })
     return { articles };
   });
 
+type TimelineRow = { date: string; text: string; title?: string };
+type FaqRow = { q: string; a: string };
+
+function coerceTimeline(value: unknown): TimelineRow[] | undefined {
+  if (!Array.isArray(value)) return undefined;
+  const out: TimelineRow[] = [];
+  for (const v of value) {
+    if (v && typeof v === "object") {
+      const o = v as Record<string, unknown>;
+      const date = typeof o.date === "string" ? o.date : null;
+      const text = typeof o.text === "string" ? o.text : null;
+      if (date && text) {
+        out.push({ date, text, title: typeof o.title === "string" ? o.title : undefined });
+      }
+    }
+  }
+  return out.length ? out : undefined;
+}
+
+function coerceFaq(value: unknown): FaqRow[] | undefined {
+  if (!Array.isArray(value)) return undefined;
+  const out: FaqRow[] = [];
+  for (const v of value) {
+    if (v && typeof v === "object") {
+      const o = v as Record<string, unknown>;
+      const q = typeof o.q === "string" ? o.q : null;
+      const a = typeof o.a === "string" ? o.a : null;
+      if (q && a) out.push({ q, a });
+    }
+  }
+  return out.length ? out : undefined;
+}
+
 export const getPublishedArticle = createServerFn({ method: "GET" })
   .inputValidator((input) =>
     z.object({ type: typeSchema, slug: z.string().min(1).max(200) }).parse(input),
@@ -99,7 +140,7 @@ export const getPublishedArticle = createServerFn({ method: "GET" })
     const { data: row, error } = await supabaseAdmin
       .from("articles")
       .select(
-        "id, type, slug, title, subtitle, body, category, cover_url, primary_source_label, primary_source_url, publish_at, last_verified_at, updated_at, author_id, reviewer_id, status",
+        "id, type, slug, title, subtitle, body, category, cover_url, primary_source_label, primary_source_url, publish_at, last_verified_at, updated_at, author_id, reviewer_id, status, reading_minutes, understand, lessons, timeline, faq, related_laws, related_signal_tags, national_context",
       )
       .eq("type", data.type)
       .eq("slug", data.slug)
@@ -154,6 +195,14 @@ export const getPublishedArticle = createServerFn({ method: "GET" })
         url: s.url,
         position: s.position,
       })),
+      reading_minutes: row.reading_minutes,
+      understand: row.understand,
+      lessons: row.lessons,
+      timeline: coerceTimeline(row.timeline),
+      faq: coerceFaq(row.faq) ?? null,
+      related_laws: row.related_laws,
+      related_signal_tags: row.related_signal_tags,
+      national_context: row.national_context,
     };
     return { article };
   });
@@ -241,6 +290,133 @@ export const listRelatedArticles = createServerFn({ method: "GET" })
     return { related };
   });
 
+/* ─────────── Relações editoriais e leitura cruzada ─────────── */
+
+export interface CrossArticleSummary {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string | null;
+  cover_url: string | null;
+  category: string | null;
+  publish_at: string | null;
+  updated_at: string;
+}
+
+export interface ArticleRelations {
+  /** Outras notícias relacionadas (mesma categoria ou mais recentes). */
+  relatedNews: CrossArticleSummary[];
+  /** Casos relacionados (cruzados a partir de notícias, ou siblings em casos). */
+  relatedCases: CrossArticleSummary[];
+  /** Materiais curados da biblioteca cuja categoria/audiência casa com o tema. */
+  library: {
+    slug: string;
+    title: string;
+    description: string;
+    category: string;
+    audience: string;
+    sourceOrg: string;
+    year: number;
+  }[];
+  /** Card de "Para Pais" derivado de notícias categorizadas. */
+  parents?: CrossArticleSummary | null;
+  /** Card de "Para Escolas". */
+  schools?: CrossArticleSummary | null;
+}
+
+export const getArticleRelations = createServerFn({ method: "GET" })
+  .inputValidator((input) =>
+    z
+      .object({
+        id: z.string().uuid(),
+        type: typeSchema,
+        category: z.string().nullable().optional(),
+      })
+      .parse(input),
+  )
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const nowIso = new Date().toISOString();
+    const baseSelect =
+      "id, slug, title, subtitle, cover_url, category, publish_at, updated_at";
+
+    const queryByType = async (type: "news" | "case", limit: number) => {
+      let q = supabaseAdmin
+        .from("articles")
+        .select(baseSelect)
+        .eq("type", type)
+        .eq("status", "published")
+        .neq("id", data.id)
+        .or(`publish_at.is.null,publish_at.lte.${nowIso}`)
+        .order("publish_at", { ascending: false, nullsFirst: false })
+        .limit(limit);
+      if (data.category) q = q.eq("category", data.category);
+      const { data: rows } = await q;
+      if (rows && rows.length >= limit) return rows;
+      // Fallback sem categoria
+      const { data: fillers } = await supabaseAdmin
+        .from("articles")
+        .select(baseSelect)
+        .eq("type", type)
+        .eq("status", "published")
+        .neq("id", data.id)
+        .or(`publish_at.is.null,publish_at.lte.${nowIso}`)
+        .order("publish_at", { ascending: false, nullsFirst: false })
+        .limit(limit);
+      const seen = new Set((rows ?? []).map((r) => r.id));
+      const merged = [...(rows ?? [])];
+      for (const f of fillers ?? []) {
+        if (merged.length >= limit) break;
+        if (!seen.has(f.id)) merged.push(f);
+      }
+      return merged;
+    };
+
+    const wantNews = data.type === "case" ? 3 : 3;
+    const wantCases = data.type === "news" ? 3 : 3;
+
+    const [news, cases, lib] = await Promise.all([
+      queryByType("news", wantNews),
+      queryByType("case", wantCases),
+      supabaseAdmin
+        .from("library_items")
+        .select("id, title, description, category, audience, source_org, year, file_url, updated_at")
+        .order("year", { ascending: false })
+        .limit(60),
+    ]);
+
+    // Cruza biblioteca por categoria do artigo, se houver
+    const libraryItems = (lib.data ?? [])
+      .filter((it) =>
+        data.category
+          ? it.category?.toLowerCase().includes(data.category.toLowerCase()) ||
+            it.audience?.toLowerCase().includes(data.category.toLowerCase())
+          : true,
+      )
+      .slice(0, 4)
+      .map((it) => ({
+        slug: it.id, // biblioteca pública navega por id; mapeada no consumidor
+        title: it.title,
+        description: it.description ?? "",
+        category: it.category,
+        audience: it.audience,
+        sourceOrg: it.source_org,
+        year: it.year,
+      }));
+
+    return {
+      relatedNews: data.type === "news"
+        ? news.filter((n) => n.id !== data.id) as CrossArticleSummary[]
+        : news as CrossArticleSummary[],
+      relatedCases: data.type === "case"
+        ? cases.filter((c) => c.id !== data.id) as CrossArticleSummary[]
+        : cases as CrossArticleSummary[],
+      library: libraryItems,
+      parents: (news[0] ?? null) as CrossArticleSummary | null,
+      schools: (news[1] ?? null) as CrossArticleSummary | null,
+    } satisfies ArticleRelations;
+  });
+
 export const getArticleSiblings = createServerFn({ method: "GET" })
   .inputValidator((input) =>
     z
@@ -295,4 +471,3 @@ export const listAllPublishedForSitemap = createServerFn({ method: "GET" }).hand
   ]);
   return { articles: articles ?? [], libraryItems: libs ?? [] };
 });
-
