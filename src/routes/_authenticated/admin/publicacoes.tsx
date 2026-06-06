@@ -121,7 +121,7 @@ function PublicacoesPage() {
 
   function setSearch(patch: Partial<z.infer<typeof searchSchema>>) {
     navigate({
-      search: (prev) => ({ ...prev, ...patch }),
+      search: (prev: z.infer<typeof searchSchema>) => ({ ...prev, ...patch }),
       replace: true,
     });
   }
