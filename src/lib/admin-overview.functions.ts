@@ -36,17 +36,6 @@ export interface RecentActivityItem {
 const sinceIso = (hours: number) =>
   new Date(Date.now() - hours * 3_600_000).toISOString();
 
-async function countTable(
-  client: Awaited<ReturnType<typeof loadAdmin>>,
-  table: string,
-  modifier?: (q: ReturnType<typeof client.from>["select"]) => unknown,
-): Promise<number> {
-  // simple count helper – not used (kept inline below for type-safety).
-  void modifier;
-  const { count } = await (client.from(table) as any)
-    .select("*", { count: "exact", head: true });
-  return count ?? 0;
-}
 async function loadAdmin() {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   return supabaseAdmin;
