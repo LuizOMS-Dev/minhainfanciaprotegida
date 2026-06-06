@@ -21,6 +21,36 @@ export const Route = createFileRoute("/fontes")({
       { property: "og:image", content: heroImg },
     ],
     links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/fontes" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify([
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Início", item: "https://minhainfanciaprotegida.com.br/" },
+              { "@type": "ListItem", position: 2, name: "Fontes Utilizadas", item: "https://minhainfanciaprotegida.com.br/fontes" },
+            ],
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "@id": "https://minhainfanciaprotegida.com.br/fontes#webpage",
+            url: "https://minhainfanciaprotegida.com.br/fontes",
+            name: "Fontes Utilizadas — Infância Protegida",
+            inLanguage: "pt-BR",
+            isPartOf: { "@id": "https://minhainfanciaprotegida.com.br/#website" },
+            about: { "@id": "https://minhainfanciaprotegida.com.br/#organization" },
+            publisher: { "@id": "https://minhainfanciaprotegida.com.br/#organization" },
+            mentions: [
+              { "@id": "https://minhainfanciaprotegida.com.br/#term-eca" },
+              { "@id": "https://minhainfanciaprotegida.com.br/#term-disque-100" },
+            ],
+          },
+        ]),
+      },
+    ],
   }),
   component: Page,
 });
