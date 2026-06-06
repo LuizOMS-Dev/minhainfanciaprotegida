@@ -4,7 +4,9 @@ import { useMemo, useState } from "react";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { ReferencesBlock } from "@/components/site/ReferencesBlock";
+import { PageHero } from "@/components/site/PageHero";
 import { helpLocations, ufList, type HelpType } from "@/content/helpLocations";
+import heroMapa from "@/assets/hero-mapa.jpg";
 
 export const Route = createFileRoute("/mapa")({
   head: () => ({
@@ -47,29 +49,14 @@ function Page() {
 
   return (
     <>
-      <section className="relative isolate overflow-hidden bg-[color:var(--navy-deep)] text-white py-20 sm:py-28">
-        <div className="absolute inset-0 opacity-20" aria-hidden>
-          <div className="absolute top-0 right-0 size-[24rem] rounded-full bg-[color:var(--orange)] blur-3xl" />
-        </div>
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em]">
-              <MapPin className="size-3.5 text-[color:var(--orange)]" /> Mapa de ajuda
-            </span>
-          </Reveal>
-          <Reveal delay={120}>
-            <h1 className="mt-6 font-display text-5xl sm:text-6xl font-semibold leading-tight text-balance">
-              Encontre quem pode ajudar perto de você
-            </h1>
-          </Reveal>
-          <Reveal delay={220}>
-            <p className="mt-6 text-lg text-white/85 max-w-2xl">
-              Selecione o estado ou pesquise por cidade para localizar Conselhos Tutelares,
-              delegacias especializadas e centros de apoio.
-            </p>
-          </Reveal>
-        </div>
-      </section>
+      <PageHero
+        image={heroMapa}
+        eyebrow="Mapa de ajuda"
+        icon={<MapPin className="size-3.5 text-[color:var(--orange)]" />}
+        title="Encontre quem pode ajudar perto de você"
+        description="Selecione o estado ou pesquise por cidade para localizar Conselhos Tutelares, delegacias especializadas e centros de apoio."
+        tall
+      />
 
       <section className="py-12 bg-background border-b border-border">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 grid gap-3 sm:grid-cols-[160px_1fr]">

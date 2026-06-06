@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { BookMarked, ExternalLink, Gavel, Scale } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
+import { PageHero } from "@/components/site/PageHero";
+import heroLegislacao from "@/assets/hero-legislacao.jpg";
 
 export const Route = createFileRoute("/legislacao")({
   head: () => ({
@@ -83,29 +85,14 @@ const articles = [
 function Page() {
   return (
     <>
-      <section className="relative isolate overflow-hidden bg-[color:var(--navy-deep)] text-white py-20 sm:py-28">
-        <div className="absolute inset-0 opacity-10" aria-hidden>
-          <div className="absolute -top-32 left-1/4 size-[28rem] rounded-full bg-[color:var(--orange)] blur-3xl" />
-        </div>
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em]">
-              <Scale className="size-3.5 text-[color:var(--orange)]" /> Legislação brasileira
-            </span>
-          </Reveal>
-          <Reveal delay={120}>
-            <h1 className="mt-6 font-display text-5xl sm:text-6xl lg:text-7xl font-semibold leading-tight text-balance">
-              A lei protege. Conheça e exija que seja cumprida.
-            </h1>
-          </Reveal>
-          <Reveal delay={220}>
-            <p className="mt-6 text-lg text-white/85 max-w-2xl">
-              O Brasil tem uma das legislações mais avançadas do mundo para a proteção da infância.
-              Conheça os principais artigos.
-            </p>
-          </Reveal>
-        </div>
-      </section>
+      <PageHero
+        image={heroLegislacao}
+        eyebrow="Legislação brasileira"
+        icon={<Scale className="size-3.5 text-[color:var(--orange)]" />}
+        title="A lei protege. Conheça e exija que seja cumprida."
+        description="O Brasil tem uma das legislações mais avançadas do mundo para a proteção da infância. Conheça os principais artigos."
+        tall
+      />
 
       <section className="py-20 sm:py-28 bg-background">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
