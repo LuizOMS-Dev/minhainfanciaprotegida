@@ -84,7 +84,7 @@ function PublicacoesPage() {
   const qc = useQueryClient();
   const navigate = useNavigate({ from: "/admin/publicacoes" });
   const search = Route.useSearch();
-  const tipo = search.tipo ?? "todos";
+  const tipo = (search.tipo ?? "todos") as keyof typeof TIPO_MAP;
   const status = search.status ?? "all";
   const q = search.q ?? "";
 
