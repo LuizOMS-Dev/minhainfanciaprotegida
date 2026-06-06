@@ -14,6 +14,13 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "../components/site/SiteHeader";
 import { SiteFooter } from "../components/site/SiteFooter";
 import { SkipLink } from "../components/site/SkipLink";
+import {
+  organizationSchema,
+  websiteSchema,
+  maioLaranjaEventSchema,
+  definedTermsSchema,
+  siteNavigationSchema,
+} from "../lib/structured-data";
 
 function NotFoundComponent() {
   return (
