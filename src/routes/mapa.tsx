@@ -36,16 +36,26 @@ const typeMeta: Record<HelpType, { label: string; icon: typeof Shield }> = {
 
 function Page() {
   const [uf, setUf] = useState<string>("");
+  const [city, setCity] = useState<string>("");
   const [q, setQ] = useState("");
+
+  const cities = useMemo(() => {
+    const set = new Set<string>();
+    helpLocations.forEach((l) => {
+      if (!uf || l.state === uf) set.add(l.city);
+    });
+    return Array.from(set).sort((a, b) => a.localeCompare(b, "pt-BR"));
+  }, [uf]);
 
   const list = useMemo(() => {
     return helpLocations.filter((l) => {
       if (uf && l.state !== uf && l.state !== "BR") return false;
+      if (city && l.city !== city && l.state !== "BR") return false;
       if (!q.trim()) return true;
       const s = `${l.name} ${l.city} ${l.address ?? ""}`.toLowerCase();
       return s.includes(q.trim().toLowerCase());
     });
-  }, [uf, q]);
+  }, [uf, city, q]);
 
   return (
     <>
@@ -59,17 +69,29 @@ function Page() {
       />
 
       <section className="py-12 bg-background border-b border-border">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 grid gap-3 sm:grid-cols-[160px_1fr]">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 grid gap-3 sm:grid-cols-[140px_200px_1fr]">
           <div className="flex items-center gap-2 rounded-full bg-card border border-border px-4 py-3">
             <label htmlFor="uf" className="sr-only">Estado</label>
             <select
               id="uf"
               value={uf}
-              onChange={(e) => setUf(e.target.value)}
+              onChange={(e) => { setUf(e.target.value); setCity(""); }}
               className="w-full bg-transparent text-sm focus:outline-none"
             >
               <option value="">Todos os estados</option>
               {ufList.map((u) => <option key={u} value={u}>{u}</option>)}
+            </select>
+          </div>
+          <div className="flex items-center gap-2 rounded-full bg-card border border-border px-4 py-3">
+            <label htmlFor="city" className="sr-only">Cidade</label>
+            <select
+              id="city"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              className="w-full bg-transparent text-sm focus:outline-none"
+            >
+              <option value="">Todas as cidades</option>
+              {cities.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
           <div className="relative">
@@ -78,12 +100,16 @@ function Page() {
               type="search"
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Buscar cidade, nome ou endereço"
+              placeholder="Buscar nome, endereço ou serviço"
               className="w-full rounded-full bg-card border border-border pl-11 pr-4 py-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
             />
           </div>
         </div>
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 mt-3 text-xs text-muted-foreground">
+          {list.length} {list.length === 1 ? "serviço encontrado" : "serviços encontrados"}
+        </div>
       </section>
+
 
       <section className="py-16 bg-background">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
