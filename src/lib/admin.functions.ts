@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { requireRole } from "@/lib/require-role";
+import { sanitizeArticleHtml } from "@/lib/sanitize-html";
 
 const articleTypeSchema = z.enum(["news", "case", "risk", "guide"]);
 const statusSchema = z.enum(["draft", "review", "scheduled", "published", "archived"]);
@@ -102,6 +103,7 @@ export const upsertAdminArticle = createServerFn({ method: "POST" })
     const { sources, ...rest } = data;
     const payload = {
       ...rest,
+      body: rest.body == null ? rest.body : sanitizeArticleHtml(rest.body),
       cover_url: rest.cover_url || null,
       primary_source_url: rest.primary_source_url || null,
       publish_at: rest.publish_at || null,

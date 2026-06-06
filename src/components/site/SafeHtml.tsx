@@ -1,11 +1,11 @@
-import DOMPurify from "dompurify";
 import { useMemo } from "react";
+import { sanitizeArticleHtml } from "@/lib/sanitize-html";
 
 /**
- * Renderiza HTML salvo pelo editor de admin com sanitização.
- * - Em SSR (sem window) confia no HTML pois o editor já sanitiza ao salvar.
- * - Em CSR aplica DOMPurify como defesa em profundidade.
- * - Compatível com body legado em texto puro (sem tags) — converte em <p>.
+ * Renderiza HTML salvo pelo editor de admin com sanitização ISOMÓRFICA
+ * (sanitize-html) — funciona idêntico em SSR e no browser. Defesa em
+ * profundidade contra XSS persistido caso conteúdo malicioso entre na base.
+ * Compatível com bodies legados em texto puro (sem tags).
  */
 export function SafeHtml({ html, className }: { html: string; className?: string }) {
   const clean = useMemo(() => {
@@ -18,17 +18,7 @@ export function SafeHtml({ html, className }: { html: string; className?: string
           .replace(/>/g, "&gt;")
           .replace(/\n\n+/g, "</p><p>")
           .replace(/\n/g, "<br />")}</p>`;
-
-    if (typeof window === "undefined") return normalized;
-    return DOMPurify.sanitize(normalized, {
-      ALLOWED_TAGS: [
-        "p", "br", "strong", "em", "u", "s", "code", "pre", "blockquote",
-        "h1", "h2", "h3", "h4", "ul", "ol", "li", "a", "img", "hr",
-        "figure", "figcaption", "iframe",
-      ],
-      ALLOWED_ATTR: ["href", "target", "rel", "src", "alt", "title", "width", "height", "allowfullscreen", "frameborder"],
-      ALLOWED_URI_REGEXP: /^(?:https?:|mailto:|tel:|\/)/i,
-    });
+    return sanitizeArticleHtml(normalized);
   }, [html]);
 
   return <div className={className} dangerouslySetInnerHTML={{ __html: clean }} />;
