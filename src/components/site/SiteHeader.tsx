@@ -150,7 +150,7 @@ export function SiteHeader() {
               className="hidden sm:inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-4 py-2 text-sm font-semibold hover:opacity-95 transition shadow-sm whitespace-nowrap"
             >
               <Phone className="size-4" aria-hidden />
-              Denunciar
+              Denuncie Agora
             </Link>
             <button
               onClick={() => setOpen((v) => !v)}
