@@ -16,10 +16,13 @@ const primaryNav = [
 ] as const;
 
 const moreNav = [
-  { to: "/mapa", label: "Mapa de Ajuda", desc: "Conselhos, delegacias e centros de apoio" },
   { to: "/maio-laranja", label: "Maio Laranja", desc: "Sobre a campanha 18 de maio" },
-  { to: "/como-ajudar", label: "Como Ajudar", desc: "Voluntariado e mobilização" },
-  { to: "/faq", label: "Perguntas Frequentes", desc: "Dúvidas comuns" },
+  { to: "/mapa", label: "Mapa de Ajuda", desc: "Conselhos, delegacias e centros de apoio" },
+  { to: "/faq", label: "Perguntas Frequentes", desc: "Dúvidas comuns sobre denúncia e proteção" },
+  { to: "/sobre", label: "Sobre o Projeto", desc: "Quem somos e por que existimos" },
+  { to: "/objetivos", label: "Objetivos", desc: "Missão e metas da campanha" },
+  { to: "/metodologia", label: "Metodologia", desc: "Como produzimos o conteúdo" },
+  { to: "/fontes", label: "Fontes Utilizadas", desc: "Referências oficiais consultadas" },
 ] as const;
 
 const mobileNav = [...primaryNav, ...moreNav.map((m) => ({ to: m.to, label: m.label }))] as const;
