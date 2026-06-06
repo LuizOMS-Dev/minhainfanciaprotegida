@@ -177,26 +177,17 @@ export function GlobalSearch() {
 
   return (
     <>
+      {/* Botão único, ícone redondo — consistente em todos os breakpoints */}
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="hidden md:inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted transition-colors"
+        className="inline-flex size-10 items-center justify-center rounded-full border border-border bg-card/80 text-foreground/70 hover:text-foreground hover:bg-muted transition-colors"
         aria-label="Abrir busca global (Ctrl+K)"
+        title="Buscar no site (⌘K)"
       >
-        <Search className="size-3.5" aria-hidden />
-        Buscar no site
-        <kbd className="ml-1 hidden lg:inline rounded border border-border bg-background/70 px-1.5 py-0.5 text-[10px] font-mono text-foreground/70">
-          ⌘K
-        </kbd>
+        <Search className="size-4" aria-hidden />
       </button>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="md:hidden inline-flex size-10 items-center justify-center rounded-md hover:bg-muted"
-        aria-label="Abrir busca"
-      >
-        <Search className="size-5" />
-      </button>
+
 
       {open && (
         <div
