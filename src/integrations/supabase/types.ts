@@ -417,6 +417,10 @@ export type Database = {
         | "mfa_failed"
         | "mfa_reset"
         | "admin_export"
+        | "recovery_code_generated"
+        | "recovery_code_used"
+        | "recovery_code_regenerated"
+        | "csp_violation"
       help_type:
         | "conselho_tutelar"
         | "delegacia"
@@ -585,6 +589,10 @@ export const Constants = {
         "mfa_failed",
         "mfa_reset",
         "admin_export",
+        "recovery_code_generated",
+        "recovery_code_used",
+        "recovery_code_regenerated",
+        "csp_violation",
       ],
       help_type: [
         "conselho_tutelar",
