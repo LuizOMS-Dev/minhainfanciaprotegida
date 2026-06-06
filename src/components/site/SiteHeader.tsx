@@ -13,14 +13,15 @@ const primaryNav = [
   { to: "/noticias", label: "Notícias" },
   { to: "/biblioteca", label: "Biblioteca" },
   { to: "/legislacao", label: "Legislação" },
-  { to: "/mapa", label: "Mapa" },
 ] as const;
 
 const moreNav = [
-  { to: "/faq", label: "Perguntas Frequentes", desc: "Dúvidas comuns sobre proteção infantil" },
-  { to: "/maio-laranja", label: "Sobre o Projeto", desc: "Campanha 18 de maio e nossa missão" },
-  { to: "/como-ajudar", label: "Como Ajudar", desc: "Voluntariado, doação e mobilização" },
-  { to: "/biblioteca", label: "Fontes & Metodologia", desc: "Referências, leis e materiais oficiais" },
+  { to: "/mapa", label: "Mapa de Ajuda", desc: "Conselhos Tutelares, delegacias e centros de apoio" },
+  { to: "/faq", label: "FAQ", desc: "Perguntas frequentes sobre proteção infantil" },
+  { to: "/sobre", label: "Sobre o Projeto", desc: "Missão, propósito e quem somos" },
+  { to: "/objetivos", label: "Objetivos", desc: "O que buscamos com este portal" },
+  { to: "/metodologia", label: "Metodologia", desc: "Como apuramos e verificamos o conteúdo" },
+  { to: "/fontes", label: "Fontes Utilizadas", desc: "Referências oficiais e instituições" },
 ] as const;
 
 const mobileNav = [...primaryNav, ...moreNav.map((m) => ({ to: m.to, label: m.label }))] as const;

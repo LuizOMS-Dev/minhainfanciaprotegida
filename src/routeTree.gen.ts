@@ -9,14 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SinaisRouteImport } from './routes/sinais'
 import { Route as RiscosOnlineRouteImport } from './routes/riscos-online'
 import { Route as PaisRouteImport } from './routes/pais'
+import { Route as ObjetivosRouteImport } from './routes/objetivos'
 import { Route as NoticiasRouteImport } from './routes/noticias'
+import { Route as MetodologiaRouteImport } from './routes/metodologia'
 import { Route as MapaRouteImport } from './routes/mapa'
 import { Route as MaioLaranjaRouteImport } from './routes/maio-laranja'
 import { Route as LegislacaoRouteImport } from './routes/legislacao'
+import { Route as FontesRouteImport } from './routes/fontes'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as EscolasRouteImport } from './routes/escolas'
 import { Route as DenunciaRouteImport } from './routes/denuncia'
@@ -38,6 +42,11 @@ import { Route as AuthenticatedAdminMapaIdRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAdminBibliotecaIdRouteImport } from './routes/_authenticated/admin/biblioteca/$id'
 import { Route as AuthenticatedAdminArticleIdRouteImport } from './routes/_authenticated/admin/article.$id'
 
+const SobreRoute = SobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -58,9 +67,19 @@ const PaisRoute = PaisRouteImport.update({
   path: '/pais',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ObjetivosRoute = ObjetivosRouteImport.update({
+  id: '/objetivos',
+  path: '/objetivos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NoticiasRoute = NoticiasRouteImport.update({
   id: '/noticias',
   path: '/noticias',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MetodologiaRoute = MetodologiaRouteImport.update({
+  id: '/metodologia',
+  path: '/metodologia',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MapaRoute = MapaRouteImport.update({
@@ -76,6 +95,11 @@ const MaioLaranjaRoute = MaioLaranjaRouteImport.update({
 const LegislacaoRoute = LegislacaoRouteImport.update({
   id: '/legislacao',
   path: '/legislacao',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FontesRoute = FontesRouteImport.update({
+  id: '/fontes',
+  path: '/fontes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -193,14 +217,18 @@ export interface FileRoutesByFullPath {
   '/denuncia': typeof DenunciaRoute
   '/escolas': typeof EscolasRoute
   '/faq': typeof FaqRoute
+  '/fontes': typeof FontesRoute
   '/legislacao': typeof LegislacaoRoute
   '/maio-laranja': typeof MaioLaranjaRoute
   '/mapa': typeof MapaRoute
+  '/metodologia': typeof MetodologiaRoute
   '/noticias': typeof NoticiasRouteWithChildren
+  '/objetivos': typeof ObjetivosRoute
   '/pais': typeof PaisRoute
   '/riscos-online': typeof RiscosOnlineRoute
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/sobre': typeof SobreRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
@@ -222,14 +250,18 @@ export interface FileRoutesByTo {
   '/denuncia': typeof DenunciaRoute
   '/escolas': typeof EscolasRoute
   '/faq': typeof FaqRoute
+  '/fontes': typeof FontesRoute
   '/legislacao': typeof LegislacaoRoute
   '/maio-laranja': typeof MaioLaranjaRoute
   '/mapa': typeof MapaRoute
+  '/metodologia': typeof MetodologiaRoute
   '/noticias': typeof NoticiasRouteWithChildren
+  '/objetivos': typeof ObjetivosRoute
   '/pais': typeof PaisRoute
   '/riscos-online': typeof RiscosOnlineRoute
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/sobre': typeof SobreRoute
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
@@ -252,14 +284,18 @@ export interface FileRoutesById {
   '/denuncia': typeof DenunciaRoute
   '/escolas': typeof EscolasRoute
   '/faq': typeof FaqRoute
+  '/fontes': typeof FontesRoute
   '/legislacao': typeof LegislacaoRoute
   '/maio-laranja': typeof MaioLaranjaRoute
   '/mapa': typeof MapaRoute
+  '/metodologia': typeof MetodologiaRoute
   '/noticias': typeof NoticiasRouteWithChildren
+  '/objetivos': typeof ObjetivosRoute
   '/pais': typeof PaisRoute
   '/riscos-online': typeof RiscosOnlineRoute
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/sobre': typeof SobreRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
@@ -283,14 +319,18 @@ export interface FileRouteTypes {
     | '/denuncia'
     | '/escolas'
     | '/faq'
+    | '/fontes'
     | '/legislacao'
     | '/maio-laranja'
     | '/mapa'
+    | '/metodologia'
     | '/noticias'
+    | '/objetivos'
     | '/pais'
     | '/riscos-online'
     | '/sinais'
     | '/sitemap.xml'
+    | '/sobre'
     | '/admin'
     | '/biblioteca/$slug'
     | '/casos/$slug'
@@ -312,14 +352,18 @@ export interface FileRouteTypes {
     | '/denuncia'
     | '/escolas'
     | '/faq'
+    | '/fontes'
     | '/legislacao'
     | '/maio-laranja'
     | '/mapa'
+    | '/metodologia'
     | '/noticias'
+    | '/objetivos'
     | '/pais'
     | '/riscos-online'
     | '/sinais'
     | '/sitemap.xml'
+    | '/sobre'
     | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
@@ -341,14 +385,18 @@ export interface FileRouteTypes {
     | '/denuncia'
     | '/escolas'
     | '/faq'
+    | '/fontes'
     | '/legislacao'
     | '/maio-laranja'
     | '/mapa'
+    | '/metodologia'
     | '/noticias'
+    | '/objetivos'
     | '/pais'
     | '/riscos-online'
     | '/sinais'
     | '/sitemap.xml'
+    | '/sobre'
     | '/_authenticated/admin'
     | '/biblioteca/$slug'
     | '/casos/$slug'
@@ -372,18 +420,29 @@ export interface RootRouteChildren {
   DenunciaRoute: typeof DenunciaRoute
   EscolasRoute: typeof EscolasRoute
   FaqRoute: typeof FaqRoute
+  FontesRoute: typeof FontesRoute
   LegislacaoRoute: typeof LegislacaoRoute
   MaioLaranjaRoute: typeof MaioLaranjaRoute
   MapaRoute: typeof MapaRoute
+  MetodologiaRoute: typeof MetodologiaRoute
   NoticiasRoute: typeof NoticiasRouteWithChildren
+  ObjetivosRoute: typeof ObjetivosRoute
   PaisRoute: typeof PaisRoute
   RiscosOnlineRoute: typeof RiscosOnlineRoute
   SinaisRoute: typeof SinaisRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  SobreRoute: typeof SobreRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sobre': {
+      id: '/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -412,11 +471,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PaisRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/objetivos': {
+      id: '/objetivos'
+      path: '/objetivos'
+      fullPath: '/objetivos'
+      preLoaderRoute: typeof ObjetivosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/noticias': {
       id: '/noticias'
       path: '/noticias'
       fullPath: '/noticias'
       preLoaderRoute: typeof NoticiasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/metodologia': {
+      id: '/metodologia'
+      path: '/metodologia'
+      fullPath: '/metodologia'
+      preLoaderRoute: typeof MetodologiaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mapa': {
@@ -438,6 +511,13 @@ declare module '@tanstack/react-router' {
       path: '/legislacao'
       fullPath: '/legislacao'
       preLoaderRoute: typeof LegislacaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fontes': {
+      id: '/fontes'
+      path: '/fontes'
+      fullPath: '/fontes'
+      preLoaderRoute: typeof FontesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -665,14 +745,18 @@ const rootRouteChildren: RootRouteChildren = {
   DenunciaRoute: DenunciaRoute,
   EscolasRoute: EscolasRoute,
   FaqRoute: FaqRoute,
+  FontesRoute: FontesRoute,
   LegislacaoRoute: LegislacaoRoute,
   MaioLaranjaRoute: MaioLaranjaRoute,
   MapaRoute: MapaRoute,
+  MetodologiaRoute: MetodologiaRoute,
   NoticiasRoute: NoticiasRouteWithChildren,
+  ObjetivosRoute: ObjetivosRoute,
   PaisRoute: PaisRoute,
   RiscosOnlineRoute: RiscosOnlineRoute,
   SinaisRoute: SinaisRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  SobreRoute: SobreRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
