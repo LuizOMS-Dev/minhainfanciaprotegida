@@ -257,6 +257,150 @@ function MfaPage() {
           </div>
         </form>
       )}
+
+      <RecoveryCodesSection />
     </section>
+  );
+}
+
+function RecoveryCodesSection() {
+  const getStatus = useServerFn(
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    require("@/lib/recovery-codes.functions").getRecoveryCodesStatus,
+  );
+  const generate = useServerFn(
+    require("@/lib/recovery-codes.functions").generateRecoveryCodes,
+  );
+  const [status, setStatus] = useState<{
+    total: number;
+    remaining: number;
+    used: number;
+    generatedAt: string | null;
+  } | null>(null);
+  const [codes, setCodes] = useState<string[] | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  useEffect(() => {
+    getStatus().then(setStatus).catch((e: Error) => setErr(e.message));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function handleGenerate() {
+    const msg = status && status.total > 0
+      ? "Regerar códigos invalida TODOS os códigos antigos. Continuar?"
+      : "Gerar 10 códigos de recuperação? Eles serão exibidos apenas uma vez.";
+    if (!window.confirm(msg)) return;
+    setBusy(true);
+    setErr(null);
+    try {
+      const res = await generate();
+      setCodes(res.codes);
+      const s = await getStatus();
+      setStatus(s);
+    } catch (e) {
+      setErr((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function copyAll() {
+    if (!codes) return;
+    navigator.clipboard.writeText(codes.join("\n")).catch(() => {});
+  }
+
+  function downloadTxt() {
+    if (!codes) return;
+    const blob = new Blob(
+      [
+        "Infância Protegida — Códigos de recuperação de MFA\n",
+        "Guarde estes códigos em local seguro. Eles serão exibidos apenas uma vez.\n",
+        "Cada código pode ser utilizado apenas uma vez.\n\n",
+        ...codes.map((c, i) => `${(i + 1).toString().padStart(2, "0")}. ${c}\n`),
+      ],
+      { type: "text/plain;charset=utf-8" },
+    );
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "recovery-codes.txt";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  return (
+    <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
+      <h3 className="font-display text-lg font-semibold">Códigos de recuperação</h3>
+      <p className="text-sm text-muted-foreground">
+        Use estes códigos para recuperar o acesso caso perca o celular ou o aplicativo
+        autenticador. Cada código pode ser usado apenas uma vez.
+      </p>
+
+      {err && (
+        <div className="rounded-xl border border-[color:var(--red-inst)]/30 bg-[color:var(--red-inst)]/5 px-4 py-3 text-sm text-[color:var(--red-inst)]">
+          {err}
+        </div>
+      )}
+
+      {status && (
+        <p className="text-sm">
+          {status.total === 0
+            ? "Nenhum código gerado."
+            : `${status.remaining} de ${status.total} códigos restantes${
+                status.generatedAt
+                  ? ` (gerados em ${new Date(status.generatedAt).toLocaleString("pt-BR")})`
+                  : ""
+              }.`}
+        </p>
+      )}
+
+      {codes && (
+        <div className="rounded-xl border border-amber-300 bg-amber-50 p-4">
+          <p className="text-sm font-semibold text-amber-900">
+            Guarde estes códigos em local seguro. Eles serão exibidos apenas uma vez.
+          </p>
+          <ul className="mt-3 grid grid-cols-2 gap-2 font-mono text-sm">
+            {codes.map((c) => (
+              <li key={c} className="rounded-lg bg-white px-3 py-2 border border-amber-200">
+                {c}
+              </li>
+            ))}
+          </ul>
+          <div className="mt-3 flex gap-2">
+            <button
+              type="button"
+              onClick={copyAll}
+              className="rounded-full border border-amber-400 px-3 py-1.5 text-xs font-semibold text-amber-900"
+            >
+              Copiar todos
+            </button>
+            <button
+              type="button"
+              onClick={downloadTxt}
+              className="rounded-full border border-amber-400 px-3 py-1.5 text-xs font-semibold text-amber-900"
+            >
+              Baixar .txt
+            </button>
+            <button
+              type="button"
+              onClick={() => setCodes(null)}
+              className="rounded-full bg-amber-900 px-3 py-1.5 text-xs font-semibold text-white"
+            >
+              Já guardei
+            </button>
+          </div>
+        </div>
+      )}
+
+      <button
+        type="button"
+        onClick={handleGenerate}
+        disabled={busy}
+        className="inline-flex items-center gap-2 rounded-full bg-[color:var(--navy-deep)] text-white px-4 py-2 text-sm font-semibold disabled:opacity-60"
+      >
+        {status && status.total > 0 ? "Regerar códigos" : "Gerar códigos"}
+      </button>
+    </div>
   );
 }
