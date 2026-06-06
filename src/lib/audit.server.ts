@@ -85,7 +85,7 @@ export async function logAudit(input: LogAuditInput): Promise<void> {
       target_title: input.targetTitle ?? null,
       ip_address: extractIp(),
       user_agent: safeHeader("user-agent"),
-      metadata: input.metadata ?? null,
+      metadata: (input.metadata ?? null) as never,
     });
     if (error) console.warn("[audit] insert failed", error.message);
   } catch (e) {

@@ -36,7 +36,7 @@ export interface AuditLogRow {
   target_title: string | null;
   ip_address: string | null;
   user_agent: string | null;
-  metadata: Record<string, unknown> | null;
+  metadata: unknown;
   created_at: string;
 }
 
