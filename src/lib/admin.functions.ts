@@ -25,6 +25,15 @@ export interface AdminArticle {
   reviewer_id: string | null;
   created_at: string;
   updated_at: string;
+  /** Campos editoriais avançados. */
+  reading_minutes: number | null;
+  understand: string | null;
+  lessons: string | null;
+  timeline: { date: string; text: string; title?: string }[] | null;
+  faq: { q: string; a: string }[] | null;
+  related_laws: string[] | null;
+  related_signal_tags: string[] | null;
+  national_context: string[] | null;
 }
 
 export const listAdminArticles = createServerFn({ method: "GET" })
