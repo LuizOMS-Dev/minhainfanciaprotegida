@@ -36,6 +36,7 @@ import { Route as CasosSlugRouteImport } from './routes/casos.$slug'
 import { Route as BibliotecaSlugRouteImport } from './routes/biblioteca.$slug'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedAdminAuditoriaRouteImport } from './routes/_authenticated/admin/auditoria'
 import { Route as AuthenticatedAdminUsuariosIndexRouteImport } from './routes/_authenticated/admin/usuarios/index'
 import { Route as AuthenticatedAdminMapaIndexRouteImport } from './routes/_authenticated/admin/mapa/index'
 import { Route as AuthenticatedAdminBibliotecaIndexRouteImport } from './routes/_authenticated/admin/biblioteca/index'
@@ -177,6 +178,12 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRouteRoute,
 } as any)
+const AuthenticatedAdminAuditoriaRoute =
+  AuthenticatedAdminAuditoriaRouteImport.update({
+    id: '/auditoria',
+    path: '/auditoria',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminUsuariosIndexRoute =
   AuthenticatedAdminUsuariosIndexRouteImport.update({
     id: '/usuarios/',
@@ -240,6 +247,7 @@ export interface FileRoutesByFullPath {
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
+  '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
   '/admin/biblioteca/$id': typeof AuthenticatedAdminBibliotecaIdRoute
@@ -273,6 +281,7 @@ export interface FileRoutesByTo {
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
+  '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
   '/admin/biblioteca/$id': typeof AuthenticatedAdminBibliotecaIdRoute
@@ -309,6 +318,7 @@ export interface FileRoutesById {
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
+  '/_authenticated/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
   '/_authenticated/admin/biblioteca/$id': typeof AuthenticatedAdminBibliotecaIdRoute
@@ -345,6 +355,7 @@ export interface FileRouteTypes {
     | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
+    | '/admin/auditoria'
     | '/admin/'
     | '/admin/article/$id'
     | '/admin/biblioteca/$id'
@@ -378,6 +389,7 @@ export interface FileRouteTypes {
     | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
+    | '/admin/auditoria'
     | '/admin'
     | '/admin/article/$id'
     | '/admin/biblioteca/$id'
@@ -413,6 +425,7 @@ export interface FileRouteTypes {
     | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
+    | '/_authenticated/admin/auditoria'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/article/$id'
     | '/_authenticated/admin/biblioteca/$id'
@@ -638,6 +651,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/auditoria': {
+      id: '/_authenticated/admin/auditoria'
+      path: '/auditoria'
+      fullPath: '/admin/auditoria'
+      preLoaderRoute: typeof AuthenticatedAdminAuditoriaRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/usuarios/': {
       id: '/_authenticated/admin/usuarios/'
       path: '/usuarios'
@@ -684,6 +704,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminAuditoriaRoute: typeof AuthenticatedAdminAuditoriaRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedAdminArticleIdRoute: typeof AuthenticatedAdminArticleIdRoute
   AuthenticatedAdminBibliotecaIdRoute: typeof AuthenticatedAdminBibliotecaIdRoute
@@ -695,6 +716,7 @@ interface AuthenticatedAdminRouteRouteChildren {
 
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
+    AuthenticatedAdminAuditoriaRoute: AuthenticatedAdminAuditoriaRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
     AuthenticatedAdminArticleIdRoute: AuthenticatedAdminArticleIdRoute,
     AuthenticatedAdminBibliotecaIdRoute: AuthenticatedAdminBibliotecaIdRoute,

@@ -94,6 +94,8 @@ export const upsertAdminLocation = createServerFn({ method: "POST" })
       hours: clean(data.hours),
       official_url: clean(data.official_url),
     };
+    const isUpdate = Boolean(data.id);
+    let saved: AdminHelpLocation;
     if (data.id) {
       const { data: row, error } = await context.supabase
         .from("help_locations")
@@ -105,18 +107,29 @@ export const upsertAdminLocation = createServerFn({ method: "POST" })
         console.error("[locations.update]", error);
         throw new Error("Não foi possível atualizar o local.");
       }
-      return { location: row as AdminHelpLocation };
+      saved = row as AdminHelpLocation;
+    } else {
+      const { data: row, error } = await context.supabase
+        .from("help_locations")
+        .insert(payload)
+        .select()
+        .single();
+      if (error) {
+        console.error("[locations.insert]", error);
+        throw new Error("Não foi possível criar o local.");
+      }
+      saved = row as AdminHelpLocation;
     }
-    const { data: row, error } = await context.supabase
-      .from("help_locations")
-      .insert(payload)
-      .select()
-      .single();
-    if (error) {
-      console.error("[locations.insert]", error);
-      throw new Error("Não foi possível criar o local.");
-    }
-    return { location: row as AdminHelpLocation };
+    const { logAudit } = await import("@/lib/audit.server");
+    logAudit({
+      action: "location_change",
+      userId: context.userId,
+      targetType: "help_location",
+      targetId: saved.id,
+      targetTitle: saved.name,
+      metadata: { mode: isUpdate ? "update" : "create", state: data.state, city: data.city },
+    });
+    return { location: saved };
   });
 
 export const deleteAdminLocation = createServerFn({ method: "POST" })
@@ -124,6 +137,11 @@ export const deleteAdminLocation = createServerFn({ method: "POST" })
   .inputValidator((i) => z.object({ id: z.string().uuid() }).parse(i))
   .handler(async ({ data, context }) => {
     await requireRole(context.supabase, context.userId, ["admin"]);
+    const { data: prev } = await context.supabase
+      .from("help_locations")
+      .select("name")
+      .eq("id", data.id)
+      .maybeSingle();
     const { error } = await context.supabase
       .from("help_locations")
       .delete()
@@ -132,6 +150,15 @@ export const deleteAdminLocation = createServerFn({ method: "POST" })
       console.error("[locations.delete]", error);
       throw new Error("Não foi possível excluir o local.");
     }
+    const { logAudit } = await import("@/lib/audit.server");
+    logAudit({
+      action: "location_change",
+      userId: context.userId,
+      targetType: "help_location",
+      targetId: data.id,
+      targetTitle: prev?.name ?? null,
+      metadata: { mode: "delete" },
+    });
     return { ok: true };
   });
 
@@ -183,5 +210,12 @@ export const importAdminLocationsCsv = createServerFn({ method: "POST" })
       console.error("[locations.csv]", error);
       throw new Error("Falha ao inserir os locais. Verifique os campos obrigatórios.");
     }
+    const { logAudit } = await import("@/lib/audit.server");
+    logAudit({
+      action: "csv_import",
+      userId: context.userId,
+      targetType: "help_location",
+      metadata: { inserted: inserted?.length ?? 0, errors: errors.length },
+    });
     return { inserted: inserted?.length ?? 0, errors };
   });

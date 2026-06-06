@@ -109,11 +109,19 @@ export const upsertAdminArticle = createServerFn({ method: "POST" })
       author_id: context.userId,
     };
     let articleId = data.id;
-    if (articleId) {
+    const isUpdate = Boolean(articleId);
+    let prevStatus: string | null = null;
+    if (isUpdate) {
+      const { data: prev } = await context.supabase
+        .from("articles")
+        .select("status")
+        .eq("id", articleId!)
+        .maybeSingle();
+      prevStatus = prev?.status ?? null;
       const { data: row, error } = await context.supabase
         .from("articles")
         .update(payload)
-        .eq("id", articleId)
+        .eq("id", articleId as string)
         .select()
         .single();
       if (error) {
@@ -170,6 +178,26 @@ export const upsertAdminArticle = createServerFn({ method: "POST" })
       console.error("[admin.upsertArticle] refetch error", fetchErr);
       throw new Error("Não foi possível recarregar o conteúdo salvo.");
     }
+
+    const { logAudit } = await import("@/lib/audit.server");
+    const becamePublished = data.status === "published" && prevStatus !== "published";
+    const becameUnpublished = prevStatus === "published" && data.status !== "published";
+    const action = !isUpdate
+      ? "content_create"
+      : becamePublished
+        ? "content_publish"
+        : becameUnpublished
+          ? "content_unpublish"
+          : "content_update";
+    logAudit({
+      action,
+      userId: context.userId,
+      targetType: `article:${data.type}`,
+      targetId: articleId,
+      targetTitle: data.title,
+      metadata: { status: data.status, slug: data.slug },
+    });
+
     return { article: full as AdminArticle };
   });
 
@@ -178,11 +206,24 @@ export const deleteAdminArticle = createServerFn({ method: "POST" })
   .inputValidator((input) => z.object({ id: z.string().uuid() }).parse(input))
   .handler(async ({ data, context }) => {
     await requireRole(context.supabase, context.userId, ["admin"]);
+    const { data: prev } = await context.supabase
+      .from("articles")
+      .select("title, type")
+      .eq("id", data.id)
+      .maybeSingle();
     const { error } = await context.supabase.from("articles").delete().eq("id", data.id);
     if (error) {
       console.error("[admin.deleteArticle] supabase error", error);
       throw new Error("Não foi possível excluir o conteúdo.");
     }
+    const { logAudit } = await import("@/lib/audit.server");
+    logAudit({
+      action: "content_delete",
+      userId: context.userId,
+      targetType: prev?.type ? `article:${prev.type}` : "article",
+      targetId: data.id,
+      targetTitle: prev?.title ?? null,
+    });
     return { ok: true };
   });
 

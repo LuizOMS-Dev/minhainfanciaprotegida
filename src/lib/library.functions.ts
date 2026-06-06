@@ -70,6 +70,8 @@ export const upsertAdminLibrary = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     await requireRole(context.supabase, context.userId, ["admin", "editor"]);
     const payload = { ...data, description: data.description || null };
+    const isUpdate = Boolean(data.id);
+    let saved: AdminLibraryItem;
     if (data.id) {
       const { data: row, error } = await context.supabase
         .from("library_items")
@@ -81,18 +83,29 @@ export const upsertAdminLibrary = createServerFn({ method: "POST" })
         console.error("[library.update]", error);
         throw new Error("Não foi possível atualizar o item.");
       }
-      return { item: row as AdminLibraryItem };
+      saved = row as AdminLibraryItem;
+    } else {
+      const { data: row, error } = await context.supabase
+        .from("library_items")
+        .insert(payload)
+        .select()
+        .single();
+      if (error) {
+        console.error("[library.insert]", error);
+        throw new Error("Não foi possível criar o item.");
+      }
+      saved = row as AdminLibraryItem;
     }
-    const { data: row, error } = await context.supabase
-      .from("library_items")
-      .insert(payload)
-      .select()
-      .single();
-    if (error) {
-      console.error("[library.insert]", error);
-      throw new Error("Não foi possível criar o item.");
-    }
-    return { item: row as AdminLibraryItem };
+    const { logAudit } = await import("@/lib/audit.server");
+    logAudit({
+      action: "library_change",
+      userId: context.userId,
+      targetType: "library_item",
+      targetId: saved.id,
+      targetTitle: saved.title,
+      metadata: { mode: isUpdate ? "update" : "create" },
+    });
+    return { item: saved };
   });
 
 export const deleteAdminLibrary = createServerFn({ method: "POST" })
@@ -100,10 +113,24 @@ export const deleteAdminLibrary = createServerFn({ method: "POST" })
   .inputValidator((i) => z.object({ id: z.string().uuid() }).parse(i))
   .handler(async ({ data, context }) => {
     await requireRole(context.supabase, context.userId, ["admin"]);
+    const { data: prev } = await context.supabase
+      .from("library_items")
+      .select("title")
+      .eq("id", data.id)
+      .maybeSingle();
     const { error } = await context.supabase.from("library_items").delete().eq("id", data.id);
     if (error) {
       console.error("[library.delete]", error);
       throw new Error("Não foi possível excluir o item.");
     }
+    const { logAudit } = await import("@/lib/audit.server");
+    logAudit({
+      action: "library_change",
+      userId: context.userId,
+      targetType: "library_item",
+      targetId: data.id,
+      targetTitle: prev?.title ?? null,
+      metadata: { mode: "delete" },
+    });
     return { ok: true };
   });

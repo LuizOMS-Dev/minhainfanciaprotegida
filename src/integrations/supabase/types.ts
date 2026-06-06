@@ -106,6 +106,51 @@ export type Database = {
         }
         Relationships: []
       }
+      audit_log: {
+        Row: {
+          action: Database["public"]["Enums"]["audit_action"]
+          created_at: string
+          id: string
+          ip_address: string | null
+          metadata: Json | null
+          target_id: string | null
+          target_title: string | null
+          target_type: string | null
+          user_agent: string | null
+          user_email: string | null
+          user_id: string | null
+          user_role: string | null
+        }
+        Insert: {
+          action: Database["public"]["Enums"]["audit_action"]
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          target_id?: string | null
+          target_title?: string | null
+          target_type?: string | null
+          user_agent?: string | null
+          user_email?: string | null
+          user_id?: string | null
+          user_role?: string | null
+        }
+        Update: {
+          action?: Database["public"]["Enums"]["audit_action"]
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          target_id?: string | null
+          target_title?: string | null
+          target_type?: string | null
+          user_agent?: string | null
+          user_email?: string | null
+          user_id?: string | null
+          user_role?: string | null
+        }
+        Relationships: []
+      }
       help_locations: {
         Row: {
           address: string | null
@@ -254,6 +299,24 @@ export type Database = {
         | "published"
         | "archived"
       article_type: "news" | "case" | "risk" | "guide"
+      audit_action:
+        | "login"
+        | "logout"
+        | "login_failed"
+        | "unauthorized_access"
+        | "content_create"
+        | "content_update"
+        | "content_delete"
+        | "content_publish"
+        | "content_unpublish"
+        | "user_create"
+        | "user_update"
+        | "user_delete"
+        | "role_change"
+        | "password_reset"
+        | "csv_import"
+        | "library_change"
+        | "location_change"
       help_type:
         | "conselho_tutelar"
         | "delegacia"
@@ -391,6 +454,25 @@ export const Constants = {
       app_role: ["admin", "editor", "revisor"],
       article_status: ["draft", "review", "scheduled", "published", "archived"],
       article_type: ["news", "case", "risk", "guide"],
+      audit_action: [
+        "login",
+        "logout",
+        "login_failed",
+        "unauthorized_access",
+        "content_create",
+        "content_update",
+        "content_delete",
+        "content_publish",
+        "content_unpublish",
+        "user_create",
+        "user_update",
+        "user_delete",
+        "role_change",
+        "password_reset",
+        "csv_import",
+        "library_change",
+        "location_change",
+      ],
       help_type: [
         "conselho_tutelar",
         "delegacia",

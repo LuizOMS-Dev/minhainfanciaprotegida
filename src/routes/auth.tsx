@@ -1,8 +1,10 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Lock, ShieldAlert } from "lucide-react";
 import { useState, type FormEvent } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
+import { recordLoginAttempt } from "@/lib/audit.functions";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -16,41 +18,30 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const audit = useServerFn(recordLoginAttempt);
 
   async function submit(e: FormEvent) {
     e.preventDefault();
     setError(null);
     setLoading(true);
     try {
-      if (mode === "signup") {
-        const { error: err } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { full_name: name },
-            emailRedirectTo: `${window.location.origin}/admin`,
-          },
-        });
-        if (err) throw err;
-      } else {
-        const { error: err } = await supabase.auth.signInWithPassword({ email, password });
-        if (err) throw err;
+      const { error: err } = await supabase.auth.signInWithPassword({ email, password });
+      if (err) {
+        // Audit the failed attempt (fire-and-forget)
+        audit({ data: { email, success: false, provider: "password", reason: err.message } }).catch(
+          () => {},
+        );
+        throw err;
       }
+      audit({ data: { email, success: true, provider: "password" } }).catch(() => {});
       navigate({ to: "/admin" });
     } catch (e: unknown) {
-      // Log the real cause for debugging, but show a generic message to prevent user enumeration
       if (e instanceof Error) console.warn("[auth] submit error:", e.message);
-      setError(
-        mode === "login"
-          ? "E-mail ou senha inválidos."
-          : "Não foi possível concluir o cadastro. Verifique o e-mail informado.",
-      );
+      setError("E-mail ou senha inválidos.");
     } finally {
       setLoading(false);
     }
@@ -63,11 +54,15 @@ function AuthPage() {
       redirect_uri: `${window.location.origin}/admin`,
     });
     if (result.error) {
+      audit({ data: { success: false, provider: "google", reason: result.error.message } }).catch(
+        () => {},
+      );
       setError(result.error.message ?? "Falha no login com Google");
       setLoading(false);
       return;
     }
     if (result.redirected) return;
+    audit({ data: { success: true, provider: "google" } }).catch(() => {});
     navigate({ to: "/admin" });
   }
 
@@ -86,35 +81,7 @@ function AuthPage() {
           </div>
         </div>
 
-        <div className="mt-6 flex gap-2 rounded-full bg-muted p-1">
-          {(["login", "signup"] as const).map((m) => (
-            <button
-              key={m}
-              onClick={() => setMode(m)}
-              className={`flex-1 rounded-full px-3 py-2 text-sm font-semibold transition ${
-                mode === m ? "bg-card shadow-sm" : "text-muted-foreground"
-              }`}
-            >
-              {m === "login" ? "Entrar" : "Criar conta"}
-            </button>
-          ))}
-        </div>
-
         <form className="mt-6 space-y-4" onSubmit={submit}>
-          {mode === "signup" && (
-            <div>
-              <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground" htmlFor="name">
-                Nome completo
-              </label>
-              <input
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                className="mt-1 w-full rounded-xl bg-background border border-border px-4 py-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
-              />
-            </div>
-          )}
           <div>
             <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground" htmlFor="email">
               E-mail
@@ -125,6 +92,7 @@ function AuthPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autoComplete="email"
               className="mt-1 w-full rounded-xl bg-background border border-border px-4 py-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
             />
           </div>
@@ -139,6 +107,7 @@ function AuthPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={8}
+              autoComplete="current-password"
               className="mt-1 w-full rounded-xl bg-background border border-border px-4 py-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
             />
           </div>
@@ -149,7 +118,7 @@ function AuthPage() {
             className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[color:var(--navy-deep)] text-white px-5 py-3 font-semibold disabled:opacity-60"
           >
             <Lock className="size-4" />
-            {loading ? "Aguarde..." : mode === "login" ? "Entrar" : "Criar conta"}
+            {loading ? "Aguarde..." : "Entrar"}
           </button>
         </form>
 
@@ -165,7 +134,7 @@ function AuthPage() {
         </button>
 
         <p className="mt-6 text-xs text-muted-foreground text-center">
-          O primeiro usuário cadastrado torna-se administrador automaticamente.
+          Acesso restrito. Não há cadastro público — solicite a um administrador a criação do seu usuário.
         </p>
       </div>
     </section>
