@@ -9,7 +9,12 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:a11y": "playwright test tests/e2e/a11y.spec.ts",
+    "test:headless": "playwright test --reporter=line",
+    "ci:build": "bun run build && bun run test:e2e"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -74,8 +79,10 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
     "@eslint/js": "^9.32.0",
     "@lovable.dev/vite-tanstack-config": "^2.1.1",
+    "@playwright/test": "^1.60.0",
     "@types/dompurify": "^3.2.0",
     "@types/node": "^22.16.5",
     "@types/react": "^19.2.0",
