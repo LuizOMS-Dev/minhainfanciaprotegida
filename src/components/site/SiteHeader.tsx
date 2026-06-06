@@ -83,7 +83,7 @@ export function SiteHeader() {
               <span className="absolute inset-0 rounded-full bg-[color:var(--orange)]/40 animate-ping-slow" />
               <ShieldAlert className="size-4 text-[color:var(--navy-deep)]" aria-hidden />
             </span>
-            <span className="hidden xl:flex flex-col leading-tight whitespace-nowrap">
+            <span className="hidden md:flex flex-col leading-tight whitespace-nowrap">
               <span className="font-display text-[15px] font-semibold tracking-tight">
                 Infância Protegida
               </span>
