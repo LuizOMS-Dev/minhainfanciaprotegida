@@ -89,7 +89,7 @@ export function SiteHeader() {
             </span>
           </Link>
 
-          <nav className="hidden lg:flex flex-1 items-center justify-center gap-0.5 min-w-0" aria-label="Navegação principal">
+          <nav className="hidden xl:flex flex-1 items-center justify-center gap-0.5 min-w-0" aria-label="Navegação principal">
             {primaryNav.map((item) => (
               <Link
                 key={item.to}
@@ -147,7 +147,7 @@ export function SiteHeader() {
             </Link>
             <button
               onClick={() => setOpen((v) => !v)}
-              className="lg:hidden inline-flex size-10 items-center justify-center rounded-md hover:bg-muted"
+              className="xl:hidden inline-flex size-10 items-center justify-center rounded-md hover:bg-muted"
               aria-label={open ? "Fechar menu" : "Abrir menu"}
               aria-expanded={open}
             >
@@ -158,7 +158,7 @@ export function SiteHeader() {
 
 
         {open && (
-          <div className="lg:hidden border-t border-border bg-background animate-fade-in">
+          <div className="xl:hidden border-t border-border bg-background animate-fade-in">
             <nav className="px-4 py-4 flex flex-col gap-1 max-h-[80vh] overflow-y-auto" aria-label="Navegação móvel">
               {mobileNav.map((item) => (
                 <Link
