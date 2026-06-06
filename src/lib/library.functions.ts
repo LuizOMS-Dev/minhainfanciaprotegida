@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireRole } from "@/lib/require-role";
 
 export interface AdminLibraryItem {
   id: string;
@@ -34,6 +35,7 @@ const upsertSchema = z.object({
 export const listAdminLibrary = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    await requireRole(context.supabase, context.userId, ["admin", "editor", "revisor"]);
     const { data, error } = await context.supabase
       .from("library_items")
       .select("*")
@@ -49,6 +51,7 @@ export const getAdminLibraryItem = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i) => z.object({ id: z.string().uuid() }).parse(i))
   .handler(async ({ data, context }) => {
+    await requireRole(context.supabase, context.userId, ["admin", "editor", "revisor"]);
     const { data: row, error } = await context.supabase
       .from("library_items")
       .select("*")
@@ -65,6 +68,7 @@ export const upsertAdminLibrary = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i) => upsertSchema.parse(i))
   .handler(async ({ data, context }) => {
+    await requireRole(context.supabase, context.userId, ["admin", "editor"]);
     const payload = { ...data, description: data.description || null };
     if (data.id) {
       const { data: row, error } = await context.supabase
@@ -95,6 +99,7 @@ export const deleteAdminLibrary = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i) => z.object({ id: z.string().uuid() }).parse(i))
   .handler(async ({ data, context }) => {
+    await requireRole(context.supabase, context.userId, ["admin"]);
     const { error } = await context.supabase.from("library_items").delete().eq("id", data.id);
     if (error) {
       console.error("[library.delete]", error);

@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireRole } from "@/lib/require-role";
 
 const articleTypeSchema = z.enum(["news", "case", "risk", "guide"]);
 const statusSchema = z.enum(["draft", "review", "scheduled", "published", "archived"]);
@@ -31,6 +32,7 @@ export const listAdminArticles = createServerFn({ method: "GET" })
     z.object({ type: articleTypeSchema.optional() }).parse(input ?? {}),
   )
   .handler(async ({ data, context }) => {
+    await requireRole(context.supabase, context.userId, ["admin", "editor", "revisor"]);
     let q = context.supabase
       .from("articles")
       .select("*")
@@ -48,6 +50,7 @@ export const getAdminArticle = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ id: z.string().uuid() }).parse(input))
   .handler(async ({ data, context }) => {
+    await requireRole(context.supabase, context.userId, ["admin", "editor", "revisor"]);
     const { data: row, error } = await context.supabase
       .from("articles")
       .select("*")
@@ -95,6 +98,7 @@ export const upsertAdminArticle = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => upsertSchema.parse(input))
   .handler(async ({ data, context }) => {
+    await requireRole(context.supabase, context.userId, ["admin", "editor"]);
     const { sources, ...rest } = data;
     const payload = {
       ...rest,
@@ -173,6 +177,7 @@ export const deleteAdminArticle = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ id: z.string().uuid() }).parse(input))
   .handler(async ({ data, context }) => {
+    await requireRole(context.supabase, context.userId, ["admin"]);
     const { error } = await context.supabase.from("articles").delete().eq("id", data.id);
     if (error) {
       console.error("[admin.deleteArticle] supabase error", error);

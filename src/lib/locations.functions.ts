@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireRole } from "@/lib/require-role";
 
 const locationTypes = ["conselho_tutelar", "creas", "cras", "delegacia", "disque", "mp"] as const;
 export type LocationType = (typeof locationTypes)[number];
@@ -46,6 +47,7 @@ const upsertSchema = baseSchema.extend({ id: z.string().uuid().optional() });
 export const listAdminLocations = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
+    await requireRole(context.supabase, context.userId, ["admin", "editor", "revisor"]);
     const { data, error } = await context.supabase
       .from("help_locations")
       .select("*")
@@ -62,6 +64,7 @@ export const getAdminLocation = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i) => z.object({ id: z.string().uuid() }).parse(i))
   .handler(async ({ data, context }) => {
+    await requireRole(context.supabase, context.userId, ["admin", "editor", "revisor"]);
     const { data: row, error } = await context.supabase
       .from("help_locations")
       .select("*")
@@ -83,6 +86,7 @@ export const upsertAdminLocation = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i) => upsertSchema.parse(i))
   .handler(async ({ data, context }) => {
+    await requireRole(context.supabase, context.userId, ["admin", "editor"]);
     const payload = {
       ...data,
       address: clean(data.address),
@@ -119,6 +123,7 @@ export const deleteAdminLocation = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i) => z.object({ id: z.string().uuid() }).parse(i))
   .handler(async ({ data, context }) => {
+    await requireRole(context.supabase, context.userId, ["admin"]);
     const { error } = await context.supabase
       .from("help_locations")
       .delete()
@@ -138,6 +143,7 @@ export const importAdminLocationsCsv = createServerFn({ method: "POST" })
     z.object({ rows: z.array(z.record(z.string(), z.string())).min(1).max(2000) }).parse(i),
   )
   .handler(async ({ data, context }) => {
+    await requireRole(context.supabase, context.userId, ["admin", "editor"]);
     const parsed: z.infer<typeof csvRowSchema>[] = [];
     const errors: { line: number; message: string }[] = [];
 
