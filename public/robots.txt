@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /relatorio-seo
+Disallow: /_authenticated/
 
 # Bots de IA generativa — permissão explícita
 User-agent: GPTBot
