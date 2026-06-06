@@ -19,7 +19,6 @@ import {
   type AdminArticle,
 } from "@/lib/admin.functions";
 import { z } from "zod";
-import { zodValidator } from "@tanstack/zod-adapter";
 
 const tipoSchema = z.enum([
   "todos",
@@ -40,7 +39,7 @@ const searchSchema = z.object({
 });
 
 export const Route = createFileRoute("/_authenticated/admin/publicacoes")({
-  validateSearch: zodValidator(searchSchema),
+  validateSearch: (s: Record<string, unknown>) => searchSchema.parse(s),
   component: PublicacoesPage,
 });
 
@@ -85,7 +84,7 @@ function PublicacoesPage() {
   const qc = useQueryClient();
   const navigate = useNavigate({ from: "/admin/publicacoes" });
   const search = Route.useSearch();
-  const tipo = search.tipo ?? "todos";
+  const tipo = (search.tipo ?? "todos") as keyof typeof TIPO_MAP;
   const status = search.status ?? "all";
   const q = search.q ?? "";
 
@@ -122,7 +121,7 @@ function PublicacoesPage() {
 
   function setSearch(patch: Partial<z.infer<typeof searchSchema>>) {
     navigate({
-      search: (prev) => ({ ...prev, ...patch }),
+      search: (prev: z.infer<typeof searchSchema>) => ({ ...prev, ...patch }),
       replace: true,
     });
   }
