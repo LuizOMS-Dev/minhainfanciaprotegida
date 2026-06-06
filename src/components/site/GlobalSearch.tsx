@@ -184,12 +184,12 @@ export function GlobalSearch() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="hidden md:inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-muted transition-colors"
+        className="hidden md:inline-flex items-center gap-2.5 rounded-full border border-border/70 bg-card/70 pl-3 pr-2 py-1.5 text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-card hover:border-[color:var(--orange)]/50 hover:shadow-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]/40 min-w-[200px]"
         aria-label="Abrir busca global (Ctrl+K)"
       >
-        <Search className="size-3.5" aria-hidden />
-        Buscar no site
-        <kbd className="ml-1 hidden lg:inline rounded border border-border bg-background/70 px-1.5 py-0.5 text-[10px] font-mono text-foreground/70">
+        <Search className="size-4 text-[color:var(--orange)]" aria-hidden />
+        <span className="flex-1 text-left">Buscar no site…</span>
+        <kbd className="hidden lg:inline-flex items-center gap-0.5 rounded-md border border-border bg-background px-1.5 py-0.5 text-[10px] font-mono font-semibold text-foreground/70 shadow-[inset_0_-1px_0_0_var(--border)]">
           ⌘K
         </kbd>
       </button>
