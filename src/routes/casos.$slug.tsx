@@ -13,6 +13,7 @@ import { SafeHtml, readingTimeMinutes } from "@/components/site/SafeHtml";
 import { ShareButtons } from "@/components/site/ShareButtons";
 import { RelatedArticles, ArticleSiblingNav } from "@/components/site/RelatedArticles";
 import { Timeline } from "@/components/site/Timeline";
+import { CaseActions } from "@/components/site/CaseActions";
 
 const fmt = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
 const SITE = "https://minhainfanciaprotegida.lovable.app";
@@ -115,6 +116,7 @@ function CaseDetail() {
         )}
         {a.body && <SafeHtml html={a.body} className="prose prose-neutral max-w-none text-foreground/90 leading-relaxed" />}
         {a.timeline && a.timeline.length > 0 && <Timeline items={a.timeline} />}
+        <CaseActions />
 
         {a.primary_source_url && a.primary_source_label && (
           <div className="mt-12">
