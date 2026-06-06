@@ -216,11 +216,12 @@ export function SiteHeader() {
 
             <button
               onClick={() => setOpen((v) => !v)}
-              className="lg:hidden inline-flex size-10 items-center justify-center rounded-md hover:bg-muted"
-              aria-label={open ? "Fechar menu" : "Abrir menu"}
+              className="lg:hidden inline-flex size-11 min-h-11 min-w-11 items-center justify-center rounded-md text-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
+              aria-label={open ? "Fechar menu de navegação" : "Abrir menu de navegação"}
               aria-expanded={open}
+              aria-controls="mobile-nav"
             >
-              {open ? <X className="size-5" /> : <Menu className="size-5" />}
+              {open ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
             </button>
           </div>
         </div>
