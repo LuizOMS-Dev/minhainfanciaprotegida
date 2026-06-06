@@ -26,9 +26,9 @@ export const Route = createFileRoute("/sinais")({
       },
       { property: "og:title", content: "Identificar Sinais de Abuso" },
       { property: "og:description", content: "Comportamentos que merecem atenção segundo UNICEF e Childhood Brasil." },
-      { property: "og:url", content: "/sinais" },
+      { property: "og:url", content: "https://minhainfanciaprotegida.com.br/sinais" },
     ],
-    links: [{ rel: "canonical", href: "/sinais" }],
+    links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/sinais" }],
   }),
   component: Page,
 });

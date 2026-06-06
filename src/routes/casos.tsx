@@ -26,7 +26,7 @@ export const Route = createFileRoute("/casos")({
         content: "Casos que mudaram leis e a forma como o Brasil enfrenta a violência contra crianças.",
       },
     ],
-    links: [{ rel: "canonical", href: "/casos" }],
+    links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/casos" }],
   }),
   component: CasosPage,
 });

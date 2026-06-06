@@ -20,7 +20,7 @@ export const Route = createFileRoute("/fontes")({
       },
       { property: "og:image", content: heroImg },
     ],
-    links: [{ rel: "canonical", href: "/fontes" }],
+    links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/fontes" }],
   }),
   component: Page,
 });

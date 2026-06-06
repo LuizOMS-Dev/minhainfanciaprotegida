@@ -23,7 +23,7 @@ export const Route = createFileRoute("/biblioteca")({
         content: "Materiais oficiais para famílias, educadores e profissionais.",
       },
     ],
-    links: [{ rel: "canonical", href: "/biblioteca" }],
+    links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/biblioteca" }],
   }),
   component: Page,
 });

@@ -20,7 +20,7 @@ export const Route = createFileRoute("/mapa")({
       { property: "og:title", content: "Mapa de Ajuda — Infância Protegida" },
       { property: "og:description", content: "Localize serviços de proteção próximos da sua cidade." },
     ],
-    links: [{ rel: "canonical", href: "/mapa" }],
+    links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/mapa" }],
   }),
   component: Page,
 });

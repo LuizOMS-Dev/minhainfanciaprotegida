@@ -16,9 +16,9 @@ export const Route = createFileRoute("/legislacao")({
       },
       { property: "og:title", content: "Legislação de Proteção à Infância" },
       { property: "og:description", content: "ECA, CF/88 e leis brasileiras de combate à violência sexual infantil." },
-      { property: "og:url", content: "/legislacao" },
+      { property: "og:url", content: "https://minhainfanciaprotegida.com.br/legislacao" },
     ],
-    links: [{ rel: "canonical", href: "/legislacao" }],
+    links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/legislacao" }],
   }),
   component: Page,
 });

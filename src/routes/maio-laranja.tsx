@@ -15,9 +15,9 @@ export const Route = createFileRoute("/maio-laranja")({
       },
       { property: "og:title", content: "Maio Laranja — Campanha Nacional" },
       { property: "og:description", content: "História do 18 de maio, Caso Araceli e objetivos da campanha." },
-      { property: "og:url", content: "/maio-laranja" },
+      { property: "og:url", content: "https://minhainfanciaprotegida.com.br/maio-laranja" },
     ],
-    links: [{ rel: "canonical", href: "/maio-laranja" }],
+    links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/maio-laranja" }],
   }),
   component: Page,
 });

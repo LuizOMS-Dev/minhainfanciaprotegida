@@ -23,7 +23,7 @@ export const Route = createFileRoute("/pais")({
       },
       { property: "og:image", content: familyImg },
     ],
-    links: [{ rel: "canonical", href: "/pais" }],
+    links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/pais" }],
   }),
   component: Page,
 });
