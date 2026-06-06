@@ -34,6 +34,10 @@ const actionEnum = z.enum([
   "mfa_failed",
   "mfa_reset",
   "admin_export",
+  "recovery_code_generated",
+  "recovery_code_used",
+  "recovery_code_regenerated",
+  "csp_violation",
 ]);
 
 export type AuditActionType = z.infer<typeof actionEnum>;
