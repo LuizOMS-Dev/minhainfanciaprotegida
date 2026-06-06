@@ -106,9 +106,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/dIthxDk1U7cPxVmxiEiawtmAk1z2/social-images/social-1780446924477-ChatGPT_Image_2_de_jun._de_2026,_21_34_29.webp" },
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/dIthxDk1U7cPxVmxiEiawtmAk1z2/social-images/social-1780446924477-ChatGPT_Image_2_de_jun._de_2026,_21_34_29.webp" },
-      { name: "description", content: "Minha Infância Protegida é um portal de conscientização, informação e prevenção ao abuso e à exploração sexual de crianças e adolescentes. Encontre orientações," },
-      { property: "og:description", content: "Minha Infância Protegida é um portal de conscientização, informação e prevenção ao abuso e à exploração sexual de crianças e adolescentes. Encontre orientações," },
-      { name: "twitter:description", content: "Minha Infância Protegida é um portal de conscientização, informação e prevenção ao abuso e à exploração sexual de crianças e adolescentes. Encontre orientações," },
+      { name: "description", content: "Portal de prevenção ao abuso e exploração sexual infantil, com orientações, denúncias, leis, notícias e apoio à proteção de crianças." },
+      { property: "og:description", content: "Portal de prevenção ao abuso e exploração sexual infantil, com orientações, denúncias, leis, notícias e apoio à proteção de crianças." },
+      { name: "twitter:description", content: "Portal de prevenção ao abuso e exploração sexual infantil, com orientações, denúncias, leis, notícias e apoio à proteção de crianças." },
     ],
 
     links: [
