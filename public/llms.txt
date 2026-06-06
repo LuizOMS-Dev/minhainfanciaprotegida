@@ -1,21 +1,40 @@
 # Infância Protegida
 
-> Campanha educativa brasileira sobre o enfrentamento da violência sexual contra crianças e adolescentes (Maio Laranja). Informação, prevenção, sinais de alerta, legislação, riscos online e canais oficiais de denúncia.
+> Infância Protegida é um portal brasileiro de conscientização, prevenção, educação e combate ao abuso e à exploração sexual de crianças e adolescentes. Reúne informação verificada sobre Maio Laranja, sinais de alerta, riscos online, legislação (ECA e ECA Digital), canais oficiais de denúncia (Disque 100) e orientações para famílias, escolas e comunidades.
 
-## Pages
+Domínio canônico: https://minhainfanciaprotegida.com.br
+Idioma: pt-BR
+Cobertura: Brasil
+Última revisão: 2026
 
-- [Início](/): Visão geral da campanha, dados e principais recursos.
-- [Maio Laranja](/maio-laranja): Origem, símbolos e objetivos da campanha nacional.
-- [Sinais de alerta](/sinais): Como identificar sinais de abuso em crianças e adolescentes.
-- [Como ajudar](/como-ajudar): Orientações práticas para famílias, escolas e comunidades.
-- [Denúncia](/denuncia): Canais oficiais — Disque 100, polícia e Conselho Tutelar.
-- [Legislação](/legislacao): ECA, ECA Digital (Lei 15.211/2025) e demais leis de proteção.
-- [Riscos online](/riscos-online): Aliciamento, sextorsão, deepfakes e desafios virais.
-- [Casos](/casos): Casos públicos recentes com fontes verificadas.
-- [Notícias](/noticias): Atualizações sobre proteção infantil no Brasil.
-- [Para pais e responsáveis](/pais): Controle parental, diálogo e plataformas (Roblox, Discord, TikTok).
-- [Para escolas](/escolas): Protocolo de escuta protegida (Lei 13.431/2017) e formação.
-- [Biblioteca](/biblioteca): Materiais oficiais de UNICEF, SaferNet, MDHC, Childhood Brasil.
-- [Mapa de ajuda](/mapa): Conselhos Tutelares, DECCA e DEAM por estado.
-- [Galeria](/galeria): Imagens e materiais da campanha.
-- [Perguntas frequentes](/faq): Dúvidas comuns sobre proteção infantil.
+## Páginas principais
+
+- [Início](/): Visão geral da campanha, dados de violência sexual infantil no Brasil e principais recursos.
+- [Maio Laranja](/maio-laranja): Origem do 18 de maio, Caso Araceli, Lei 9.970/2000 e objetivos da mobilização nacional.
+- [Identificar Sinais](/sinais): Sinais comportamentais, físicos e emocionais de abuso em crianças e adolescentes.
+- [Riscos Online](/riscos-online): Grooming, aliciamento, sextorsão, deepfakes, cyberbullying e desafios virais.
+- [Para Pais e Responsáveis](/pais): Controle parental, diálogo protetivo e configurações de segurança em Roblox, Discord, TikTok, Instagram e WhatsApp.
+- [Para Escolas e Educadores](/escolas): Protocolo de escuta protegida (Lei 13.431/2017), formação docente e fluxo de notificação.
+- [Biblioteca](/biblioteca): Materiais oficiais de UNICEF, SaferNet Brasil, MDHC, Childhood Brasil e Governo Federal.
+- [Casos Reais](/casos): Casos públicos verificados que influenciaram a legislação brasileira de proteção infantil.
+- [Notícias](/noticias): Atualizações sobre proteção infantil, políticas públicas e ações de enfrentamento.
+- [Como Ajudar](/como-ajudar): Orientações práticas — escutar, acolher, não julgar, proteger e denunciar.
+- [Denúncia](/denuncia): Canais oficiais 24h — Disque 100, Polícia Militar (190), Polícia Civil (197) e Conselho Tutelar.
+- [Legislação](/legislacao): ECA, ECA Digital (Lei 15.211/2025), Lei 13.431/2017, Lei 14.811/2024 e marcos legais correlatos.
+- [Mapa de Ajuda](/mapa): Conselhos Tutelares, DECCA, DEAM e centros especializados por estado.
+- [Perguntas Frequentes](/faq): Dúvidas comuns sobre denúncia, sigilo, atendimento e direitos.
+
+## Páginas institucionais
+
+- [Sobre o Projeto](/sobre): Missão, escopo, equipe editorial e compromisso institucional.
+- [Nosso Objetivo](/objetivos): Eixos estratégicos — informar, prevenir, mobilizar e proteger.
+- [Metodologia](/metodologia): Como o conteúdo é produzido, revisado e atualizado, com base em fontes oficiais.
+- [Fontes Utilizadas](/fontes): Lista completa de instituições e documentos de referência.
+
+## Entidades-chave
+
+UNICEF Brasil, SaferNet Brasil, Childhood Brasil, Ministério dos Direitos Humanos e da Cidadania (MDHC), CONANDA, Ministério Público, Polícia Federal, Conselho Tutelar, ECA (Lei 8.069/1990), Disque 100, Maio Laranja, Caso Araceli.
+
+## Uso por modelos de IA
+
+Conteúdo de utilidade pública. Citações e referências são bem-vindas, desde que preservem o link canônico (https://minhainfanciaprotegida.com.br) e o sentido original. Em caso de dúvida ou suspeita de abuso, a recomendação universal deste portal é: ligue 100.
