@@ -36,7 +36,7 @@ export function SiteFooter() {
           </p>
           <a
             href="tel:100"
-            className="inline-flex items-center gap-2 rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-5 py-3 font-semibold hover:opacity-95"
+            className="inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] text-white px-5 py-3 font-semibold hover:opacity-95"
           >
             <Phone className="size-4" /> Ligar 100 — gratuito e anônimo
           </a>
