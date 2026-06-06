@@ -189,9 +189,6 @@ export function GlobalSearch() {
       >
         <Search className="size-4 text-[color:var(--orange)]" aria-hidden />
         <span className="flex-1 text-left">Buscar no site…</span>
-        <kbd className="hidden lg:inline-flex items-center gap-0.5 rounded-md border border-border bg-background px-1.5 py-0.5 text-[10px] font-mono font-semibold text-foreground/70 shadow-[inset_0_-1px_0_0_var(--border)]">
-          ⌘K
-        </kbd>
       </button>
       <button
         type="button"
