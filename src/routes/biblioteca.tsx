@@ -101,7 +101,7 @@ function Page() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {list.map((i, idx) => (
-              <Reveal key={i.url} delay={idx * 40}>
+              <Reveal key={i.slug} delay={idx * 40}>
                 <article className="h-full rounded-2xl border border-border bg-card p-6 hover-lift flex flex-col">
                   <div className="flex items-start justify-between gap-3">
                     <span className="inline-flex size-11 items-center justify-center rounded-xl bg-gradient-orange text-[color:var(--navy-deep)]">
@@ -111,22 +111,37 @@ function Page() {
                       {i.category} · {i.year}
                     </span>
                   </div>
-                  <h3 className="mt-4 font-display text-lg font-semibold leading-snug">{i.title}</h3>
+                  <Link
+                    to="/biblioteca/$slug"
+                    params={{ slug: i.slug }}
+                    className="mt-4 font-display text-lg font-semibold leading-snug hover:text-[color:var(--orange)] transition-colors"
+                  >
+                    {i.title}
+                  </Link>
                   <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-1">{i.description}</p>
-                  <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">
-                      <span className="font-semibold text-foreground">{i.sourceOrg}</span>
-                      <br />
+                  <div className="mt-4 pt-4 border-t border-border flex items-center justify-between gap-2">
+                    <span className="text-xs text-muted-foreground min-w-0">
+                      <span className="font-semibold text-foreground block truncate">{i.sourceOrg}</span>
                       Público: {i.audience}
                     </span>
-                    <a
-                      href={i.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-3.5 py-1.5 text-xs font-semibold hover:opacity-95"
-                    >
-                      Acessar <ExternalLink className="size-3" />
-                    </a>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <Link
+                        to="/biblioteca/$slug"
+                        params={{ slug: i.slug }}
+                        className="inline-flex items-center rounded-full border border-border bg-background px-3 py-1.5 text-xs font-semibold hover:bg-muted"
+                      >
+                        Ver
+                      </Link>
+                      <a
+                        href={i.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-3 py-1.5 text-xs font-semibold hover:opacity-95"
+                        aria-label={`Acessar ${i.title} (fonte oficial)`}
+                      >
+                        <ExternalLink className="size-3" />
+                      </a>
+                    </div>
                   </div>
                 </article>
               </Reveal>
