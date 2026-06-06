@@ -81,6 +81,12 @@ const safeHttpUrl = z
     message: "Apenas URLs http(s) são permitidas.",
   });
 
+const sourceSchema = z.object({
+  label: z.string().min(1).max(255),
+  url: safeHttpUrl,
+  position: z.number().int().min(0).max(999).default(0),
+});
+
 const timelineSchema = z
   .array(
     z.object({
