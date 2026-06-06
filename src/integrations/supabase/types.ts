@@ -14,6 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
+      account_lockouts: {
+        Row: {
+          email: string
+          locked_until: string
+          reason: string | null
+          updated_at: string
+        }
+        Insert: {
+          email: string
+          locked_until: string
+          reason?: string | null
+          updated_at?: string
+        }
+        Update: {
+          email?: string
+          locked_until?: string
+          reason?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      admin_sessions: {
+        Row: {
+          created_at: string
+          id: string
+          ip_address: string | null
+          login_at: string
+          logout_at: string | null
+          user_agent: string | null
+          user_email: string | null
+          user_id: string | null
+          user_role: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          login_at?: string
+          logout_at?: string | null
+          user_agent?: string | null
+          user_email?: string | null
+          user_id?: string | null
+          user_role?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          login_at?: string
+          logout_at?: string | null
+          user_agent?: string | null
+          user_email?: string | null
+          user_id?: string | null
+          user_role?: string | null
+        }
+        Relationships: []
+      }
       article_sources: {
         Row: {
           article_id: string
@@ -235,6 +292,36 @@ export type Database = {
         }
         Relationships: []
       }
+      login_attempts: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          ip_address: string | null
+          reason: string | null
+          success: boolean
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          ip_address?: string | null
+          reason?: string | null
+          success: boolean
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          ip_address?: string | null
+          reason?: string | null
+          success?: boolean
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -317,6 +404,19 @@ export type Database = {
         | "csv_import"
         | "library_change"
         | "location_change"
+        | "email_not_verified_login_attempt"
+        | "brute_force_detected"
+        | "account_locked"
+        | "account_unlocked"
+        | "captcha_failed"
+        | "captcha_bypassed_attempt"
+        | "login_blocked_by_captcha"
+        | "mfa_enabled"
+        | "mfa_disabled"
+        | "mfa_success"
+        | "mfa_failed"
+        | "mfa_reset"
+        | "admin_export"
       help_type:
         | "conselho_tutelar"
         | "delegacia"
@@ -472,6 +572,19 @@ export const Constants = {
         "csv_import",
         "library_change",
         "location_change",
+        "email_not_verified_login_attempt",
+        "brute_force_detected",
+        "account_locked",
+        "account_unlocked",
+        "captcha_failed",
+        "captcha_bypassed_attempt",
+        "login_blocked_by_captcha",
+        "mfa_enabled",
+        "mfa_disabled",
+        "mfa_success",
+        "mfa_failed",
+        "mfa_reset",
+        "admin_export",
       ],
       help_type: [
         "conselho_tutelar",
