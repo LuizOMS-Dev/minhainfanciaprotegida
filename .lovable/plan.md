@@ -1,192 +1,93 @@
+## Painel Administrativo V3 — plano de execução
 
-## Escopo e princípios
+Mantém intactos: segurança (MFA, Turnstile, rate-limit, CSP, headers, auditoria), SEO público, site público e identidade visual. Toda a reformulação é interna ao `/admin`, reaproveitando os tokens visuais já usados na tela "Conteúdos" (gradiente navy, chips laranja, cards arredondados, KPIs).
 
-- Tudo abaixo é restrito a `/auth`, `/admin/*` (sob `_authenticated`) e `/relatorio-seo`.
-- Páginas públicas, layout, SEO público, conteúdo institucional e UX do portal **não mudam**.
-- Cadastro público continua bloqueado (já feito em rodada anterior).
-- Toda mudança de schema entra em uma única migration; toda escrita sensível usa `supabaseAdmin` em server-fn; toda leitura sensível usa `requireSupabaseAuth` + `requireRole`.
+### 1. Shell do painel
+- Reescrever a barra lateral de `src/routes/_authenticated/admin/route.tsx` em grupos:
+  - **Visão geral** → Dashboard
+  - **Publicações** (expansível) → Todos · Notícias · Casos · Riscos · Guias · Para Pais · Para Escolas
+  - **Conteúdo institucional** → Biblioteca · Mapa de ajuda
+  - **Operação** → Usuários · Auditoria · Sessões · Segurança · Backup
+  - **Conta** → Verificação MFA · Sair
+- "Para Pais" / "Para Escolas" são filtros baseados em `articles.category` (sem migração).
+- Header ganha: **busca global** (Cmd/Ctrl K), atalhos rápidos e badge do papel.
 
----
+### 2. Dashboard executivo (`/admin`)
+- Substituir a tabela de conteúdos pelo dashboard real.
+- Nova server fn `getAdminOverview` agrega contagens: publicados, revisão, agendados, rascunhos, biblioteca, locais, usuários ativos (profiles), sessões admin (24 h e ativas), tentativas de login (24 h), bloqueios ativos.
+- Grid de KPIs (mesmo estilo dos atuais) + bloco **Atividade recente** (últimos 15 eventos do `audit_log` com ícone por categoria, link para auditoria).
+- Bloco **Ações rápidas**: Nova publicação · Novo material · Novo local · Novo usuário · Auditoria · Segurança.
 
-## 1. Remover login com Google
+### 3. Central Editorial
+- Nova rota `/admin/publicacoes` (lista master com filtros por tipo + categoria + status + busca; reaproveita layout/tabela atual de "Conteúdos").
+- Sub-rotas filtradas (`/admin/publicacoes/noticias`, `/casos`, `/riscos`, `/guias`, `/para-pais`, `/para-escolas`) — apenas pré-aplicam filtro/categoria.
+- Editor (`article.$id.tsx`) ganha barra de status com fluxo visual **Rascunho → Revisão → Agendamento → Publicação** e botão **Pré-visualizar** (abre artigo público em nova aba; só publicados/agendados respeitam RLS).
 
-- `src/routes/auth.tsx`: remover botão "Entrar com Google", função `google()`, import de `lovable`, e auditoria do provider Google. Login passa a ser **apenas e-mail + senha + Turnstile + (depois) código MFA**.
-- Chamar `supabase--configure_social_auth` com `disable_providers: ["google"]` para desativar o provedor no Auth do Supabase.
-- Não removo `lovable` do projeto — só do fluxo administrativo.
+### 4. Central de Segurança (nova) `/admin/seguranca`
+- Server fn `getSecurityOverview`: contadores de bloqueios ativos, tentativas falhas 24 h, eventos críticos 7 d, últimos logins.
+- Painel com selos: MFA · Turnstile · Rate limit · E-mail verificado · CSP · Security Headers · Auditoria · Backup (cada selo lê configuração real, não hard-coded).
+- Listas: contas bloqueadas (`account_lockouts`), top IPs com falhas, últimos eventos críticos, últimos logins (`login_attempts` success=true).
 
----
+### 5. Auditoria visual `/admin/auditoria`
+- Refazer a tela com **timeline** (agrupada por dia), chips de categoria (Autenticação · MFA · Usuários · Publicações · Sistema · Segurança), filtros rápidos (24 h / 7 d / 30 d) e filtros avançados (usuário, ação, alvo, intervalo).
+- Eventos críticos (`brute_force_detected`, `unauthorized_access`, `csp_violation`, `role_change`, etc.) ganham realce vermelho.
+- Paginação server-side via nova server fn `listAuditEvents({ filters, page })`.
 
-## 2. E-mail verificado obrigatório
+### 6. Central de Usuários `/admin/usuarios`
+- Visual em cards/tabela com avatar (iniciais), badges coloridos por papel, status MFA, e-mail verificado, último login (`login_attempts` mais recente success), data de criação.
+- Server fn `listAdminUsers` une `profiles` + `user_roles` + último `login_attempts` + flag MFA (via admin client).
 
-- Server-fn nova `assertEmailVerified()` (chamada no gate admin) lê `email_confirmed_at` via `supabaseAdmin.auth.admin.getUserById(userId)`. Sem confirmação → 403 + audit `email_not_verified_login_attempt` + redirect para `/auth?reason=email_not_verified`.
-- Gate em `src/routes/_authenticated/admin/route.tsx` (`beforeLoad`) chama `assertEmailVerified` antes de `requireRole`.
-- Toda server-fn admin sensível também valida via helper compartilhado `requireAdminContext(context)` que faz: email verificado → papel válido → (item 5) MFA aal2.
+### 7. Biblioteca premium `/admin/biblioteca`
+- Toggle **Cards ↔ Tabela** (persistido em `localStorage`).
+- Filtros: categoria, ano, público-alvo, fonte; busca por título.
+- Cards com capa/ícone, metadados e ações editar/excluir.
 
----
+### 8. Mapa de ajuda profissional `/admin/mapa`
+- Cabeçalho de stats: total de locais, estados cobertos, categorias.
+- Filtros: estado, cidade, categoria.
+- Estrutura visual idêntica à de "Conteúdos" (KPIs + tabela + chips).
 
-## 3. Rate limit / força bruta (tabela `login_attempts`)
+### 9. Central de Backup `/admin/backup`
+- Tela com cards por dataset (Artigos · Biblioteca · Usuários · Auditoria · Locais), botões CSV/JSON, indicação do registro.
+- **Histórico** lê `audit_log` filtrando `action = 'admin_export'` (sem nova tabela), com quem exportou, dataset, formato e data.
 
-Nova tabela (append-only para auditoria + linha agregada para contagem):
+### 10. Sessões administrativas `/admin/sessoes`
+- Cards/tabela com usuário, papel, IP, navegador (parse simples do user-agent), login, logout, **duração**, badge **Ativa** vs **Encerrada**.
+- Fonte: `admin_sessions`.
 
-```
-login_attempts(id, email citext, ip_address text, success bool, reason text, created_at timestamptz)
-account_lockouts(email citext PK, locked_until timestamptz, reason text, updated_at)
-```
+### 11. Pesquisa global
+- Componente `<GlobalSearch />` no header (atalho ⌘K) que chama `adminGlobalSearch({ q })` — busca em artigos, biblioteca, locais, usuários e auditoria, retornando top 5 por categoria com link direto.
 
-- Server-fn pública `recordLoginAttempt` (já existe) é estendida para:
-  1. Inserir em `login_attempts`.
-  2. Contar falhas dos últimos 15 min por `email` **e** por `ip`.
-  3. Se ≥5 falhas → inserir/atualizar `account_lockouts` por 15 min + audit `account_locked` + `brute_force_detected`.
-- Nova server-fn pública `checkLoginAllowed({email, ip})` chamada **antes** de `signInWithPassword` em `auth.tsx`. Se bloqueado → erro "Conta temporariamente bloqueada. Tente em N minutos." (sem revelar se o e-mail existe).
-- Limpeza: job não necessário; expurgo opcional via SQL > 30 dias (documentado, não automatizado).
+### 12. Estados visuais e responsividade
+- Componentes utilitários `<AdminSkeleton />`, `<AdminEmpty />`, `<AdminError />`, `<AdminSuccessToast />` (reusa shadcn `Skeleton`, `Alert`, `sonner`).
+- Layout do shell migra para grid responsivo: sidebar vira drawer no mobile (≤ md), grid de KPIs colapsa 2→3→4→5 colunas, tabelas usam `overflow-x-auto`; todas as novas telas auditadas em desktop/notebook/tablet/mobile.
 
----
+### 13. Correção final de XSS
+- Reauditar `src/lib/sanitize-html.ts`, `src/components/site/SafeHtml.tsx` e `upsertAdminArticle` (sanitização server-side já adicionada no turno anterior).
+- Adicionar teste manual: salvar artigo com payload `<script>` e validar que o HTML persistido está limpo.
+- Reexecutar `security--run_security_scan`.
 
-## 4. CAPTCHA — Cloudflare Turnstile
+### 14. Findings RLS atuais (write policies)
+Os 4 warnings `MISSING_RLS_PROTECTION` (`account_lockouts`, `admin_sessions`, `login_attempts`, `mfa_recovery_codes`) são por design — todas as escritas passam pelo `service_role` em server fns, RLS bloqueia escrita anon/authenticated por default. Vão ser marcados como **ignored** com justificativa e registrados na `@security-memory`.
 
-Pré-requisito do usuário: criar site key + secret em https://dash.cloudflare.com/?to=/:account/turnstile.
-
-- Pedir secrets via `secrets--add_secret`:
-  - `VITE_TURNSTILE_SITE_KEY` (pública, vai pro client).
-  - `TURNSTILE_SECRET_KEY` (server-only).
-- Renderizar widget Turnstile em `auth.tsx` (login) e em futura página de "esqueci minha senha".
-- Server-fn `verifyTurnstile(token, ip)` faz POST para `https://challenges.cloudflare.com/turnstile/v0/siteverify`. Falha → audit `captcha_failed` + bloqueio do login.
-- Tokens são single-use; verificação acontece dentro de `recordLoginAttempt`/`checkLoginAllowed`.
-
----
-
-## 5. MFA obrigatório (TOTP nativo do Supabase)
-
-- Habilitar TOTP em Supabase Auth (config). Sem migration: o factor é por usuário.
-- Nova rota `/_authenticated/admin/mfa.tsx`:
-  - Se usuário sem factor TOTP verificado → fluxo de enrollment (`supabase.auth.mfa.enroll({factorType: 'totp'})` → QR code → challenge → verify).
-  - Se já tem factor → mostra status, botão "remover" (registra `mfa_disabled`).
-- Gate `_authenticated/admin/route.tsx`:
-  - `supabase.auth.mfa.getAuthenticatorAssuranceLevel()` no client.
-  - Se `currentLevel !== 'aal2'` e usuário é admin/editor/revisor → redirect:
-    - Sem factor → `/admin/mfa` (enrollment forçado).
-    - Com factor mas sem challenge → `/auth/mfa` (página nova só para inserir código TOTP do login atual).
-- Server-side: `requireAdminContext` valida `claims.aal === 'aal2'` (Supabase emite aal no JWT). Sem aal2 → 403 + audit `unauthorized_access`.
-- Eventos auditados: `mfa_enabled`, `mfa_disabled`, `mfa_success`, `mfa_failed`.
-
----
-
-## 6. Sessões administrativas (`admin_sessions`)
-
-```
-admin_sessions(
-  id uuid pk,
-  user_id uuid,
-  user_email text,
-  user_role text,
-  ip_address text,
-  user_agent text,
-  login_at timestamptz default now(),
-  logout_at timestamptz,
-  session_duration interval generated always as (logout_at - login_at) stored,
-  created_at timestamptz default now()
-)
-```
-
-- GRANT: leitura só `service_role` + admins via RLS `has_role(auth.uid(),'admin')`. Escrita só `service_role`.
-- `recordLoginAttempt(success=true)` insere linha.
-- Novo `recordLogout` atualiza `logout_at = now()` da última sessão aberta do usuário.
-- Nova tela `/admin/sessoes` para admins.
+### 15. Relatório final
+Ao concluir, entrego:
+- telas reformuladas e novas rotas
+- novas server fns criadas
+- melhorias de UX/editoriais/visuais/produtividade
+- resultado do novo scan de segurança
+- pendências e recomendações futuras
 
 ---
 
-## 7. Auditoria avançada (append-only, já existe)
+### Resumo técnico (rápido)
 
-- Adicionar novas ações ao enum `audit_action`:
-  - `email_not_verified_login_attempt`
-  - `brute_force_detected`, `account_locked`, `account_unlocked`
-  - `captcha_failed`, `captcha_bypassed_attempt`, `login_blocked_by_captcha`
-  - `mfa_enabled`, `mfa_disabled`, `mfa_success`, `mfa_failed`, `mfa_reset`
-  - `admin_export` (item 12)
-- Reforço: garantir ausência de policy de UPDATE/DELETE (já é o caso). Documentar no relatório.
+**Arquivos novos**
+- `src/lib/admin-overview.functions.ts` (dashboard + segurança + global search + auditoria paginada + usuários enriquecidos)
+- `src/components/admin/` → `AdminSidebar.tsx`, `AdminHeader.tsx`, `GlobalSearch.tsx`, `QuickActions.tsx`, `RecentActivity.tsx`, `KpiCard.tsx`, `StatusFlow.tsx`, `SecurityBadge.tsx`, `AuditTimeline.tsx`, `UserCard.tsx`, `LibraryCard.tsx`, `SessionCard.tsx`, `AdminSkeleton.tsx`, `AdminEmpty.tsx`, `AdminError.tsx`
+- Rotas: `/admin/seguranca`, `/admin/publicacoes`, `/admin/publicacoes/$tipo` (ou 6 arquivos filtrados), `/admin/dashboard` (caso o usuário prefira manter `/admin` listando conteúdo — proposta atual: `/admin` = dashboard)
+- Reescrita: `route.tsx`, `index.tsx`, `auditoria.tsx`, `backup.tsx`, `sessoes.tsx`, `usuarios/index.tsx`, `biblioteca/index.tsx`, `mapa/index.tsx`
 
----
+**Banco**: nenhuma migração necessária (apenas leituras agregadas).
 
-## 8. RBAC — validação cruzada
-
-- Auditoria das server-fns existentes (`admin.functions.ts`, `library.functions.ts`, `locations.functions.ts`, `users.functions.ts`, `content.functions.ts`) para garantir que **toda mutação** passa por `requireRole(['admin'])` ou `['admin','editor']` conforme matriz; **toda exclusão** exige `admin`; **publish/unpublish** aceita `admin|editor|revisor`.
-- UI: ações condicionadas ao papel via `useRouteContext` (já existe parcial — completar).
-
----
-
-## 9. Admin principal (usuário não existe)
-
-- Migration **não cria usuário** (não dá pra inserir em `auth.users` via SQL com segurança). Em vez disso:
-  - Server-fn one-shot `bootstrapPrimaryAdmin` que: se `luizotaviomscv@gmail.com` não existir, cria via `supabaseAdmin.auth.admin.createUser({ email, password: random, email_confirm: true })`, atribui papel `admin`, e dispara e-mail de recuperação para o usuário definir a própria senha. Roda automaticamente uma vez na primeira chamada do gate admin (idempotente).
-  - Audit: `user_create` + `role_change`.
-- Após confirmar acesso de Luiz, **não removo** automaticamente nenhum admin. Crio tela `/admin/usuarios` com flag "última atividade" para o Luiz revisar manualmente. Salvaguarda: server-fn `deleteUser` recusa se sobrar 0 admins.
-
----
-
-## 10. Hardening de indexação
-
-- `public/robots.txt`: adicionar
-  ```
-  Disallow: /admin
-  Disallow: /admin/
-  Disallow: /auth
-  Disallow: /relatorio-seo
-  ```
-- `auth.tsx`, todas rotas sob `_authenticated/admin/`, e `relatorio-seo.tsx`: `head()` com `<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">`. (Já existe em algumas; padronizar via helper `noIndexMeta()`.)
-- `sitemap.xml`: confirmar que essas rotas **não** aparecem (já não aparecem).
-
----
-
-## 11. Backup / export
-
-- Tela `/admin/backup` (admin-only) com botões "Exportar X em CSV/JSON" para: artigos, biblioteca, mapa, usuários, auditoria.
-- Server-fn `exportDataset({type, format})` com `requireRole('admin')`, retorna texto; client baixa via `Blob`. Audit `admin_export` com `target_type = type`.
-
----
-
-## 12. Validação final
-
-- Rodar `supabase--linter` no final.
-- Checklist manual no relatório: RLS por tabela, ausência de policies de write em `audit_log`, GRANTs corretos, todas server-fns admin com `requireRole`, todas mutações auditadas, Turnstile validado server-side, MFA aal2 obrigatório, e-mail verificado obrigatório, robots/meta corretos.
-- Testes XSS/CSRF: confirmar que `RichTextEditor`/`SafeHtml` sanitizam (revisar `SafeHtml.tsx`); server-fns são RPC POST → imunes a CSRF clássico; tokens em header.
-
----
-
-## Detalhes técnicos / ordem de execução
-
-1. **Migration única** (`supabase--migration`):
-   - Tabelas `login_attempts`, `account_lockouts`, `admin_sessions`.
-   - Novos valores no enum `audit_action`.
-   - GRANTs + RLS conforme padrão (service_role total; admin SELECT onde aplicável).
-2. **Auth config** (`supabase--configure_auth`): manter `disable_signup: true`, `password_hibp_enabled: true`.
-3. **Social config** (`supabase--configure_social_auth`): `disable_providers: ["google"]`.
-4. **Secrets**: pedir `VITE_TURNSTILE_SITE_KEY` e `TURNSTILE_SECRET_KEY`.
-5. **Código**:
-   - `src/lib/security.server.ts` (Turnstile verify, lockout check, attempt recorder).
-   - `src/lib/security.functions.ts` (`checkLoginAllowed`, `recordLoginAttempt` v2, `bootstrapPrimaryAdmin`, `exportDataset`).
-   - `src/lib/require-admin.ts` (`requireAdminContext`: email_verified + role + aal2).
-   - `src/lib/audit.server.ts`: novas actions no tipo.
-   - `src/routes/auth.tsx`: sem Google, com Turnstile, com etapa "código MFA" inline (challenge → verify) usando `supabase.auth.mfa`.
-   - `src/routes/_authenticated/admin/route.tsx`: gate reforçado (verified + role + aal2 + bootstrap admin principal).
-   - `src/routes/_authenticated/admin/mfa.tsx` (novo — enrollment).
-   - `src/routes/_authenticated/admin/sessoes.tsx` (novo).
-   - `src/routes/_authenticated/admin/backup.tsx` (novo).
-   - `src/components/site/Turnstile.tsx` (widget).
-   - `public/robots.txt`: bloqueios.
-6. **Rodar linter** + apresentar relatório final.
-
----
-
-## Pendências externas (precisam do usuário)
-
-- Criar widget Turnstile no Cloudflare e entregar site key + secret quando solicitado pelo `add_secret`.
-- Após login do Luiz, definir senha via link de recuperação e configurar MFA na primeira entrada.
-- Revisar lista de administradores existentes em `/admin/usuarios` para decidir quem manter/remover.
-
-## Itens explicitamente fora de escopo
-
-- Não toco em layout, cores, fontes, conteúdo público ou estrutura SEO pública.
-- Não removo páginas existentes do admin — só adiciono camadas de segurança.
-- Não automatizo expurgo de logs antigos (mantém append-only sem TTL para preservar trilha).
-
-Confirma para implementar?
+**Segurança**: sem alterações em RLS/MFA/CSP/headers; só correções/justificativas.
