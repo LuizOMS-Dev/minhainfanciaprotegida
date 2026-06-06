@@ -95,7 +95,7 @@ export function SiteHeader() {
 
           {/* ÁREA 2 — Menu principal */}
           <nav
-            className="hidden lg:flex items-center justify-center gap-0.5 min-w-0 overflow-hidden"
+            className="hidden lg:flex items-center justify-center gap-0.5 min-w-0"
             aria-label="Navegação principal"
           >
             {primaryNav.map((item) => (
