@@ -97,6 +97,8 @@ export const Route = createFileRoute("/noticias/$slug")({
         { property: "og:url", content: url },
         ...(a.cover_url ? [{ property: "og:image" as const, content: a.cover_url }] : []),
         { name: "twitter:card", content: "summary_large_image" },
+        { property: "article:published_time", content: a.publish_at ?? a.updated_at },
+        { property: "article:modified_time", content: a.updated_at },
       ],
       links: [{ rel: "canonical", href: url }],
       scripts,
