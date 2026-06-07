@@ -1,4 +1,4 @@
-import { Info, Lightbulb, BookOpenCheck, ListChecks, ShieldAlert, Phone, MapPin, ArrowRight, GraduationCap, Home as HomeIcon, Wifi, Library, AlertCircle } from "lucide-react";
+import { Info, Lightbulb, BookOpenCheck, ListChecks, ShieldAlert, Phone, MapPin, ArrowRight, GraduationCap, Home as HomeIcon, Wifi, Library, AlertCircle, AlertTriangle, BadgeCheck, CheckCircle2, Eye, TrendingUp } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { SafeHtml } from "@/components/site/SafeHtml";
 import type { LawItem } from "@/content/laws";
