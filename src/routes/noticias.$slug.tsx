@@ -173,15 +173,20 @@ function NewsDetail() {
           )}
           <h1 className="mt-3 font-display text-3xl sm:text-4xl font-bold leading-tight text-balance">{a.title}</h1>
           {a.subtitle && <p className="mt-3 text-lg text-muted-foreground leading-relaxed">{a.subtitle}</p>}
+          {a.severity_level && (
+            <div className="mt-4"><SeverityBadge level={a.severity_level} /></div>
+          )}
           <dl className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
             <div className="inline-flex items-center gap-1.5"><Calendar className="size-4" aria-hidden /><time dateTime={date}>{fmt.format(new Date(date))}</time></div>
             <div className="inline-flex items-center gap-1.5"><Clock className="size-4" aria-hidden />{minutes} min de leitura</div>
             {a.author_name && <div className="inline-flex items-center gap-1.5"><User className="size-4" aria-hidden /> {a.author_name}</div>}
             {a.reviewer_name && <div className="inline-flex items-center gap-1.5"><ShieldCheck className="size-4" aria-hidden /> Revisão: {a.reviewer_name}</div>}
           </dl>
-          <div className="mt-6"><ShareButtons title={a.title} url={url} /></div>
+          <VerificationLine publishedAt={a.publish_at ?? a.updated_at} verifiedAt={a.last_verified_at} confidence={a.source_confidence} />
+          <div className="mt-6"><ShareButtons title={a.title} url={url} description={a.subtitle ?? undefined} /></div>
         </div>
       </header>
+
 
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         {a.cover_url && (
