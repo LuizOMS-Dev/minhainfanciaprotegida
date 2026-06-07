@@ -33,6 +33,13 @@ export interface PublicArticleDetail extends PublicArticleSummary {
   related_laws?: string[] | null;
   related_signal_tags?: string[] | null;
   national_context?: string[] | null;
+  /* Fase 1 — ação, alerta, gravidade, impacto, confiança, resumo IA. */
+  action_steps?: string[] | null;
+  warning_indicators?: string[] | null;
+  severity_level?: "baixo" | "medio" | "alto" | "gravissimo" | null;
+  impact_summary?: string | null;
+  source_confidence?: "alta" | "media" | "baixa" | null;
+  ai_summary?: string | null;
 }
 
 export const listPublishedArticles = createServerFn({ method: "GET" })
@@ -140,7 +147,7 @@ export const getPublishedArticle = createServerFn({ method: "GET" })
     const { data: row, error } = await supabaseAdmin
       .from("articles")
       .select(
-        "id, type, slug, title, subtitle, body, category, cover_url, primary_source_label, primary_source_url, publish_at, last_verified_at, updated_at, author_id, reviewer_id, status, reading_minutes, understand, lessons, timeline, faq, related_laws, related_signal_tags, national_context",
+        "id, type, slug, title, subtitle, body, category, cover_url, primary_source_label, primary_source_url, publish_at, last_verified_at, updated_at, author_id, reviewer_id, status, reading_minutes, understand, lessons, timeline, faq, related_laws, related_signal_tags, national_context, action_steps, warning_indicators, severity_level, impact_summary, source_confidence, ai_summary",
       )
       .eq("type", data.type)
       .eq("slug", data.slug)
@@ -203,6 +210,12 @@ export const getPublishedArticle = createServerFn({ method: "GET" })
       related_laws: row.related_laws,
       related_signal_tags: row.related_signal_tags,
       national_context: row.national_context,
+      action_steps: (row as { action_steps?: string[] | null }).action_steps ?? null,
+      warning_indicators: (row as { warning_indicators?: string[] | null }).warning_indicators ?? null,
+      severity_level: (row as { severity_level?: PublicArticleDetail["severity_level"] }).severity_level ?? null,
+      impact_summary: (row as { impact_summary?: string | null }).impact_summary ?? null,
+      source_confidence: (row as { source_confidence?: PublicArticleDetail["source_confidence"] }).source_confidence ?? null,
+      ai_summary: (row as { ai_summary?: string | null }).ai_summary ?? null,
     };
     return { article };
   });

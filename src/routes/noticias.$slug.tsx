@@ -24,6 +24,11 @@ import {
   RelatedMaterials,
   FaqBlock,
   RecommendedReading,
+  ActionStepsBlock,
+  WarningIndicatorsBlock,
+  ImpactBlock,
+  SeverityBadge,
+  VerificationLine,
 } from "@/components/site/ArticleBlocks";
 import { getLawsBySlugs } from "@/content/laws";
 import { getContextByKeys } from "@/content/nationalContext";
@@ -50,6 +55,7 @@ export const Route = createFileRoute("/noticias/$slug")({
     if (!a) return { meta: [{ title: "Notícia — Infância Protegida" }] };
     const desc =
       a.subtitle ??
+      a.ai_summary ??
       (a.understand ? a.understand.replace(/<[^>]+>/g, "").slice(0, 155) : a.title);
     const url = `${SITE}/noticias/${a.slug}`;
     const faq = a.faq ?? [];
@@ -91,6 +97,8 @@ export const Route = createFileRoute("/noticias/$slug")({
         { property: "og:url", content: url },
         ...(a.cover_url ? [{ property: "og:image" as const, content: a.cover_url }] : []),
         { name: "twitter:card", content: "summary_large_image" },
+        { property: "article:published_time", content: a.publish_at ?? a.updated_at },
+        { property: "article:modified_time", content: a.updated_at },
       ],
       links: [{ rel: "canonical", href: url }],
       scripts,
@@ -165,15 +173,20 @@ function NewsDetail() {
           )}
           <h1 className="mt-3 font-display text-3xl sm:text-4xl font-bold leading-tight text-balance">{a.title}</h1>
           {a.subtitle && <p className="mt-3 text-lg text-muted-foreground leading-relaxed">{a.subtitle}</p>}
+          {a.severity_level && (
+            <div className="mt-4"><SeverityBadge level={a.severity_level} /></div>
+          )}
           <dl className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
             <div className="inline-flex items-center gap-1.5"><Calendar className="size-4" aria-hidden /><time dateTime={date}>{fmt.format(new Date(date))}</time></div>
             <div className="inline-flex items-center gap-1.5"><Clock className="size-4" aria-hidden />{minutes} min de leitura</div>
             {a.author_name && <div className="inline-flex items-center gap-1.5"><User className="size-4" aria-hidden /> {a.author_name}</div>}
             {a.reviewer_name && <div className="inline-flex items-center gap-1.5"><ShieldCheck className="size-4" aria-hidden /> Revisão: {a.reviewer_name}</div>}
           </dl>
-          <div className="mt-6"><ShareButtons title={a.title} url={url} /></div>
+          <VerificationLine publishedAt={a.publish_at ?? a.updated_at} verifiedAt={a.last_verified_at} confidence={a.source_confidence} />
+          <div className="mt-6"><ShareButtons title={a.title} url={url} description={a.subtitle ?? undefined} /></div>
         </div>
       </header>
+
 
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         {a.cover_url && (
@@ -181,7 +194,10 @@ function NewsDetail() {
         )}
         {a.body && <SafeHtml html={a.body} className="prose prose-neutral max-w-none text-foreground/90 leading-relaxed" />}
 
+        <ActionStepsBlock items={a.action_steps} />
+        <WarningIndicatorsBlock items={a.warning_indicators} />
         <UnderstandBlock html={a.understand} />
+        <ImpactBlock text={a.impact_summary} />
         <NationalContextChips items={context} />
         {a.timeline && a.timeline.length > 0 && <Timeline items={a.timeline} />}
         <LegislationBlock items={laws} />
@@ -205,7 +221,7 @@ function NewsDetail() {
         )}
 
         <div className="mt-12 pt-8 border-t border-border">
-          <ShareButtons title={a.title} url={url} />
+          <ShareButtons title={a.title} url={url} description={a.subtitle ?? undefined} />
         </div>
       </div>
 
@@ -217,12 +233,14 @@ function NewsDetail() {
           "@context": "https://schema.org",
           "@type": "NewsArticle",
           headline: a.title,
-          description: a.subtitle ?? undefined,
+          description: a.subtitle ?? a.ai_summary ?? undefined,
+          abstract: a.ai_summary ?? undefined,
           datePublished: a.publish_at ?? a.updated_at,
-          dateModified: a.updated_at,
+          dateModified: a.last_verified_at ?? a.updated_at,
           image: a.cover_url ?? undefined,
           mainEntityOfPage: url,
           articleSection: a.category ?? undefined,
+          keywords: [a.category, ...(a.warning_indicators ?? [])].filter(Boolean).join(", ") || undefined,
           inLanguage: "pt-BR",
           author: a.author_name ? { "@type": "Person", name: a.author_name } : { "@type": "Organization", name: "Infância Protegida" },
           publisher: { "@type": "Organization", name: "Infância Protegida" },

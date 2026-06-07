@@ -1,135 +1,131 @@
-## Objetivo
+# Fase 1 — Campos editoriais, compartilhamento global, sitemap dinâmico e testes
 
-Transformar `/noticias/$slug` e `/casos/$slug` em hubs editoriais profundos, mantendo identidade visual, menus e layout global. Editorial híbrido: editor digita conteúdo curado; servidor calcula relacionamentos automáticos.
+Entrega focada nas fundações. Fases 2 (páginas temáticas + /atualizacoes) e 3 (auditoria de datas + consistência visual + testes pós-deploy) ficam para próximos planos, mas as Fases 1 já reaproveitam o design system existente — `PageHero`, `ArticleCard`, `SectionHeader`, `ArticleBlocks`, tokens `--orange`/`--navy-deep`/`--red-inst`. Nada de novo padrão visual.
 
-## 1. Banco de dados (uma migration)
+## 1. Migration: 6 novos campos em `articles`
 
-Novas colunas em `public.articles` (todas opcionais — nada quebra para artigos existentes):
+Tudo opcional. Sem novos GRANTs (a tabela já tem). Tipos gerados automaticamente após approval.
+
+- `action_steps text[]` — passos práticos ("Acione o Conselho Tutelar", "Disque 100"...).
+- `warning_indicators text[]` — sinais de alerta ("isolamento social", "presentes excessivos"...).
+- `severity_level text CHECK IN ('baixo','medio','alto','gravissimo')` — selo visual.
+- `impact_summary text` — parágrafo sobre impacto nacional.
+- `source_confidence text CHECK IN ('alta','media','baixa')` — selo de confiabilidade.
+- `ai_summary text` — 50–150 palavras, invisível na UI, injetado em JSON-LD/llms.txt.
+
+`last_verified_at` já existe — apenas passa a ser exibido (“Verificado em”).
+
+## 2. Server / camada de dados
+
+- `src/lib/admin.functions.ts` — `AdminArticle` + `upsertSchema` ganham os 6 campos. Limites Zod: `action_steps` ≤ 20 strings × 200 chars; `warning_indicators` ≤ 20 × 120; `severity_level`/`source_confidence` enums; `impact_summary` ≤ 4000; `ai_summary` ≤ 1500.
+- `src/lib/content.functions.ts` — `PublicArticleDetail` expõe os novos campos para Notícias e Casos.
+- Sem mudança de RLS.
+
+## 3. Editor admin (já em abas)
+
+`src/routes/_authenticated/admin/article.$id.tsx`:
+
+- Nova aba **“Ação & Alerta”** (entre Editorial e Timeline): `action_steps` (lista editável), `warning_indicators` (chips livres), `severity_level` (select), `source_confidence` (select), `impact_summary` (textarea), `ai_summary` (textarea com contador 50–150 palavras + hint “invisível ao leitor; usado por buscadores e IA”).
+- Reaproveita `Field`, `inputCls`, `MultiSelect`, mesmos botões e bordas atuais.
+
+## 4. Hubs editoriais — Notícias e Casos
+
+`src/components/site/ArticleBlocks.tsx`:
+
+- `SeverityBadge`, `ConfidenceBadge` — pílulas usando tokens `--orange`/`--red-inst`/`--navy-deep`, mesmo formato dos badges existentes.
+- `ActionStepsBlock` — lista numerada com ícone (Phone, Shield, MessageCircle...), card no padrão atual.
+- `WarningIndicatorsBlock` — grid de chips em card destacado.
+- `ImpactBlock` — bloco de citação institucional reaproveitando `bg-card border-border`.
+- `VerificationLine` — linha de metadados “Publicado em DD/MM/AAAA · Verificado em DD/MM/AAAA”.
+
+Ordem nas páginas (sem reordenar o que já está):
 
 ```
-reading_minutes      int                  -- opcional; fallback calculado do body
-understand           text                 -- "Entenda o assunto" (HTML curto)
-lessons              text                 -- "O que aprendemos" (apenas casos)
-timeline             jsonb                -- [{date, title, text}]
-faq                  jsonb                -- [{q, a}]
-related_laws         text[]               -- slugs: "eca-art-227", "lei-13431", "cp-art-217a"...
-related_signal_tags  text[]               -- tags em /sinais
-national_context     text[]               -- ["maio-laranja","eca","seguranca-digital"...]
+Header → cover → matéria
+→ ActionStepsBlock (se houver)
+→ WarningIndicatorsBlock (se houver)
+→ Understand / Lessons
+→ ImpactBlock (se houver)
+→ Timeline → Legislation → Signals → ReportChannels
+→ RelatedMaterials → FAQ → RecommendedReading
+→ RelatedArticles → References → ShareButtons
 ```
 
-Sem CHECK em jsonb (regra de migrations). Sem novos GRANTs (tabela já liberada). Tipos do Supabase regenerados após aprovação.
+JSON-LD enriquecido:
+- `NewsArticle`/`Article` ganha `dateModified` (= `last_verified_at`), `abstract` (= `ai_summary` quando preenchido) e `keywords` (`warning_indicators` + categoria).
+- Selo `severity_level` aparece junto ao header com `aria-label`.
 
-## 2. Server functions (`src/lib/content.functions.ts`)
+## 5. Compartilhamento social global
 
-- `getPublishedArticle` passa a devolver os novos campos no `PublicArticleDetail`.
-- Nova `getArticleRelations({ id, type, category, related_laws, related_signal_tags })` retorna em uma chamada:
-  - `library`: até 4 itens de `library_items` cuja `category`/`audience` casa com `category` do artigo
-  - `signals`: itens estáticos de `src/content/signals.ts` filtrados por `related_signal_tags`
-  - `laws`: itens estáticos de `src/content/laws.ts` (ECA, CP, Lei 13.431, Marco Civil) por slug
-  - `forParents`, `forSchools`, `forRisks`: 1–2 cards por seção, casados por `category`
-  - `relatedNews`, `relatedCases`: 3 itens cruzados (notícia → casos do mesmo tema e vice-versa)
-- Tudo via `supabaseAdmin` em paralelo (`Promise.all`); retorno é DTO plano.
+`src/components/site/ShareButtons.tsx` — extensão (mantém visual atual):
 
-## 3. Conteúdo estático curado
+- Adicionar LinkedIn, Telegram.
+- Prop opcional `description`.
+- Botão “Compartilhar” usando `navigator.share()` quando disponível (mobile-first); fallback = ícones individuais já existentes + Copiar Link.
+- Toast (já existe `sonner` no projeto) ao copiar.
 
-```
-src/content/laws.ts      -- { slug, label, summary, url } para ECA art. 5/17/18/227, CP 217-A/218-B, Lei 13.431, Marco Civil
-src/content/signals.ts   -- já existe; expor helper getByTags(tags)
-src/content/nationalContext.ts -- chaves: maio-laranja, eca, direitos-crianca, educacao-preventiva, seguranca-digital → { label, blurb, href }
-```
+Aplicar em: `noticias.$slug`, `casos.$slug`, `biblioteca.$slug` (já tem), `legislacao`, `maio-laranja`, `sinais`, `riscos-online`, `pais`, `escolas`, `faq`, `como-ajudar`. URL e título derivados da rota; descrição = `subtitle`/meta description.
 
-## 4. Novos componentes (`src/components/site/`)
+## 6. Sitemap dinâmico
 
-Reusam tokens existentes (navy/orange, font-display, rounded-3xl).
+`src/routes/sitemap[.]xml.ts`:
 
-- `ArticleMeta` — cabeçalho com categoria, data, autor, revisor, tempo de leitura
-- `UnderstandBlock` — card laranja com "O que aconteceu / Por que importa / Impacto em crianças"
-- `LessonsBlock` — variante para casos
-- `NationalContextChips` — chips horizontais clicáveis
-- `Timeline` — já existe, evoluir para aceitar `title` + ícone marco
-- `LegislationBlock` — cards das leis (label, resumo, link oficial)
-- `SignalsBlock` — grid resumo com link para `/sinais#tag`
-- `ReportChannels` — Disque 100, Conselho Tutelar, Delegacia, MP, Mapa de Ajuda (botões grandes)
-- `RelatedMaterials` — cards da biblioteca
-- `FaqBlock` — accordion acessível (`<details>`), id por pergunta
-- `RecommendedReading` — 3–4 cards "Para Pais / Para Escolas / Riscos / Biblioteca"
-- `CaseTimeline` — wrapper do Timeline com etapas fixas (ocorrência → atual)
-- Reaproveita: `ShareButtons`, `RelatedArticles`, `ReferencesBlock`, `JsonLd`, `SafeHtml`
+- Server route já é dinâmico — adicionar fetch via `supabaseAdmin` (carregado com `await import` dentro do handler) das `articles` com `status='published' AND (publish_at IS NULL OR publish_at <= now())`.
+- Cada artigo emite `/{noticias|casos|riscos|biblioteca}/{slug}` com `lastmod = updated_at`.
+- `Cache-Control: public, max-age=300, s-maxage=600` para refletir publicações novas em até ~10 min.
+- Não introduz cron — o GET roda fresh a cada hit.
 
-## 5. Páginas reformuladas
+## 7. Metadados, canonical e OG por artigo
 
-**`/noticias/$slug`** ordem: Header premium → Imagem → Matéria (`SafeHtml`) → UnderstandBlock → NationalContextChips → Timeline (se houver) → LegislationBlock → SignalsBlock → ReportChannels → RelatedMaterials → FaqBlock → RecommendedReading → RelatedArticles → ReferencesBlock → ShareButtons.
+Já existem `head()` por slug. Garantias auditadas:
 
-**`/casos/$slug`** ordem: Header (anonimizado) → Resumo → CaseTimeline → LessonsBlock → SignalsBlock → RecommendedReading (Para Pais/Escolas/Riscos) → LegislationBlock → ReportChannels → RelatedArticles (casos) → RelatedNews → RelatedMaterials → FaqBlock → ReferencesBlock.
+- `canonical` apenas no leaf (regra TanStack já respeitada).
+- `og:image` = `cover_url` quando presente; sem default no `__root.tsx`.
+- `og:url` absoluto baseado em `https://minhainfanciaprotegida.com.br`.
+- `meta description` = `subtitle || ai_summary || primeiros 160 chars do body texto-puro`.
+- `article:modified_time` e `article:published_time` adicionados.
 
-Blocos só renderizam quando há dado. Layout colapsa elegantemente em artigos antigos.
+## 8. Remoção residual de “Mineblox”
 
-## 6. SEO e IA generativa
+`rg -ni mineblox` hoje retorna vazio no código, mas a fase audita o banco também:
 
-Cada página emite (via `head().scripts`):
+- Server-side query (executada manualmente via `supabase--read_query` durante a implementação) lista `articles` cujo `title|slug|body|subtitle` contenha “mineblox” → relatório ao usuário, exclusão só após confirmação.
+- Sem mudança de schema para isso.
 
-- `NewsArticle` (notícias) ou `Article` (casos), já existente — agora com `articleSection`, `keywords`, `inLanguage: pt-BR`
-- `BreadcrumbList` — Home → Notícias|Casos → Título
-- `FAQPage` — quando `faq.length > 0`
-- `SpeakableSpecification` apontando para `h1` + `.understand`
-- `ItemList` agregando matérias relacionadas
-- meta `description` derivada do `subtitle` ou primeiros 155 chars de `understand`
-- `og:image` apenas no leaf, do `cover_url`
-- Trecho semântico no `__root.tsx` JSON-LD `Organization.description` reforçando o posicionamento ("portal brasileiro especializado em prevenção…") — só se ainda não estiver lá
+## 9. Testes
 
-## 7. Casos reais — política de anonimização
+**Unitários (Vitest)** em `src/lib/__tests__/`:
 
-- Helper `assertAnonymized(text)` no editor avisa se detectar nomes de menores ou padrões CPF/RG (regex client-side, não bloqueia)
-- Componente `AnonymizedNotice` no topo dos casos: "Identidades de vítimas preservadas. Dados conforme registros públicos."
-- Documentação no painel `/admin/article/$id` aba Conteúdo com checklist editorial
+- `admin-upsert-schema.test.ts` — para cada novo campo: aceita valor válido, rejeita acima do limite, aceita `null/undefined`, rejeita enum inválido em `severity_level`/`source_confidence`.
+- `sitemap.test.ts` — função pura que monta `<urlset>` a partir de um array de artigos fake; verifica escaping, ordem, `lastmod`.
+- `share-url.test.ts` — helper que constrói URLs WhatsApp/X/Facebook/LinkedIn/Telegram a partir de `{title, url, description}`.
 
-## 8. Editor (`/admin/article/$id`) — abas
+Refatoração mínima: extrair as funções puras (`buildSitemapXml`, `buildShareLinks`) para arquivos testáveis sem rodar o server.
 
-Substitui scroll único por abas (tablist acessível, sem rota nova):
+`package.json` ganha script `"test": "vitest run"`. CI não é alterado.
 
-1. **Conteúdo** — title, subtitle, slug, category, cover, body (RichText)
-2. **Mídia & SEO** — cover_url, primary source, last_verified, reading_minutes (opcional)
-3. **Entenda / Aprendemos** — `understand` (RichText curto), `lessons` (só casos)
-4. **Linha do tempo** — repeater {date, title, text}
-5. **FAQ** — repeater {q, a}
-6. **Relacionamentos** — multi-select de `related_laws` (catálogo de `laws.ts`), `related_signal_tags`, `national_context`
-7. **Publicação** — status, publish_at, reviewer, fontes adicionais
+**Pós-deploy (manual via tool)** — checklist que rodo após o build:
 
-`upsertAdminArticle` aceita os novos campos (validação Zod expandida). Persistência atômica.
+1. `invoke-server-function GET /sitemap.xml` → confere que retorna 200, XML válido, contém ao menos uma URL de `/noticias/*` real.
+2. `invoke-server-function POST` em `upsertAdminArticle` com payload contendo os 6 novos campos → confirma persistência (`getAdminArticle` em seguida retorna o mesmo objeto).
+3. `fetch_website` em `/noticias/<slug>` → confere presença de `<meta property="og:image">`, JSON-LD com `dateModified` e `abstract`.
+4. `server-function-logs` filtrado por “admin.upsertArticle” → confirma ausência de erros.
 
-## 9. Acessibilidade & performance
+Resultados anexados ao final da implementação.
 
-- FAQ usa `<details>`/`<summary>` nativos (sem JS)
-- Timeline com `aria-label` "Linha do tempo do caso"
-- Imagens lazy + `aspect-ratio` para evitar CLS
-- Todos os blocos novos são server-rendered (sem hydration extra)
-- `staleTime` 5 min nas queries de relations
+## 10. Não está nesta fase (Fase 2/3)
 
-## 10. Riscos & não-objetivos
-
-- **Não** altera homepage, header, footer, menus, cores, tipografia
-- **Não** mexe em segurança/MFA/CSP/auditoria
-- **Não** introduz IA generativa nesta entrega (decisão do usuário: editorial híbrido)
-- Artigos antigos continuam exibindo apenas o que têm; nenhum bloco placeholder
-
-## 11. Detalhes técnicos
-
-- Stack: TanStack Start, server fns em `*.functions.ts`, leitura via `useSuspenseQuery` no loader já existente
-- Migration única adicionando colunas + comentários SQL
-- Regen `src/integrations/supabase/types.ts` automática após migration aprovada
-- Sitemap já cobre `/noticias/$slug` e `/casos/$slug`; nada a mudar
-- Sem dependências novas
-
-## 12. Entregáveis do relatório final
-
-Vou reportar: campos criados, server fns novas, componentes novos, blocos por página, schemas JSON-LD emitidos, mudanças no editor, política de anonimização, impacto esperado (SEO semântico + AI Overview + tempo de permanência), e recomendações futuras (IA generativa opcional, página "Tema" agregando notícias+casos+leis por tag, newsletter).
+- `/tema/$slug` (híbrido) e `/atualizacoes` — Fase 2.
+- Auditoria global de datas + revisão visual página a página + `llms.txt`/`llms-full.txt` automáticos — Fase 3.
+- Geração de `og:image` por IA — só sob pedido.
 
 ## Ordem de execução
 
-1. Migration (aprovação do usuário) → tipos regenerados
-2. `content/laws.ts`, `content/nationalContext.ts`, helpers de signals
-3. `content.functions.ts`: estender DTO + `getArticleRelations`
-4. Componentes novos em `src/components/site/`
-5. Reformular `noticias.$slug.tsx` e `casos.$slug.tsx`
-6. Estender `admin/article.$id.tsx` com tabs e `admin.functions.ts` upsert
-7. Verificar build, rodar SEO scan e reportar
+1. Migration → aguardar approval → tipos regenerados.
+2. `admin.functions.ts` + editor (aba “Ação & Alerta”).
+3. `content.functions.ts` + componentes em `ArticleBlocks.tsx`.
+4. Páginas `noticias.$slug` e `casos.$slug` integram os novos blocos.
+5. `ShareButtons` estendido + aplicado nas páginas listadas.
+6. `sitemap[.]xml.ts` carrega artigos publicados.
+7. Vitest configurado, testes escritos, `bunx vitest run` verde.
+8. Checklist pós-build via `invoke-server-function` e `server-function-logs` → relatório final.

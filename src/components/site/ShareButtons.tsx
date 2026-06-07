@@ -1,59 +1,77 @@
-import { Facebook, Link2, MessageCircle, Twitter, Check } from "lucide-react";
-import { useState } from "react";
+import { Facebook, Link2, Linkedin, MessageCircle, Send, Share2, Twitter } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { buildAllShareLinks, type ShareTarget } from "@/lib/share-urls";
 
-export function ShareButtons({ title, url }: { title: string; url: string }) {
-  const [copied, setCopied] = useState(false);
-  const encodedUrl = encodeURIComponent(url);
-  const encodedTitle = encodeURIComponent(title);
+interface ShareButtonsProps {
+  title: string;
+  url: string;
+  description?: string;
+}
 
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-    } catch {
-      /* no-op */
-    }
-  };
+export function ShareButtons({ title, url, description }: ShareButtonsProps) {
+  const [hasNativeShare, setHasNativeShare] = useState(false);
+
+  useEffect(() => {
+    setHasNativeShare(typeof navigator !== "undefined" && typeof navigator.share === "function");
+  }, []);
+
+  const target: ShareTarget = { title, url, description };
+  const links = buildAllShareLinks(target);
 
   const btn =
     "inline-flex size-10 items-center justify-center rounded-full border border-border bg-card hover:bg-muted transition text-foreground/80 hover:text-foreground";
 
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      toast.success("Link copiado para a área de transferência");
+    } catch {
+      toast.error("Não foi possível copiar o link");
+    }
+  };
+
+  const nativeShare = async () => {
+    try {
+      await navigator.share({ title, text: description ?? title, url });
+    } catch {
+      /* usuário cancelou */
+    }
+  };
+
   return (
-    <div className="flex items-center gap-2" aria-label="Compartilhar">
-      <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">Compartilhar</span>
-      <a
-        href={`https://wa.me/?text=${encodedTitle}%20${encodedUrl}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={btn}
-        aria-label="Compartilhar no WhatsApp"
-        title="WhatsApp"
-      >
+    <div className="flex flex-wrap items-center gap-2" aria-label="Compartilhar">
+      <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">
+        Compartilhar
+      </span>
+      {hasNativeShare && (
+        <button
+          type="button"
+          onClick={nativeShare}
+          className={btn}
+          aria-label="Compartilhar"
+          title="Compartilhar"
+        >
+          <Share2 className="size-4" />
+        </button>
+      )}
+      <a href={links.whatsapp} target="_blank" rel="noopener noreferrer" className={btn} aria-label="WhatsApp" title="WhatsApp">
         <MessageCircle className="size-4" />
       </a>
-      <a
-        href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={btn}
-        aria-label="Compartilhar no X / Twitter"
-        title="X / Twitter"
-      >
+      <a href={links.twitter} target="_blank" rel="noopener noreferrer" className={btn} aria-label="X / Twitter" title="X / Twitter">
         <Twitter className="size-4" />
       </a>
-      <a
-        href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={btn}
-        aria-label="Compartilhar no Facebook"
-        title="Facebook"
-      >
+      <a href={links.facebook} target="_blank" rel="noopener noreferrer" className={btn} aria-label="Facebook" title="Facebook">
         <Facebook className="size-4" />
       </a>
+      <a href={links.linkedin} target="_blank" rel="noopener noreferrer" className={btn} aria-label="LinkedIn" title="LinkedIn">
+        <Linkedin className="size-4" />
+      </a>
+      <a href={links.telegram} target="_blank" rel="noopener noreferrer" className={btn} aria-label="Telegram" title="Telegram">
+        <Send className="size-4" />
+      </a>
       <button onClick={copy} className={btn} aria-label="Copiar link" title="Copiar link" type="button">
-        {copied ? <Check className="size-4 text-emerald-600" /> : <Link2 className="size-4" />}
+        <Link2 className="size-4" />
       </button>
     </div>
   );

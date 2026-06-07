@@ -1,14 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
+import { buildSitemapXml, articlePathFor, type SitemapEntry } from "@/lib/sitemap-xml";
 
 const BASE_URL = "https://minhainfanciaprotegida.com.br";
-
-interface SitemapEntry {
-  path: string;
-  lastmod?: string;
-  changefreq?: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
-  priority?: string;
-}
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
@@ -17,7 +11,6 @@ export const Route = createFileRoute("/sitemap.xml")({
         const today = new Date().toISOString().slice(0, 10);
 
         const entries: SitemapEntry[] = [
-          // Páginas principais
           { path: "/", changefreq: "weekly", priority: "1.0", lastmod: today },
           { path: "/maio-laranja", changefreq: "monthly", priority: "0.9", lastmod: today },
           { path: "/sinais", changefreq: "monthly", priority: "0.9", lastmod: today },
@@ -32,36 +25,43 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/legislacao", changefreq: "monthly", priority: "0.8", lastmod: today },
           { path: "/mapa", changefreq: "monthly", priority: "0.7", lastmod: today },
           { path: "/faq", changefreq: "monthly", priority: "0.7", lastmod: today },
-          // Institucionais
           { path: "/sobre", changefreq: "monthly", priority: "0.6", lastmod: today },
           { path: "/objetivos", changefreq: "monthly", priority: "0.6", lastmod: today },
           { path: "/metodologia", changefreq: "monthly", priority: "0.6", lastmod: today },
           { path: "/fontes", changefreq: "monthly", priority: "0.6", lastmod: today },
         ];
 
-        const urls = entries.map((e) =>
-          [
-            `  <url>`,
-            `    <loc>${BASE_URL}${e.path}</loc>`,
-            e.lastmod ? `    <lastmod>${e.lastmod}</lastmod>` : null,
-            e.changefreq ? `    <changefreq>${e.changefreq}</changefreq>` : null,
-            e.priority ? `    <priority>${e.priority}</priority>` : null,
-            `  </url>`,
-          ]
-            .filter(Boolean)
-            .join("\n"),
-        );
+        // Conteúdo dinâmico — Notícias e Casos publicados no banco.
+        try {
+          const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+          const { data, error } = await supabaseAdmin
+            .from("articles")
+            .select("slug, type, updated_at, publish_at, status")
+            .eq("status", "published")
+            .or(`publish_at.is.null,publish_at.lte.${new Date().toISOString()}`);
+          if (error) {
+            console.error("[sitemap] supabase error", error);
+          } else if (data) {
+            for (const row of data) {
+              const path = articlePathFor(row.type as "news" | "case", row.slug);
+              if (!path) continue;
+              const lastmod = (row.updated_at ?? row.publish_at ?? "").slice(0, 10) || today;
+              entries.push({
+                path,
+                lastmod,
+                changefreq: "weekly",
+                priority: row.type === "news" ? "0.8" : "0.7",
+              });
+            }
+          }
+        } catch (e) {
+          console.error("[sitemap] dynamic fetch failed", e);
+        }
 
-        const xml = [
-          `<?xml version="1.0" encoding="UTF-8"?>`,
-          `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`,
-          ...urls,
-          `</urlset>`,
-        ].join("\n");
-
+        const xml = buildSitemapXml(BASE_URL, entries);
         const headers = new Headers();
         headers.set("Content-Type", "application/xml; charset=utf-8");
-        headers.set("Cache-Control", "public, max-age=3600");
+        headers.set("Cache-Control", "public, max-age=300, s-maxage=600");
         headers.set("X-Content-Type-Options", "nosniff");
         return new Response(xml, { status: 200, headers });
       },

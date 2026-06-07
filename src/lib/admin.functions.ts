@@ -34,6 +34,13 @@ export interface AdminArticle {
   related_laws: string[] | null;
   related_signal_tags: string[] | null;
   national_context: string[] | null;
+  /** Fase 1 — ação, alerta, gravidade, impacto, confiança, resumo IA. */
+  action_steps: string[] | null;
+  warning_indicators: string[] | null;
+  severity_level: "baixo" | "medio" | "alto" | "gravissimo" | null;
+  impact_summary: string | null;
+  source_confidence: "alta" | "media" | "baixa" | null;
+  ai_summary: string | null;
 }
 
 export const listAdminArticles = createServerFn({ method: "GET" })
@@ -107,6 +114,10 @@ const faqSchema = z
   .max(30);
 
 const slugListSchema = z.array(z.string().min(1).max(80)).max(30);
+const actionStepsSchema = z.array(z.string().min(1).max(200)).max(20);
+const warningIndicatorsSchema = z.array(z.string().min(1).max(120)).max(20);
+const severitySchema = z.enum(["baixo", "medio", "alto", "gravissimo"]);
+const confidenceSchema = z.enum(["alta", "media", "baixa"]);
 
 const upsertSchema = z.object({
   id: z.string().uuid().optional(),
@@ -123,7 +134,7 @@ const upsertSchema = z.object({
   publish_at: z.string().datetime().optional().nullable().or(z.literal("")),
   last_verified_at: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().nullable().or(z.literal("")),
   sources: z.array(sourceSchema).max(50).optional(),
-  // Novos campos editoriais
+  // Editoriais avançados
   reading_minutes: z.number().int().min(1).max(120).optional().nullable(),
   understand: z.string().max(8000).optional().nullable(),
   lessons: z.string().max(8000).optional().nullable(),
@@ -132,6 +143,13 @@ const upsertSchema = z.object({
   related_laws: slugListSchema.optional().nullable(),
   related_signal_tags: slugListSchema.optional().nullable(),
   national_context: slugListSchema.optional().nullable(),
+  // Fase 1 — ação, alerta, gravidade, impacto, confiança, resumo IA
+  action_steps: actionStepsSchema.optional().nullable(),
+  warning_indicators: warningIndicatorsSchema.optional().nullable(),
+  severity_level: severitySchema.optional().nullable().or(z.literal("")),
+  impact_summary: z.string().max(4000).optional().nullable(),
+  source_confidence: confidenceSchema.optional().nullable().or(z.literal("")),
+  ai_summary: z.string().max(1500).optional().nullable(),
 });
 
 export const upsertAdminArticle = createServerFn({ method: "POST" })
@@ -147,6 +165,8 @@ export const upsertAdminArticle = createServerFn({ method: "POST" })
       primary_source_url: rest.primary_source_url || null,
       publish_at: rest.publish_at || null,
       last_verified_at: rest.last_verified_at || null,
+      severity_level: rest.severity_level || null,
+      source_confidence: rest.source_confidence || null,
       author_id: context.userId,
     };
     let articleId = data.id;

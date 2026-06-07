@@ -105,6 +105,8 @@ export type Database = {
       }
       articles: {
         Row: {
+          action_steps: string[] | null
+          ai_summary: string | null
           author_id: string | null
           body: string | null
           category: string | null
@@ -112,6 +114,7 @@ export type Database = {
           created_at: string
           faq: Json | null
           id: string
+          impact_summary: string | null
           last_verified_at: string | null
           lessons: string | null
           national_context: string[] | null
@@ -122,7 +125,9 @@ export type Database = {
           related_laws: string[] | null
           related_signal_tags: string[] | null
           reviewer_id: string | null
+          severity_level: string | null
           slug: string
+          source_confidence: string | null
           status: Database["public"]["Enums"]["article_status"]
           subtitle: string | null
           timeline: Json | null
@@ -130,8 +135,11 @@ export type Database = {
           type: Database["public"]["Enums"]["article_type"]
           understand: string | null
           updated_at: string
+          warning_indicators: string[] | null
         }
         Insert: {
+          action_steps?: string[] | null
+          ai_summary?: string | null
           author_id?: string | null
           body?: string | null
           category?: string | null
@@ -139,6 +147,7 @@ export type Database = {
           created_at?: string
           faq?: Json | null
           id?: string
+          impact_summary?: string | null
           last_verified_at?: string | null
           lessons?: string | null
           national_context?: string[] | null
@@ -149,7 +158,9 @@ export type Database = {
           related_laws?: string[] | null
           related_signal_tags?: string[] | null
           reviewer_id?: string | null
+          severity_level?: string | null
           slug: string
+          source_confidence?: string | null
           status?: Database["public"]["Enums"]["article_status"]
           subtitle?: string | null
           timeline?: Json | null
@@ -157,8 +168,11 @@ export type Database = {
           type: Database["public"]["Enums"]["article_type"]
           understand?: string | null
           updated_at?: string
+          warning_indicators?: string[] | null
         }
         Update: {
+          action_steps?: string[] | null
+          ai_summary?: string | null
           author_id?: string | null
           body?: string | null
           category?: string | null
@@ -166,6 +180,7 @@ export type Database = {
           created_at?: string
           faq?: Json | null
           id?: string
+          impact_summary?: string | null
           last_verified_at?: string | null
           lessons?: string | null
           national_context?: string[] | null
@@ -176,7 +191,9 @@ export type Database = {
           related_laws?: string[] | null
           related_signal_tags?: string[] | null
           reviewer_id?: string | null
+          severity_level?: string | null
           slug?: string
+          source_confidence?: string | null
           status?: Database["public"]["Enums"]["article_status"]
           subtitle?: string | null
           timeline?: Json | null
@@ -184,6 +201,7 @@ export type Database = {
           type?: Database["public"]["Enums"]["article_type"]
           understand?: string | null
           updated_at?: string
+          warning_indicators?: string[] | null
         }
         Relationships: []
       }
