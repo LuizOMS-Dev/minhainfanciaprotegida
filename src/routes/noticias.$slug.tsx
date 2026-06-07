@@ -55,6 +55,7 @@ export const Route = createFileRoute("/noticias/$slug")({
     if (!a) return { meta: [{ title: "Notícia — Infância Protegida" }] };
     const desc =
       a.subtitle ??
+      a.ai_summary ??
       (a.understand ? a.understand.replace(/<[^>]+>/g, "").slice(0, 155) : a.title);
     const url = `${SITE}/noticias/${a.slug}`;
     const faq = a.faq ?? [];
