@@ -110,17 +110,25 @@ export type Database = {
           category: string | null
           cover_url: string | null
           created_at: string
+          faq: Json | null
           id: string
           last_verified_at: string | null
+          lessons: string | null
+          national_context: string[] | null
           primary_source_label: string | null
           primary_source_url: string | null
           publish_at: string | null
+          reading_minutes: number | null
+          related_laws: string[] | null
+          related_signal_tags: string[] | null
           reviewer_id: string | null
           slug: string
           status: Database["public"]["Enums"]["article_status"]
           subtitle: string | null
+          timeline: Json | null
           title: string
           type: Database["public"]["Enums"]["article_type"]
+          understand: string | null
           updated_at: string
         }
         Insert: {
@@ -129,17 +137,25 @@ export type Database = {
           category?: string | null
           cover_url?: string | null
           created_at?: string
+          faq?: Json | null
           id?: string
           last_verified_at?: string | null
+          lessons?: string | null
+          national_context?: string[] | null
           primary_source_label?: string | null
           primary_source_url?: string | null
           publish_at?: string | null
+          reading_minutes?: number | null
+          related_laws?: string[] | null
+          related_signal_tags?: string[] | null
           reviewer_id?: string | null
           slug: string
           status?: Database["public"]["Enums"]["article_status"]
           subtitle?: string | null
+          timeline?: Json | null
           title: string
           type: Database["public"]["Enums"]["article_type"]
+          understand?: string | null
           updated_at?: string
         }
         Update: {
@@ -148,17 +164,25 @@ export type Database = {
           category?: string | null
           cover_url?: string | null
           created_at?: string
+          faq?: Json | null
           id?: string
           last_verified_at?: string | null
+          lessons?: string | null
+          national_context?: string[] | null
           primary_source_label?: string | null
           primary_source_url?: string | null
           publish_at?: string | null
+          reading_minutes?: number | null
+          related_laws?: string[] | null
+          related_signal_tags?: string[] | null
           reviewer_id?: string | null
           slug?: string
           status?: Database["public"]["Enums"]["article_status"]
           subtitle?: string | null
+          timeline?: Json | null
           title?: string
           type?: Database["public"]["Enums"]["article_type"]
+          understand?: string | null
           updated_at?: string
         }
         Relationships: []

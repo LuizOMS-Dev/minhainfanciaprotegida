@@ -25,6 +25,15 @@ export interface AdminArticle {
   reviewer_id: string | null;
   created_at: string;
   updated_at: string;
+  /** Campos editoriais avançados. */
+  reading_minutes: number | null;
+  understand: string | null;
+  lessons: string | null;
+  timeline: { date: string; text: string; title?: string }[] | null;
+  faq: { q: string; a: string }[] | null;
+  related_laws: string[] | null;
+  related_signal_tags: string[] | null;
+  national_context: string[] | null;
 }
 
 export const listAdminArticles = createServerFn({ method: "GET" })
@@ -78,6 +87,27 @@ const sourceSchema = z.object({
   position: z.number().int().min(0).max(999).default(0),
 });
 
+const timelineSchema = z
+  .array(
+    z.object({
+      date: z.string().min(1).max(40),
+      text: z.string().min(1).max(800),
+      title: z.string().max(200).optional(),
+    }),
+  )
+  .max(50);
+
+const faqSchema = z
+  .array(
+    z.object({
+      q: z.string().min(1).max(300),
+      a: z.string().min(1).max(4000),
+    }),
+  )
+  .max(30);
+
+const slugListSchema = z.array(z.string().min(1).max(80)).max(30);
+
 const upsertSchema = z.object({
   id: z.string().uuid().optional(),
   type: articleTypeSchema,
@@ -93,6 +123,15 @@ const upsertSchema = z.object({
   publish_at: z.string().datetime().optional().nullable().or(z.literal("")),
   last_verified_at: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().nullable().or(z.literal("")),
   sources: z.array(sourceSchema).max(50).optional(),
+  // Novos campos editoriais
+  reading_minutes: z.number().int().min(1).max(120).optional().nullable(),
+  understand: z.string().max(8000).optional().nullable(),
+  lessons: z.string().max(8000).optional().nullable(),
+  timeline: timelineSchema.optional().nullable(),
+  faq: faqSchema.optional().nullable(),
+  related_laws: slugListSchema.optional().nullable(),
+  related_signal_tags: slugListSchema.optional().nullable(),
+  national_context: slugListSchema.optional().nullable(),
 });
 
 export const upsertAdminArticle = createServerFn({ method: "POST" })

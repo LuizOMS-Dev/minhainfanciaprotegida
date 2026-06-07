@@ -6,13 +6,29 @@ import {
   getPublishedArticle,
   listRelatedArticles,
   getArticleSiblings,
+  getArticleRelations,
 } from "@/lib/content.functions";
 import { ReferencesBlock } from "@/components/site/ReferencesBlock";
 import { JsonLd } from "@/components/site/JsonLd";
 import { SafeHtml, readingTimeMinutes } from "@/components/site/SafeHtml";
 import { ShareButtons } from "@/components/site/ShareButtons";
 import { RelatedArticles, ArticleSiblingNav } from "@/components/site/RelatedArticles";
+import { Timeline } from "@/components/site/Timeline";
 import { CaseActions } from "@/components/site/CaseActions";
+import {
+  UnderstandBlock,
+  NationalContextChips,
+  LegislationBlock,
+  SignalsBlock,
+  ReportChannels,
+  RelatedMaterials,
+  FaqBlock,
+  RecommendedReading,
+} from "@/components/site/ArticleBlocks";
+import { getLawsBySlugs } from "@/content/laws";
+import { getContextByKeys } from "@/content/nationalContext";
+import { risks as allRisks } from "@/content/risks";
+import { library as allLibrary } from "@/content/library";
 
 const fmt = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
 const SITE = "https://minhainfanciaprotegida.com.br";
@@ -32,18 +48,52 @@ export const Route = createFileRoute("/noticias/$slug")({
   head: ({ loaderData }) => {
     const a = loaderData?.article;
     if (!a) return { meta: [{ title: "Notícia — Infância Protegida" }] };
+    const desc =
+      a.subtitle ??
+      (a.understand ? a.understand.replace(/<[^>]+>/g, "").slice(0, 155) : a.title);
+    const url = `${SITE}/noticias/${a.slug}`;
+    const faq = a.faq ?? [];
+    const scripts: { type: string; children: string }[] = [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Início", item: SITE + "/" },
+            { "@type": "ListItem", position: 2, name: "Notícias", item: SITE + "/noticias" },
+            { "@type": "ListItem", position: 3, name: a.title, item: url },
+          ],
+        }),
+      },
+    ];
+    if (faq.length > 0) {
+      scripts.push({
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faq.map((qa) => ({
+            "@type": "Question",
+            name: qa.q,
+            acceptedAnswer: { "@type": "Answer", text: qa.a.replace(/<[^>]+>/g, "") },
+          })),
+        }),
+      });
+    }
     return {
       meta: [
         { title: `${a.title} — Infância Protegida` },
-        { name: "description", content: a.subtitle ?? a.title },
+        { name: "description", content: desc },
         { property: "og:title", content: a.title },
-        { property: "og:description", content: a.subtitle ?? a.title },
+        { property: "og:description", content: desc },
         { property: "og:type", content: "article" },
-        { property: "og:url", content: `${SITE}/noticias/${a.slug}` },
+        { property: "og:url", content: url },
         ...(a.cover_url ? [{ property: "og:image" as const, content: a.cover_url }] : []),
         { name: "twitter:card", content: "summary_large_image" },
       ],
-      links: [{ rel: "canonical", href: `${SITE}/noticias/${a.slug}` }],
+      links: [{ rel: "canonical", href: url }],
+      scripts,
     };
   },
   component: NewsDetail,
@@ -66,6 +116,7 @@ function NewsDetail() {
   const fetchArticle = useServerFn(getPublishedArticle);
   const fetchRelated = useServerFn(listRelatedArticles);
   const fetchSiblings = useServerFn(getArticleSiblings);
+  const fetchRelations = useServerFn(getArticleRelations);
 
   const { data } = useSuspenseQuery({
     ...articleQO(slug),
@@ -74,16 +125,31 @@ function NewsDetail() {
   const a = data.article!;
   const date = a.publish_at ?? a.updated_at;
   const url = `${SITE}/noticias/${a.slug}`;
-  const minutes = readingTimeMinutes(a.body);
+  const minutes = a.reading_minutes ?? readingTimeMinutes(a.body);
 
   const { data: rel } = useQuery({
     queryKey: ["related", "news", a.id, a.category],
     queryFn: () => fetchRelated({ data: { id: a.id, type: "news", category: a.category, limit: 3 } }),
+    staleTime: 5 * 60_000,
   });
   const { data: sib } = useQuery({
     queryKey: ["siblings", "news", a.id],
     queryFn: () => fetchSiblings({ data: { id: a.id, type: "news", publishAt: date } }),
+    staleTime: 5 * 60_000,
   });
+  const { data: relations } = useQuery({
+    queryKey: ["relations", "news", a.id, a.category],
+    queryFn: () => fetchRelations({ data: { id: a.id, type: "news", category: a.category } }),
+    staleTime: 5 * 60_000,
+  });
+
+  const laws = getLawsBySlugs(a.related_laws);
+  const context = getContextByKeys(a.national_context);
+  const signals = allRisks.filter((r) => a.related_signal_tags?.includes(r.slug));
+  const libraryMatches = (relations?.library ?? [])
+    .map((it) => allLibrary.find((l) => l.slug === it.slug || l.title === it.title))
+    .filter((v): v is (typeof allLibrary)[number] => Boolean(v))
+    .slice(0, 4);
 
   return (
     <article className="bg-background">
@@ -111,9 +177,20 @@ function NewsDetail() {
 
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         {a.cover_url && (
-          <img src={a.cover_url} alt="" className="mb-10 w-full rounded-2xl border border-border object-cover aspect-[16/9]" />
+          <img src={a.cover_url} alt="" loading="lazy" className="mb-10 w-full rounded-2xl border border-border object-cover aspect-[16/9]" />
         )}
         {a.body && <SafeHtml html={a.body} className="prose prose-neutral max-w-none text-foreground/90 leading-relaxed" />}
+
+        <UnderstandBlock html={a.understand} />
+        <NationalContextChips items={context} />
+        {a.timeline && a.timeline.length > 0 && <Timeline items={a.timeline} />}
+        <LegislationBlock items={laws} />
+        <SignalsBlock items={signals} />
+        <ReportChannels />
+        <RelatedMaterials items={libraryMatches} />
+        <FaqBlock items={a.faq ?? []} />
+        <RecommendedReading risks={signals} library={libraryMatches} />
+
         <CaseActions />
 
         {a.primary_source_url && a.primary_source_label && (
@@ -145,6 +222,8 @@ function NewsDetail() {
           dateModified: a.updated_at,
           image: a.cover_url ?? undefined,
           mainEntityOfPage: url,
+          articleSection: a.category ?? undefined,
+          inLanguage: "pt-BR",
           author: a.author_name ? { "@type": "Person", name: a.author_name } : { "@type": "Organization", name: "Infância Protegida" },
           publisher: { "@type": "Organization", name: "Infância Protegida" },
         }}
