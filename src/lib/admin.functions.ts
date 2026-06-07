@@ -34,6 +34,13 @@ export interface AdminArticle {
   related_laws: string[] | null;
   related_signal_tags: string[] | null;
   national_context: string[] | null;
+  /** Fase 1 — ação, alerta, gravidade, impacto, confiança, resumo IA. */
+  action_steps: string[] | null;
+  warning_indicators: string[] | null;
+  severity_level: "baixo" | "medio" | "alto" | "gravissimo" | null;
+  impact_summary: string | null;
+  source_confidence: "alta" | "media" | "baixa" | null;
+  ai_summary: string | null;
 }
 
 export const listAdminArticles = createServerFn({ method: "GET" })
