@@ -165,6 +165,8 @@ export const upsertAdminArticle = createServerFn({ method: "POST" })
       primary_source_url: rest.primary_source_url || null,
       publish_at: rest.publish_at || null,
       last_verified_at: rest.last_verified_at || null,
+      severity_level: rest.severity_level || null,
+      source_confidence: rest.source_confidence || null,
       author_id: context.userId,
     };
     let articleId = data.id;
