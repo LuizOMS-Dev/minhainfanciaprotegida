@@ -400,3 +400,165 @@ export function AnonymizedNotice() {
     </aside>
   );
 }
+
+/* ─────────────────── Fase 1 — Selos de gravidade e confiança ─────────────────── */
+
+const SEVERITY_LABELS: Record<string, { label: string; tone: string }> = {
+  baixo: { label: "Gravidade baixa", tone: "bg-emerald-100 text-emerald-900 border-emerald-300" },
+  medio: { label: "Gravidade média", tone: "bg-amber-100 text-amber-900 border-amber-300" },
+  alto: { label: "Gravidade alta", tone: "bg-orange-100 text-orange-900 border-orange-300" },
+  gravissimo: { label: "Gravidade gravíssima", tone: "bg-red-100 text-red-900 border-red-300" },
+};
+
+export function SeverityBadge({ level }: { level?: string | null }) {
+  if (!level || !SEVERITY_LABELS[level]) return null;
+  const s = SEVERITY_LABELS[level];
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-wider ${s.tone}`}
+      aria-label={s.label}
+    >
+      <AlertTriangle className="size-3" aria-hidden /> {s.label}
+    </span>
+  );
+}
+
+const CONFIDENCE_LABELS: Record<string, { label: string; tone: string }> = {
+  alta: { label: "Fontes de alta confiabilidade", tone: "bg-[color:var(--navy-deep)] text-white border-[color:var(--navy-deep)]" },
+  media: { label: "Fontes de média confiabilidade", tone: "bg-card text-[color:var(--navy-deep)] border-border" },
+  baixa: { label: "Fontes de baixa confiabilidade", tone: "bg-muted text-foreground/80 border-border" },
+};
+
+export function ConfidenceBadge({ level }: { level?: string | null }) {
+  if (!level || !CONFIDENCE_LABELS[level]) return null;
+  const s = CONFIDENCE_LABELS[level];
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-wider ${s.tone}`}
+      aria-label={s.label}
+    >
+      <BadgeCheck className="size-3" aria-hidden /> {s.label}
+    </span>
+  );
+}
+
+/* ─────────────────── Fase 1 — O que fazer agora ─────────────────── */
+
+export function ActionStepsBlock({ items }: { items?: string[] | null }) {
+  if (!items?.length) return null;
+  return (
+    <section
+      aria-label="O que fazer agora"
+      className="mt-12 rounded-3xl border border-[color:var(--orange)]/30 bg-[color:var(--orange-soft)]/40 p-6 sm:p-8"
+    >
+      <h2 className="font-display text-2xl font-bold flex items-center gap-2 text-[color:var(--navy-deep)]">
+        <CheckCircle2 className="size-5 text-[color:var(--orange)]" aria-hidden />
+        O que fazer agora
+      </h2>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Passos práticos de prevenção, proteção e denúncia.
+      </p>
+      <ol className="mt-5 grid gap-3 sm:grid-cols-2">
+        {items.map((step, i) => (
+          <li
+            key={i}
+            className="flex gap-3 rounded-2xl border border-border bg-background p-4"
+          >
+            <span
+              aria-hidden
+              className="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-[color:var(--navy-deep)] text-white text-xs font-bold"
+            >
+              {i + 1}
+            </span>
+            <span className="text-sm text-foreground/90 leading-relaxed">{step}</span>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+/* ─────────────────── Fase 1 — Indicadores de alerta ─────────────────── */
+
+export function WarningIndicatorsBlock({ items }: { items?: string[] | null }) {
+  if (!items?.length) return null;
+  return (
+    <section
+      aria-label="Indicadores de alerta"
+      className="mt-12 rounded-3xl border border-[color:var(--red-inst)]/30 bg-card p-6 sm:p-8"
+    >
+      <h2 className="font-display text-2xl font-bold flex items-center gap-2 text-[color:var(--navy-deep)]">
+        <Eye className="size-5 text-[color:var(--red-inst)]" aria-hidden />
+        Indicadores de alerta
+      </h2>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Sinais que podem indicar que uma criança ou adolescente precisa de ajuda.
+      </p>
+      <ul className="mt-4 flex flex-wrap gap-2">
+        {items.map((w, i) => (
+          <li
+            key={i}
+            className="inline-flex items-center gap-1.5 rounded-full bg-[color:var(--red-inst)]/10 text-[color:var(--red-inst)] border border-[color:var(--red-inst)]/30 px-3 py-1.5 text-xs font-semibold"
+          >
+            <AlertTriangle className="size-3" aria-hidden />
+            {w}
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+/* ─────────────────── Fase 1 — Impacto nacional ─────────────────── */
+
+export function ImpactBlock({ text }: { text?: string | null }) {
+  if (!text) return null;
+  return (
+    <section
+      aria-label="Impacto nacional"
+      className="mt-12 rounded-3xl border border-border bg-card p-6 sm:p-8"
+    >
+      <h2 className="font-display text-2xl font-bold flex items-center gap-2 text-[color:var(--navy-deep)]">
+        <TrendingUp className="size-5 text-[color:var(--orange)]" aria-hidden />
+        Impacto nacional
+      </h2>
+      <p className="mt-3 text-base text-foreground/90 leading-relaxed">{text}</p>
+    </section>
+  );
+}
+
+/* ─────────────────── Fase 1 — Linha de verificação editorial ─────────────────── */
+
+function formatDate(d: string | null | undefined) {
+  if (!d) return null;
+  try {
+    return new Date(d).toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  } catch {
+    return d;
+  }
+}
+
+export function VerificationLine({
+  publishedAt,
+  verifiedAt,
+  confidence,
+}: {
+  publishedAt?: string | null;
+  verifiedAt?: string | null;
+  confidence?: string | null;
+}) {
+  const pub = formatDate(publishedAt);
+  const ver = formatDate(verifiedAt);
+  if (!pub && !ver && !confidence) return null;
+  return (
+    <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
+      {pub && <span>Publicado em <strong className="text-foreground">{pub}</strong></span>}
+      {ver && <span>Verificado em <strong className="text-foreground">{ver}</strong></span>}
+      <ConfidenceBadge level={confidence} />
+    </div>
+  );
+}
