@@ -194,7 +194,10 @@ function NewsDetail() {
         )}
         {a.body && <SafeHtml html={a.body} className="prose prose-neutral max-w-none text-foreground/90 leading-relaxed" />}
 
+        <ActionStepsBlock items={a.action_steps} />
+        <WarningIndicatorsBlock items={a.warning_indicators} />
         <UnderstandBlock html={a.understand} />
+        <ImpactBlock text={a.impact_summary} />
         <NationalContextChips items={context} />
         {a.timeline && a.timeline.length > 0 && <Timeline items={a.timeline} />}
         <LegislationBlock items={laws} />
