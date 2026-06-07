@@ -221,7 +221,7 @@ function NewsDetail() {
         )}
 
         <div className="mt-12 pt-8 border-t border-border">
-          <ShareButtons title={a.title} url={url} />
+          <ShareButtons title={a.title} url={url} description={a.subtitle ?? undefined} />
         </div>
       </div>
 
