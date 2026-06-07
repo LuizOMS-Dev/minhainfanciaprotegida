@@ -46,9 +46,9 @@ export function articlePathFor(type: "news" | "case" | "risk" | "guide", slug: s
       return `/noticias/${slug}`;
     case "case":
       return `/casos/${slug}`;
-    case "risk":
-      return `/riscos-online`; // riscos não têm rota por slug (catálogo estático)
-    case "guide":
-      return `/biblioteca/${slug}`;
+    default:
+      // risk = catálogo estático (/riscos-online); guide = biblioteca estática.
+      // Não emitimos URL por slug do banco para esses tipos.
+      return null;
   }
 }
