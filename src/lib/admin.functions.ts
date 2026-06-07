@@ -136,7 +136,7 @@ const upsertSchema = z.object({
 
 export const upsertAdminArticle = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input) => upsertSchema.parse(input))
+  .inputValidator((input: unknown) => upsertSchema.parse(input) as z.infer<typeof upsertSchema>)
   .handler(async ({ data, context }) => {
     await requireRole(context.supabase, context.userId, ["admin", "editor"]);
     const { sources, ...rest } = data;
