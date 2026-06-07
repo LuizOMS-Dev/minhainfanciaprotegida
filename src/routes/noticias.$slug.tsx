@@ -24,6 +24,11 @@ import {
   RelatedMaterials,
   FaqBlock,
   RecommendedReading,
+  ActionStepsBlock,
+  WarningIndicatorsBlock,
+  ImpactBlock,
+  SeverityBadge,
+  VerificationLine,
 } from "@/components/site/ArticleBlocks";
 import { getLawsBySlugs } from "@/content/laws";
 import { getContextByKeys } from "@/content/nationalContext";
