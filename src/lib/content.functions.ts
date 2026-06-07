@@ -210,6 +210,12 @@ export const getPublishedArticle = createServerFn({ method: "GET" })
       related_laws: row.related_laws,
       related_signal_tags: row.related_signal_tags,
       national_context: row.national_context,
+      action_steps: (row as { action_steps?: string[] | null }).action_steps ?? null,
+      warning_indicators: (row as { warning_indicators?: string[] | null }).warning_indicators ?? null,
+      severity_level: (row as { severity_level?: PublicArticleDetail["severity_level"] }).severity_level ?? null,
+      impact_summary: (row as { impact_summary?: string | null }).impact_summary ?? null,
+      source_confidence: (row as { source_confidence?: PublicArticleDetail["source_confidence"] }).source_confidence ?? null,
+      ai_summary: (row as { ai_summary?: string | null }).ai_summary ?? null,
     };
     return { article };
   });
