@@ -161,36 +161,45 @@ function CaseDetail() {
     .filter((v): v is (typeof allLibrary)[number] => Boolean(v))
     .slice(0, 4);
 
+  const eventDate = earliestTimelineDate(a.timeline) ?? a.publish_at ?? a.updated_at;
+
   return (
     <article className="bg-background">
-      <header className="border-b border-border bg-[color:var(--navy-deep)] text-white">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <Link to="/casos" className="inline-flex items-center gap-1.5 text-sm font-semibold text-white/80 hover:text-white">
-            <ArrowLeft className="size-4" aria-hidden /> Casos
-          </Link>
-          {a.category && (
-            <span className="mt-4 inline-flex items-center rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-3 py-1 text-[11px] font-semibold uppercase tracking-wider">
-              {a.category}
-            </span>
-          )}
-          <h1 className="mt-3 font-display text-3xl sm:text-4xl font-bold leading-tight text-balance">{a.title}</h1>
-          {a.subtitle && <p className="mt-3 text-lg text-white/85 leading-relaxed">{a.subtitle}</p>}
-          <dl className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/80">
-            <div className="inline-flex items-center gap-1.5"><Calendar className="size-4" aria-hidden /><time dateTime={date}>{fmt.format(new Date(date))}</time></div>
-            <div className="inline-flex items-center gap-1.5"><Clock className="size-4" aria-hidden />{minutes} min de leitura</div>
-            {a.author_name && <div className="inline-flex items-center gap-1.5"><User className="size-4" aria-hidden /> {a.author_name}</div>}
-            {a.reviewer_name && <div className="inline-flex items-center gap-1.5"><ShieldCheck className="size-4" aria-hidden /> Revisão: {a.reviewer_name}</div>}
-          </dl>
-          <div className="mt-6"><ShareButtons title={a.title} url={url} /></div>
-        </div>
-      </header>
+      <ArticleHero
+        variant="case"
+        backLabel="Casos"
+        backTo="/casos"
+        category={a.category}
+        title={a.title}
+        subtitle={a.subtitle}
+        coverUrl={a.cover_url}
+        authorName={a.author_name}
+        reviewerName={a.reviewer_name}
+        publishAt={a.publish_at ?? a.updated_at}
+        updatedAt={a.updated_at}
+        verifiedAt={a.last_verified_at}
+        eventDate={eventDate}
+        readingMinutes={minutes}
+        severityLevel={a.severity_level}
+        sourceConfidence={a.source_confidence}
+        shareUrl={url}
+        shareDescription={a.subtitle}
+      />
 
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <AnonymizedNotice />
         {a.cover_url && (
-          <img src={a.cover_url} alt="" loading="lazy" className="mt-8 mb-10 w-full rounded-2xl border border-border object-cover aspect-[16/9]" />
+          <figure className="-mt-24 sm:-mt-32 mb-10 relative">
+            <img
+              src={a.cover_url}
+              alt=""
+              loading="lazy"
+              className="w-full rounded-3xl border border-border object-cover aspect-[16/9] shadow-2xl"
+            />
+          </figure>
         )}
-        {a.body && <SafeHtml html={a.body} className="prose prose-neutral max-w-none text-foreground/90 leading-relaxed" />}
+        <AnonymizedNotice />
+        {a.body && <SafeHtml html={a.body} className="mt-8 prose prose-neutral max-w-none text-foreground/90 leading-relaxed" />}
+
 
         {a.timeline && a.timeline.length > 0 && (
           <Timeline items={a.timeline} heading="Cronologia do caso" />
