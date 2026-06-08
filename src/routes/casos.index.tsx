@@ -11,7 +11,7 @@ import { listPublishedArticles } from "@/lib/content.functions";
 import journalismImg from "@/assets/journalism.jpg";
 import heroCasos from "@/assets/hero-casos.jpg";
 
-export const Route = createFileRoute("/casos")({
+export const Route = createFileRoute("/casos/")({
   head: () => ({
     meta: [
       { title: "Casos reais e reportagens — Infância Protegida" },

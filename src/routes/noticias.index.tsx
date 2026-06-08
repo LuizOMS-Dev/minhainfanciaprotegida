@@ -11,7 +11,7 @@ import { listPublishedArticles } from "@/lib/content.functions";
 import journalismImg from "@/assets/journalism.jpg";
 import heroNoticias from "@/assets/hero-noticias.jpg";
 
-export const Route = createFileRoute("/noticias")({
+export const Route = createFileRoute("/noticias/")({
   head: () => ({
     meta: [
       { title: "Notícias e conscientização — Infância Protegida" },
