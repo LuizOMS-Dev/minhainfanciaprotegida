@@ -1,7 +1,6 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useSuspenseQuery, useQuery, queryOptions } from "@tanstack/react-query";
-import { ArrowLeft, Calendar, User, ShieldCheck, Clock } from "lucide-react";
 import {
   getPublishedArticle,
   listRelatedArticles,
@@ -15,6 +14,7 @@ import { ShareButtons } from "@/components/site/ShareButtons";
 import { RelatedArticles, ArticleSiblingNav } from "@/components/site/RelatedArticles";
 import { Timeline } from "@/components/site/Timeline";
 import { CaseActions } from "@/components/site/CaseActions";
+import { ArticleHero } from "@/components/site/ArticleHero";
 import {
   UnderstandBlock,
   LessonsBlock,
@@ -26,18 +26,21 @@ import {
   FaqBlock,
   RecommendedReading,
   AnonymizedNotice,
-  ActionStepsBlock,
-  WarningIndicatorsBlock,
-  ImpactBlock,
-  SeverityBadge,
-  VerificationLine,
 } from "@/components/site/ArticleBlocks";
 import { getLawsBySlugs } from "@/content/laws";
 import { getContextByKeys } from "@/content/nationalContext";
 import { risks as allRisks } from "@/content/risks";
 import { library as allLibrary } from "@/content/library";
 
-const fmt = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
+function earliestTimelineDate(items?: { date: string }[] | null): string | null {
+  if (!items?.length) return null;
+  const valid = items
+    .map((i) => ({ d: new Date(i.date), raw: i.date }))
+    .filter((x) => !isNaN(x.d.getTime()))
+    .sort((a, b) => a.d.getTime() - b.d.getTime());
+  return valid[0]?.raw ?? null;
+}
+
 const SITE = "https://minhainfanciaprotegida.com.br";
 
 const articleQO = (slug: string) =>
