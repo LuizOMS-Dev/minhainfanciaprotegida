@@ -50,7 +50,7 @@ export function ArticleCard({ title, date, excerpt, image, tag, source, href }: 
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed line-clamp-4">{excerpt}</p>
         <div className="mt-2 pt-3 border-t border-border">
-          <SourceTag source={source.name} year={new Date(date).getFullYear()} url={source.url} />
+          <SourceTag source={source.name} year={new Date(date).getFullYear()} url={source.url} asText={!href} />
         </div>
       </div>
     </Wrapper>
