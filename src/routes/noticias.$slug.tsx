@@ -1,7 +1,6 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useSuspenseQuery, useQuery, queryOptions } from "@tanstack/react-query";
-import { ArrowLeft, Calendar, User, ShieldCheck, Clock } from "lucide-react";
 import {
   getPublishedArticle,
   listRelatedArticles,
@@ -15,6 +14,7 @@ import { ShareButtons } from "@/components/site/ShareButtons";
 import { RelatedArticles, ArticleSiblingNav } from "@/components/site/RelatedArticles";
 import { Timeline } from "@/components/site/Timeline";
 import { CaseActions } from "@/components/site/CaseActions";
+import { ArticleHero } from "@/components/site/ArticleHero";
 import {
   UnderstandBlock,
   NationalContextChips,
@@ -27,15 +27,21 @@ import {
   ActionStepsBlock,
   WarningIndicatorsBlock,
   ImpactBlock,
-  SeverityBadge,
-  VerificationLine,
 } from "@/components/site/ArticleBlocks";
 import { getLawsBySlugs } from "@/content/laws";
 import { getContextByKeys } from "@/content/nationalContext";
 import { risks as allRisks } from "@/content/risks";
 import { library as allLibrary } from "@/content/library";
 
-const fmt = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
+function earliestTimelineDate(items?: { date: string }[] | null): string | null {
+  if (!items?.length) return null;
+  const valid = items
+    .map((i) => ({ d: new Date(i.date), raw: i.date }))
+    .filter((x) => !isNaN(x.d.getTime()))
+    .sort((a, b) => a.d.getTime() - b.d.getTime());
+  return valid[0]?.raw ?? null;
+}
+
 const SITE = "https://minhainfanciaprotegida.com.br";
 
 const articleQO = (slug: string) =>
@@ -159,40 +165,44 @@ function NewsDetail() {
     .filter((v): v is (typeof allLibrary)[number] => Boolean(v))
     .slice(0, 4);
 
+  const eventDate = earliestTimelineDate(a.timeline) ?? a.publish_at ?? a.updated_at;
+
   return (
     <article className="bg-background">
-      <header className="border-b border-border bg-gradient-orange/10">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <Link to="/noticias" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--navy-deep)] hover:opacity-80">
-            <ArrowLeft className="size-4" aria-hidden /> Notícias
-          </Link>
-          {a.category && (
-            <span className="mt-4 inline-flex items-center rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-3 py-1 text-[11px] font-semibold uppercase tracking-wider">
-              {a.category}
-            </span>
-          )}
-          <h1 className="mt-3 font-display text-3xl sm:text-4xl font-bold leading-tight text-balance">{a.title}</h1>
-          {a.subtitle && <p className="mt-3 text-lg text-muted-foreground leading-relaxed">{a.subtitle}</p>}
-          {a.severity_level && (
-            <div className="mt-4"><SeverityBadge level={a.severity_level} /></div>
-          )}
-          <dl className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
-            <div className="inline-flex items-center gap-1.5"><Calendar className="size-4" aria-hidden /><time dateTime={date}>{fmt.format(new Date(date))}</time></div>
-            <div className="inline-flex items-center gap-1.5"><Clock className="size-4" aria-hidden />{minutes} min de leitura</div>
-            {a.author_name && <div className="inline-flex items-center gap-1.5"><User className="size-4" aria-hidden /> {a.author_name}</div>}
-            {a.reviewer_name && <div className="inline-flex items-center gap-1.5"><ShieldCheck className="size-4" aria-hidden /> Revisão: {a.reviewer_name}</div>}
-          </dl>
-          <VerificationLine publishedAt={a.publish_at ?? a.updated_at} verifiedAt={a.last_verified_at} confidence={a.source_confidence} />
-          <div className="mt-6"><ShareButtons title={a.title} url={url} description={a.subtitle ?? undefined} /></div>
-        </div>
-      </header>
-
+      <ArticleHero
+        variant="news"
+        backLabel="Notícias"
+        backTo="/noticias"
+        category={a.category}
+        title={a.title}
+        subtitle={a.subtitle}
+        coverUrl={a.cover_url}
+        authorName={a.author_name}
+        reviewerName={a.reviewer_name}
+        publishAt={a.publish_at ?? a.updated_at}
+        updatedAt={a.updated_at}
+        verifiedAt={a.last_verified_at}
+        eventDate={eventDate}
+        readingMinutes={minutes}
+        severityLevel={a.severity_level}
+        sourceConfidence={a.source_confidence}
+        shareUrl={url}
+        shareDescription={a.subtitle}
+      />
 
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         {a.cover_url && (
-          <img src={a.cover_url} alt="" loading="lazy" className="mb-10 w-full rounded-2xl border border-border object-cover aspect-[16/9]" />
+          <figure className="mb-10 -mt-24 sm:-mt-32 relative">
+            <img
+              src={a.cover_url}
+              alt=""
+              loading="lazy"
+              className="w-full rounded-3xl border border-border object-cover aspect-[16/9] shadow-2xl"
+            />
+          </figure>
         )}
         {a.body && <SafeHtml html={a.body} className="prose prose-neutral max-w-none text-foreground/90 leading-relaxed" />}
+
 
         <ActionStepsBlock items={a.action_steps} />
         <WarningIndicatorsBlock items={a.warning_indicators} />
