@@ -16,7 +16,6 @@ import { Route as RiscosOnlineRouteImport } from './routes/riscos-online'
 import { Route as RelatorioSeoRouteImport } from './routes/relatorio-seo'
 import { Route as PaisRouteImport } from './routes/pais'
 import { Route as ObjetivosRouteImport } from './routes/objetivos'
-import { Route as NoticiasRouteImport } from './routes/noticias'
 import { Route as MetodologiaRouteImport } from './routes/metodologia'
 import { Route as MapaRouteImport } from './routes/mapa'
 import { Route as MaioLaranjaRouteImport } from './routes/maio-laranja'
@@ -26,11 +25,12 @@ import { Route as FaqRouteImport } from './routes/faq'
 import { Route as EscolasRouteImport } from './routes/escolas'
 import { Route as DenunciaRouteImport } from './routes/denuncia'
 import { Route as ComoAjudarRouteImport } from './routes/como-ajudar'
-import { Route as CasosRouteImport } from './routes/casos'
 import { Route as BibliotecaRouteImport } from './routes/biblioteca'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
+import { Route as CasosIndexRouteImport } from './routes/casos.index'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 import { Route as CasosSlugRouteImport } from './routes/casos.$slug'
 import { Route as BibliotecaSlugRouteImport } from './routes/biblioteca.$slug'
@@ -85,11 +85,6 @@ const ObjetivosRoute = ObjetivosRouteImport.update({
   path: '/objetivos',
   getParentRoute: () => rootRouteImport,
 } as any)
-const NoticiasRoute = NoticiasRouteImport.update({
-  id: '/noticias',
-  path: '/noticias',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const MetodologiaRoute = MetodologiaRouteImport.update({
   id: '/metodologia',
   path: '/metodologia',
@@ -135,11 +130,6 @@ const ComoAjudarRoute = ComoAjudarRouteImport.update({
   path: '/como-ajudar',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CasosRoute = CasosRouteImport.update({
-  id: '/casos',
-  path: '/casos',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const BibliotecaRoute = BibliotecaRouteImport.update({
   id: '/biblioteca',
   path: '/biblioteca',
@@ -157,6 +147,16 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NoticiasIndexRoute = NoticiasIndexRouteImport.update({
+  id: '/noticias/',
+  path: '/noticias/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CasosIndexRoute = CasosIndexRouteImport.update({
+  id: '/casos/',
+  path: '/casos/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NoticiasSlugRoute = NoticiasSlugRouteImport.update({
@@ -265,7 +265,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/biblioteca': typeof BibliotecaRouteWithChildren
-  '/casos': typeof CasosRouteWithChildren
   '/como-ajudar': typeof ComoAjudarRoute
   '/denuncia': typeof DenunciaRoute
   '/escolas': typeof EscolasRoute
@@ -275,7 +274,6 @@ export interface FileRoutesByFullPath {
   '/maio-laranja': typeof MaioLaranjaRoute
   '/mapa': typeof MapaRoute
   '/metodologia': typeof MetodologiaRoute
-  '/noticias': typeof NoticiasRouteWithChildren
   '/objetivos': typeof ObjetivosRoute
   '/pais': typeof PaisRoute
   '/relatorio-seo': typeof RelatorioSeoRoute
@@ -287,6 +285,8 @@ export interface FileRoutesByFullPath {
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
+  '/casos/': typeof CasosIndexRoute
+  '/noticias/': typeof NoticiasIndexRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/admin/backup': typeof AuthenticatedAdminBackupRoute
   '/admin/mfa': typeof AuthenticatedAdminMfaRoute
@@ -306,7 +306,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/biblioteca': typeof BibliotecaRouteWithChildren
-  '/casos': typeof CasosRouteWithChildren
   '/como-ajudar': typeof ComoAjudarRoute
   '/denuncia': typeof DenunciaRoute
   '/escolas': typeof EscolasRoute
@@ -316,7 +315,6 @@ export interface FileRoutesByTo {
   '/maio-laranja': typeof MaioLaranjaRoute
   '/mapa': typeof MapaRoute
   '/metodologia': typeof MetodologiaRoute
-  '/noticias': typeof NoticiasRouteWithChildren
   '/objetivos': typeof ObjetivosRoute
   '/pais': typeof PaisRoute
   '/relatorio-seo': typeof RelatorioSeoRoute
@@ -327,6 +325,8 @@ export interface FileRoutesByTo {
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
+  '/casos': typeof CasosIndexRoute
+  '/noticias': typeof NoticiasIndexRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/admin/backup': typeof AuthenticatedAdminBackupRoute
   '/admin/mfa': typeof AuthenticatedAdminMfaRoute
@@ -348,7 +348,6 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/biblioteca': typeof BibliotecaRouteWithChildren
-  '/casos': typeof CasosRouteWithChildren
   '/como-ajudar': typeof ComoAjudarRoute
   '/denuncia': typeof DenunciaRoute
   '/escolas': typeof EscolasRoute
@@ -358,7 +357,6 @@ export interface FileRoutesById {
   '/maio-laranja': typeof MaioLaranjaRoute
   '/mapa': typeof MapaRoute
   '/metodologia': typeof MetodologiaRoute
-  '/noticias': typeof NoticiasRouteWithChildren
   '/objetivos': typeof ObjetivosRoute
   '/pais': typeof PaisRoute
   '/relatorio-seo': typeof RelatorioSeoRoute
@@ -370,6 +368,8 @@ export interface FileRoutesById {
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
+  '/casos/': typeof CasosIndexRoute
+  '/noticias/': typeof NoticiasIndexRoute
   '/_authenticated/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/_authenticated/admin/backup': typeof AuthenticatedAdminBackupRoute
   '/_authenticated/admin/mfa': typeof AuthenticatedAdminMfaRoute
@@ -391,7 +391,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/biblioteca'
-    | '/casos'
     | '/como-ajudar'
     | '/denuncia'
     | '/escolas'
@@ -401,7 +400,6 @@ export interface FileRouteTypes {
     | '/maio-laranja'
     | '/mapa'
     | '/metodologia'
-    | '/noticias'
     | '/objetivos'
     | '/pais'
     | '/relatorio-seo'
@@ -413,6 +411,8 @@ export interface FileRouteTypes {
     | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
+    | '/casos/'
+    | '/noticias/'
     | '/admin/auditoria'
     | '/admin/backup'
     | '/admin/mfa'
@@ -432,7 +432,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/biblioteca'
-    | '/casos'
     | '/como-ajudar'
     | '/denuncia'
     | '/escolas'
@@ -442,7 +441,6 @@ export interface FileRouteTypes {
     | '/maio-laranja'
     | '/mapa'
     | '/metodologia'
-    | '/noticias'
     | '/objetivos'
     | '/pais'
     | '/relatorio-seo'
@@ -453,6 +451,8 @@ export interface FileRouteTypes {
     | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
+    | '/casos'
+    | '/noticias'
     | '/admin/auditoria'
     | '/admin/backup'
     | '/admin/mfa'
@@ -473,7 +473,6 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/biblioteca'
-    | '/casos'
     | '/como-ajudar'
     | '/denuncia'
     | '/escolas'
@@ -483,7 +482,6 @@ export interface FileRouteTypes {
     | '/maio-laranja'
     | '/mapa'
     | '/metodologia'
-    | '/noticias'
     | '/objetivos'
     | '/pais'
     | '/relatorio-seo'
@@ -495,6 +493,8 @@ export interface FileRouteTypes {
     | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
+    | '/casos/'
+    | '/noticias/'
     | '/_authenticated/admin/auditoria'
     | '/_authenticated/admin/backup'
     | '/_authenticated/admin/mfa'
@@ -516,7 +516,6 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   BibliotecaRoute: typeof BibliotecaRouteWithChildren
-  CasosRoute: typeof CasosRouteWithChildren
   ComoAjudarRoute: typeof ComoAjudarRoute
   DenunciaRoute: typeof DenunciaRoute
   EscolasRoute: typeof EscolasRoute
@@ -526,7 +525,6 @@ export interface RootRouteChildren {
   MaioLaranjaRoute: typeof MaioLaranjaRoute
   MapaRoute: typeof MapaRoute
   MetodologiaRoute: typeof MetodologiaRoute
-  NoticiasRoute: typeof NoticiasRouteWithChildren
   ObjetivosRoute: typeof ObjetivosRoute
   PaisRoute: typeof PaisRoute
   RelatorioSeoRoute: typeof RelatorioSeoRoute
@@ -534,6 +532,8 @@ export interface RootRouteChildren {
   SinaisRoute: typeof SinaisRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
+  CasosIndexRoute: typeof CasosIndexRoute
+  NoticiasIndexRoute: typeof NoticiasIndexRoute
   ApiPublicCspReportRoute: typeof ApiPublicCspReportRoute
 }
 
@@ -586,13 +586,6 @@ declare module '@tanstack/react-router' {
       path: '/objetivos'
       fullPath: '/objetivos'
       preLoaderRoute: typeof ObjetivosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/noticias': {
-      id: '/noticias'
-      path: '/noticias'
-      fullPath: '/noticias'
-      preLoaderRoute: typeof NoticiasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/metodologia': {
@@ -658,13 +651,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ComoAjudarRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/casos': {
-      id: '/casos'
-      path: '/casos'
-      fullPath: '/casos'
-      preLoaderRoute: typeof CasosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/biblioteca': {
       id: '/biblioteca'
       path: '/biblioteca'
@@ -691,6 +677,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/noticias/': {
+      id: '/noticias/'
+      path: '/noticias'
+      fullPath: '/noticias/'
+      preLoaderRoute: typeof NoticiasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/casos/': {
+      id: '/casos/'
+      path: '/casos'
+      fullPath: '/casos/'
+      preLoaderRoute: typeof CasosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/noticias/$slug': {
@@ -884,34 +884,11 @@ const BibliotecaRouteWithChildren = BibliotecaRoute._addFileChildren(
   BibliotecaRouteChildren,
 )
 
-interface CasosRouteChildren {
-  CasosSlugRoute: typeof CasosSlugRoute
-}
-
-const CasosRouteChildren: CasosRouteChildren = {
-  CasosSlugRoute: CasosSlugRoute,
-}
-
-const CasosRouteWithChildren = CasosRoute._addFileChildren(CasosRouteChildren)
-
-interface NoticiasRouteChildren {
-  NoticiasSlugRoute: typeof NoticiasSlugRoute
-}
-
-const NoticiasRouteChildren: NoticiasRouteChildren = {
-  NoticiasSlugRoute: NoticiasSlugRoute,
-}
-
-const NoticiasRouteWithChildren = NoticiasRoute._addFileChildren(
-  NoticiasRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   BibliotecaRoute: BibliotecaRouteWithChildren,
-  CasosRoute: CasosRouteWithChildren,
   ComoAjudarRoute: ComoAjudarRoute,
   DenunciaRoute: DenunciaRoute,
   EscolasRoute: EscolasRoute,
@@ -921,7 +898,6 @@ const rootRouteChildren: RootRouteChildren = {
   MaioLaranjaRoute: MaioLaranjaRoute,
   MapaRoute: MapaRoute,
   MetodologiaRoute: MetodologiaRoute,
-  NoticiasRoute: NoticiasRouteWithChildren,
   ObjetivosRoute: ObjetivosRoute,
   PaisRoute: PaisRoute,
   RelatorioSeoRoute: RelatorioSeoRoute,
@@ -929,8 +905,20 @@ const rootRouteChildren: RootRouteChildren = {
   SinaisRoute: SinaisRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SobreRoute: SobreRoute,
+  CasosIndexRoute: CasosIndexRoute,
+  NoticiasIndexRoute: NoticiasIndexRoute,
   ApiPublicCspReportRoute: ApiPublicCspReportRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
