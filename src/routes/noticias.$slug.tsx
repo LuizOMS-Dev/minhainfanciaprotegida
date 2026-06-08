@@ -42,7 +42,6 @@ function earliestTimelineDate(items?: { date: string }[] | null): string | null 
   return valid[0]?.raw ?? null;
 }
 
-const fmt = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
 const SITE = "https://minhainfanciaprotegida.com.br";
 
 const articleQO = (slug: string) =>
