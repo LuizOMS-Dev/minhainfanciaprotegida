@@ -201,9 +201,11 @@ function CaseDetail() {
         {a.body && <SafeHtml html={a.body} className="mt-8 prose prose-neutral max-w-none text-foreground/90 leading-relaxed" />}
 
 
-        {a.timeline && a.timeline.length > 0 && (
-          <Timeline items={a.timeline} heading="Cronologia do caso" />
-        )}
+        <Timeline
+          items={a.timeline ?? []}
+          heading="Cronologia do caso"
+          meta={{ publishAt: a.publish_at, updatedAt: a.updated_at, verifiedAt: a.last_verified_at }}
+        />
         <UnderstandBlock html={a.understand} />
         <LessonsBlock html={a.lessons} />
         <NationalContextChips items={context} />
