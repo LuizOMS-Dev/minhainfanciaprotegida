@@ -165,55 +165,105 @@ export function SignalsBlock({ items }: { items: RiskItem[] }) {
   );
 }
 
-/* ─────────────────── Como denunciar ─────────────────── */
+/* ─────────────────── Como denunciar (bloco destacado) ─────────────────── */
 
 export function ReportChannels() {
   const items = [
-    { label: "Disque 100", desc: "Denúncia anônima 24h", href: "tel:100", icon: Phone, primary: true },
-    { label: "Conselho Tutelar", desc: "Órgão local de proteção", href: "/mapa", icon: ShieldAlert },
-    { label: "Delegacia Especializada", desc: "DECRADI / DEAM", href: "/mapa", icon: MapPin },
+    { label: "Disque 100", desc: "Denúncia anônima 24h — gratuito", href: "tel:100", icon: Phone, primary: true, badge: "24h" },
+    { label: "Emergência 190", desc: "Risco imediato — Polícia Militar", href: "tel:190", icon: AlertCircle, urgent: true, badge: "Urgente" },
+    { label: "Polícia Federal", desc: "Crimes online contra crianças", href: "https://www.gov.br/pf/pt-br/canais_atendimento/denuncie", icon: ShieldAlert },
+    { label: "SaferNet", desc: "Denúncia de conteúdo na internet", href: "https://new.safernet.org.br/denuncie", icon: ShieldAlert },
+    { label: "Conselho Tutelar", desc: "Órgão local de proteção", href: "/mapa", icon: MapPin },
     { label: "Ministério Público", desc: "Promotorias da Infância", href: "/mapa", icon: BookOpenCheck },
-    { label: "Mapa de Ajuda", desc: "Centros próximos a você", href: "/mapa", icon: MapPin },
+  ];
+  const whatToInform = [
+    "Nome e idade da criança ou adolescente (se souber)",
+    "Endereço completo ou ponto de referência do local",
+    "Descrição objetiva do que está acontecendo",
+    "Quando e há quanto tempo a situação ocorre",
+    "Nome do suspeito e relação com a vítima (se souber)",
+    "Existência de testemunhas ou outras crianças no local",
+    "Telefone para retorno (opcional — pode ser anônimo)",
+    "Qualquer registro: print, foto, áudio ou documento",
   ];
   return (
     <section
       aria-label="Como denunciar"
-      className="mt-12 rounded-3xl bg-[color:var(--navy-deep)] text-white p-6 sm:p-8"
+      className="mt-12 overflow-hidden rounded-3xl bg-gradient-to-br from-[color:var(--navy-deep)] via-[color:var(--navy-deep)] to-[#0a1a2e] text-white shadow-2xl"
     >
-      <div className="flex items-start gap-3">
-        <AlertCircle className="size-6 text-[color:var(--orange)] shrink-0 mt-0.5" aria-hidden />
-        <div>
-          <h2 className="font-display text-2xl font-bold">Como denunciar</h2>
-          <p className="mt-1 text-sm text-white/80">
-            Em situação de risco imediato, ligue 190. Para denúncias, o Disque 100 é gratuito, anônimo e funciona 24 horas.
-          </p>
+      <div className="relative p-6 sm:p-8">
+        <div aria-hidden className="absolute -right-16 -top-16 size-64 rounded-full bg-[color:var(--orange)]/20 blur-3xl" />
+        <div className="relative flex items-start gap-3">
+          <div className="inline-flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[color:var(--orange)] text-[color:var(--navy-deep)] shadow-lg">
+            <AlertCircle className="size-6" aria-hidden />
+          </div>
+          <div>
+            <span className="inline-flex items-center gap-1 rounded-full bg-[color:var(--orange)]/20 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[color:var(--orange)]">
+              Bloco essencial
+            </span>
+            <h2 className="mt-1 font-display text-2xl sm:text-3xl font-bold">Como denunciar</h2>
+            <p className="mt-1.5 text-sm sm:text-base text-white/85 leading-relaxed">
+              Em <strong>risco imediato, ligue 190</strong>. Para denúncias, o <strong>Disque 100</strong> é gratuito, anônimo e funciona 24 horas, 7 dias por semana, em todo o Brasil.
+            </p>
+          </div>
+        </div>
+
+        <div className="relative mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {items.map((it) => {
+            const Icon = it.icon;
+            const isExternal = it.href.startsWith("http");
+            const isTel = it.href.startsWith("tel:");
+            const tone = it.primary
+              ? "bg-[color:var(--orange)] text-[color:var(--navy-deep)] hover:brightness-95 shadow-lg"
+              : it.urgent
+                ? "bg-[color:var(--red-inst)] text-white hover:brightness-110 shadow-lg"
+                : "bg-white/10 text-white hover:bg-white/15 backdrop-blur";
+            const body = (
+              <div className={`group relative flex h-full items-start gap-3 rounded-2xl p-4 transition-all hover:-translate-y-0.5 ${tone}`}>
+                <Icon className="size-5 mt-0.5 shrink-0" aria-hidden />
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="font-display font-bold leading-tight">{it.label}</p>
+                    {it.badge && (
+                      <span className={`text-[9px] font-bold uppercase tracking-wider rounded-full px-1.5 py-0.5 ${
+                        it.primary ? "bg-[color:var(--navy-deep)] text-[color:var(--orange)]" :
+                        it.urgent ? "bg-white text-[color:var(--red-inst)]" : "bg-white/20"
+                      }`}>{it.badge}</span>
+                    )}
+                  </div>
+                  <p className={`mt-0.5 text-xs leading-snug ${
+                    it.primary ? "text-[color:var(--navy-deep)]/80" :
+                    it.urgent ? "text-white/90" : "text-white/75"
+                  }`}>{it.desc}</p>
+                </div>
+              </div>
+            );
+            if (isExternal) return <a key={it.label} href={it.href} target="_blank" rel="noopener noreferrer">{body}</a>;
+            if (isTel) return <a key={it.label} href={it.href}>{body}</a>;
+            return <Link key={it.label} to={it.href as "/mapa"}>{body}</Link>;
+          })}
         </div>
       </div>
-      <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((it) => {
-          const Icon = it.icon;
-          const isAnchor = it.href.startsWith("tel:");
-          const body = (
-            <div className={`group flex h-full items-start gap-3 rounded-2xl p-4 transition-colors ${
-              it.primary
-                ? "bg-[color:var(--orange)] text-[color:var(--navy-deep)] hover:brightness-95"
-                : "bg-white/10 text-white hover:bg-white/15"
-            }`}>
-              <Icon className="size-5 mt-0.5 shrink-0" aria-hidden />
-              <div>
-                <p className="font-display font-bold leading-tight">{it.label}</p>
-                <p className={`mt-0.5 text-xs ${it.primary ? "text-[color:var(--navy-deep)]/80" : "text-white/75"}`}>
-                  {it.desc}
-                </p>
-              </div>
-            </div>
-          );
-          return isAnchor ? (
-            <a key={it.label} href={it.href}>{body}</a>
-          ) : (
-            <Link key={it.label} to={it.href as "/mapa"}>{body}</Link>
-          );
-        })}
+
+      <div className="border-t border-white/10 bg-black/20 backdrop-blur p-6 sm:p-8">
+        <h3 className="font-display text-lg font-bold flex items-center gap-2">
+          <ListChecks className="size-5 text-[color:var(--orange)]" aria-hidden />
+          O que informar na denúncia
+        </h3>
+        <p className="mt-1 text-xs text-white/70">
+          Você não precisa ter todos os dados. Informe o que souber — o atendimento orienta o restante.
+        </p>
+        <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+          {whatToInform.map((t, i) => (
+            <li key={i} className="flex items-start gap-2.5 text-sm text-white/90">
+              <CheckCircle2 className="size-4 mt-0.5 shrink-0 text-[color:var(--orange)]" aria-hidden />
+              <span className="leading-snug">{t}</span>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-5 text-[11px] text-white/60 leading-relaxed">
+          A denúncia pode ser <strong className="text-white/85">anônima</strong>. Manter o sigilo é direito do denunciante e está previsto em lei.
+        </p>
       </div>
     </section>
   );

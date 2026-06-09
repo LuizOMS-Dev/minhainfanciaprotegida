@@ -209,7 +209,10 @@ function NewsDetail() {
         <UnderstandBlock html={a.understand} />
         <ImpactBlock text={a.impact_summary} />
         <NationalContextChips items={context} />
-        {a.timeline && a.timeline.length > 0 && <Timeline items={a.timeline} />}
+        <Timeline
+          items={a.timeline ?? []}
+          meta={{ publishAt: a.publish_at, updatedAt: a.updated_at, verifiedAt: a.last_verified_at }}
+        />
         <LegislationBlock items={laws} />
         <SignalsBlock items={signals} />
         <ReportChannels />
