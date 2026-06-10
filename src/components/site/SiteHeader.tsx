@@ -185,7 +185,7 @@ export function SiteHeader() {
 
           {/* Linha 2 — Navegação principal (desktop) */}
           <nav
-            className="hidden lg:flex items-center justify-center border-t border-border/60 py-2.5"
+            className="hidden lg:flex items-center justify-center border-t border-border/60 py-2"
             aria-label="Navegação principal"
           >
             <ul className="flex items-center gap-1 xl:gap-2">
