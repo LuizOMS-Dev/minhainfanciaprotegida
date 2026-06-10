@@ -40,11 +40,18 @@ export function PageHero({
         tall ? "py-24 sm:py-32" : "py-20 sm:py-28"
       }`}
     >
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 bg-cover bg-center"
-        style={{ backgroundImage: `${overlay}, url(${image})` }}
-      />
+      <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
+        <img
+          src={image}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 h-full w-full object-cover animate-kenburns"
+        />
+        <div
+          className="absolute inset-0"
+          style={{ backgroundImage: overlay }}
+        />
+      </div>
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         {eyebrow && (
           <Reveal>

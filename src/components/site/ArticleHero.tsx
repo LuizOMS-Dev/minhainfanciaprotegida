@@ -42,15 +42,22 @@ export function ArticleHero(props: ArticleHeroProps) {
 
   return (
     <header className="relative isolate overflow-hidden text-white">
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 bg-cover bg-center"
-        style={{
-          backgroundImage: cover
-            ? `${overlay}, url(${cover})`
-            : `${overlay}, linear-gradient(135deg, var(--navy-deep), var(--navy))`,
-        }}
-      />
+      <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
+        {cover ? (
+          <img
+            src={cover}
+            alt=""
+            aria-hidden
+            className="absolute inset-0 h-full w-full object-cover animate-kenburns"
+          />
+        ) : (
+          <div
+            className="absolute inset-0"
+            style={{ backgroundImage: "linear-gradient(135deg, var(--navy-deep), var(--navy))" }}
+          />
+        )}
+        <div className="absolute inset-0" style={{ backgroundImage: overlay }} />
+      </div>
       {/* subtle orange accent */}
       <div
         aria-hidden
