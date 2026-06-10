@@ -124,7 +124,7 @@ export function SiteHeader() {
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Linha 1 — Marca + ações */}
-          <div className="flex items-center justify-between h-16 lg:h-[72px] gap-4">
+          <div className="flex items-center justify-between h-14 lg:h-[58px] gap-4">
             {/* Marca (logo oficial: escudo laranja) */}
             <Link
               to="/"
