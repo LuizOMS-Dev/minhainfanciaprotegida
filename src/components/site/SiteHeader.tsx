@@ -90,23 +90,31 @@ export function SiteHeader() {
         scrolled ? "shadow-md" : ""
       }`}
     >
-      {/* Faixa de emergência refinada */}
-      <a
-        href="tel:100"
-        className="group block w-full bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] hover:bg-[color:var(--red-inst)]/95 transition-colors"
-        aria-label="Ligar para Disque 100 — Disque Direitos Humanos"
+      {/* Faixa de emergência — gradiente vermelho com pill Disque 100 */}
+      <div
+        className="w-full text-white"
+        style={{
+          backgroundImage:
+            "linear-gradient(90deg, #8a1220 0%, #b81830 35%, #d92240 65%, #8a1220 100%)",
+        }}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-center gap-3 text-[11px] sm:text-xs font-medium tracking-wide">
-          <ShieldAlert className="size-3.5 text-white/85 shrink-0" aria-hidden />
-          <span>
-            Denuncie agora —{" "}
-            <span className="font-bold uppercase tracking-tighter">Disque 100</span>
-          </span>
-          <span className="hidden md:inline border-l border-white/25 pl-3 ml-0.5 text-white/75 font-normal">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-center gap-2 sm:gap-3 text-[11px] sm:text-xs tracking-wide">
+          <ShieldAlert className="size-3.5 text-white/90 shrink-0" aria-hidden />
+          <span className="font-bold uppercase tracking-[0.18em]">Denuncie agora</span>
+          <span className="text-white/55" aria-hidden>•</span>
+          <a
+            href="tel:100"
+            className="inline-flex items-center gap-1.5 rounded-full border border-white/35 bg-white/10 px-2.5 py-0.5 font-semibold hover:bg-white/20 transition-colors"
+            aria-label="Ligar para Disque 100"
+          >
+            <Phone className="size-3" aria-hidden />
+            Disque 100
+          </a>
+          <span className="hidden sm:inline text-white/85 font-normal">
             24h, gratuito e anônimo
           </span>
         </div>
-      </a>
+      </div>
 
       {/* Header principal — duas linhas */}
       <div
@@ -116,19 +124,19 @@ export function SiteHeader() {
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Linha 1 — Marca + ações */}
-          <div className="flex items-center justify-between h-16 lg:h-[72px] gap-4">
+          <div className="flex items-center justify-between h-14 lg:h-[58px] gap-4">
             {/* Marca (logo oficial: escudo laranja) */}
             <Link
               to="/"
               className="flex items-center gap-2.5 sm:gap-3 group shrink-0 min-w-0"
               aria-label="Página inicial"
             >
-              <span className="relative inline-flex size-10 items-center justify-center rounded-full bg-gradient-orange shadow-orange shrink-0 transition-transform group-hover:scale-105">
+              <span className="relative inline-flex size-9 items-center justify-center rounded-full bg-gradient-orange shadow-orange shrink-0 transition-transform group-hover:scale-105">
                 <span className="absolute inset-0 rounded-full bg-[color:var(--orange)]/40 animate-ping-slow" />
-                <ShieldAlert className="size-5 text-[color:var(--navy-deep)]" aria-hidden />
+                <ShieldAlert className="size-4 text-[color:var(--navy-deep)]" aria-hidden />
               </span>
               <span className="flex flex-col leading-tight min-w-0">
-                <span className="font-display text-[15px] sm:text-[17px] font-semibold tracking-tight text-foreground truncate">
+                <span className="font-display text-[14px] sm:text-[15px] font-semibold tracking-tight text-foreground truncate">
                   Infância Protegida
                 </span>
                 <span className="hidden sm:block text-[9px] font-bold uppercase tracking-[0.22em] text-[color:var(--orange)]/90 truncate">
@@ -145,7 +153,7 @@ export function SiteHeader() {
 
               <Link
                 to="/denuncia"
-                className="inline-flex items-center gap-2 rounded-lg bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider hover:bg-[color:var(--red-inst)]/90 transition-all shadow-sm hover:shadow-md active:translate-y-px whitespace-nowrap"
+                className="inline-flex items-center gap-2 rounded-lg bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-3.5 py-2 text-[11px] font-bold uppercase tracking-wider hover:bg-[color:var(--red-inst)]/90 transition-all shadow-sm hover:shadow-md active:translate-y-px whitespace-nowrap"
               >
                 <Phone className="size-3.5" aria-hidden />
                 Denuncie Agora
@@ -177,7 +185,7 @@ export function SiteHeader() {
 
           {/* Linha 2 — Navegação principal (desktop) */}
           <nav
-            className="hidden lg:flex items-center justify-center border-t border-border/60 py-2.5"
+            className="hidden lg:flex items-center justify-center border-t border-border/60 py-2"
             aria-label="Navegação principal"
           >
             <ul className="flex items-center gap-1 xl:gap-2">
