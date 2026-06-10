@@ -153,7 +153,7 @@ export function SiteHeader() {
 
               <Link
                 to="/denuncia"
-                className="inline-flex items-center gap-2 rounded-lg bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider hover:bg-[color:var(--red-inst)]/90 transition-all shadow-sm hover:shadow-md active:translate-y-px whitespace-nowrap"
+                className="inline-flex items-center gap-2 rounded-lg bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-3.5 py-2 text-[11px] font-bold uppercase tracking-wider hover:bg-[color:var(--red-inst)]/90 transition-all shadow-sm hover:shadow-md active:translate-y-px whitespace-nowrap"
               >
                 <Phone className="size-3.5" aria-hidden />
                 Denuncie Agora
