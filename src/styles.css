@@ -241,6 +241,7 @@
   .reveal { opacity: 1; transform: none; transition: none; }
   .animate-marquee,
   .animate-ping-slow,
+  .animate-kenburns,
   .animate-float { animation: none !important; }
   html { scroll-behavior: auto; }
 }
