@@ -128,15 +128,21 @@ function Index() {
     <>
       {/* HERO */}
       <section className="relative isolate overflow-hidden bg-[color:var(--navy-deep)] text-white">
-        <div
-          className="absolute inset-0 -z-10"
-          style={{
-            backgroundImage: `linear-gradient(120deg, rgba(11,20,45,0.92) 0%, rgba(11,20,45,0.78) 45%, rgba(232,108,42,0.35) 100%), url(${heroImg})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-          aria-hidden
-        />
+        <div className="absolute inset-0 -z-10 overflow-hidden" aria-hidden>
+          <img
+            src={heroImg}
+            alt=""
+            aria-hidden
+            className="absolute inset-0 h-full w-full object-cover animate-kenburns"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                "linear-gradient(120deg, rgba(11,20,45,0.92) 0%, rgba(11,20,45,0.78) 45%, rgba(232,108,42,0.35) 100%)",
+            }}
+          />
+        </div>
         <div className="absolute inset-0 -z-10 opacity-30 mix-blend-overlay" aria-hidden>
           <div className="absolute -top-24 -left-24 size-96 rounded-full bg-[color:var(--orange)] blur-3xl" />
           <div className="absolute bottom-0 right-0 size-[28rem] rounded-full bg-[color:var(--red-inst)] blur-3xl" />
