@@ -90,23 +90,31 @@ export function SiteHeader() {
         scrolled ? "shadow-md" : ""
       }`}
     >
-      {/* Faixa de emergência refinada */}
-      <a
-        href="tel:100"
-        className="group block w-full bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] hover:bg-[color:var(--red-inst)]/95 transition-colors"
-        aria-label="Ligar para Disque 100 — Disque Direitos Humanos"
+      {/* Faixa de emergência — gradiente vermelho com pill Disque 100 */}
+      <div
+        className="w-full text-white"
+        style={{
+          backgroundImage:
+            "linear-gradient(90deg, #8a1220 0%, #b81830 35%, #d92240 65%, #8a1220 100%)",
+        }}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-center gap-3 text-[11px] sm:text-xs font-medium tracking-wide">
-          <ShieldAlert className="size-3.5 text-white/85 shrink-0" aria-hidden />
-          <span>
-            Denuncie agora —{" "}
-            <span className="font-bold uppercase tracking-tighter">Disque 100</span>
-          </span>
-          <span className="hidden md:inline border-l border-white/25 pl-3 ml-0.5 text-white/75 font-normal">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-center gap-2 sm:gap-3 text-[11px] sm:text-xs tracking-wide">
+          <ShieldAlert className="size-3.5 text-white/90 shrink-0" aria-hidden />
+          <span className="font-bold uppercase tracking-[0.18em]">Denuncie agora</span>
+          <span className="text-white/55" aria-hidden>•</span>
+          <a
+            href="tel:100"
+            className="inline-flex items-center gap-1.5 rounded-full border border-white/35 bg-white/10 px-2.5 py-0.5 font-semibold hover:bg-white/20 transition-colors"
+            aria-label="Ligar para Disque 100"
+          >
+            <Phone className="size-3" aria-hidden />
+            Disque 100
+          </a>
+          <span className="hidden sm:inline text-white/85 font-normal">
             24h, gratuito e anônimo
           </span>
         </div>
-      </a>
+      </div>
 
       {/* Header principal — duas linhas */}
       <div
