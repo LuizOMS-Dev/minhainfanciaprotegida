@@ -131,12 +131,12 @@ export function SiteHeader() {
               className="flex items-center gap-2.5 sm:gap-3 group shrink-0 min-w-0"
               aria-label="Página inicial"
             >
-              <span className="relative inline-flex size-10 items-center justify-center rounded-full bg-gradient-orange shadow-orange shrink-0 transition-transform group-hover:scale-105">
+              <span className="relative inline-flex size-9 items-center justify-center rounded-full bg-gradient-orange shadow-orange shrink-0 transition-transform group-hover:scale-105">
                 <span className="absolute inset-0 rounded-full bg-[color:var(--orange)]/40 animate-ping-slow" />
-                <ShieldAlert className="size-5 text-[color:var(--navy-deep)]" aria-hidden />
+                <ShieldAlert className="size-4 text-[color:var(--navy-deep)]" aria-hidden />
               </span>
               <span className="flex flex-col leading-tight min-w-0">
-                <span className="font-display text-[15px] sm:text-[17px] font-semibold tracking-tight text-foreground truncate">
+                <span className="font-display text-[14px] sm:text-[15px] font-semibold tracking-tight text-foreground truncate">
                   Infância Protegida
                 </span>
                 <span className="hidden sm:block text-[9px] font-bold uppercase tracking-[0.22em] text-[color:var(--orange)]/90 truncate">
