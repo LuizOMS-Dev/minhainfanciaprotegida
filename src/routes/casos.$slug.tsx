@@ -27,6 +27,7 @@ import {
   RecommendedReading,
   AnonymizedNotice,
 } from "@/components/site/ArticleBlocks";
+import { SummaryCard, WhyMattersBlock, EditorialFooter } from "@/components/site/EditorialBlocks";
 import { getLawsBySlugs } from "@/content/laws";
 import { getContextByKeys } from "@/content/nationalContext";
 import { risks as allRisks } from "@/content/risks";
@@ -198,9 +199,10 @@ function CaseDetail() {
           </figure>
         )}
         <AnonymizedNotice />
-        {a.body && <SafeHtml html={a.body} className="mt-8 prose prose-neutral max-w-none text-foreground/90 leading-relaxed" />}
+        <SummaryCard text={a.ai_summary ?? a.subtitle ?? null} />
+        {a.body && <SafeHtml html={a.body} className="mt-10 prose prose-neutral max-w-none text-foreground/90 leading-relaxed" />}
 
-
+        <WhyMattersBlock variant="case" text={a.impact_summary} />
         <Timeline
           items={a.timeline ?? []}
           heading="Cronologia do caso"
@@ -217,6 +219,14 @@ function CaseDetail() {
         <FaqBlock items={a.faq ?? []} />
 
         <CaseActions />
+
+        <EditorialFooter
+          publishedAt={a.publish_at}
+          updatedAt={a.updated_at}
+          verifiedAt={a.last_verified_at}
+          author={a.author_name}
+          reviewer={a.reviewer_name}
+        />
 
         {a.primary_source_url && a.primary_source_label && (
           <div className="mt-12">

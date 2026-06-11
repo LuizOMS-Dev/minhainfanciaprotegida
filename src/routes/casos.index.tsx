@@ -1,10 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { BookOpen } from "lucide-react";
 import { cases } from "@/content/cases";
-import { ArticleCard } from "@/components/site/ArticleCard";
+import { EditorialArticleCard } from "@/components/site/EditorialArticleCard";
 import { Reveal } from "@/components/site/Reveal";
 import { PageHero } from "@/components/site/PageHero";
 import { listPublishedArticles } from "@/lib/content.functions";
@@ -18,7 +18,7 @@ export const Route = createFileRoute("/casos/")({
       {
         name: "description",
         content:
-          "Casos verificados que marcaram o combate ao abuso e à exploração sexual de crianças e adolescentes no Brasil — do Caso Araceli ao Caso Felca e Mineblox. Fontes oficiais.",
+          "Casos verificados que marcaram o combate ao abuso e à exploração sexual de crianças e adolescentes no Brasil. Apenas fontes oficiais.",
       },
       { property: "og:title", content: "Casos reais — Infância Protegida" },
       {
@@ -33,6 +33,20 @@ export const Route = createFileRoute("/casos/")({
 
 const TAGS = ["Todos", "Histórico", "Legislação", "Repercussão nacional", "Ambiente digital", "Operação policial"] as const;
 
+type CardData = {
+  key: string;
+  slug: string;
+  title: string;
+  subtitle: string | null;
+  cover: string | null;
+  category: string | null;
+  publishAt: string;
+  readingMinutes?: number | null;
+  authorName?: string | null;
+  verifiedAt?: string | null;
+  severity?: string | null;
+};
+
 function CasosPage() {
   const [tag, setTag] = useState<(typeof TAGS)[number]>("Todos");
   const fetchPublished = useServerFn(listPublishedArticles);
@@ -41,15 +55,33 @@ function CasosPage() {
     queryFn: () => fetchPublished({ data: { type: "case", limit: 50 } }),
   });
 
-  const dbList = useMemo(() => {
-    const items = published?.articles ?? [];
-    return tag === "Todos" ? items : items.filter((c) => c.category === tag);
+  const all: CardData[] = useMemo(() => {
+    const db: CardData[] = (published?.articles ?? []).map((a) => ({
+      key: `db-${a.id}`,
+      slug: a.slug,
+      title: a.title,
+      subtitle: a.subtitle,
+      cover: a.cover_url ?? null,
+      category: a.category ?? "Caso real",
+      publishAt: a.publish_at ?? a.updated_at,
+      authorName: a.author_name,
+      verifiedAt: a.last_verified_at,
+    }));
+    const stat: CardData[] = cases.map((c) => ({
+      key: `s-${c.slug}`,
+      slug: c.slug,
+      title: c.title,
+      subtitle: c.summary,
+      cover: c.image,
+      category: c.tag,
+      publishAt: c.date,
+    }));
+    const merged = [...db, ...stat].sort((a, b) => +new Date(b.publishAt) - +new Date(a.publishAt));
+    return tag === "Todos" ? merged : merged.filter((x) => x.category === tag);
   }, [published, tag]);
 
-  const staticList = useMemo(() => {
-    const filtered = tag === "Todos" ? cases : cases.filter((c) => c.tag === tag);
-    return [...filtered].sort((a, b) => +new Date(b.date) - +new Date(a.date));
-  }, [tag]);
+  const featured = all[0];
+  const rest = all.slice(1);
 
   return (
     <>
@@ -63,14 +95,18 @@ function CasosPage() {
 
       <section className="py-12 sm:py-16 bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap gap-2 mb-10" role="tablist" aria-label="Filtrar casos por categoria">
+          <div
+            className="flex flex-wrap gap-2 mb-10 -mx-1 px-1 overflow-x-auto"
+            role="tablist"
+            aria-label="Filtrar casos por categoria"
+          >
             {TAGS.map((t) => (
               <button
                 key={t}
                 role="tab"
                 aria-selected={tag === t}
                 onClick={() => setTag(t)}
-                className={`px-4 py-2 rounded-full text-sm font-semibold border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)] ${
+                className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)] whitespace-nowrap ${
                   tag === t
                     ? "bg-[color:var(--orange)] text-[color:var(--navy-deep)] border-[color:var(--orange)]"
                     : "bg-card text-foreground border-border hover:border-[color:var(--orange)]"
@@ -81,42 +117,48 @@ function CasosPage() {
             ))}
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {dbList.map((a, i) => (
-              <Reveal key={a.id} delay={i * 60}>
-                <Link to="/casos/$slug" params={{ slug: a.slug }} className="block h-full">
-                  <ArticleCard
-                    title={a.title}
-                    date={a.publish_at ?? a.updated_at}
-                    excerpt={a.subtitle ?? ""}
-                    image={a.cover_url || journalismImg}
-                    tag={a.category ?? "Caso"}
-                    source={{
-                      name: a.primary_source_label ?? "Infância Protegida",
-                      url: a.primary_source_url ?? "/casos",
-                    }}
+          {all.length === 0 ? (
+            <p className="text-center text-muted-foreground py-16">Nenhum caso nesta categoria.</p>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {featured && (
+                <Reveal>
+                  <EditorialArticleCard
+                    to="/casos/$slug"
+                    kind="case"
+                    variant="featured"
+                    slug={featured.slug}
+                    title={featured.title}
+                    subtitle={featured.subtitle}
+                    cover={featured.cover ?? journalismImg}
+                    category={featured.category}
+                    publishAt={featured.publishAt}
+                    readingMinutes={featured.readingMinutes}
+                    authorName={featured.authorName}
+                    verifiedAt={featured.verifiedAt}
+                    severity={featured.severity}
                   />
-                </Link>
-              </Reveal>
-            ))}
-            {staticList.map((c, i) => (
-              <Reveal key={c.slug} delay={(dbList.length + i) * 60}>
-                <Link to="/casos/$slug" params={{ slug: c.slug }} className="block h-full">
-                  <ArticleCard
+                </Reveal>
+              )}
+              {rest.map((c, i) => (
+                <Reveal key={c.key} delay={(i + 1) * 50}>
+                  <EditorialArticleCard
+                    to="/casos/$slug"
+                    kind="case"
+                    slug={c.slug}
                     title={c.title}
-                    date={c.date}
-                    excerpt={`${c.summary}\n\nImpacto: ${c.impact}`}
-                    image={c.image}
-                    tag={c.tag}
-                    source={c.source}
+                    subtitle={c.subtitle}
+                    cover={c.cover ?? journalismImg}
+                    category={c.category}
+                    publishAt={c.publishAt}
+                    readingMinutes={c.readingMinutes}
+                    authorName={c.authorName}
+                    verifiedAt={c.verifiedAt}
+                    severity={c.severity}
                   />
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-
-          {dbList.length === 0 && staticList.length === 0 && (
-            <p className="text-center text-muted-foreground py-12">Nenhum caso nesta categoria.</p>
+                </Reveal>
+              ))}
+            </div>
           )}
         </div>
       </section>
