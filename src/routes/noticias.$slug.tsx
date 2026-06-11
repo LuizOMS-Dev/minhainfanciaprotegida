@@ -28,6 +28,7 @@ import {
   WarningIndicatorsBlock,
   ImpactBlock,
 } from "@/components/site/ArticleBlocks";
+import { SummaryCard, WhyMattersBlock, EditorialFooter } from "@/components/site/EditorialBlocks";
 import { getLawsBySlugs } from "@/content/laws";
 import { getContextByKeys } from "@/content/nationalContext";
 import { risks as allRisks } from "@/content/risks";
