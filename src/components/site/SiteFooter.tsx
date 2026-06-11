@@ -40,6 +40,39 @@ export function SiteFooter() {
           >
             <Phone className="size-4" /> Ligar 100 — gratuito e anônimo
           </a>
+
+          {/* Canais oficiais do projeto */}
+          <div className="pt-2">
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.18em] opacity-70 mb-3">
+              Canais oficiais do projeto
+            </h3>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <a
+                  href="https://instagram.com/minhainfaciaprotegida_oficial"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 opacity-90 hover:opacity-100 hover:text-[color:var(--orange)] transition-colors"
+                >
+                  <Instagram className="size-4" aria-hidden />
+                  @minhainfaciaprotegida_oficial
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:contato@infanciaprotegida.com.br"
+                  className="inline-flex items-center gap-2 opacity-90 hover:opacity-100 hover:text-[color:var(--orange)] transition-colors"
+                >
+                  <Mail className="size-4" aria-hidden />
+                  contato@infanciaprotegida.com.br
+                </a>
+              </li>
+            </ul>
+            <p className="mt-3 text-[11px] leading-relaxed opacity-60 max-w-md">
+              Estes são os únicos canais oficiais do projeto. Botões de compartilhamento em
+              artigos são ferramentas do visitante e não representam redes oficiais.
+            </p>
+          </div>
         </div>
 
         <div>
