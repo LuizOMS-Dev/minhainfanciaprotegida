@@ -64,10 +64,8 @@ function CasosPage() {
       cover: a.cover_url ?? null,
       category: a.category ?? "Caso real",
       publishAt: a.publish_at ?? a.updated_at,
-      readingMinutes: a.reading_minutes,
       authorName: a.author_name,
       verifiedAt: a.last_verified_at,
-      severity: a.severity_level,
     }));
     const stat: CardData[] = cases.map((c) => ({
       key: `s-${c.slug}`,
