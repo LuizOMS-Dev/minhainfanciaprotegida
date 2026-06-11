@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ExternalLink, Phone, ShieldAlert } from "lucide-react";
+import { ExternalLink, Instagram, Mail, Phone, ShieldAlert } from "lucide-react";
 
 const orgs = [
   { name: "Ministério dos Direitos Humanos e da Cidadania", url: "https://www.gov.br/mdh/pt-br" },
