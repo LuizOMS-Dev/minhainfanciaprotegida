@@ -40,8 +40,8 @@ export function ShareButtons({ title, url, description }: ShareButtonsProps) {
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-2" aria-label="Compartilhar">
-      <span className="text-xs uppercase tracking-wider text-muted-foreground mr-1">
+    <div className="flex flex-wrap items-center gap-2" aria-label="Ferramentas de compartilhamento">
+      <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground mr-1" title="Estas plataformas são apenas ferramentas de compartilhamento e não são canais oficiais do projeto.">
         Compartilhar
       </span>
       {hasNativeShare && (
