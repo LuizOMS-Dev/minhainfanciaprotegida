@@ -122,7 +122,14 @@ export function ArticleHero(props: ArticleHeroProps) {
           />
         </div>
 
-        <div className="mt-8">
+        <div className="mt-8 flex flex-wrap items-center gap-3">
+          <Link
+            to="/denuncia"
+            className="inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] text-white px-5 py-2.5 text-sm font-bold uppercase tracking-wider shadow-lg hover:brightness-110 transition-all"
+          >
+            <Phone className="size-4" aria-hidden />
+            Como denunciar
+          </Link>
           <ShareButtons
             title={props.title}
             url={props.shareUrl}
