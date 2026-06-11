@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft, Calendar, User, ShieldCheck, Clock, CalendarDays, CalendarCheck2, BadgeCheck } from "lucide-react";
+import { ArrowLeft, Calendar, User, ShieldCheck, Clock, CalendarDays, CalendarCheck2, BadgeCheck, Phone } from "lucide-react";
 import { ShareButtons } from "@/components/site/ShareButtons";
 import { SeverityBadge, ConfidenceBadge } from "@/components/site/ArticleBlocks";
 
