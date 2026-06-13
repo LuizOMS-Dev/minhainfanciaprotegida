@@ -13,22 +13,19 @@ import { SafeHtml, readingTimeMinutes } from "@/components/site/SafeHtml";
 import { ShareButtons } from "@/components/site/ShareButtons";
 import { RelatedArticles, ArticleSiblingNav } from "@/components/site/RelatedArticles";
 import { Timeline } from "@/components/site/Timeline";
-import { CaseActions } from "@/components/site/CaseActions";
 import { ArticleHero } from "@/components/site/ArticleHero";
 import {
   UnderstandBlock,
   NationalContextChips,
   LegislationBlock,
-  SignalsBlock,
-  ReportChannels,
   RelatedMaterials,
   FaqBlock,
   RecommendedReading,
-  ActionStepsBlock,
-  WarningIndicatorsBlock,
-  ImpactBlock,
 } from "@/components/site/ArticleBlocks";
 import { SummaryCard, WhyMattersBlock, EditorialFooter } from "@/components/site/EditorialBlocks";
+import { SectionLabel } from "@/components/site/editorial/SectionLabel";
+import { HowToActSteps } from "@/components/site/editorial/HowToActSteps";
+import { ProtectionNetwork } from "@/components/site/editorial/ProtectionNetwork";
 import { getLawsBySlugs } from "@/content/laws";
 import { getContextByKeys } from "@/content/nationalContext";
 import { risks as allRisks } from "@/content/risks";
@@ -167,6 +164,10 @@ function NewsDetail() {
     .slice(0, 4);
 
   const eventDate = earliestTimelineDate(a.timeline) ?? a.publish_at ?? a.updated_at;
+  const hasTimeline = (a.timeline ?? []).length > 0;
+  const hasActionSteps = (a.action_steps ?? []).length > 0;
+  const hasMaterials = libraryMatches.length > 0 || laws.length > 0;
+  const hasReferences = a.primary_source_url && a.primary_source_label;
 
   return (
     <article className="bg-background">
@@ -193,7 +194,7 @@ function NewsDetail() {
 
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         {a.cover_url && (
-          <figure className="mb-10 -mt-24 sm:-mt-32 relative">
+          <figure className="mb-12 -mt-24 sm:-mt-32 relative">
             <img
               src={a.cover_url}
               alt=""
@@ -202,29 +203,106 @@ function NewsDetail() {
             />
           </figure>
         )}
+
+        {/* 02 — Resumo */}
         <SummaryCard text={a.ai_summary ?? a.subtitle ?? null} />
 
-        {a.body && <SafeHtml html={a.body} className="mt-10 prose prose-neutral max-w-none text-foreground/90 leading-relaxed" />}
+        {/* Corpo */}
+        {a.body && (
+          <SafeHtml
+            html={a.body}
+            className="mt-10 prose prose-neutral max-w-none text-foreground/90 leading-relaxed"
+          />
+        )}
 
-        <WhyMattersBlock variant="news" text={a.impact_summary} />
-        <ActionStepsBlock items={a.action_steps} />
-        <WarningIndicatorsBlock items={a.warning_indicators} />
+        {/* 03 — Entenda o assunto */}
         <UnderstandBlock html={a.understand} />
-        <ImpactBlock text={a.impact_summary} />
-        <NationalContextChips items={context} />
-        <Timeline
-          items={a.timeline ?? []}
-          meta={{ publishAt: a.publish_at, updatedAt: a.updated_at, verifiedAt: a.last_verified_at }}
-        />
+
+        {/* 04 — Por que isso importa */}
+        <WhyMattersBlock variant="news" text={a.impact_summary} />
+
+        {/* 05 — Contexto */}
+        {context.length > 0 && (
+          <div className="mt-16">
+            <SectionLabel
+              number={5}
+              eyebrow="Contexto"
+              title="Onde isso se encaixa no Brasil"
+              description="Marcos e campanhas nacionais relacionados a este tema."
+            />
+            <NationalContextChips items={context} />
+          </div>
+        )}
+
+        {/* 06 — Linha do tempo (somente se houver datas reais) */}
+        {hasTimeline && (
+          <div className="mt-16">
+            <SectionLabel
+              number={6}
+              eyebrow="Linha do tempo"
+              title="Como esta história se desenrolou"
+              description="Marcos cronológicos verificáveis."
+            />
+            <Timeline
+              items={a.timeline ?? []}
+              heading=""
+              meta={{ publishAt: a.publish_at, updatedAt: a.updated_at, verifiedAt: a.last_verified_at }}
+            />
+          </div>
+        )}
+
+        {/* 07 — Legislação relacionada */}
         <LegislationBlock items={laws} />
-        <SignalsBlock items={signals} />
-        <ReportChannels />
-        <RelatedMaterials items={libraryMatches} />
+
+        {/* 08 — Como agir / onde buscar ajuda */}
+        {hasActionSteps && (
+          <HowToActSteps
+            items={a.action_steps}
+            number={8}
+            title="Como agir ou onde buscar ajuda"
+            eyebrow="Ação"
+            description="Passos práticos para famílias, escolas e responsáveis diante deste tema."
+          />
+        )}
+
+        <ProtectionNetwork number={9} />
+
+        {/* 09 — Materiais relacionados */}
+        {hasMaterials && (
+          <div className="mt-16">
+            <SectionLabel
+              number={10}
+              eyebrow="Aprofunde"
+              title="Materiais relacionados"
+              description="Conteúdos educativos para aprofundar o assunto com segurança."
+            />
+            <RelatedMaterials items={libraryMatches} />
+            <RecommendedReading risks={signals} library={libraryMatches} />
+          </div>
+        )}
+
+        {/* FAQ */}
         <FaqBlock items={a.faq ?? []} />
-        <RecommendedReading risks={signals} library={libraryMatches} />
 
-        <CaseActions />
+        {/* 11 — Referências oficiais */}
+        {hasReferences && (
+          <div className="mt-16">
+            <SectionLabel
+              number={11}
+              eyebrow="Fontes"
+              title="Referências oficiais"
+              description="Documentos públicos e fontes verificáveis utilizadas nesta publicação."
+            />
+            <ReferencesBlock
+              primary={{ label: a.primary_source_label!, url: a.primary_source_url! }}
+              secondary={a.sources.map((s) => ({ label: s.label, url: s.url }))}
+              lastVerified={a.last_verified_at ?? a.updated_at}
+              reviewedBy={a.reviewer_name ?? undefined}
+            />
+          </div>
+        )}
 
+        {/* 12 — Rodapé editorial */}
         <EditorialFooter
           publishedAt={a.publish_at}
           updatedAt={a.updated_at}
@@ -232,17 +310,6 @@ function NewsDetail() {
           author={a.author_name}
           reviewer={a.reviewer_name}
         />
-
-        {a.primary_source_url && a.primary_source_label && (
-          <div className="mt-12">
-            <ReferencesBlock
-              primary={{ label: a.primary_source_label, url: a.primary_source_url }}
-              secondary={a.sources.map((s) => ({ label: s.label, url: s.url }))}
-              lastVerified={a.last_verified_at ?? a.updated_at}
-              reviewedBy={a.reviewer_name ?? undefined}
-            />
-          </div>
-        )}
 
         <div className="mt-12 pt-8 border-t border-border">
           <ShareButtons title={a.title} url={url} description={a.subtitle ?? undefined} />
