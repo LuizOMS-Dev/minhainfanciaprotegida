@@ -13,21 +13,21 @@ import { SafeHtml, readingTimeMinutes } from "@/components/site/SafeHtml";
 import { ShareButtons } from "@/components/site/ShareButtons";
 import { RelatedArticles, ArticleSiblingNav } from "@/components/site/RelatedArticles";
 import { Timeline } from "@/components/site/Timeline";
-import { CaseActions } from "@/components/site/CaseActions";
 import { ArticleHero } from "@/components/site/ArticleHero";
 import {
-  UnderstandBlock,
-  LessonsBlock,
   NationalContextChips,
   LegislationBlock,
-  SignalsBlock,
-  ReportChannels,
   RelatedMaterials,
   FaqBlock,
   RecommendedReading,
   AnonymizedNotice,
 } from "@/components/site/ArticleBlocks";
 import { SummaryCard, WhyMattersBlock, EditorialFooter } from "@/components/site/EditorialBlocks";
+import { SectionLabel } from "@/components/site/editorial/SectionLabel";
+import { LessonsCards } from "@/components/site/editorial/LessonsCards";
+import { SignalsCards } from "@/components/site/editorial/SignalsCards";
+import { HowToActSteps } from "@/components/site/editorial/HowToActSteps";
+import { ProtectionNetwork } from "@/components/site/editorial/ProtectionNetwork";
 import { getLawsBySlugs } from "@/content/laws";
 import { getContextByKeys } from "@/content/nationalContext";
 import { risks as allRisks } from "@/content/risks";
@@ -163,6 +163,9 @@ function CaseDetail() {
     .slice(0, 4);
 
   const eventDate = earliestTimelineDate(a.timeline) ?? a.publish_at ?? a.updated_at;
+  const hasTimeline = (a.timeline ?? []).length > 0;
+  const hasMaterials = libraryMatches.length > 0 || laws.length > 0;
+  const hasReferences = a.primary_source_url && a.primary_source_label;
 
   return (
     <article className="bg-background">
@@ -189,7 +192,7 @@ function CaseDetail() {
 
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         {a.cover_url && (
-          <figure className="-mt-24 sm:-mt-32 mb-10 relative">
+          <figure className="-mt-24 sm:-mt-32 mb-12 relative">
             <img
               src={a.cover_url}
               alt=""
@@ -198,28 +201,84 @@ function CaseDetail() {
             />
           </figure>
         )}
-        <AnonymizedNotice />
-        <SummaryCard text={a.ai_summary ?? a.subtitle ?? null} />
-        {a.body && <SafeHtml html={a.body} className="mt-10 prose prose-neutral max-w-none text-foreground/90 leading-relaxed" />}
 
+        <AnonymizedNotice />
+
+        {/* 02 — Resumo do caso */}
+        <SummaryCard text={a.ai_summary ?? a.subtitle ?? null} />
+
+        {/* Corpo editorial (contextualização) */}
+        {a.body && (
+          <SafeHtml
+            html={a.body}
+            className="mt-10 prose prose-neutral max-w-none text-foreground/90 leading-relaxed"
+          />
+        )}
+
+        {/* 03 — Por que este tema importa */}
         <WhyMattersBlock variant="case" text={a.impact_summary} />
-        <Timeline
-          items={a.timeline ?? []}
-          heading="Cronologia do caso"
-          meta={{ publishAt: a.publish_at, updatedAt: a.updated_at, verifiedAt: a.last_verified_at }}
-        />
-        <UnderstandBlock html={a.understand} />
-        <LessonsBlock html={a.lessons} />
+
+        {/* Linha do tempo (apenas se houver datas reais) */}
+        {hasTimeline && (
+          <Timeline
+            items={a.timeline ?? []}
+            heading="Cronologia do caso"
+            meta={{ publishAt: a.publish_at, updatedAt: a.updated_at, verifiedAt: a.last_verified_at }}
+          />
+        )}
+
+        {/* 04 — O que aprendemos */}
+        <LessonsCards html={a.lessons} number={hasTimeline ? 5 : 4} />
+
+        {/* 05 — Sinais de alerta */}
+        <SignalsCards items={a.warning_indicators} number={6} />
+
+        {/* 06 — Como agir */}
+        <HowToActSteps items={a.action_steps} number={7} />
+
+        {/* Contexto nacional discreto */}
         <NationalContextChips items={context} />
-        <SignalsBlock items={signals} />
-        <RecommendedReading risks={signals} library={libraryMatches} />
-        <LegislationBlock items={laws} />
-        <ReportChannels />
-        <RelatedMaterials items={libraryMatches} />
+
+        {/* 08 — Rede de proteção */}
+        <ProtectionNetwork number={8} />
+
+        {/* 09 — Materiais relacionados */}
+        {hasMaterials && (
+          <div className="mt-16">
+            <SectionLabel
+              number={9}
+              eyebrow="Aprofunde"
+              title="Materiais relacionados"
+              description="Guias, leis e conteúdos educativos para aprofundar o assunto."
+            />
+            <LegislationBlock items={laws} />
+            <RelatedMaterials items={libraryMatches} />
+            <RecommendedReading risks={signals} library={libraryMatches} />
+          </div>
+        )}
+
+        {/* FAQ (se houver) */}
         <FaqBlock items={a.faq ?? []} />
 
-        <CaseActions />
+        {/* 10 — Referências oficiais */}
+        {hasReferences && (
+          <div className="mt-16">
+            <SectionLabel
+              number={10}
+              eyebrow="Fontes"
+              title="Referências oficiais"
+              description="Documentos públicos e fontes verificáveis utilizadas nesta publicação."
+            />
+            <ReferencesBlock
+              primary={{ label: a.primary_source_label!, url: a.primary_source_url! }}
+              secondary={a.sources.map((s) => ({ label: s.label, url: s.url }))}
+              lastVerified={a.last_verified_at ?? a.updated_at}
+              reviewedBy={a.reviewer_name ?? undefined}
+            />
+          </div>
+        )}
 
+        {/* 11 — Rodapé editorial */}
         <EditorialFooter
           publishedAt={a.publish_at}
           updatedAt={a.updated_at}
@@ -227,17 +286,6 @@ function CaseDetail() {
           author={a.author_name}
           reviewer={a.reviewer_name}
         />
-
-        {a.primary_source_url && a.primary_source_label && (
-          <div className="mt-12">
-            <ReferencesBlock
-              primary={{ label: a.primary_source_label, url: a.primary_source_url }}
-              secondary={a.sources.map((s) => ({ label: s.label, url: s.url }))}
-              lastVerified={a.last_verified_at ?? a.updated_at}
-              reviewedBy={a.reviewer_name ?? undefined}
-            />
-          </div>
-        )}
 
         <div className="mt-12 pt-8 border-t border-border">
           <ShareButtons title={a.title} url={url} />

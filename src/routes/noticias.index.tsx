@@ -2,14 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { Newspaper } from "lucide-react";
 import { news } from "@/content/news";
 import { EditorialArticleCard } from "@/components/site/EditorialArticleCard";
 import { Reveal } from "@/components/site/Reveal";
-import { PageHero } from "@/components/site/PageHero";
+import { ListingHero } from "@/components/site/editorial/ListingHero";
+import { CategoryChips } from "@/components/site/editorial/CategoryChips";
+import { ReportCTABand } from "@/components/site/editorial/ReportCTABand";
+import { ListingFooter } from "@/components/site/editorial/ListingFooter";
 import { listPublishedArticles } from "@/lib/content.functions";
 import journalismImg from "@/assets/journalism.jpg";
-import heroNoticias from "@/assets/hero-noticias.jpg";
 
 export const Route = createFileRoute("/noticias/")({
   head: () => ({
@@ -81,46 +82,38 @@ function NoticiasPage() {
   }, [published, cat]);
 
   const featured = all[0];
-  const rest = all.slice(1);
+  const firstBatch = all.slice(1, 7);
+  const remaining = all.slice(7);
+
+  const meta = [
+    { label: "Conteúdos publicados", value: String(all.length) },
+    { label: "Última atualização", value: featured ? new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short" }).format(new Date(featured.publishAt)) : "—" },
+  ];
 
   return (
     <>
-      <PageHero
-        image={heroNoticias}
+      <ListingHero
         eyebrow="Notícias e conscientização"
-        icon={<Newspaper className="size-3.5 text-[color:var(--orange)]" />}
         title="O que está acontecendo agora"
-        description="Notícias verificadas, pesquisas e atualizações legais. Esta área é atualizada continuamente pelo painel editorial."
+        description="Notícias verificadas, pesquisas e atualizações legais sobre proteção da infância. Atualizado pela redação editorial."
+        meta={meta}
       />
 
-      <section className="py-12 sm:py-16 bg-background">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div
-            className="flex flex-wrap gap-2 mb-10 -mx-1 px-1 overflow-x-auto"
-            role="tablist"
-            aria-label="Filtrar por categoria"
-          >
-            {CATEGORIES.map((c) => (
-              <button
-                key={c}
-                role="tab"
-                aria-selected={cat === c}
-                onClick={() => setCat(c)}
-                className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)] whitespace-nowrap ${
-                  cat === c
-                    ? "bg-[color:var(--orange)] text-[color:var(--navy-deep)] border-[color:var(--orange)]"
-                    : "bg-card text-foreground border-border hover:border-[color:var(--orange)]"
-                }`}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
+      <CategoryChips
+        categories={CATEGORIES}
+        value={cat}
+        onChange={setCat}
+        label="Filtrar notícias por categoria"
+      />
 
+      <section className="bg-background">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
           {all.length === 0 ? (
-            <p className="text-center text-muted-foreground py-16">Nenhuma notícia nesta categoria.</p>
+            <p className="text-center text-muted-foreground py-16">
+              Nenhuma notícia nesta categoria no momento.
+            </p>
           ) : (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <>
               {featured && (
                 <Reveal>
                   <EditorialArticleCard
@@ -140,28 +133,71 @@ function NoticiasPage() {
                   />
                 </Reveal>
               )}
-              {rest.map((a, i) => (
-                <Reveal key={a.key} delay={(i + 1) * 50}>
-                  <EditorialArticleCard
-                    to="/noticias/$slug"
-                    kind="news"
-                    slug={a.slug}
-                    title={a.title}
-                    subtitle={a.subtitle}
-                    cover={a.cover ?? journalismImg}
-                    category={a.category}
-                    publishAt={a.publishAt}
-                    readingMinutes={a.readingMinutes}
-                    authorName={a.authorName}
-                    verifiedAt={a.verifiedAt}
-                    severity={a.severity}
-                  />
-                </Reveal>
-              ))}
-            </div>
+
+              {firstBatch.length > 0 && (
+                <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {firstBatch.map((a, i) => (
+                    <Reveal key={a.key} delay={(i + 1) * 40}>
+                      <EditorialArticleCard
+                        to="/noticias/$slug"
+                        kind="news"
+                        slug={a.slug}
+                        title={a.title}
+                        subtitle={a.subtitle}
+                        cover={a.cover ?? journalismImg}
+                        category={a.category}
+                        publishAt={a.publishAt}
+                        readingMinutes={a.readingMinutes}
+                        authorName={a.authorName}
+                        verifiedAt={a.verifiedAt}
+                        severity={a.severity}
+                      />
+                    </Reveal>
+                  ))}
+                </div>
+              )}
+
+              <ReportCTABand />
+
+              {remaining.length > 0 && (
+                <>
+                  <div className="mt-4 mb-6 flex items-end justify-between">
+                    <h2 className="font-display text-xl sm:text-2xl font-semibold text-[color:var(--navy-deep)]">
+                      Mais notícias
+                    </h2>
+                    <span className="text-xs text-muted-foreground">
+                      {remaining.length} {remaining.length === 1 ? "publicação" : "publicações"}
+                    </span>
+                  </div>
+                  <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                    {remaining.map((a, i) => (
+                      <Reveal key={a.key} delay={(i + 1) * 30}>
+                        <EditorialArticleCard
+                          to="/noticias/$slug"
+                          kind="news"
+                          variant="compact"
+                          slug={a.slug}
+                          title={a.title}
+                          subtitle={a.subtitle}
+                          cover={a.cover ?? journalismImg}
+                          category={a.category}
+                          publishAt={a.publishAt}
+                          readingMinutes={a.readingMinutes}
+                          authorName={a.authorName}
+                          verifiedAt={a.verifiedAt}
+                          severity={a.severity}
+                        />
+                      </Reveal>
+                    ))}
+                  </div>
+                </>
+              )}
+            </>
           )}
         </div>
       </section>
+
+      <ListingFooter kind="news" />
     </>
   );
 }
