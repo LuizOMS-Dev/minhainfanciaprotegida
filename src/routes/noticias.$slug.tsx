@@ -236,19 +236,11 @@ function NewsDetail() {
 
         {/* 06 — Linha do tempo (somente se houver datas reais) */}
         {hasTimeline && (
-          <div className="mt-16">
-            <SectionLabel
-              number={6}
-              eyebrow="Linha do tempo"
-              title="Como esta história se desenrolou"
-              description="Marcos cronológicos verificáveis."
-            />
-            <Timeline
-              items={a.timeline ?? []}
-              heading=""
-              meta={{ publishAt: a.publish_at, updatedAt: a.updated_at, verifiedAt: a.last_verified_at }}
-            />
-          </div>
+          <Timeline
+            items={a.timeline ?? []}
+            heading="Linha do tempo"
+            meta={{ publishAt: a.publish_at, updatedAt: a.updated_at, verifiedAt: a.last_verified_at }}
+          />
         )}
 
         {/* 07 — Legislação relacionada */}
