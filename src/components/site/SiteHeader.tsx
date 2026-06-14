@@ -4,8 +4,6 @@ import {
   ChevronDown,
   FlaskConical,
   HelpCircle,
-  Info,
-  MapPin,
   Menu,
   Phone,
   Ribbon,
