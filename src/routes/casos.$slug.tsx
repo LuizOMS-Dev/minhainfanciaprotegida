@@ -15,6 +15,10 @@ import { RelatedArticles, ArticleSiblingNav } from "@/components/site/RelatedArt
 import { Timeline } from "@/components/site/Timeline";
 import { CaseActions } from "@/components/site/CaseActions";
 import { ArticleHero } from "@/components/site/ArticleHero";
+import { CaseSidebar } from "@/components/site/CaseSidebar";
+import { ExecutiveSummaryBlock } from "@/components/site/ExecutiveSummaryBlock";
+import { WhyItMattersBlock } from "@/components/site/WhyItMattersBlock";
+import { HowToActBlock } from "@/components/site/HowToActBlock";
 import {
   UnderstandBlock,
   LessonsBlock,
