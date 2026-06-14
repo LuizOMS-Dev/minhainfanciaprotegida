@@ -27,12 +27,12 @@ import { Route as EscolasRouteImport } from './routes/escolas'
 import { Route as DenunciaRouteImport } from './routes/denuncia'
 import { Route as ComoAjudarRouteImport } from './routes/como-ajudar'
 import { Route as CasosRouteImport } from './routes/casos'
-import { Route as BibliotecaRouteImport } from './routes/biblioteca'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
 import { Route as CasosIndexRouteImport } from './routes/casos.index'
+import { Route as BibliotecaIndexRouteImport } from './routes/biblioteca.index'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 import { Route as CasosSlugRouteImport } from './routes/casos.$slug'
 import { Route as BibliotecaSlugRouteImport } from './routes/biblioteca.$slug'
@@ -142,11 +142,6 @@ const CasosRoute = CasosRouteImport.update({
   path: '/casos',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BibliotecaRoute = BibliotecaRouteImport.update({
-  id: '/biblioteca',
-  path: '/biblioteca',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -170,6 +165,11 @@ const CasosIndexRoute = CasosIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => CasosRoute,
+} as any)
+const BibliotecaIndexRoute = BibliotecaIndexRouteImport.update({
+  id: '/biblioteca/',
+  path: '/biblioteca/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const NoticiasSlugRoute = NoticiasSlugRouteImport.update({
   id: '/$slug',
@@ -276,7 +276,6 @@ const AuthenticatedAdminArticleIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/biblioteca': typeof BibliotecaRouteWithChildren
   '/casos': typeof CasosRouteWithChildren
   '/como-ajudar': typeof ComoAjudarRoute
   '/denuncia': typeof DenunciaRoute
@@ -299,6 +298,7 @@ export interface FileRoutesByFullPath {
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
+  '/biblioteca/': typeof BibliotecaIndexRoute
   '/casos/': typeof CasosIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
@@ -319,7 +319,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/biblioteca': typeof BibliotecaRouteWithChildren
   '/como-ajudar': typeof ComoAjudarRoute
   '/denuncia': typeof DenunciaRoute
   '/escolas': typeof EscolasRoute
@@ -339,6 +338,7 @@ export interface FileRoutesByTo {
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
+  '/biblioteca': typeof BibliotecaIndexRoute
   '/casos': typeof CasosIndexRoute
   '/noticias': typeof NoticiasIndexRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
@@ -361,7 +361,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
-  '/biblioteca': typeof BibliotecaRouteWithChildren
   '/casos': typeof CasosRouteWithChildren
   '/como-ajudar': typeof ComoAjudarRoute
   '/denuncia': typeof DenunciaRoute
@@ -384,6 +383,7 @@ export interface FileRoutesById {
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
+  '/biblioteca/': typeof BibliotecaIndexRoute
   '/casos/': typeof CasosIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/_authenticated/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
@@ -406,7 +406,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
-    | '/biblioteca'
     | '/casos'
     | '/como-ajudar'
     | '/denuncia'
@@ -429,6 +428,7 @@ export interface FileRouteTypes {
     | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
+    | '/biblioteca/'
     | '/casos/'
     | '/noticias/'
     | '/admin/auditoria'
@@ -449,7 +449,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
-    | '/biblioteca'
     | '/como-ajudar'
     | '/denuncia'
     | '/escolas'
@@ -469,6 +468,7 @@ export interface FileRouteTypes {
     | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
+    | '/biblioteca'
     | '/casos'
     | '/noticias'
     | '/admin/auditoria'
@@ -490,7 +490,6 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
-    | '/biblioteca'
     | '/casos'
     | '/como-ajudar'
     | '/denuncia'
@@ -513,6 +512,7 @@ export interface FileRouteTypes {
     | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
+    | '/biblioteca/'
     | '/casos/'
     | '/noticias/'
     | '/_authenticated/admin/auditoria'
@@ -535,7 +535,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
-  BibliotecaRoute: typeof BibliotecaRouteWithChildren
   CasosRoute: typeof CasosRouteWithChildren
   ComoAjudarRoute: typeof ComoAjudarRoute
   DenunciaRoute: typeof DenunciaRoute
@@ -554,6 +553,7 @@ export interface RootRouteChildren {
   SinaisRoute: typeof SinaisRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
+  BibliotecaIndexRoute: typeof BibliotecaIndexRoute
   ApiPublicCspReportRoute: typeof ApiPublicCspReportRoute
 }
 
@@ -685,13 +685,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CasosRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/biblioteca': {
-      id: '/biblioteca'
-      path: '/biblioteca'
-      fullPath: '/biblioteca'
-      preLoaderRoute: typeof BibliotecaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -726,6 +719,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/casos/'
       preLoaderRoute: typeof CasosIndexRouteImport
       parentRoute: typeof CasosRoute
+    }
+    '/biblioteca/': {
+      id: '/biblioteca/'
+      path: '/biblioteca'
+      fullPath: '/biblioteca/'
+      preLoaderRoute: typeof BibliotecaIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/noticias/$slug': {
       id: '/noticias/$slug'
@@ -906,18 +906,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
-interface BibliotecaRouteChildren {
-  BibliotecaSlugRoute: typeof BibliotecaSlugRoute
-}
-
-const BibliotecaRouteChildren: BibliotecaRouteChildren = {
-  BibliotecaSlugRoute: BibliotecaSlugRoute,
-}
-
-const BibliotecaRouteWithChildren = BibliotecaRoute._addFileChildren(
-  BibliotecaRouteChildren,
-)
-
 interface CasosRouteChildren {
   CasosSlugRoute: typeof CasosSlugRoute
   CasosIndexRoute: typeof CasosIndexRoute
@@ -948,7 +936,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
-  BibliotecaRoute: BibliotecaRouteWithChildren,
   CasosRoute: CasosRouteWithChildren,
   ComoAjudarRoute: ComoAjudarRoute,
   DenunciaRoute: DenunciaRoute,
@@ -967,8 +954,19 @@ const rootRouteChildren: RootRouteChildren = {
   SinaisRoute: SinaisRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SobreRoute: SobreRoute,
+  BibliotecaIndexRoute: BibliotecaIndexRoute,
   ApiPublicCspReportRoute: ApiPublicCspReportRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
