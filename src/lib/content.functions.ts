@@ -177,7 +177,7 @@ export const getPublishedArticle = createServerFn({ method: "GET" })
     const { data: row, error } = await supabaseAdmin
       .from("articles")
       .select(
-        "id, type, slug, title, subtitle, body, category, cover_url, primary_source_label, primary_source_url, publish_at, last_verified_at, updated_at, author_id, reviewer_id, status, reading_minutes, understand, lessons, timeline, faq, related_laws, related_signal_tags, national_context, action_steps, warning_indicators, severity_level, impact_summary, source_confidence, ai_summary",
+        "id, type, slug, title, subtitle, body, category, cover_url, primary_source_label, primary_source_url, publish_at, last_verified_at, updated_at, author_id, reviewer_id, status, reading_minutes, understand, lessons, timeline, faq, related_laws, related_signal_tags, national_context, action_steps, warning_indicators, severity_level, impact_summary, source_confidence, ai_summary, executive_summary, why_it_matters, how_to_act",
       )
       .eq("type", data.type)
       .eq("slug", data.slug)
