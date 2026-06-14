@@ -246,6 +246,9 @@ export const getPublishedArticle = createServerFn({ method: "GET" })
       impact_summary: (row as { impact_summary?: string | null }).impact_summary ?? null,
       source_confidence: (row as { source_confidence?: PublicArticleDetail["source_confidence"] }).source_confidence ?? null,
       ai_summary: (row as { ai_summary?: string | null }).ai_summary ?? null,
+      executive_summary: coerceStringArray((row as { executive_summary?: unknown }).executive_summary),
+      why_it_matters: (row as { why_it_matters?: string | null }).why_it_matters ?? null,
+      how_to_act: coerceHowToAct((row as { how_to_act?: unknown }).how_to_act),
     };
     return { article };
   });
