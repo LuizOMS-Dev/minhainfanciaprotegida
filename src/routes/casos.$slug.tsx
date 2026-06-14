@@ -13,17 +13,20 @@ import { SafeHtml, readingTimeMinutes } from "@/components/site/SafeHtml";
 import { ShareButtons } from "@/components/site/ShareButtons";
 import { RelatedArticles, ArticleSiblingNav } from "@/components/site/RelatedArticles";
 import { Timeline } from "@/components/site/Timeline";
+import { CaseActions } from "@/components/site/CaseActions";
 import { ArticleHero } from "@/components/site/ArticleHero";
 import {
+  UnderstandBlock,
+  LessonsBlock,
   NationalContextChips,
   LegislationBlock,
+  SignalsBlock,
+  ReportChannels,
   RelatedMaterials,
   FaqBlock,
   RecommendedReading,
   AnonymizedNotice,
 } from "@/components/site/ArticleBlocks";
-import { SummaryCard, WhyMattersBlock, EditorialFooter } from "@/components/site/EditorialBlocks";
-import { LessonsBlock, SignalsBlock, ActionStepsBlock, ReportChannels, WarningIndicatorsBlock } from "@/components/site/ArticleBlocks";
 import { getLawsBySlugs } from "@/content/laws";
 import { getContextByKeys } from "@/content/nationalContext";
 import { risks as allRisks } from "@/content/risks";
@@ -159,9 +162,6 @@ function CaseDetail() {
     .slice(0, 4);
 
   const eventDate = earliestTimelineDate(a.timeline) ?? a.publish_at ?? a.updated_at;
-  const hasTimeline = (a.timeline ?? []).length > 0;
-  const hasMaterials = libraryMatches.length > 0 || laws.length > 0;
-  const hasReferences = a.primary_source_url && a.primary_source_label;
 
   return (
     <article className="bg-background">
@@ -188,7 +188,7 @@ function CaseDetail() {
 
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         {a.cover_url && (
-          <figure className="-mt-24 sm:-mt-32 mb-12 relative">
+          <figure className="-mt-24 sm:-mt-32 mb-10 relative">
             <img
               src={a.cover_url}
               alt=""
@@ -197,76 +197,37 @@ function CaseDetail() {
             />
           </figure>
         )}
-
         <AnonymizedNotice />
+        {a.body && <SafeHtml html={a.body} className="mt-8 prose prose-neutral max-w-none text-foreground/90 leading-relaxed" />}
 
-        {/* 02 — Resumo do caso */}
-        <SummaryCard text={a.ai_summary ?? a.subtitle ?? null} />
 
-        {/* Corpo editorial (contextualização) */}
-        {a.body && (
-          <SafeHtml
-            html={a.body}
-            className="mt-10 prose prose-neutral max-w-none text-foreground/90 leading-relaxed"
-          />
-        )}
-
-        {/* 03 — Por que este tema importa */}
-        <WhyMattersBlock variant="case" text={a.impact_summary} />
-
-        {/* Linha do tempo (apenas se houver datas reais) */}
-        {hasTimeline && (
-          <Timeline
-            items={a.timeline ?? []}
-            heading="Cronologia do caso"
-            meta={{ publishAt: a.publish_at, updatedAt: a.updated_at, verifiedAt: a.last_verified_at }}
-          />
-        )}
-
+        <Timeline
+          items={a.timeline ?? []}
+          heading="Cronologia do caso"
+          meta={{ publishAt: a.publish_at, updatedAt: a.updated_at, verifiedAt: a.last_verified_at }}
+        />
+        <UnderstandBlock html={a.understand} />
         <LessonsBlock html={a.lessons} />
-
-        <WarningIndicatorsBlock items={a.warning_indicators} />
-
-        <SignalsBlock items={signals} />
-
-        <ActionStepsBlock items={a.action_steps} />
-
         <NationalContextChips items={context} />
-
+        <SignalsBlock items={signals} />
+        <RecommendedReading risks={signals} library={libraryMatches} />
+        <LegislationBlock items={laws} />
         <ReportChannels />
-
-        {hasMaterials && (
-          <div className="mt-12">
-            <h2 className="font-display text-xl font-bold text-[color:var(--navy-deep)] mb-4">
-              Materiais relacionados
-            </h2>
-            <LegislationBlock items={laws} />
-            <RelatedMaterials items={libraryMatches} />
-            <RecommendedReading risks={signals} library={libraryMatches} />
-          </div>
-        )}
-
+        <RelatedMaterials items={libraryMatches} />
         <FaqBlock items={a.faq ?? []} />
 
-        {hasReferences && (
+        <CaseActions />
+
+        {a.primary_source_url && a.primary_source_label && (
           <div className="mt-12">
             <ReferencesBlock
-              primary={{ label: a.primary_source_label!, url: a.primary_source_url! }}
+              primary={{ label: a.primary_source_label, url: a.primary_source_url }}
               secondary={a.sources.map((s) => ({ label: s.label, url: s.url }))}
               lastVerified={a.last_verified_at ?? a.updated_at}
               reviewedBy={a.reviewer_name ?? undefined}
             />
           </div>
         )}
-
-        {/* 11 — Rodapé editorial */}
-        <EditorialFooter
-          publishedAt={a.publish_at}
-          updatedAt={a.updated_at}
-          verifiedAt={a.last_verified_at}
-          author={a.author_name}
-          reviewer={a.reviewer_name}
-        />
 
         <div className="mt-12 pt-8 border-t border-border">
           <ShareButtons title={a.title} url={url} />

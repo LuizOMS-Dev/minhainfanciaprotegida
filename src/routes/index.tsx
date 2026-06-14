@@ -158,13 +158,17 @@ function Index() {
 
           <Reveal delay={120}>
             <h1 className="mt-6 font-display text-4xl sm:text-6xl lg:text-7xl font-semibold leading-[1.02] text-balance max-w-4xl">
-              Proteger a infância é responsabilidade de todos.
+              Uma infância protegida{" "}
+              <span className="bg-gradient-to-r from-[color:var(--orange)] via-amber-300 to-[color:var(--orange)] bg-clip-text text-transparent">
+                muda o futuro
+              </span>{" "}
+              de uma sociedade.
             </h1>
           </Reveal>
 
           <Reveal delay={240}>
             <p className="mt-6 max-w-2xl text-lg sm:text-xl text-white/85 leading-relaxed">
-              Informação, prevenção e conscientização para famílias, escolas, educadores e toda a sociedade.
+              Milhares de crianças sofrem em silêncio. Informação, atenção e denúncia salvam vidas.
             </p>
           </Reveal>
 
@@ -172,17 +176,18 @@ function Index() {
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Link
                 to="/denuncia"
-                className="group inline-flex items-center gap-2 rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-7 py-4 text-base font-semibold shadow-lg hover:shadow-2xl hover:-translate-y-0.5 transition"
+                className="group inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] px-7 py-4 text-base font-semibold shadow-lg hover:shadow-2xl hover:-translate-y-0.5 transition"
               >
                 <Phone className="size-5" aria-hidden />
-                Como denunciar
+                Denunciar Agora
                 <ArrowRight className="size-4 transition group-hover:translate-x-1" aria-hidden />
               </Link>
               <Link
-                to="/sobre"
+                to="/sinais"
                 className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-7 py-4 text-base font-semibold backdrop-blur hover:bg-white/10 transition"
               >
-                Conheça o projeto
+                <Eye className="size-5" aria-hidden />
+                Entender os Sinais
               </Link>
             </div>
           </Reveal>
