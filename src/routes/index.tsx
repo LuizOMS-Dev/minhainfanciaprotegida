@@ -132,49 +132,35 @@ const sources = [
 function Index() {
   return (
     <>
-      {/* HERO institucional — branco + bloco navy */}
-      <section className="relative bg-background border-b border-border">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-28 grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+      {/* HERO institucional — limpo */}
+      <section className="bg-background border-b border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           <div className="lg:col-span-7">
             <Reveal>
-              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-[color:var(--surface-soft)] px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-[color:var(--navy-deep)]">
-                <span className="size-1.5 rounded-full bg-[color:var(--orange)]" aria-hidden />
-                Portal nacional · Campanha permanente
-              </div>
-            </Reveal>
-            <Reveal delay={100}>
-              <h1 className="mt-6 font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] text-[color:var(--navy-deep)] text-balance">
-                Proteger a infância é responsabilidade{" "}
-                <span className="text-[color:var(--orange)]">de todos</span>.
+              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] text-[color:var(--navy-deep)] text-balance">
+                Proteger a infância é responsabilidade de todos.
               </h1>
             </Reveal>
-            <Reveal delay={200}>
+            <Reveal delay={120}>
               <p className="mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
                 Informação, prevenção e conscientização para famílias, escolas, educadores e toda
-                a sociedade brasileira.
+                a sociedade.
               </p>
             </Reveal>
-            <Reveal delay={300}>
-              <div className="mt-9 flex flex-wrap gap-3">
+            <Reveal delay={220}>
+              <div className="mt-8 flex flex-wrap gap-3">
                 <Link
                   to="/denuncia"
-                  className="inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] text-white px-6 py-3.5 text-sm font-bold hover:opacity-95 transition-opacity"
+                  className="inline-flex items-center gap-2 rounded-full bg-[color:var(--navy-deep)] text-white px-6 py-3.5 text-sm font-bold hover:opacity-95 transition-opacity"
                 >
                   <Phone className="size-4" aria-hidden />
                   Como denunciar
                 </Link>
                 <Link
                   to="/sobre"
-                  className="inline-flex items-center gap-2 rounded-full border border-[color:var(--navy-deep)] text-[color:var(--navy-deep)] px-6 py-3.5 text-sm font-bold hover:bg-[color:var(--navy-deep)] hover:text-white transition-colors"
+                  className="inline-flex items-center gap-2 rounded-full border border-[color:var(--navy-deep)] text-[color:var(--navy-deep)] px-6 py-3.5 text-sm font-bold hover:bg-[color:var(--surface-soft)] transition-colors"
                 >
                   Conheça o projeto
-                </Link>
-                <Link
-                  to="/biblioteca"
-                  className="inline-flex items-center gap-2 rounded-full text-[color:var(--navy-deep)] px-6 py-3.5 text-sm font-bold hover:bg-[color:var(--surface-soft)] transition-colors"
-                >
-                  Acessar biblioteca
-                  <ArrowRight className="size-4" aria-hidden />
                 </Link>
               </div>
             </Reveal>
@@ -182,23 +168,12 @@ function Index() {
 
           <div className="lg:col-span-5">
             <Reveal delay={150}>
-              <div className="relative">
-                <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-border shadow-elegant">
-                  <img
-                    src={heroImg}
-                    alt="Criança protegida pela família"
-                    className="size-full object-cover"
-                  />
-                </div>
-                <div className="absolute -bottom-6 -left-6 hidden sm:flex items-center gap-3 rounded-2xl bg-[color:var(--navy-deep)] text-white px-5 py-4 shadow-elegant">
-                  <Phone className="size-5 text-[color:var(--orange)]" aria-hidden />
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70">
-                      Disque Direitos Humanos
-                    </p>
-                    <p className="font-display text-2xl font-semibold leading-none">100</p>
-                  </div>
-                </div>
+              <div className="aspect-[4/5] rounded-2xl overflow-hidden border border-border">
+                <img
+                  src={heroImg}
+                  alt="Criança protegida pela família"
+                  className="size-full object-cover"
+                />
               </div>
             </Reveal>
           </div>
