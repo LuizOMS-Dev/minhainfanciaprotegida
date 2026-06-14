@@ -118,16 +118,6 @@ const cards = [
   { to: "/mapa", icon: MapPin, title: "Rede de Proteção", desc: "Conselhos tutelares e centros de apoio por estado." },
 ];
 
-const sources = [
-  "Ministério dos Direitos Humanos",
-  "Disque 100",
-  "UNICEF",
-  "Childhood Brasil",
-  "CONANDA",
-  "ECA — Lei 8.069/90",
-  "Ministério Público",
-  "Polícia Federal",
-];
 
 function Index() {
   return (
