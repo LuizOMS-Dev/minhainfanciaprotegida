@@ -23,7 +23,7 @@ import {
   AnonymizedNotice,
 } from "@/components/site/ArticleBlocks";
 import { SummaryCard, WhyMattersBlock, EditorialFooter } from "@/components/site/EditorialBlocks";
-import { LessonsBlock, SignalsBlock, ActionStepsBlock, ReportChannels } from "@/components/site/ArticleBlocks";
+import { LessonsBlock, SignalsBlock, ActionStepsBlock, ReportChannels, WarningIndicatorsBlock } from "@/components/site/ArticleBlocks";
 import { getLawsBySlugs } from "@/content/laws";
 import { getContextByKeys } from "@/content/nationalContext";
 import { risks as allRisks } from "@/content/risks";
