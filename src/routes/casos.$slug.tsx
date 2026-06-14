@@ -190,53 +190,81 @@ function CaseDetail() {
         shareDescription={a.subtitle}
       />
 
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        {a.cover_url && (
-          <figure className="-mt-24 sm:-mt-32 mb-10 relative">
-            <img
-              src={a.cover_url}
-              alt=""
-              loading="lazy"
-              className="w-full rounded-3xl border border-border object-cover aspect-[16/9] shadow-2xl"
+      <div className="bg-[color:var(--dossier-cream)]/40">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
+          <div className="min-w-0">
+            {a.cover_url && (
+              <figure className="-mt-24 sm:-mt-32 mb-10 relative">
+                <img
+                  src={a.cover_url}
+                  alt=""
+                  loading="lazy"
+                  className="w-full rounded-3xl border border-[color:var(--dossier-rule)] object-cover aspect-[16/9] shadow-2xl"
+                />
+              </figure>
+            )}
+            <AnonymizedNotice />
+
+            <ExecutiveSummaryBlock items={a.executive_summary ?? null} />
+            <WhyItMattersBlock text={a.why_it_matters ?? a.impact_summary ?? null} />
+
+            {a.body && (
+              <SafeHtml
+                html={a.body}
+                className="mt-10 prose prose-neutral max-w-none text-[color:var(--dossier-ink)]/95 leading-relaxed"
+              />
+            )}
+
+            <Timeline
+              items={a.timeline ?? []}
+              heading="Cronologia do caso"
+              meta={{ publishAt: a.publish_at, updatedAt: a.updated_at, verifiedAt: a.last_verified_at }}
             />
-          </figure>
-        )}
-        <AnonymizedNotice />
-        {a.body && <SafeHtml html={a.body} className="mt-8 prose prose-neutral max-w-none text-foreground/90 leading-relaxed" />}
+            <UnderstandBlock html={a.understand} />
+            <SignalsBlock items={signals} />
+            <HowToActBlock steps={a.how_to_act ?? null} />
+            <LessonsBlock html={a.lessons} />
+            <NationalContextChips items={context} />
+            <RecommendedReading risks={signals} library={libraryMatches} />
+            <LegislationBlock items={laws} />
+            <ReportChannels />
+            <RelatedMaterials items={libraryMatches} />
+            <FaqBlock items={a.faq ?? []} />
 
+            <CaseActions />
 
-        <Timeline
-          items={a.timeline ?? []}
-          heading="Cronologia do caso"
-          meta={{ publishAt: a.publish_at, updatedAt: a.updated_at, verifiedAt: a.last_verified_at }}
-        />
-        <UnderstandBlock html={a.understand} />
-        <LessonsBlock html={a.lessons} />
-        <NationalContextChips items={context} />
-        <SignalsBlock items={signals} />
-        <RecommendedReading risks={signals} library={libraryMatches} />
-        <LegislationBlock items={laws} />
-        <ReportChannels />
-        <RelatedMaterials items={libraryMatches} />
-        <FaqBlock items={a.faq ?? []} />
+            {a.primary_source_url && a.primary_source_label && (
+              <div className="mt-12">
+                <ReferencesBlock
+                  primary={{ label: a.primary_source_label, url: a.primary_source_url }}
+                  secondary={a.sources.map((s) => ({ label: s.label, url: s.url }))}
+                  lastVerified={a.last_verified_at ?? a.updated_at}
+                  reviewedBy={a.reviewer_name ?? undefined}
+                />
+              </div>
+            )}
 
-        <CaseActions />
-
-        {a.primary_source_url && a.primary_source_label && (
-          <div className="mt-12">
-            <ReferencesBlock
-              primary={{ label: a.primary_source_label, url: a.primary_source_url }}
-              secondary={a.sources.map((s) => ({ label: s.label, url: s.url }))}
-              lastVerified={a.last_verified_at ?? a.updated_at}
-              reviewedBy={a.reviewer_name ?? undefined}
-            />
+            <div className="mt-12 pt-8 border-t border-[color:var(--dossier-rule)]">
+              <ShareButtons title={a.title} url={url} />
+            </div>
           </div>
-        )}
 
-        <div className="mt-12 pt-8 border-t border-border">
-          <ShareButtons title={a.title} url={url} />
+          <CaseSidebar
+            publishAt={a.publish_at}
+            updatedAt={a.updated_at}
+            verifiedAt={a.last_verified_at}
+            eventDate={eventDate}
+            timeline={a.timeline}
+            primarySource={
+              a.primary_source_url && a.primary_source_label
+                ? { label: a.primary_source_label, url: a.primary_source_url }
+                : null
+            }
+            reviewerName={a.reviewer_name}
+          />
         </div>
       </div>
+
 
       <ArticleSiblingNav prev={sib?.prev ?? null} next={sib?.next ?? null} type="case" />
       <RelatedArticles items={rel?.related ?? []} type="case" />
