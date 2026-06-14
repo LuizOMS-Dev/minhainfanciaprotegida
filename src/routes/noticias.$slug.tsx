@@ -219,20 +219,15 @@ function NewsDetail() {
         {/* 04 — Por que isso importa */}
         <WhyMattersBlock variant="news" text={a.impact_summary} />
 
-        {/* 05 — Contexto */}
         {context.length > 0 && (
-          <div className="mt-16">
-            <SectionLabel
-              number={5}
-              eyebrow="Contexto"
-              title="Onde isso se encaixa no Brasil"
-              description="Marcos e campanhas nacionais relacionados a este tema."
-            />
+          <div className="mt-12">
+            <h2 className="font-display text-xl font-bold text-[color:var(--navy-deep)] mb-4">
+              Contexto nacional
+            </h2>
             <NationalContextChips items={context} />
           </div>
         )}
 
-        {/* 06 — Linha do tempo (somente se houver datas reais) */}
         {hasTimeline && (
           <Timeline
             items={a.timeline ?? []}
@@ -241,48 +236,26 @@ function NewsDetail() {
           />
         )}
 
-        {/* 07 — Legislação relacionada */}
         <LegislationBlock items={laws} />
 
-        {/* 08 — Como agir / onde buscar ajuda */}
-        {hasActionSteps && (
-          <HowToActSteps
-            items={a.action_steps}
-            number={8}
-            title="Como agir ou onde buscar ajuda"
-            eyebrow="Ação"
-            description="Passos práticos para famílias, escolas e responsáveis diante deste tema."
-          />
-        )}
+        {hasActionSteps && <ActionStepsBlock items={a.action_steps} />}
 
-        <ProtectionNetwork number={9} />
+        <ReportChannels />
 
-        {/* 09 — Materiais relacionados */}
         {hasMaterials && (
-          <div className="mt-16">
-            <SectionLabel
-              number={10}
-              eyebrow="Aprofunde"
-              title="Materiais relacionados"
-              description="Conteúdos educativos para aprofundar o assunto com segurança."
-            />
+          <div className="mt-12">
+            <h2 className="font-display text-xl font-bold text-[color:var(--navy-deep)] mb-4">
+              Materiais relacionados
+            </h2>
             <RelatedMaterials items={libraryMatches} />
             <RecommendedReading risks={signals} library={libraryMatches} />
           </div>
         )}
 
-        {/* FAQ */}
         <FaqBlock items={a.faq ?? []} />
 
-        {/* 11 — Referências oficiais */}
         {hasReferences && (
-          <div className="mt-16">
-            <SectionLabel
-              number={11}
-              eyebrow="Fontes"
-              title="Referências oficiais"
-              description="Documentos públicos e fontes verificáveis utilizadas nesta publicação."
-            />
+          <div className="mt-12">
             <ReferencesBlock
               primary={{ label: a.primary_source_label!, url: a.primary_source_url! }}
               secondary={a.sources.map((s) => ({ label: s.label, url: s.url }))}
