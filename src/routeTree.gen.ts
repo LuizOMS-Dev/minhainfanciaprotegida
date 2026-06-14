@@ -33,6 +33,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
 import { Route as CasosIndexRouteImport } from './routes/casos.index'
+import { Route as BibliotecaIndexRouteImport } from './routes/biblioteca.index'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 import { Route as CasosSlugRouteImport } from './routes/casos.$slug'
 import { Route as BibliotecaSlugRouteImport } from './routes/biblioteca.$slug'
@@ -171,6 +172,11 @@ const CasosIndexRoute = CasosIndexRouteImport.update({
   path: '/',
   getParentRoute: () => CasosRoute,
 } as any)
+const BibliotecaIndexRoute = BibliotecaIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BibliotecaRoute,
+} as any)
 const NoticiasSlugRoute = NoticiasSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -299,6 +305,7 @@ export interface FileRoutesByFullPath {
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
+  '/biblioteca/': typeof BibliotecaIndexRoute
   '/casos/': typeof CasosIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
@@ -319,7 +326,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/biblioteca': typeof BibliotecaRouteWithChildren
   '/como-ajudar': typeof ComoAjudarRoute
   '/denuncia': typeof DenunciaRoute
   '/escolas': typeof EscolasRoute
@@ -339,6 +345,7 @@ export interface FileRoutesByTo {
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
+  '/biblioteca': typeof BibliotecaIndexRoute
   '/casos': typeof CasosIndexRoute
   '/noticias': typeof NoticiasIndexRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
@@ -384,6 +391,7 @@ export interface FileRoutesById {
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
+  '/biblioteca/': typeof BibliotecaIndexRoute
   '/casos/': typeof CasosIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/_authenticated/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
@@ -429,6 +437,7 @@ export interface FileRouteTypes {
     | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
+    | '/biblioteca/'
     | '/casos/'
     | '/noticias/'
     | '/admin/auditoria'
@@ -449,7 +458,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
-    | '/biblioteca'
     | '/como-ajudar'
     | '/denuncia'
     | '/escolas'
@@ -469,6 +477,7 @@ export interface FileRouteTypes {
     | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
+    | '/biblioteca'
     | '/casos'
     | '/noticias'
     | '/admin/auditoria'
@@ -513,6 +522,7 @@ export interface FileRouteTypes {
     | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
+    | '/biblioteca/'
     | '/casos/'
     | '/noticias/'
     | '/_authenticated/admin/auditoria'
@@ -727,6 +737,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CasosIndexRouteImport
       parentRoute: typeof CasosRoute
     }
+    '/biblioteca/': {
+      id: '/biblioteca/'
+      path: '/'
+      fullPath: '/biblioteca/'
+      preLoaderRoute: typeof BibliotecaIndexRouteImport
+      parentRoute: typeof BibliotecaRoute
+    }
     '/noticias/$slug': {
       id: '/noticias/$slug'
       path: '/$slug'
@@ -908,10 +925,12 @@ const AuthenticatedRouteRouteWithChildren =
 
 interface BibliotecaRouteChildren {
   BibliotecaSlugRoute: typeof BibliotecaSlugRoute
+  BibliotecaIndexRoute: typeof BibliotecaIndexRoute
 }
 
 const BibliotecaRouteChildren: BibliotecaRouteChildren = {
   BibliotecaSlugRoute: BibliotecaSlugRoute,
+  BibliotecaIndexRoute: BibliotecaIndexRoute,
 }
 
 const BibliotecaRouteWithChildren = BibliotecaRoute._addFileChildren(
