@@ -23,11 +23,7 @@ import {
   AnonymizedNotice,
 } from "@/components/site/ArticleBlocks";
 import { SummaryCard, WhyMattersBlock, EditorialFooter } from "@/components/site/EditorialBlocks";
-import { SectionLabel } from "@/components/site/editorial/SectionLabel";
-import { LessonsCards } from "@/components/site/editorial/LessonsCards";
-import { SignalsCards } from "@/components/site/editorial/SignalsCards";
-import { HowToActSteps } from "@/components/site/editorial/HowToActSteps";
-import { ProtectionNetwork } from "@/components/site/editorial/ProtectionNetwork";
+import { LessonsBlock, SignalsBlock, ActionStepsBlock, ReportChannels, WarningIndicatorsBlock } from "@/components/site/ArticleBlocks";
 import { getLawsBySlugs } from "@/content/laws";
 import { getContextByKeys } from "@/content/nationalContext";
 import { risks as allRisks } from "@/content/risks";
@@ -227,48 +223,33 @@ function CaseDetail() {
           />
         )}
 
-        {/* 04 — O que aprendemos */}
-        <LessonsCards html={a.lessons} number={hasTimeline ? 5 : 4} />
+        <LessonsBlock html={a.lessons} />
 
-        {/* 05 — Sinais de alerta */}
-        <SignalsCards items={a.warning_indicators} number={6} />
+        <WarningIndicatorsBlock items={a.warning_indicators} />
 
-        {/* 06 — Como agir */}
-        <HowToActSteps items={a.action_steps} number={7} />
+        <SignalsBlock items={signals} />
 
-        {/* Contexto nacional discreto */}
+        <ActionStepsBlock items={a.action_steps} />
+
         <NationalContextChips items={context} />
 
-        {/* 08 — Rede de proteção */}
-        <ProtectionNetwork number={8} />
+        <ReportChannels />
 
-        {/* 09 — Materiais relacionados */}
         {hasMaterials && (
-          <div className="mt-16">
-            <SectionLabel
-              number={9}
-              eyebrow="Aprofunde"
-              title="Materiais relacionados"
-              description="Guias, leis e conteúdos educativos para aprofundar o assunto."
-            />
+          <div className="mt-12">
+            <h2 className="font-display text-xl font-bold text-[color:var(--navy-deep)] mb-4">
+              Materiais relacionados
+            </h2>
             <LegislationBlock items={laws} />
             <RelatedMaterials items={libraryMatches} />
             <RecommendedReading risks={signals} library={libraryMatches} />
           </div>
         )}
 
-        {/* FAQ (se houver) */}
         <FaqBlock items={a.faq ?? []} />
 
-        {/* 10 — Referências oficiais */}
         {hasReferences && (
-          <div className="mt-16">
-            <SectionLabel
-              number={10}
-              eyebrow="Fontes"
-              title="Referências oficiais"
-              description="Documentos públicos e fontes verificáveis utilizadas nesta publicação."
-            />
+          <div className="mt-12">
             <ReferencesBlock
               primary={{ label: a.primary_source_label!, url: a.primary_source_url! }}
               secondary={a.sources.map((s) => ({ label: s.label, url: s.url }))}
