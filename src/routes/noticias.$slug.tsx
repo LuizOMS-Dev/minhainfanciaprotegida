@@ -23,9 +23,7 @@ import {
   RecommendedReading,
 } from "@/components/site/ArticleBlocks";
 import { SummaryCard, WhyMattersBlock, EditorialFooter } from "@/components/site/EditorialBlocks";
-import { SectionLabel } from "@/components/site/editorial/SectionLabel";
-import { HowToActSteps } from "@/components/site/editorial/HowToActSteps";
-import { ProtectionNetwork } from "@/components/site/editorial/ProtectionNetwork";
+import { ActionStepsBlock, ReportChannels } from "@/components/site/ArticleBlocks";
 import { getLawsBySlugs } from "@/content/laws";
 import { getContextByKeys } from "@/content/nationalContext";
 import { risks as allRisks } from "@/content/risks";
