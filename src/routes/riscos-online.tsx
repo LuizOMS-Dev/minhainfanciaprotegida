@@ -53,9 +53,8 @@ function RiscosPage() {
           </Reveal>
           <Reveal delay={220}>
             <p className="mt-5 text-lg text-white/85 max-w-3xl leading-relaxed">
-              Adultização, aliciamento em jogos, sextorsão e deepfakes feitos por IA estão entre as ameaças mais
-              graves do ambiente digital. Casos como <strong>Felca</strong> e <strong>Mineblox</strong> mostram
-              que informação e ação rápida salvam vidas.
+              Adultização, aliciamento em jogos, sextorsão e deepfakes feitos por IA estão entre as
+              ameaças mais graves do ambiente digital. Informação clara e ação rápida protegem.
             </p>
           </Reveal>
           <Reveal delay={320}>
