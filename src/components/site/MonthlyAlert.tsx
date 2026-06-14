@@ -37,9 +37,7 @@ export function MonthlyAlert() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
         <div
           className={`rounded-2xl border bg-card p-6 sm:p-8 grid md:grid-cols-[1fr_auto] gap-6 items-center ${
-            isAwarenessDay
-              ? "border-[color:var(--orange)] shadow-[0_0_0_4px_color-mix(in_oklab,var(--orange)_12%,transparent)]"
-              : "border-border"
+            isAwarenessDay ? "border-[color:var(--orange)]" : "border-border"
           }`}
         >
           <div>

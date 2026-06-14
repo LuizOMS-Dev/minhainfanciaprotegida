@@ -118,63 +118,39 @@ const cards = [
   { to: "/mapa", icon: MapPin, title: "Rede de Proteção", desc: "Conselhos tutelares e centros de apoio por estado." },
 ];
 
-const sources = [
-  "Ministério dos Direitos Humanos",
-  "Disque 100",
-  "UNICEF",
-  "Childhood Brasil",
-  "CONANDA",
-  "ECA — Lei 8.069/90",
-  "Ministério Público",
-  "Polícia Federal",
-];
 
 function Index() {
   return (
     <>
-      {/* HERO institucional — branco + bloco navy */}
-      <section className="relative bg-background border-b border-border">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-28 grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+      {/* HERO institucional — limpo */}
+      <section className="bg-background border-b border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           <div className="lg:col-span-7">
             <Reveal>
-              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-[color:var(--surface-soft)] px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-[color:var(--navy-deep)]">
-                <span className="size-1.5 rounded-full bg-[color:var(--orange)]" aria-hidden />
-                Portal nacional · Campanha permanente
-              </div>
-            </Reveal>
-            <Reveal delay={100}>
-              <h1 className="mt-6 font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] text-[color:var(--navy-deep)] text-balance">
-                Proteger a infância é responsabilidade{" "}
-                <span className="text-[color:var(--orange)]">de todos</span>.
+              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] text-[color:var(--navy-deep)] text-balance">
+                Proteger a infância é responsabilidade de todos.
               </h1>
             </Reveal>
-            <Reveal delay={200}>
+            <Reveal delay={120}>
               <p className="mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
                 Informação, prevenção e conscientização para famílias, escolas, educadores e toda
-                a sociedade brasileira.
+                a sociedade.
               </p>
             </Reveal>
-            <Reveal delay={300}>
-              <div className="mt-9 flex flex-wrap gap-3">
+            <Reveal delay={220}>
+              <div className="mt-8 flex flex-wrap gap-3">
                 <Link
                   to="/denuncia"
-                  className="inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] text-white px-6 py-3.5 text-sm font-bold hover:opacity-95 transition-opacity"
+                  className="inline-flex items-center gap-2 rounded-full bg-[color:var(--navy-deep)] text-white px-6 py-3.5 text-sm font-bold hover:opacity-95 transition-opacity"
                 >
                   <Phone className="size-4" aria-hidden />
                   Como denunciar
                 </Link>
                 <Link
                   to="/sobre"
-                  className="inline-flex items-center gap-2 rounded-full border border-[color:var(--navy-deep)] text-[color:var(--navy-deep)] px-6 py-3.5 text-sm font-bold hover:bg-[color:var(--navy-deep)] hover:text-white transition-colors"
+                  className="inline-flex items-center gap-2 rounded-full border border-[color:var(--navy-deep)] text-[color:var(--navy-deep)] px-6 py-3.5 text-sm font-bold hover:bg-[color:var(--surface-soft)] transition-colors"
                 >
                   Conheça o projeto
-                </Link>
-                <Link
-                  to="/biblioteca"
-                  className="inline-flex items-center gap-2 rounded-full text-[color:var(--navy-deep)] px-6 py-3.5 text-sm font-bold hover:bg-[color:var(--surface-soft)] transition-colors"
-                >
-                  Acessar biblioteca
-                  <ArrowRight className="size-4" aria-hidden />
                 </Link>
               </div>
             </Reveal>
@@ -182,23 +158,12 @@ function Index() {
 
           <div className="lg:col-span-5">
             <Reveal delay={150}>
-              <div className="relative">
-                <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-border shadow-elegant">
-                  <img
-                    src={heroImg}
-                    alt="Criança protegida pela família"
-                    className="size-full object-cover"
-                  />
-                </div>
-                <div className="absolute -bottom-6 -left-6 hidden sm:flex items-center gap-3 rounded-2xl bg-[color:var(--navy-deep)] text-white px-5 py-4 shadow-elegant">
-                  <Phone className="size-5 text-[color:var(--orange)]" aria-hidden />
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70">
-                      Disque Direitos Humanos
-                    </p>
-                    <p className="font-display text-2xl font-semibold leading-none">100</p>
-                  </div>
-                </div>
+              <div className="aspect-[4/5] rounded-2xl overflow-hidden border border-border">
+                <img
+                  src={heroImg}
+                  alt="Criança protegida pela família"
+                  className="size-full object-cover"
+                />
               </div>
             </Reveal>
           </div>
@@ -304,83 +269,59 @@ function Index() {
       {/* ÚLTIMAS NOTÍCIAS */}
       <LatestUpdates />
 
-      {/* COMO DENUNCIAR — bloco navy institucional */}
-      <section className="relative bg-[color:var(--navy-deep)] text-white py-20 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-10 items-center">
-            <div className="lg:col-span-5">
-              <Reveal>
-                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[color:var(--orange)]">
-                  Como denunciar
-                </p>
-                <h2 className="mt-3 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-balance">
-                  Sua denúncia é anônima, gratuita e funciona 24 horas.
-                </h2>
-                <p className="mt-5 text-base text-white/80 leading-relaxed max-w-md">
-                  Ao denunciar, você protege uma criança e ajuda a interromper um ciclo de
-                  violência. Use qualquer um dos canais oficiais abaixo.
-                </p>
-                <div className="mt-7 flex flex-wrap gap-3">
-                  <a
-                    href="tel:100"
-                    className="inline-flex items-center gap-2 rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-6 py-3.5 text-sm font-bold hover:opacity-95"
-                  >
-                    <Phone className="size-4" /> Ligar 100
-                  </a>
-                  <Link
-                    to="/denuncia"
-                    className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3.5 text-sm font-bold hover:bg-white/10"
-                  >
-                    Outros canais
-                  </Link>
-                </div>
-              </Reveal>
-            </div>
-            <div className="lg:col-span-7">
-              <Reveal delay={120}>
-                <div className="grid grid-cols-2 gap-4">
-                  {[
-                    ["100", "Disque Direitos Humanos"],
-                    ["190", "Polícia Militar"],
-                    ["192", "SAMU"],
-                    ["181", "Disque-Denúncia"],
-                  ].map(([num, label]) => (
-                    <a
-                      key={num}
-                      href={`tel:${num}`}
-                      className="rounded-2xl border border-white/15 bg-white/5 backdrop-blur p-6 hover:bg-white/10 transition-colors"
-                    >
-                      <p className="font-display text-4xl sm:text-5xl font-semibold text-[color:var(--orange)] leading-none">
-                        {num}
-                      </p>
-                      <p className="mt-3 text-sm text-white/80">{label}</p>
-                    </a>
-                  ))}
-                </div>
-              </Reveal>
-            </div>
+      {/* COMO DENUNCIAR — bloco navy institucional, simples */}
+      <section className="bg-[color:var(--navy-deep)] text-white py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-10 items-center">
+          <div className="lg:col-span-6">
+            <Reveal>
+              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[color:var(--orange)]">
+                Como denunciar
+              </p>
+              <h2 className="mt-3 font-display text-3xl sm:text-4xl font-semibold leading-tight text-balance">
+                Sua denúncia é anônima, gratuita e funciona 24 horas.
+              </h2>
+              <p className="mt-5 text-base text-white/80 leading-relaxed max-w-md">
+                Ao denunciar, você protege uma criança e ajuda a interromper um ciclo de violência.
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <a
+                  href="tel:100"
+                  className="inline-flex items-center gap-2 rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-6 py-3.5 text-sm font-bold hover:opacity-95"
+                >
+                  <Phone className="size-4" /> Ligar 100
+                </a>
+                <Link
+                  to="/denuncia"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3.5 text-sm font-bold hover:bg-white/10"
+                >
+                  Outros canais
+                </Link>
+              </div>
+            </Reveal>
           </div>
-        </div>
-      </section>
-
-      {/* FONTES */}
-      <section className="py-16 bg-background border-t border-border">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
-              Conteúdo baseado em fontes oficiais
-            </p>
-          </Reveal>
-          <Reveal delay={100}>
-            <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm font-medium text-muted-foreground">
-              {sources.map((n) => (
-                <span key={n} className="inline-flex items-center gap-2">
-                  <BookOpen className="size-4 text-[color:var(--orange)]" strokeWidth={1.75} aria-hidden />
-                  {n}
-                </span>
-              ))}
-            </div>
-          </Reveal>
+          <div className="lg:col-span-6">
+            <Reveal delay={120}>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  ["100", "Disque Direitos Humanos"],
+                  ["190", "Polícia Militar"],
+                  ["192", "SAMU"],
+                  ["181", "Disque-Denúncia"],
+                ].map(([num, label]) => (
+                  <a
+                    key={num}
+                    href={`tel:${num}`}
+                    className="rounded-2xl border border-white/20 p-6 hover:bg-white/5 transition-colors"
+                  >
+                    <p className="font-display text-4xl sm:text-5xl font-semibold text-[color:var(--orange)] leading-none">
+                      {num}
+                    </p>
+                    <p className="mt-3 text-sm text-white/80">{label}</p>
+                  </a>
+                ))}
+              </div>
+            </Reveal>
+          </div>
         </div>
       </section>
     </>
