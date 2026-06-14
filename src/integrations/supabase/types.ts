@@ -112,7 +112,9 @@ export type Database = {
           category: string | null
           cover_url: string | null
           created_at: string
+          executive_summary: Json | null
           faq: Json | null
+          how_to_act: Json | null
           id: string
           impact_summary: string | null
           last_verified_at: string | null
@@ -136,6 +138,7 @@ export type Database = {
           understand: string | null
           updated_at: string
           warning_indicators: string[] | null
+          why_it_matters: string | null
         }
         Insert: {
           action_steps?: string[] | null
@@ -145,7 +148,9 @@ export type Database = {
           category?: string | null
           cover_url?: string | null
           created_at?: string
+          executive_summary?: Json | null
           faq?: Json | null
+          how_to_act?: Json | null
           id?: string
           impact_summary?: string | null
           last_verified_at?: string | null
@@ -169,6 +174,7 @@ export type Database = {
           understand?: string | null
           updated_at?: string
           warning_indicators?: string[] | null
+          why_it_matters?: string | null
         }
         Update: {
           action_steps?: string[] | null
@@ -178,7 +184,9 @@ export type Database = {
           category?: string | null
           cover_url?: string | null
           created_at?: string
+          executive_summary?: Json | null
           faq?: Json | null
+          how_to_act?: Json | null
           id?: string
           impact_summary?: string | null
           last_verified_at?: string | null
@@ -202,6 +210,7 @@ export type Database = {
           understand?: string | null
           updated_at?: string
           warning_indicators?: string[] | null
+          why_it_matters?: string | null
         }
         Relationships: []
       }

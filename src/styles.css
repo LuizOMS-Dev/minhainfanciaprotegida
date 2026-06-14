@@ -114,6 +114,12 @@
   --gradient-red: linear-gradient(135deg, oklch(0.62 0.22 30) 0%, oklch(0.5 0.22 25) 100%);
   --shadow-elegant: 0 30px 60px -20px color-mix(in oklab, var(--navy) 35%, transparent);
   --shadow-orange: 0 20px 50px -15px color-mix(in oklab, var(--orange) 55%, transparent);
+
+  /* Dossiê institucional — paleta editorial para a seção Casos */
+  --dossier-cream: #f5f1ea;
+  --dossier-cream-deep: #ece4d6;
+  --dossier-ink: #1f2937;
+  --dossier-rule: #d8cdb8;
 }
 
 .dark {

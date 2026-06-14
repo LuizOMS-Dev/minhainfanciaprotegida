@@ -40,6 +40,36 @@ export interface PublicArticleDetail extends PublicArticleSummary {
   impact_summary?: string | null;
   source_confidence?: "alta" | "media" | "baixa" | null;
   ai_summary?: string | null;
+  /* Fase 2 — Dossiê institucional (casos). */
+  executive_summary?: string[] | null;
+  why_it_matters?: string | null;
+  how_to_act?: { step?: number; title: string; description: string }[] | null;
+}
+
+function coerceStringArray(value: unknown): string[] | null {
+  if (!Array.isArray(value)) return null;
+  const out = value.filter((v): v is string => typeof v === "string" && v.trim().length > 0);
+  return out.length ? out : null;
+}
+
+function coerceHowToAct(value: unknown): { step?: number; title: string; description: string }[] | null {
+  if (!Array.isArray(value)) return null;
+  const out: { step?: number; title: string; description: string }[] = [];
+  for (const v of value) {
+    if (v && typeof v === "object") {
+      const o = v as Record<string, unknown>;
+      const title = typeof o.title === "string" ? o.title : null;
+      const description = typeof o.description === "string" ? o.description : null;
+      if (title && description) {
+        out.push({
+          title,
+          description,
+          step: typeof o.step === "number" ? o.step : undefined,
+        });
+      }
+    }
+  }
+  return out.length ? out : null;
 }
 
 export const listPublishedArticles = createServerFn({ method: "GET" })
@@ -147,7 +177,7 @@ export const getPublishedArticle = createServerFn({ method: "GET" })
     const { data: row, error } = await supabaseAdmin
       .from("articles")
       .select(
-        "id, type, slug, title, subtitle, body, category, cover_url, primary_source_label, primary_source_url, publish_at, last_verified_at, updated_at, author_id, reviewer_id, status, reading_minutes, understand, lessons, timeline, faq, related_laws, related_signal_tags, national_context, action_steps, warning_indicators, severity_level, impact_summary, source_confidence, ai_summary",
+        "id, type, slug, title, subtitle, body, category, cover_url, primary_source_label, primary_source_url, publish_at, last_verified_at, updated_at, author_id, reviewer_id, status, reading_minutes, understand, lessons, timeline, faq, related_laws, related_signal_tags, national_context, action_steps, warning_indicators, severity_level, impact_summary, source_confidence, ai_summary, executive_summary, why_it_matters, how_to_act",
       )
       .eq("type", data.type)
       .eq("slug", data.slug)
@@ -216,6 +246,9 @@ export const getPublishedArticle = createServerFn({ method: "GET" })
       impact_summary: (row as { impact_summary?: string | null }).impact_summary ?? null,
       source_confidence: (row as { source_confidence?: PublicArticleDetail["source_confidence"] }).source_confidence ?? null,
       ai_summary: (row as { ai_summary?: string | null }).ai_summary ?? null,
+      executive_summary: coerceStringArray((row as { executive_summary?: unknown }).executive_summary),
+      why_it_matters: (row as { why_it_matters?: string | null }).why_it_matters ?? null,
+      how_to_act: coerceHowToAct((row as { how_to_act?: unknown }).how_to_act),
     };
     return { article };
   });
