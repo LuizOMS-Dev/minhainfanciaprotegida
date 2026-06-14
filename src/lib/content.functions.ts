@@ -40,6 +40,36 @@ export interface PublicArticleDetail extends PublicArticleSummary {
   impact_summary?: string | null;
   source_confidence?: "alta" | "media" | "baixa" | null;
   ai_summary?: string | null;
+  /* Fase 2 — Dossiê institucional (casos). */
+  executive_summary?: string[] | null;
+  why_it_matters?: string | null;
+  how_to_act?: { step?: number; title: string; description: string }[] | null;
+}
+
+function coerceStringArray(value: unknown): string[] | null {
+  if (!Array.isArray(value)) return null;
+  const out = value.filter((v): v is string => typeof v === "string" && v.trim().length > 0);
+  return out.length ? out : null;
+}
+
+function coerceHowToAct(value: unknown): { step?: number; title: string; description: string }[] | null {
+  if (!Array.isArray(value)) return null;
+  const out: { step?: number; title: string; description: string }[] = [];
+  for (const v of value) {
+    if (v && typeof v === "object") {
+      const o = v as Record<string, unknown>;
+      const title = typeof o.title === "string" ? o.title : null;
+      const description = typeof o.description === "string" ? o.description : null;
+      if (title && description) {
+        out.push({
+          title,
+          description,
+          step: typeof o.step === "number" ? o.step : undefined,
+        });
+      }
+    }
+  }
+  return out.length ? out : null;
 }
 
 export const listPublishedArticles = createServerFn({ method: "GET" })
