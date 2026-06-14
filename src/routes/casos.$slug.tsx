@@ -23,11 +23,7 @@ import {
   AnonymizedNotice,
 } from "@/components/site/ArticleBlocks";
 import { SummaryCard, WhyMattersBlock, EditorialFooter } from "@/components/site/EditorialBlocks";
-import { SectionLabel } from "@/components/site/editorial/SectionLabel";
-import { LessonsCards } from "@/components/site/editorial/LessonsCards";
-import { SignalsCards } from "@/components/site/editorial/SignalsCards";
-import { HowToActSteps } from "@/components/site/editorial/HowToActSteps";
-import { ProtectionNetwork } from "@/components/site/editorial/ProtectionNetwork";
+import { LessonsBlock, SignalsBlock, ActionStepsBlock, ReportChannels } from "@/components/site/ArticleBlocks";
 import { getLawsBySlugs } from "@/content/laws";
 import { getContextByKeys } from "@/content/nationalContext";
 import { risks as allRisks } from "@/content/risks";
