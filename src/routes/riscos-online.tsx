@@ -1,24 +1,24 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, ExternalLink, Phone, ShieldAlert } from "lucide-react";
+import { ArrowRight, ExternalLink, Phone } from "lucide-react";
 import { risks } from "@/content/risks";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { Reveal } from "@/components/site/Reveal";
 import { SourceTag } from "@/components/site/SourceTag";
-import digitalImg from "@/assets/digital-safety.jpg";
+import { InstitutionalHero } from "@/components/site/InstitutionalHero";
 
 export const Route = createFileRoute("/riscos-online")({
   head: () => ({
     meta: [
-      { title: "Riscos da internet para crianças e adolescentes — Infância Protegida" },
+      { title: "Segurança Digital Infantil — Riscos online e como proteger" },
       {
         name: "description",
         content:
-          "Adultização, grooming, sextorsão, CSAM com IA, cyberbullying e desafios virais. Guia atualizado com sinais de alerta, como agir e base legal (ECA Digital).",
+          "Cyberbullying, jogos online, redes sociais, privacidade, controle parental e o que fazer em caso de risco. Guia educativo com base em fontes oficiais.",
       },
-      { property: "og:title", content: "Riscos da internet — Infância Protegida" },
+      { property: "og:title", content: "Segurança Digital — Infância Protegida" },
       {
         property: "og:description",
-        content: "Guia completo sobre os principais riscos digitais para crianças e adolescentes.",
+        content: "O que é segurança digital infantil e como proteger crianças e adolescentes online.",
       },
     ],
     links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/riscos-online" }],
@@ -29,54 +29,30 @@ export const Route = createFileRoute("/riscos-online")({
 function RiscosPage() {
   return (
     <>
-      <section className="relative isolate overflow-hidden bg-[color:var(--navy-deep)] text-white py-20 sm:py-28">
-        <div
-          className="absolute inset-0 -z-10 opacity-40"
-          style={{
-            backgroundImage: `linear-gradient(135deg, rgba(11,20,45,0.92), rgba(11,20,45,0.65)), url(${digitalImg})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-          aria-hidden
-        />
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <p className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-semibold tracking-[0.2em] uppercase">
-              <ShieldAlert className="size-3.5 text-[color:var(--orange)]" aria-hidden />
-              Internet segura · ECA Digital
-            </p>
-          </Reveal>
-          <Reveal delay={120}>
-            <h1 className="mt-6 font-display text-4xl sm:text-6xl font-semibold leading-[1.05] text-balance">
-              Os riscos da internet para crianças e adolescentes
-            </h1>
-          </Reveal>
-          <Reveal delay={220}>
-            <p className="mt-5 text-lg text-white/85 max-w-3xl leading-relaxed">
-              Adultização, aliciamento em jogos, sextorsão e deepfakes feitos por IA estão entre as
-              ameaças mais graves do ambiente digital. Informação clara e ação rápida protegem.
-            </p>
-          </Reveal>
-          <Reveal delay={320}>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                to="/denuncia"
-                className="inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] px-6 py-3 font-semibold hover:opacity-95"
-              >
-                <Phone className="size-4" /> Denunciar agora
-              </Link>
-              <a
-                href="https://new.safernet.org.br/helpline"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3 font-semibold hover:bg-white/10"
-              >
-                Canal SaferNet <ExternalLink className="size-4" />
-              </a>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      <InstitutionalHero
+        eyebrow="Segurança digital infantil"
+        title="Proteger a infância também é proteger no ambiente digital"
+        description="Segurança digital infantil é o conjunto de cuidados, configurações e diálogos que reduzem a exposição de crianças e adolescentes a riscos online — sem retirá-los do mundo digital, mas ensinando a navegá-lo com proteção."
+        actions={
+          <>
+            <Link
+              to="/denuncia"
+              className="inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] text-white px-6 py-3.5 text-sm font-bold hover:opacity-95"
+            >
+              <Phone className="size-4" /> Como denunciar
+            </Link>
+            <a
+              href="https://new.safernet.org.br/helpline"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-[color:var(--navy-deep)] text-[color:var(--navy-deep)] px-6 py-3.5 text-sm font-bold hover:bg-[color:var(--navy-deep)] hover:text-white transition-colors"
+            >
+              Canal SaferNet <ExternalLink className="size-4" />
+            </a>
+          </>
+        }
+      />
+
 
       <section className="py-16 sm:py-24 bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
