@@ -379,9 +379,6 @@ function Index() {
                   {n}
                 </span>
               ))}
-              <Link to="/joy" className="sr-only" aria-hidden>
-                <img src={joyImg} alt="" />
-              </Link>
             </div>
           </Reveal>
         </div>
