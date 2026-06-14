@@ -4,8 +4,6 @@ import {
   ChevronDown,
   FlaskConical,
   HelpCircle,
-  Info,
-  MapPin,
   Menu,
   Phone,
   Ribbon,
@@ -19,23 +17,25 @@ import { GlobalSearch } from "@/components/site/GlobalSearch";
 
 const primaryNav = [
   { to: "/", label: "Início" },
-  { to: "/sinais", label: "Sinais" },
-  { to: "/riscos-online", label: "Riscos Online" },
+  { to: "/noticias", label: "Notícias" },
+  { to: "/casos", label: "Casos Reais" },
+  { to: "/riscos-online", label: "Segurança Digital" },
   { to: "/pais", label: "Para Pais" },
   { to: "/escolas", label: "Para Escolas" },
-  { to: "/casos", label: "Casos" },
-  { to: "/noticias", label: "Notícias" },
   { to: "/biblioteca", label: "Biblioteca" },
   { to: "/legislacao", label: "Legislação" },
+  { to: "/mapa", label: "Rede de Proteção" },
+  { to: "/sinais", label: "Sinais de Alerta" },
+  { to: "/denuncia", label: "Como Denunciar" },
+  { to: "/sobre", label: "Sobre o Projeto" },
 ] as const;
 
 type MoreItem = { to: string; label: string; desc: string; icon: LucideIcon };
 
 const moreNav: readonly MoreItem[] = [
   { to: "/maio-laranja", label: "Maio Laranja", desc: "Sobre a campanha 18 de maio", icon: Ribbon },
-  { to: "/mapa", label: "Mapa de Ajuda", desc: "Conselhos, delegacias e centros de apoio", icon: MapPin },
+  { to: "/como-ajudar", label: "Como Ajudar", desc: "Escutar, acolher e proteger", icon: ShieldAlert },
   { to: "/faq", label: "Perguntas Frequentes", desc: "Dúvidas comuns sobre denúncia e proteção", icon: HelpCircle },
-  { to: "/sobre", label: "Sobre o Projeto", desc: "Quem somos e por que existimos", icon: Info },
   { to: "/objetivos", label: "Objetivos", desc: "Missão e metas da campanha", icon: Target },
   { to: "/metodologia", label: "Metodologia", desc: "Como produzimos o conteúdo", icon: FlaskConical },
   { to: "/fontes", label: "Fontes Utilizadas", desc: "Referências oficiais consultadas", icon: BookOpen },
