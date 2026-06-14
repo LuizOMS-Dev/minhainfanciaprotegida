@@ -2,13 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
+import { BookOpen } from "lucide-react";
 import { cases } from "@/content/cases";
 import { EditorialArticleCard } from "@/components/site/EditorialArticleCard";
 import { Reveal } from "@/components/site/Reveal";
-import { ListingHero } from "@/components/site/editorial/ListingHero";
-import { CategoryChips } from "@/components/site/editorial/CategoryChips";
-import { ReportCTABand } from "@/components/site/editorial/ReportCTABand";
-import { ListingFooter } from "@/components/site/editorial/ListingFooter";
+import { PageHero } from "@/components/site/PageHero";
 import { listPublishedArticles } from "@/lib/content.functions";
 import journalismImg from "@/assets/journalism.jpg";
 
@@ -42,10 +40,6 @@ type CardData = {
   cover: string | null;
   category: string | null;
   publishAt: string;
-  readingMinutes?: number | null;
-  authorName?: string | null;
-  verifiedAt?: string | null;
-  severity?: string | null;
 };
 
 function CasosPage() {
@@ -65,8 +59,6 @@ function CasosPage() {
       cover: a.cover_url ?? null,
       category: a.category ?? "Caso real",
       publishAt: a.publish_at ?? a.updated_at,
-      authorName: a.author_name,
-      verifiedAt: a.last_verified_at,
     }));
     const stat: CardData[] = cases.map((c) => ({
       key: `s-${c.slug}`,
@@ -81,123 +73,67 @@ function CasosPage() {
     return tag === "Todos" ? merged : merged.filter((x) => x.category === tag);
   }, [published, tag]);
 
-  const featured = all[0];
-  const firstBatch = all.slice(1, 7);
-  const remaining = all.slice(7);
-
-  const meta = [
-    { label: "Casos publicados", value: String(all.length) },
-    { label: "Critério", value: "Apenas fontes oficiais" },
-  ];
-
   return (
     <>
-      <ListingHero
+      <PageHero
+        image={journalismImg}
         eyebrow="Casos reais e reportagens"
-        title="Histórias reais que mudaram leis"
+        title="Casos reais que ajudam a proteger"
         description="Casos verificados com fontes oficiais. Vítimas nunca são identificadas — o objetivo é educativo, para fortalecer prevenção e proteção."
-        meta={meta}
-      />
-
-      <CategoryChips
-        categories={TAGS}
-        value={tag}
-        onChange={setTag}
-        label="Filtrar casos por categoria"
+        icon={<BookOpen className="size-3.5" aria-hidden />}
       />
 
       <section className="bg-background">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <div
+            role="tablist"
+            aria-label="Filtrar casos por categoria"
+            className="flex flex-wrap gap-2 mb-10"
+          >
+            {TAGS.map((t) => {
+              const active = t === tag;
+              return (
+                <button
+                  key={t}
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => setTag(t)}
+                  className={`rounded-full px-4 py-1.5 text-sm font-medium border transition ${
+                    active
+                      ? "bg-[color:var(--navy-deep)] text-white border-[color:var(--navy-deep)]"
+                      : "bg-card text-[color:var(--navy-deep)] border-border hover:border-[color:var(--navy-deep)]/40"
+                  }`}
+                >
+                  {t}
+                </button>
+              );
+            })}
+          </div>
+
           {all.length === 0 ? (
             <p className="text-center text-muted-foreground py-16">
               Nenhum caso nesta categoria no momento.
             </p>
           ) : (
-            <>
-              {featured && (
-                <Reveal>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {all.map((c, i) => (
+                <Reveal key={c.key} delay={(i % 6) * 40}>
                   <EditorialArticleCard
                     to="/casos/$slug"
                     kind="case"
-                    variant="featured"
-                    slug={featured.slug}
-                    title={featured.title}
-                    subtitle={featured.subtitle}
-                    cover={featured.cover ?? journalismImg}
-                    category={featured.category}
-                    publishAt={featured.publishAt}
-                    readingMinutes={featured.readingMinutes}
-                    authorName={featured.authorName}
-                    verifiedAt={featured.verifiedAt}
-                    severity={featured.severity}
+                    slug={c.slug}
+                    title={c.title}
+                    subtitle={c.subtitle}
+                    cover={c.cover ?? journalismImg}
+                    category={c.category}
+                    publishAt={c.publishAt}
                   />
                 </Reveal>
-              )}
-
-              {firstBatch.length > 0 && (
-                <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {firstBatch.map((c, i) => (
-                    <Reveal key={c.key} delay={(i + 1) * 40}>
-                      <EditorialArticleCard
-                        to="/casos/$slug"
-                        kind="case"
-                        slug={c.slug}
-                        title={c.title}
-                        subtitle={c.subtitle}
-                        cover={c.cover ?? journalismImg}
-                        category={c.category}
-                        publishAt={c.publishAt}
-                        readingMinutes={c.readingMinutes}
-                        authorName={c.authorName}
-                        verifiedAt={c.verifiedAt}
-                        severity={c.severity}
-                      />
-                    </Reveal>
-                  ))}
-                </div>
-              )}
-
-              <ReportCTABand />
-
-              {remaining.length > 0 && (
-                <>
-                  <div className="mt-4 mb-6 flex items-end justify-between">
-                    <h2 className="font-display text-xl sm:text-2xl font-semibold text-[color:var(--navy-deep)]">
-                      Mais casos
-                    </h2>
-                    <span className="text-xs text-muted-foreground">
-                      {remaining.length} {remaining.length === 1 ? "publicação" : "publicações"}
-                    </span>
-                  </div>
-                  <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-                    {remaining.map((c, i) => (
-                      <Reveal key={c.key} delay={(i + 1) * 30}>
-                        <EditorialArticleCard
-                          to="/casos/$slug"
-                          kind="case"
-                          variant="compact"
-                          slug={c.slug}
-                          title={c.title}
-                          subtitle={c.subtitle}
-                          cover={c.cover ?? journalismImg}
-                          category={c.category}
-                          publishAt={c.publishAt}
-                          readingMinutes={c.readingMinutes}
-                          authorName={c.authorName}
-                          verifiedAt={c.verifiedAt}
-                          severity={c.severity}
-                        />
-                      </Reveal>
-                    ))}
-                  </div>
-                </>
-              )}
-            </>
+              ))}
+            </div>
           )}
         </div>
       </section>
-
-      <ListingFooter kind="case" />
     </>
   );
 }
