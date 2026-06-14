@@ -4,7 +4,6 @@ import { Reveal } from "@/components/site/Reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { ReferencesBlock } from "@/components/site/ReferencesBlock";
 import { JsonLd, articleSchema, breadcrumb } from "@/components/site/JsonLd";
-import { InstitutionalHero } from "@/components/site/InstitutionalHero";
 import familyImg from "@/assets/family-dialogue.jpg";
 import digitalImg from "@/assets/digital-safety.jpg";
 
@@ -103,12 +102,22 @@ function Page() {
         }),
       ]} />
 
-      <InstitutionalHero
-        eyebrow="Para pais e responsáveis"
-        title="Conversar protege. Configurar previne."
-        description="Como conversar com filhos, identificar mudanças, criar ambiente de confiança, configurar a casa digital, definir limites e saber quando buscar ajuda."
-        image={familyImg}
-      />
+      <section className="relative isolate overflow-hidden bg-[color:var(--navy-deep)] text-white py-20 sm:py-28">
+        <div
+          className="absolute inset-0 -z-10 opacity-30"
+          style={{ backgroundImage: `url(${familyImg})`, backgroundSize: "cover", backgroundPosition: "center" }}
+          aria-hidden
+        />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[color:var(--navy-deep)]/95 to-[color:var(--navy-deep)]/70" aria-hidden />
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Para pais e responsáveis"
+            title="Conversar protege. Configurar previne."
+            description="Um guia prático com configurações de privacidade nas principais plataformas usadas por crianças e adolescentes, sinais de alerta e como abrir o diálogo."
+            invert
+          />
+        </div>
+      </section>
 
       <section className="py-20 sm:py-24 bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-3 gap-6">

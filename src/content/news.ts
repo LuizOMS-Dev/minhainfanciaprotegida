@@ -83,7 +83,7 @@ export const news: NewsItem[] = [
     category: "Internet",
     source: { name: "SaferNet Brasil", url: "https://new.safernet.org.br/helpline/indicadores" },
     body: `
-      <p>A SaferNet Brasil registrou em 2025 um aumento expressivo nas denúncias de <strong>grooming</strong> (aliciamento online de menores) em plataformas de jogos como Roblox, Fortnite e em chats como Discord.</p>
+      <p>A SaferNet Brasil registrou em 2025 um aumento expressivo nas denúncias de <strong>grooming</strong> (aliciamento online de menores) em plataformas de jogos como Roblox, Mineblox, Fortnite e Discord.</p>
       <h2>O que é grooming</h2>
       <p>É a estratégia adotada por adultos para conquistar a confiança de uma criança ou adolescente com finalidade sexual. Em ambientes de jogo, costuma envolver presentes virtuais, elogios excessivos e migração da conversa para canais privados.</p>
       <h2>Como proteger</h2>

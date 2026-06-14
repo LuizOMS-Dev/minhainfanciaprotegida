@@ -16,6 +16,8 @@ export function LatestUpdates() {
   if (items.length === 0) return null;
 
   const list = items.slice(0, 6);
+  const featured = list[0];
+  const rest = list.slice(1);
 
   return (
     <section className="py-20 sm:py-28 bg-background border-t border-border">
@@ -25,9 +27,24 @@ export function LatestUpdates() {
           title="Publicado recentemente"
           description="Notícias e casos verificados pela equipe editorial. Conteúdo educativo, sem sensacionalismo."
         />
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {list.map((a, i) => (
-            <Reveal key={a.id} delay={i * 50}>
+        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {featured && (
+            <Reveal>
+              <EditorialArticleCard
+                to={featured.type === "news" ? "/noticias/$slug" : "/casos/$slug"}
+                kind={featured.type === "news" ? "news" : "case"}
+                variant="featured"
+                slug={featured.slug}
+                title={featured.title}
+                subtitle={featured.subtitle}
+                cover={featured.cover_url}
+                category={featured.category}
+                publishAt={featured.publish_at ?? featured.updated_at}
+              />
+            </Reveal>
+          )}
+          {rest.map((a, i) => (
+            <Reveal key={a.id} delay={(i + 1) * 50}>
               <EditorialArticleCard
                 to={a.type === "news" ? "/noticias/$slug" : "/casos/$slug"}
                 kind={a.type === "news" ? "news" : "case"}

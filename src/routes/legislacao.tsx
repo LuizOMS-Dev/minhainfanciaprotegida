@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { BookMarked, ExternalLink, Gavel } from "lucide-react";
+import { BookMarked, ExternalLink, Gavel, Scale } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
-import { InstitutionalHero } from "@/components/site/InstitutionalHero";
+import { PageHero } from "@/components/site/PageHero";
+import heroLegislacao from "@/assets/hero-legislacao.jpg";
 
 export const Route = createFileRoute("/legislacao")({
   head: () => ({
@@ -84,10 +85,13 @@ const articles = [
 function Page() {
   return (
     <>
-      <InstitutionalHero
+      <PageHero
+        image={heroLegislacao}
         eyebrow="Legislação brasileira"
+        icon={<Scale className="size-3.5 text-[color:var(--orange)]" />}
         title="A lei protege. Conheça e exija que seja cumprida."
         description="O Brasil tem uma das legislações mais avançadas do mundo para a proteção da infância. Conheça os principais artigos."
+        tall
       />
 
       <section className="py-20 sm:py-28 bg-background">

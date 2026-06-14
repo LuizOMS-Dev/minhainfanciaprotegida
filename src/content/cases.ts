@@ -73,6 +73,42 @@ export const cases: CaseItem[] = [
     ],
   },
   {
+    slug: "caso-vitoria-mineblox-2025",
+    title: "Caso \"Mineblox\" — aliciamento de adolescente em comunidade de jogo online",
+    date: "2025-07-15",
+    location: "Brasil",
+    summary:
+      "Adolescente identificada como Vitória foi aliciada por um adulto em comunidades ligadas a jogos online e Discord. O caso virou alerta nacional sobre grooming.",
+    impact:
+      "Reforçou a discussão sobre verificação de idade, moderação ativa e responsabilidade das plataformas de jogos.",
+    image: silenceImg,
+    tag: "Ambiente digital",
+    source: { name: "SaferNet Brasil — Indicadores", url: "https://new.safernet.org.br/helpline/indicadores" },
+    body: `
+      <h2>O esquema do aliciamento</h2>
+      <p>O caso conhecido como "Mineblox" envolveu uma adolescente brasileira, identificada apenas como Vitória, aliciada por um homem adulto após meses de contato em servidores ligados a jogos como Roblox/Mineblox e em canais do Discord. O agressor utilizou a estratégia clássica do <strong>grooming</strong>: ganho de confiança, presentes virtuais (skins, V-Bucks), isolamento emocional e migração da conversa para canais privados.</p>
+      <h2>Por que o caso virou paradigma</h2>
+      <p>Diferente de incidentes pontuais, "Mineblox" expôs uma rotina: comunidades inteiras criadas com a finalidade explícita de capturar crianças e adolescentes em torno de jogos. A SaferNet Brasil registrou, em 2024-2025, aumento de <strong>87% nas denúncias</strong> de aliciamento em plataformas de jogos.</p>
+      <h2>Recomendações para famílias</h2>
+      <ul>
+        <li>Use os controles parentais nativos da plataforma (Roblox Account Restrictions, Discord Family Center).</li>
+        <li>Mantenha conversas abertas: pergunte com quem a criança está jogando.</li>
+        <li>Desconfie de "amigos virtuais" que pedem para mudar para outro app ou trocar fotos.</li>
+        <li>Em caso de suspeita, denuncie no <a href="https://new.safernet.org.br/denuncie">SaferNet</a> e ao Disque 100.</li>
+      </ul>
+    `,
+    timeline: [
+      { date: "2024-12", text: "Primeiros contatos do agressor com a adolescente em servidor de jogo." },
+      { date: "2025-03", text: "Migração da conversa para Discord privado." },
+      { date: "2025-07-15", text: "Caso é publicizado; SaferNet emite alerta nacional." },
+      { date: "2025-08", text: "Operação policial identifica o agressor; rede de aliciamento desmontada." },
+    ],
+    sources: [
+      { label: "SaferNet — Indicadores de denúncia", url: "https://new.safernet.org.br/helpline/indicadores" },
+      { label: "Guia de privacidade no Roblox", url: "https://en.help.roblox.com/hc/en-us/articles/360027820752" },
+    ],
+  },
+  {
     slug: "caso-araceli-1973",
     title: "Caso Araceli — origem do Maio Laranja",
     date: "1973-05-18",
