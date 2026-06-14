@@ -279,83 +279,59 @@ function Index() {
       {/* ÚLTIMAS NOTÍCIAS */}
       <LatestUpdates />
 
-      {/* COMO DENUNCIAR — bloco navy institucional */}
-      <section className="relative bg-[color:var(--navy-deep)] text-white py-20 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-10 items-center">
-            <div className="lg:col-span-5">
-              <Reveal>
-                <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[color:var(--orange)]">
-                  Como denunciar
-                </p>
-                <h2 className="mt-3 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-balance">
-                  Sua denúncia é anônima, gratuita e funciona 24 horas.
-                </h2>
-                <p className="mt-5 text-base text-white/80 leading-relaxed max-w-md">
-                  Ao denunciar, você protege uma criança e ajuda a interromper um ciclo de
-                  violência. Use qualquer um dos canais oficiais abaixo.
-                </p>
-                <div className="mt-7 flex flex-wrap gap-3">
-                  <a
-                    href="tel:100"
-                    className="inline-flex items-center gap-2 rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-6 py-3.5 text-sm font-bold hover:opacity-95"
-                  >
-                    <Phone className="size-4" /> Ligar 100
-                  </a>
-                  <Link
-                    to="/denuncia"
-                    className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3.5 text-sm font-bold hover:bg-white/10"
-                  >
-                    Outros canais
-                  </Link>
-                </div>
-              </Reveal>
-            </div>
-            <div className="lg:col-span-7">
-              <Reveal delay={120}>
-                <div className="grid grid-cols-2 gap-4">
-                  {[
-                    ["100", "Disque Direitos Humanos"],
-                    ["190", "Polícia Militar"],
-                    ["192", "SAMU"],
-                    ["181", "Disque-Denúncia"],
-                  ].map(([num, label]) => (
-                    <a
-                      key={num}
-                      href={`tel:${num}`}
-                      className="rounded-2xl border border-white/15 bg-white/5 backdrop-blur p-6 hover:bg-white/10 transition-colors"
-                    >
-                      <p className="font-display text-4xl sm:text-5xl font-semibold text-[color:var(--orange)] leading-none">
-                        {num}
-                      </p>
-                      <p className="mt-3 text-sm text-white/80">{label}</p>
-                    </a>
-                  ))}
-                </div>
-              </Reveal>
-            </div>
+      {/* COMO DENUNCIAR — bloco navy institucional, simples */}
+      <section className="bg-[color:var(--navy-deep)] text-white py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-10 items-center">
+          <div className="lg:col-span-6">
+            <Reveal>
+              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[color:var(--orange)]">
+                Como denunciar
+              </p>
+              <h2 className="mt-3 font-display text-3xl sm:text-4xl font-semibold leading-tight text-balance">
+                Sua denúncia é anônima, gratuita e funciona 24 horas.
+              </h2>
+              <p className="mt-5 text-base text-white/80 leading-relaxed max-w-md">
+                Ao denunciar, você protege uma criança e ajuda a interromper um ciclo de violência.
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <a
+                  href="tel:100"
+                  className="inline-flex items-center gap-2 rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-6 py-3.5 text-sm font-bold hover:opacity-95"
+                >
+                  <Phone className="size-4" /> Ligar 100
+                </a>
+                <Link
+                  to="/denuncia"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3.5 text-sm font-bold hover:bg-white/10"
+                >
+                  Outros canais
+                </Link>
+              </div>
+            </Reveal>
           </div>
-        </div>
-      </section>
-
-      {/* FONTES */}
-      <section className="py-16 bg-background border-t border-border">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
-              Conteúdo baseado em fontes oficiais
-            </p>
-          </Reveal>
-          <Reveal delay={100}>
-            <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm font-medium text-muted-foreground">
-              {sources.map((n) => (
-                <span key={n} className="inline-flex items-center gap-2">
-                  <BookOpen className="size-4 text-[color:var(--orange)]" strokeWidth={1.75} aria-hidden />
-                  {n}
-                </span>
-              ))}
-            </div>
-          </Reveal>
+          <div className="lg:col-span-6">
+            <Reveal delay={120}>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  ["100", "Disque Direitos Humanos"],
+                  ["190", "Polícia Militar"],
+                  ["192", "SAMU"],
+                  ["181", "Disque-Denúncia"],
+                ].map(([num, label]) => (
+                  <a
+                    key={num}
+                    href={`tel:${num}`}
+                    className="rounded-2xl border border-white/20 p-6 hover:bg-white/5 transition-colors"
+                  >
+                    <p className="font-display text-4xl sm:text-5xl font-semibold text-[color:var(--orange)] leading-none">
+                      {num}
+                    </p>
+                    <p className="mt-3 text-sm text-white/80">{label}</p>
+                  </a>
+                ))}
+              </div>
+            </Reveal>
+          </div>
         </div>
       </section>
     </>
