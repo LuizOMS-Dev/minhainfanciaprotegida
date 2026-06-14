@@ -234,7 +234,10 @@ export const listLatestForHome = createServerFn({ method: "GET" }).handler(async
     .order("publish_at", { ascending: false, nullsFirst: false })
     .order("updated_at", { ascending: false })
     .limit(5);
-  if (error) { console.error("[content] supabase error", error); throw new Error("Não foi possível carregar o conteúdo."); }
+  if (error) {
+    console.error("[content] supabase error", error);
+    return { latest: [] as NonNullable<typeof data> };
+  }
   return { latest: data ?? [] };
 });
 
