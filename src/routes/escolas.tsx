@@ -1,10 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BookMarked, ClipboardList, GraduationCap, ShieldCheck, UsersRound } from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
-import { SectionHeader } from "@/components/site/SectionHeader";
 import { ReferencesBlock } from "@/components/site/ReferencesBlock";
 import { JsonLd, articleSchema, breadcrumb } from "@/components/site/JsonLd";
-import { PageHero } from "@/components/site/PageHero";
+import { InstitutionalHero } from "@/components/site/InstitutionalHero";
 import schoolImg from "@/assets/hero-escolas.jpg";
 
 export const Route = createFileRoute("/escolas")({
@@ -68,12 +67,11 @@ function Page() {
         }),
       ]} />
 
-      <PageHero
-        image={schoolImg}
+      <InstitutionalHero
         eyebrow="Para escolas e educadores"
-        icon={<GraduationCap className="size-3.5 text-[color:var(--orange)]" />}
         title="A escola é a primeira porta de proteção"
-        description="Professores, gestores e profissionais da educação têm papel central — e obrigação legal — na identificação e notificação de casos de violência."
+        description="O papel da escola, como identificar sinais, acolher sem julgamento, encaminhar à rede e articular projetos de prevenção com famílias."
+        image={schoolImg}
       />
 
       <section className="py-20 sm:py-28 bg-background">
