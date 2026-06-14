@@ -14,7 +14,6 @@ import {
   Wifi,
 } from "lucide-react";
 import heroImg from "@/assets/hero-protection.jpg";
-import joyImg from "@/assets/children-joy.jpg";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { AnimatedNumber } from "@/components/site/AnimatedNumber";
