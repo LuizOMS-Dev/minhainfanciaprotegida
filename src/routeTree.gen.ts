@@ -29,6 +29,7 @@ import { Route as ComoAjudarRouteImport } from './routes/como-ajudar'
 import { Route as CasosRouteImport } from './routes/casos'
 import { Route as BibliotecaRouteImport } from './routes/biblioteca'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AssistenteRouteImport } from './routes/assistente'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
@@ -36,6 +37,8 @@ import { Route as CasosIndexRouteImport } from './routes/casos.index'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 import { Route as CasosSlugRouteImport } from './routes/casos.$slug'
 import { Route as BibliotecaSlugRouteImport } from './routes/biblioteca.$slug'
+import { Route as AssistenteThreadIdRouteImport } from './routes/assistente.$threadId'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as ApiPublicCspReportRouteImport } from './routes/api/public/csp-report'
@@ -152,6 +155,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AssistenteRoute = AssistenteRouteImport.update({
+  id: '/assistente',
+  path: '/assistente',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -185,6 +193,16 @@ const BibliotecaSlugRoute = BibliotecaSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => BibliotecaRoute,
+} as any)
+const AssistenteThreadIdRoute = AssistenteThreadIdRouteImport.update({
+  id: '/$threadId',
+  path: '/$threadId',
+  getParentRoute: () => AssistenteRoute,
+} as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
   id: '/admin',
@@ -275,6 +293,7 @@ const AuthenticatedAdminArticleIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/assistente': typeof AssistenteRouteWithChildren
   '/auth': typeof AuthRoute
   '/biblioteca': typeof BibliotecaRouteWithChildren
   '/casos': typeof CasosRouteWithChildren
@@ -296,6 +315,8 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/api/chat': typeof ApiChatRoute
+  '/assistente/$threadId': typeof AssistenteThreadIdRoute
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
@@ -318,6 +339,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/assistente': typeof AssistenteRouteWithChildren
   '/auth': typeof AuthRoute
   '/biblioteca': typeof BibliotecaRouteWithChildren
   '/como-ajudar': typeof ComoAjudarRoute
@@ -336,6 +358,8 @@ export interface FileRoutesByTo {
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
+  '/api/chat': typeof ApiChatRoute
+  '/assistente/$threadId': typeof AssistenteThreadIdRoute
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
@@ -360,6 +384,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/assistente': typeof AssistenteRouteWithChildren
   '/auth': typeof AuthRoute
   '/biblioteca': typeof BibliotecaRouteWithChildren
   '/casos': typeof CasosRouteWithChildren
@@ -381,6 +406,8 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/api/chat': typeof ApiChatRoute
+  '/assistente/$threadId': typeof AssistenteThreadIdRoute
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
@@ -405,6 +432,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/assistente'
     | '/auth'
     | '/biblioteca'
     | '/casos'
@@ -426,6 +454,8 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/sobre'
     | '/admin'
+    | '/api/chat'
+    | '/assistente/$threadId'
     | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
@@ -448,6 +478,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/assistente'
     | '/auth'
     | '/biblioteca'
     | '/como-ajudar'
@@ -466,6 +497,8 @@ export interface FileRouteTypes {
     | '/sinais'
     | '/sitemap.xml'
     | '/sobre'
+    | '/api/chat'
+    | '/assistente/$threadId'
     | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
@@ -489,6 +522,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/assistente'
     | '/auth'
     | '/biblioteca'
     | '/casos'
@@ -510,6 +544,8 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/sobre'
     | '/_authenticated/admin'
+    | '/api/chat'
+    | '/assistente/$threadId'
     | '/biblioteca/$slug'
     | '/casos/$slug'
     | '/noticias/$slug'
@@ -534,6 +570,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AssistenteRoute: typeof AssistenteRouteWithChildren
   AuthRoute: typeof AuthRoute
   BibliotecaRoute: typeof BibliotecaRouteWithChildren
   CasosRoute: typeof CasosRouteWithChildren
@@ -554,6 +591,7 @@ export interface RootRouteChildren {
   SinaisRoute: typeof SinaisRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
+  ApiChatRoute: typeof ApiChatRoute
   ApiPublicCspReportRoute: typeof ApiPublicCspReportRoute
 }
 
@@ -699,6 +737,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/assistente': {
+      id: '/assistente'
+      path: '/assistente'
+      fullPath: '/assistente'
+      preLoaderRoute: typeof AssistenteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -747,6 +792,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/biblioteca/$slug'
       preLoaderRoute: typeof BibliotecaSlugRouteImport
       parentRoute: typeof BibliotecaRoute
+    }
+    '/assistente/$threadId': {
+      id: '/assistente/$threadId'
+      path: '/$threadId'
+      fullPath: '/assistente/$threadId'
+      preLoaderRoute: typeof AssistenteThreadIdRouteImport
+      parentRoute: typeof AssistenteRoute
+    }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
@@ -906,6 +965,18 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface AssistenteRouteChildren {
+  AssistenteThreadIdRoute: typeof AssistenteThreadIdRoute
+}
+
+const AssistenteRouteChildren: AssistenteRouteChildren = {
+  AssistenteThreadIdRoute: AssistenteThreadIdRoute,
+}
+
+const AssistenteRouteWithChildren = AssistenteRoute._addFileChildren(
+  AssistenteRouteChildren,
+)
+
 interface BibliotecaRouteChildren {
   BibliotecaSlugRoute: typeof BibliotecaSlugRoute
 }
@@ -947,6 +1018,7 @@ const NoticiasRouteWithChildren = NoticiasRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AssistenteRoute: AssistenteRouteWithChildren,
   AuthRoute: AuthRoute,
   BibliotecaRoute: BibliotecaRouteWithChildren,
   CasosRoute: CasosRouteWithChildren,
@@ -967,6 +1039,7 @@ const rootRouteChildren: RootRouteChildren = {
   SinaisRoute: SinaisRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SobreRoute: SobreRoute,
+  ApiChatRoute: ApiChatRoute,
   ApiPublicCspReportRoute: ApiPublicCspReportRoute,
 }
 export const routeTree = rootRouteImport
