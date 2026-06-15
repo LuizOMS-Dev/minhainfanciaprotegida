@@ -5,11 +5,9 @@ import {
   Eye,
   GraduationCap,
   HandHeart,
-  Heart,
   Library,
   MapPin,
   MessageCircle,
-  Newspaper,
   Phone,
   Scale,
   ShieldAlert,
@@ -17,15 +15,13 @@ import {
   Wifi,
 } from "lucide-react";
 import heroImg from "@/assets/hero-protection.jpg";
-import silenceImg from "@/assets/silence.jpg";
-import ribbonImg from "@/assets/ribbon.jpg";
-import joyImg from "@/assets/children-joy.jpg";
 import { Reveal } from "@/components/shared/Reveal";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { AnimatedNumber } from "@/components/shared/AnimatedNumber";
 import { SourceTag } from "@/components/shared/SourceTag";
 import { LatestUpdates } from "@/components/public/LatestUpdates";
 import { MonthlyAlert } from "@/components/public/MonthlyAlert";
+import { Button } from "@/components/ui/button";
 
 
 export const Route = createFileRoute("/")({
@@ -144,10 +140,7 @@ function Index() {
             <div className="max-w-2xl">
               <Reveal>
                 <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-xs font-semibold tracking-widest uppercase text-[color:var(--navy)] mb-8 shadow-sm">
-                  <span className="relative inline-flex size-2">
-                    <span className="absolute inset-0 rounded-full bg-[color:var(--orange)] animate-ping-slow opacity-75" />
-                    <span className="relative inline-block size-2 rounded-full bg-[color:var(--orange)]" />
-                  </span>
+                  <span className="inline-block size-2 rounded-full bg-[color:var(--orange)]" />
                   Campanha Nacional Permanente
                 </div>
               </Reveal>
@@ -166,21 +159,19 @@ function Index() {
 
               <Reveal delay={300}>
                 <div className="mt-10 flex flex-wrap items-center gap-4">
-                  <Link
-                    to="/denuncia"
-                    className="inline-flex items-center gap-2 rounded-lg bg-[color:var(--red-inst)] px-7 py-3.5 text-base font-semibold text-white shadow-sm hover:opacity-90 transition-opacity"
-                  >
-                    <Phone className="size-5" aria-hidden />
-                    Como Denunciar
-                  </Link>
-                  <Link
-                    to="/sinais"
-                    className="group inline-flex items-center gap-2 rounded-lg bg-[color:var(--navy)] px-7 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-[color:var(--navy-deep)] transition-colors"
-                  >
-                    <Eye className="size-5" aria-hidden />
-                    Identificar Sinais
-                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
-                  </Link>
+                  <Button asChild variant="denuncia" size="xl">
+                    <Link to="/denuncia">
+                      <Phone aria-hidden />
+                      Como Denunciar
+                    </Link>
+                  </Button>
+                  <Button asChild variant="navy" size="xl">
+                    <Link to="/sinais" className="group">
+                      <Eye aria-hidden />
+                      Identificar Sinais
+                      <ArrowRight className="transition-transform group-hover:translate-x-1" aria-hidden />
+                    </Link>
+                  </Button>
                 </div>
               </Reveal>
 
@@ -246,45 +237,75 @@ function Index() {
         </div>
       </section>
 
-      {/* NAVEGAÇÃO POR PÚBLICO (FAMÍLIAS E ESCOLAS) */}
-      <section className="py-20 sm:py-28 bg-background">
+      {/* NAVEGAÇÃO POR PÚBLICO — FAMÍLIAS, ESCOLAS E PROTEÇÃO DIGITAL */}
+      <section className="py-20 sm:py-28 bg-blue-soft">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-8">
-            <Reveal>
-              <Link to="/pais" className="group block relative rounded-2xl overflow-hidden border border-border bg-card hover-lift">
-                <div className="absolute inset-0 bg-[color:var(--navy)]/5 group-hover:bg-[color:var(--navy)]/10 transition-colors" />
-                <div className="p-10 sm:p-12 relative z-10 flex flex-col h-full justify-between">
-                  <div>
-                    <Users className="size-10 text-[color:var(--navy)] mb-6" />
-                    <h3 className="font-display text-3xl font-semibold text-[color:var(--navy-deep)]">Orientação para Famílias</h3>
-                    <p className="mt-4 text-lg text-muted-foreground leading-relaxed max-w-md">
-                      Aprenda a conversar com seus filhos, aplicar controles parentais e reconhecer sinais precoces de vitimização.
-                    </p>
-                  </div>
-                  <div className="mt-10 flex items-center gap-2 text-[color:var(--navy)] font-semibold">
-                    Acessar guia para pais <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                  </div>
-                </div>
-              </Link>
-            </Reveal>
-
-            <Reveal delay={100}>
-              <Link to="/escolas" className="group block relative rounded-2xl overflow-hidden border border-border bg-card hover-lift">
-                <div className="absolute inset-0 bg-[color:var(--orange)]/5 group-hover:bg-[color:var(--orange)]/10 transition-colors" />
-                <div className="p-10 sm:p-12 relative z-10 flex flex-col h-full justify-between">
-                  <div>
-                    <GraduationCap className="size-10 text-[color:var(--orange)] mb-6" />
-                    <h3 className="font-display text-3xl font-semibold text-[color:var(--navy-deep)]">Protocolos para Escolas</h3>
-                    <p className="mt-4 text-lg text-muted-foreground leading-relaxed max-w-md">
-                      Diretrizes para educadores sobre escuta especializada, suspeita de abuso e acionamento da Rede de Proteção.
-                    </p>
-                  </div>
-                  <div className="mt-10 flex items-center gap-2 text-[color:var(--orange)] font-semibold">
-                    Acessar guia escolar <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                  </div>
-                </div>
-              </Link>
-            </Reveal>
+          <SectionHeader
+            eyebrow="Por onde começar"
+            title="Encontre o conteúdo certo para você"
+            description="Conteúdo organizado por quem mais precisa dele — famílias, escolas e quem cuida da segurança digital das crianças."
+          />
+          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                to: "/pais",
+                icon: Users,
+                title: "Para famílias",
+                desc: "Como conversar com seus filhos, aplicar controles parentais e reconhecer sinais precoces.",
+                cta: "Guia para famílias",
+                accent: "navy" as const,
+              },
+              {
+                to: "/escolas",
+                icon: GraduationCap,
+                title: "Para escolas",
+                desc: "Protocolo de suspeita, escuta protegida e acionamento da Rede de Proteção.",
+                cta: "Guia para escolas",
+                accent: "orange" as const,
+              },
+              {
+                to: "/riscos-online",
+                icon: Wifi,
+                title: "Proteção digital",
+                desc: "Grooming, adultização, exploração em jogos e configurações de segurança online.",
+                cta: "Riscos online",
+                accent: "navy" as const,
+              },
+            ].map((c, i) => {
+              const isOrange = c.accent === "orange";
+              return (
+                <Reveal key={c.to} delay={i * 80}>
+                  <Link
+                    to={c.to}
+                    className="group flex h-full flex-col justify-between rounded-2xl border border-border bg-card p-8 hover-lift"
+                  >
+                    <div>
+                      <span
+                        className={`inline-flex size-12 items-center justify-center rounded-xl ${
+                          isOrange
+                            ? "bg-[color:var(--orange-soft)] text-[color:var(--orange)]"
+                            : "bg-[color:var(--navy)]/10 text-[color:var(--navy)]"
+                        }`}
+                      >
+                        <c.icon className="size-6" aria-hidden />
+                      </span>
+                      <h3 className="mt-6 font-display text-2xl font-semibold text-[color:var(--navy-deep)]">
+                        {c.title}
+                      </h3>
+                      <p className="mt-3 text-muted-foreground leading-relaxed">{c.desc}</p>
+                    </div>
+                    <div
+                      className={`mt-8 inline-flex items-center gap-2 font-semibold ${
+                        isOrange ? "text-[color:var(--orange)]" : "text-[color:var(--navy)]"
+                      }`}
+                    >
+                      {c.cta}
+                      <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
+                    </div>
+                  </Link>
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -301,11 +322,11 @@ function Index() {
           <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {[
               { to: "/sinais", icon: Eye, title: "Sinais de Alerta", desc: "Comportamentos que exigem atenção imediata." },
-              { to: "/riscos-online", icon: Wifi, title: "Riscos Digitais", desc: "Grooming, exploração em jogos e redes sociais." },
               { to: "/biblioteca", icon: Library, title: "Biblioteca", desc: "Cartilhas oficiais, estudos e guias em PDF." },
               { to: "/casos", icon: BookOpen, title: "Dossiês Oficiais", desc: "Casos reais que fundamentam as leis brasileiras." },
               { to: "/legislacao", icon: Scale, title: "Legislação", desc: "Estatuto da Criança e do Adolescente e marcos legais." },
               { to: "/mapa", icon: MapPin, title: "Rede de Proteção", desc: "Mapeamento de Conselhos Tutelares e delegacias." },
+              { to: "/como-ajudar", icon: HandHeart, title: "Como Ajudar", desc: "Escutar, acolher e proteger sem revitimizar." },
             ].map((c, i) => (
               <Reveal key={c.to} delay={i * 50}>
                 <Link to={c.to} className="group flex flex-col h-full rounded-xl border border-border bg-background p-6 hover:border-[color:var(--navy)]/30 transition-colors shadow-sm hover:shadow-md">

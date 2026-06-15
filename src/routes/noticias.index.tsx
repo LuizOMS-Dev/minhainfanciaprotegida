@@ -82,6 +82,10 @@ function NoticiasPage() {
         eyebrow="Notícias e conscientização"
         icon={<Newspaper className="size-3.5 text-[color:var(--orange)]" />}
         title="O que está acontecendo agora"
+        breadcrumb={[
+          { label: "Início", to: "/" },
+          { label: "Notícias" },
+        ]}
         description="Notícias verificadas, pesquisas e atualizações legais. Esta área é atualizada continuamente pelo painel editorial."
       />
 

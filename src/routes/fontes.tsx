@@ -98,6 +98,10 @@ function Page() {
         image={heroImg}
         eyebrow="Fontes utilizadas"
         title="Referências oficiais consultadas"
+        breadcrumb={[
+          { label: "Início", to: "/" },
+          { label: "Fontes utilizadas" },
+        ]}
         description="Todo o conteúdo do projeto é embasado em fontes públicas, verificáveis e atualizadas. Esta página reúne os principais documentos consultados."
         icon={<BookMarked className="size-3.5" aria-hidden />}
       />

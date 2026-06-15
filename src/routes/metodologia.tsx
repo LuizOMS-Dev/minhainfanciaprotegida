@@ -316,6 +316,10 @@ function Page() {
         eyebrow="Metodologia"
         title="Como produzimos o conteúdo"
         description="Pesquisa, verificação, legislação, linguagem acessível e revisão editorial — o processo por trás de cada artigo, dado e material do projeto."
+        breadcrumb={[
+          { label: "Início", to: "/" },
+          { label: "Metodologia" },
+        ]}
         icon={<FlaskConical className="size-3.5" aria-hidden />}
       />
 

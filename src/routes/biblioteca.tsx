@@ -78,6 +78,10 @@ function Page() {
         eyebrow="Biblioteca digital"
         icon={<BookMarked className="size-3.5 text-[color:var(--orange)]" />}
         title="Materiais oficiais para estudo e ação"
+        breadcrumb={[
+          { label: "Início", to: "/" },
+          { label: "Biblioteca" },
+        ]}
         description="Cartilhas, leis, guias, pesquisas e estudos publicados por órgãos oficiais e organizações de referência. Tudo verificado e atualizado."
       />
 

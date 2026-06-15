@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BookMarked, ClipboardList, GraduationCap, ShieldCheck, UsersRound } from "lucide-react";
 import { Reveal } from "@/components/shared/Reveal";
+import { PageBreadcrumb } from "@/components/shared/PageBreadcrumb";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { FaqBlock } from "@/components/public/ArticleBlocks";
 import { ReferencesBlock } from "@/components/public/ReferencesBlock";
@@ -78,6 +79,13 @@ function Page() {
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center relative z-10">
           <div className="max-w-xl">
+            <PageBreadcrumb
+              items={[
+                { label: "Início", to: "/" },
+                { label: "Para escolas" },
+              ]}
+              className="mb-6"
+            />
             <Reveal>
               <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--navy)]/10 bg-[color:var(--navy)]/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[color:var(--navy-deep)] shadow-sm">
                 <GraduationCap className="size-3.5 text-[color:var(--orange)]" /> Para escolas e educadores

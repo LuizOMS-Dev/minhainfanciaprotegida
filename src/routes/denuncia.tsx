@@ -4,6 +4,8 @@ import { Reveal } from "@/components/shared/Reveal";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { FaqBlock } from "@/components/public/ArticleBlocks";
 import { JsonLd } from "@/components/shared/JsonLd";
+import { PageHero } from "@/components/public/PageHero";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 export const Route = createFileRoute("/denuncia")({
@@ -31,6 +33,7 @@ const primary = [
     desc: "Disque 100 — Atende denúncias de violações contra crianças e adolescentes. 24h, gratuito e anônimo.",
     url: "https://www.gov.br/mdh/pt-br/disque100",
     accent: "orange" as const,
+    kind: "denuncia" as const,
   },
   {
     number: "190",
@@ -38,6 +41,7 @@ const primary = [
     desc: "Emergências policiais em qualquer local do Brasil. Atende 24h.",
     url: "https://www.gov.br/pt-br/servicos-estaduais/seguranca-publica",
     accent: "red" as const,
+    kind: "emergencia" as const,
   },
   {
     number: "192",
@@ -45,6 +49,7 @@ const primary = [
     desc: "Urgência e emergência médica. Ligue em situações que exigem atendimento de saúde.",
     url: "https://www.gov.br/saude/pt-br/composicao/saes/dahu/samu-192",
     accent: "red" as const,
+    kind: "emergencia" as const,
   },
   {
     number: "197",
@@ -52,6 +57,7 @@ const primary = [
     desc: "Registro de boletim e investigação. Disponível na maioria dos estados brasileiros.",
     url: "https://www.gov.br/pf/pt-br",
     accent: "navy" as const,
+    kind: "denuncia" as const,
   },
   {
     number: "181",
@@ -59,6 +65,7 @@ const primary = [
     desc: "Denúncia anônima em diversos estados brasileiros. Verifique a disponibilidade local.",
     url: "https://www.gov.br/pt-br",
     accent: "navy" as const,
+    kind: "denuncia" as const,
   },
   {
     number: "153",
@@ -66,6 +73,7 @@ const primary = [
     desc: "Atendimento em diversas cidades. Verifique a disponibilidade no seu município.",
     url: "https://www.gov.br/pt-br",
     accent: "navy" as const,
+    kind: "denuncia" as const,
   },
 ];
 
@@ -100,6 +108,34 @@ const institutions = [
   },
 ];
 
+const channelAccents: Record<string, string> = {
+  orange: "bg-[color:var(--orange)] text-[color:var(--navy-deep)]",
+  red: "bg-[color:var(--red-inst)] text-white",
+  navy: "bg-[color:var(--navy)] text-white",
+};
+
+function ChannelCard({ p }: { p: (typeof primary)[number] }) {
+  return (
+    <a
+      href={`tel:${p.number}`}
+      className="group block h-full rounded-2xl overflow-hidden border border-border bg-card hover-lift"
+      aria-label={`Ligar para ${p.name} no número ${p.number}`}
+    >
+      <div className={`p-6 ${channelAccents[p.accent]} flex items-end justify-between`}>
+        <span className="font-display text-5xl font-semibold leading-none">{p.number}</span>
+        <Phone className="size-6 opacity-80 group-hover:translate-x-1 transition" aria-hidden />
+      </div>
+      <div className="p-6">
+        <h3 className="font-display text-xl font-semibold">{p.name}</h3>
+        <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
+        <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-[color:var(--navy)]">
+          Tocar para ligar →
+        </span>
+      </div>
+    </a>
+  );
+}
+
 function Page() {
   const [city, setCity] = useState("");
 
@@ -124,76 +160,63 @@ function Page() {
 
   return (
     <>
-      <section className="relative isolate overflow-hidden bg-gradient-red text-white py-20 sm:py-28">
-        <div className="absolute inset-0 opacity-20" aria-hidden>
-          <div className="absolute -top-20 -left-20 size-96 rounded-full bg-white blur-3xl" />
-          <div className="absolute bottom-0 right-0 size-[28rem] rounded-full bg-[color:var(--orange)] blur-3xl" />
-        </div>
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 relative">
-          <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em]">
-              <ShieldAlert className="size-3.5" /> Área de denúncia
-            </span>
-          </Reveal>
-          <Reveal delay={120}>
-            <h1 className="mt-6 font-display text-5xl sm:text-6xl lg:text-7xl font-semibold leading-tight text-balance">
-              Denuncie agora. Salve uma vida.
-            </h1>
-          </Reveal>
-          <Reveal delay={220}>
-            <p className="mt-6 text-lg sm:text-xl text-white/90 max-w-2xl leading-relaxed">
-              Os canais abaixo são oficiais, funcionam 24 horas e a denúncia pode ser feita de forma{" "}
-              <strong>anônima e gratuita</strong>. No celular, basta tocar no número.
-            </p>
-          </Reveal>
-          <Reveal delay={320}>
-            <a
-              href="tel:100"
-              className="mt-10 inline-flex items-center gap-3 rounded-2xl bg-white text-[color:var(--red-inst)] px-8 py-5 text-2xl font-bold shadow-2xl hover:scale-[1.02] transition"
-            >
-              <Phone className="size-7" />
-              Ligar 100 agora
+      <PageHero
+        eyebrow="Canais oficiais · 24h e gratuitos"
+        icon={<ShieldAlert className="size-3.5 text-[color:var(--orange)]" />}
+        title="Como denunciar e onde pedir ajuda"
+        description="Os canais abaixo são oficiais e funcionam 24 horas. A denúncia ao Disque 100 é gratuita e pode ser anônima. Em caso de risco imediato à vida, ligue 190."
+        breadcrumb={[
+          { label: "Início", to: "/" },
+          { label: "Denúncia" },
+        ]}
+      >
+        <div className="flex flex-wrap justify-center gap-3">
+          <Button asChild variant="denuncia" size="xl">
+            <a href="tel:100">
+              <Phone aria-hidden />
+              Ligar 100
             </a>
-          </Reveal>
+          </Button>
+          <Button asChild variant="outlineNavy" size="xl">
+            <a href="#canais">Ver todos os canais</a>
+          </Button>
         </div>
-      </section>
+      </PageHero>
 
-      <section className="py-20 sm:py-28 bg-background">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Canais imediatos"
-            title="Telefones oficiais — clique para ligar"
-            description="No celular, tocar abre o discador automaticamente. No computador, anote ou use um aplicativo de chamadas."
-          />
-          <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {primary.map((p, i) => {
-              const accents: Record<string, string> = {
-                orange: "from-[color:var(--orange)] to-amber-500 text-[color:var(--navy-deep)]",
-                red: "from-[color:var(--red-inst)] to-rose-600 text-white",
-                navy: "from-[color:var(--navy)] to-[color:var(--navy-deep)] text-white",
-              };
-              return (
-                <Reveal key={p.number} delay={i * 60}>
-                  <a
-                    href={`tel:${p.number}`}
-                    className="group block h-full rounded-3xl overflow-hidden border border-border bg-card hover-lift"
-                    aria-label={`Ligar para ${p.name} no número ${p.number}`}
-                  >
-                    <div className={`p-6 bg-gradient-to-br ${accents[p.accent]} flex items-end justify-between`}>
-                      <span className="font-display text-6xl font-semibold leading-none">{p.number}</span>
-                      <Phone className="size-7 opacity-80 group-hover:translate-x-1 transition" />
-                    </div>
-                    <div className="p-6">
-                      <h3 className="font-display text-xl font-semibold">{p.name}</h3>
-                      <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
-                      <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-[color:var(--red-inst)]">
-                        Tocar para ligar →
-                      </span>
-                    </div>
-                  </a>
-                </Reveal>
-              );
-            })}
+      <section id="canais" className="py-20 sm:py-28 bg-background scroll-mt-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-16">
+          <div>
+            <SectionHeader
+              eyebrow="Risco imediato à vida"
+              title="Emergência — ligue agora"
+              description="Quando o crime está acontecendo neste momento ou há perigo imediato. Atendimento 24 horas."
+            />
+            <div className="mt-10 grid gap-5 md:grid-cols-2">
+              {primary
+                .filter((p) => p.kind === "emergencia")
+                .map((p, i) => (
+                  <Reveal key={p.number} delay={i * 60}>
+                    <ChannelCard p={p} />
+                  </Reveal>
+                ))}
+            </div>
+          </div>
+
+          <div>
+            <SectionHeader
+              eyebrow="Suspeita, orientação e denúncia"
+              title="Denúncia — pode ser anônima"
+              description="Para suspeitas, situações recorrentes ou passadas e para receber orientação. O Disque 100 é gratuito e mantém o anonimato."
+            />
+            <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {primary
+                .filter((p) => p.kind === "denuncia")
+                .map((p, i) => (
+                  <Reveal key={p.number} delay={i * 60}>
+                    <ChannelCard p={p} />
+                  </Reveal>
+                ))}
+            </div>
           </div>
         </div>
       </section>

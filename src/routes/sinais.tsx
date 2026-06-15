@@ -15,6 +15,7 @@ import listeningImg from "@/assets/listening.jpg";
 import { Reveal } from "@/components/shared/Reveal";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { FaqBlock } from "@/components/public/ArticleBlocks";
+import { PageBreadcrumb } from "@/components/shared/PageBreadcrumb";
 
 export const Route = createFileRoute("/sinais")({
   head: () => ({
@@ -57,6 +58,13 @@ function Page() {
         </div>
 
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <PageBreadcrumb
+            items={[
+              { label: "Início", to: "/" },
+              { label: "Sinais de alerta" },
+            ]}
+            className="mb-6 flex justify-center"
+          />
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--navy)]/10 bg-[color:var(--navy)]/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[color:var(--navy-deep)] shadow-sm">
               <AlertTriangle className="size-3.5 text-[color:var(--orange)]" /> Sinais de Alerta

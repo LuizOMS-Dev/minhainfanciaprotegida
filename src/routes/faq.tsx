@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, HelpCircle } from "lucide-react";
 import { useState } from "react";
 import { Reveal } from "@/components/shared/Reveal";
 import { SectionHeader } from "@/components/shared/SectionHeader";
+import { PageHero } from "@/components/public/PageHero";
 
 export const Route = createFileRoute("/faq")({
   head: () => ({
@@ -79,25 +80,16 @@ function Page() {
 
   return (
     <>
-      <section className="relative isolate overflow-hidden bg-[color:var(--navy-deep)] text-white py-20 sm:py-28">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em]">
-              FAQ
-            </span>
-          </Reveal>
-          <Reveal delay={120}>
-            <h1 className="mt-6 font-display text-5xl sm:text-6xl font-semibold leading-tight text-balance">
-              Perguntas frequentes
-            </h1>
-          </Reveal>
-          <Reveal delay={220}>
-            <p className="mt-6 text-lg text-white/85 max-w-2xl">
-              Respostas para as dúvidas mais comuns, com base em informações de órgãos oficiais.
-            </p>
-          </Reveal>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Dúvidas comuns"
+        icon={<HelpCircle className="size-3.5 text-[color:var(--orange)]" />}
+        title="Perguntas frequentes"
+        description="Respostas para as dúvidas mais comuns, com base em informações de órgãos oficiais."
+        breadcrumb={[
+          { label: "Início", to: "/" },
+          { label: "Perguntas frequentes" },
+        ]}
+      />
 
       <section className="py-20 sm:py-28 bg-background">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">

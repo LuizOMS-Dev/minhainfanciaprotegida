@@ -147,6 +147,10 @@ function Page() {
         image={heroImg}
         eyebrow="Sobre o projeto"
         title="A História do Infância Protegida"
+        breadcrumb={[
+          { label: "Início", to: "/" },
+          { label: "Sobre o projeto" },
+        ]}
         description="Um portal brasileiro criado por um jovem de 16 anos para usar a tecnologia como ferramenta de proteção, conscientização e prevenção da violência contra crianças e adolescentes."
         icon={<Info className="size-3.5" aria-hidden />}
         tall

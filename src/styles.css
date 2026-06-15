@@ -5,9 +5,13 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Maio Laranja — Sistema de design institucional.
- * Paleta: laranja Maio Laranja, vermelho institucional, azul-marinho, branco.
- * Tipografia: Fraunces (display editorial) + Inter (UI/corpo).
+ * Minha Infância Protegida — Sistema de design institucional (redesign v2).
+ * Direção: institucional premium, clean, sério e acolhedor. Branco predominante,
+ * azul-marinho como cor principal, laranja como destaque pontual e vermelho
+ * reservado a emergência/denúncia. Movimento discreto, gradientes mínimos.
+ * Paleta: navy, navy-deep, azul suave (fundo), laranja, laranja suave,
+ * vermelho institucional, off-white, cinzas.
+ * Tipografia: Instrument Serif (títulos) + Work Sans (interface/corpo).
  */
 
 @theme inline {
@@ -50,6 +54,9 @@
   --color-red-inst: var(--red-inst);
   --color-red-inst-foreground: var(--red-inst-foreground);
 
+  --color-blue-soft: var(--blue-soft);
+  --color-blue-soft-foreground: var(--blue-soft-foreground);
+
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -73,6 +80,10 @@
   --navy: oklch(0.26 0.05 255);
   --navy-foreground: oklch(0.985 0.002 250);
   --navy-deep: oklch(0.18 0.04 255);
+
+  /* Azul suave — fundo de seção alternativo ao branco (respiro institucional) */
+  --blue-soft: oklch(0.955 0.012 250);
+  --blue-soft-foreground: oklch(0.20 0.03 260);
 
   --primary: var(--navy);
   --primary-foreground: var(--navy-foreground);
@@ -115,6 +126,9 @@
   --gradient-red: linear-gradient(135deg, oklch(0.55 0.18 27) 0%, oklch(0.45 0.18 25) 100%);
   --shadow-elegant: 0 20px 40px -15px color-mix(in oklab, var(--navy) 20%, transparent);
   --shadow-orange: 0 15px 35px -10px color-mix(in oklab, var(--orange) 30%, transparent);
+  /* Sombra de card discreta — elevação sutil para superfícies em hover */
+  --shadow-card: 0 1px 2px color-mix(in oklab, var(--navy) 6%, transparent),
+    0 10px 28px -18px color-mix(in oklab, var(--navy) 25%, transparent);
 
   /* Dossiê institucional — paleta editorial */
   --dossier-cream: #f9f8f6;
@@ -140,6 +154,8 @@
   --accent-foreground: oklch(0.985 0.002 250);
   --destructive: oklch(0.55 0.18 28);
   --destructive-foreground: oklch(0.985 0.002 250);
+  --blue-soft: oklch(0.22 0.04 261);
+  --blue-soft-foreground: oklch(0.985 0.002 250);
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.80 0.10 255);
@@ -180,6 +196,8 @@
   .bg-gradient-red { background-image: var(--gradient-red); }
   .shadow-elegant { box-shadow: var(--shadow-elegant); }
   .shadow-orange { box-shadow: var(--shadow-orange); }
+  .shadow-card { box-shadow: var(--shadow-card); }
+  .bg-blue-soft { background-color: var(--blue-soft); }
 
   .text-balance { text-wrap: balance; }
   .text-pretty { text-wrap: pretty; }
@@ -196,11 +214,11 @@
   }
 
   .hover-lift {
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
   }
   .hover-lift:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-elegant);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
   }
 
   @keyframes ping-slow {
