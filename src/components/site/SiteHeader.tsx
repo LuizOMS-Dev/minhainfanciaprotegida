@@ -7,6 +7,7 @@ import {
   Info,
   MapPin,
   Menu,
+  MessageCircleHeart,
   Phone,
   Ribbon,
   ShieldAlert,
@@ -32,6 +33,7 @@ const primaryNav = [
 type MoreItem = { to: string; label: string; desc: string; icon: LucideIcon };
 
 const moreNav: readonly MoreItem[] = [
+  { to: "/assistente", label: "Assistente IA", desc: "Tire dúvidas com nosso assistente (não-oficial)", icon: MessageCircleHeart },
   { to: "/maio-laranja", label: "Maio Laranja", desc: "Sobre a campanha 18 de maio", icon: Ribbon },
   { to: "/mapa", label: "Mapa de Ajuda", desc: "Conselhos, delegacias e centros de apoio", icon: MapPin },
   { to: "/faq", label: "Perguntas Frequentes", desc: "Dúvidas comuns sobre denúncia e proteção", icon: HelpCircle },

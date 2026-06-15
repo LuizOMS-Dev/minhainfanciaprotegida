@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "../components/site/SiteHeader";
+import { FloatingAssistant } from "../components/site/FloatingAssistant";
 import { SiteFooter } from "../components/site/SiteFooter";
 import { SkipLink } from "../components/site/SkipLink";
 import {
@@ -183,6 +184,7 @@ function RootComponent() {
           <Outlet />
         </main>
         <SiteFooter />
+        <FloatingAssistant />
       </div>
     </QueryClientProvider>
   );

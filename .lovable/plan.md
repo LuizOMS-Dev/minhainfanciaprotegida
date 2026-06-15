@@ -1,69 +1,81 @@
-# Redesign — Empatia Institucional
+# Assistente IA — Acolhimento e Orientação
 
-Aplicar a direção escolhida ao portal **Minha Infância Protegida**, mantendo a paleta atual (navy `#0B142D`, laranja `#D9531E`, creme `#F5F1EA`, ink `#1F2937`) e tipografia **Instrument Serif + Work Sans**. Foco no chrome global (topbar, header, hero) + harmonização das seções da home.
+Adicionar um chatbot real e integrado ao portal, deixando claro em todo momento que **não é canal oficial** e que urgências devem ir ao **Disque 100**, Conselho Tutelar ou Polícia.
 
-## 1. Tokens & tipografia (`src/styles.css` + `__root.tsx`)
+## 1. Backend (TanStack server route)
 
-- Trocar fontes carregadas: substituir Fraunces/Inter por **Instrument Serif** (display) + **Work Sans** (body) via `<link>` no `__root.tsx`.
-- Atualizar `--font-display` e `--font-sans` em `@theme`.
-- Adicionar utilitários novos: `glass-card` (backdrop-blur + borda translúcida), `shadow-orange-soft`, e refinar `--shadow-elegant`.
-- Garantir que vermelho de emergência (`--red-inst`) mantenha contraste AA na topbar.
+**`src/routes/api/chat.ts`** — endpoint de streaming via AI SDK + Lovable AI Gateway.
+- Modelo: `google/gemini-3-flash-preview`.
+- `LOVABLE_API_KEY` lida via `process.env` no handler (auto-provisionada).
+- System prompt em PT-BR define:
+  - Identidade: "Assistente de Acolhimento" do portal Minha Infância Protegida.
+  - **AVISO obrigatório** em toda primeira resposta da conversa: não é canal oficial de denúncia, não substitui Disque 100 / Conselho Tutelar / Polícia.
+  - Escopo: prioridade absoluta em proteção infantil; permite acolher temas correlatos (família, escola, saúde mental, bullying, riscos online) sempre orientando a procurar canais oficiais.
+  - Regras de segurança: em sinais de risco iminente → orientar Disque 100 (24h, gratuito, anônimo), 190 (Polícia) ou 192 (SAMU); nunca pedir dados pessoais identificáveis; nunca diagnosticar; tom acolhedor, claro, sem julgamento.
+  - Conhece o site: pode citar páginas internas (/sinais, /riscos-online, /denuncia, /mapa, /biblioteca, /legislacao).
+- Helper `src/lib/ai-gateway.server.ts` com `createLovableAiGatewayProvider` (padrão do template).
+- Tratamento explícito de 429 (limite) e 402 (créditos).
 
-## 2. Topbar de emergência (`SiteHeader.tsx`)
+## 2. Frontend — AI Elements
 
-- Faixa vermelha mais discreta: ícone alerta + "DENUNCIE AGORA" à esquerda, divisor, "24h, gratuito e anônimo".
-- À direita: pílula branca com "Disque 100" e ícone telefone (link `tel:100`), hover suave.
-- Layout responsivo: mantém apenas Disque 100 visível em mobile.
+Instalar: `conversation`, `message`, `prompt-input`, `shimmer`.
 
-## 3. Header principal (`SiteHeader.tsx`)
+**Componente compartilhado** `src/components/site/AssistantChat.tsx`:
+- `useChat` com `DefaultChatTransport({ api: "/api/chat" })`.
+- `id` derivado do `threadId` ativo (remonta ao trocar de thread).
+- Renderiza `message.parts` (não `content`).
+- Mensagens do assistente sem fundo (texto direto); mensagens do usuário com bolha `bg-primary text-primary-foreground`.
+- Loading com `Shimmer` ("Pensando...").
+- Composer com `PromptInputTextarea` + `PromptInputFooter` (botão à direita), foco automático.
+- Banner persistente no topo do chat:
+  > ⚠️ Não é canal oficial. Em urgências, ligue **100** (Disque Direitos Humanos) ou **190**.
+- Sugestões iniciais (chips) quando a thread está vazia: "Como identificar sinais de abuso?", "Como denunciar?", "Riscos online em jogos", "O que é o ECA Digital?".
 
-- Logo: tile arredondado 56px com gradiente laranja + ícone escudo animado (mantém o atual).
-- Título "INFÂNCIA PROTEGIDA" em Work Sans bold + sub-eyebrow laranja "Campanha Maio Laranja".
-- Busca: input pílula com fundo `slate-100`, foco branco com ring laranja, ícone à esquerda.
-- CTA "DENUNCIE AGORA" laranja com sombra suave laranja, ícone de alerta.
-- Nav abaixo, em linha própria com borda superior fina, links uppercase tracking-wide, ativo com underline laranja.
-- "Mais" no canto direito mantém dropdown atual.
+## 3. Threads em localStorage
 
-## 4. Hero principal (`src/routes/index.tsx`)
+**Hook** `src/hooks/use-chat-threads.ts`:
+- Bootstrap idempotente guarded por `typeof window !== "undefined"` (não em `useEffect` solto — evita threads duplicadas em StrictMode).
+- Forma `{ id, title, updatedAt, messages: UIMessage[] }[]` em `localStorage["mip.chat.threads"]`.
+- Título derivado da primeira mensagem do usuário (primeiros ~40 chars).
+- Persiste mensagens via `onFinish`/effect com deps completas.
 
-- Bloco full-width 640px, fundo navy `#0B142D` com imagem de mãos/silhuetas em `opacity-50 mix-blend-luminosity` + gradiente vertical para legibilidade.
-- Badge "MAIO LARANJA" com ponto pulsando.
-- H1 serifado gigante (`Instrument Serif`, 5xl→7xl): "Proteção é compromisso de **todos nós.**" (acento laranja na segunda parte).
-- Subtítulo em slate-300.
-- Dois CTAs: primário laranja "Como Identificar Sinais" → `/sinais`; secundário glass "Materiais de Apoio" → `/biblioteca`.
-- Ornamento SVG floral laranja decorativo no canto inferior direito (opacity 10%).
-- Respeitar `prefers-reduced-motion` (sem pulse).
+## 4. Rotas e UI
 
-## 5. Harmonização das seções abaixo do hero
+**Página dedicada** `src/routes/assistente.tsx` (`/assistente`):
+- Layout com sidebar de threads à esquerda (lista, botão "Nova conversa", deletar como botão **irmão**, não aninhado) e chat à direita.
+- Rota dinâmica `src/routes/assistente.$threadId.tsx` para URL por thread; `/assistente` cria/seleciona thread e navega.
+- `head()` com title/description próprios + aviso "não-oficial".
+- Link no menu principal do `SiteHeader` ("Assistente IA").
 
-Apenas ajustes de estilo para casar com o novo hero (não reescrever lógica):
-- **Pilares** (Sinais/Riscos/Pais/Escolas): cards brancos com ícone em tile laranja-suave, hover-lift.
-- **Casos em destaque**: manter componentes do dossiê (já alinhados à paleta).
-- **Notícias recentes**: cards editoriais com título serifado.
-- **Faixa final de denúncia**: bloco navy full-width com Disque 100 + canais.
-- **Footer**: pequenos ajustes tipográficos para combinar.
+**Botão flutuante** `src/components/site/FloatingAssistant.tsx`:
+- Renderizado no `__root.tsx` (oculto em rotas `/assistente*` e `/admin*`).
+- Botão redondo canto inferior direito, ícone `MessageCircleHeart`, label "Tire suas dúvidas".
+- Abre `Sheet` (lateral direita, ~420px) com o mesmo `AssistantChat`, usando uma thread "rápida" ou a thread ativa atual.
+- Link "Abrir conversa completa →" navega para `/assistente/:id`.
 
-## 6. Acessibilidade & performance
+## 5. SEO/Acessibilidade
 
-- `aria-label` em ícones-só.
-- Contraste AA verificado para todas as combinações.
-- `loading="lazy"` em imagens fora do hero.
-- `prefers-reduced-motion` desativa pulse/kenburns.
-- Sem mudanças de rota, schema ou backend.
+- `head()` da página: title "Assistente IA de Acolhimento · Minha Infância Protegida", description deixando claro que é orientação informativa e não substitui denúncia oficial.
+- `aria-label` no botão flutuante, foco gerenciado ao abrir o sheet.
+- Respeita `prefers-reduced-motion`.
 
-## 7. Arquivos afetados
+## 6. Arquivos
+
+**Criados:**
+- `src/routes/api/chat.ts`
+- `src/routes/assistente.tsx`, `src/routes/assistente.$threadId.tsx`
+- `src/lib/ai-gateway.server.ts`
+- `src/hooks/use-chat-threads.ts`
+- `src/components/site/AssistantChat.tsx`
+- `src/components/site/FloatingAssistant.tsx`
+- `src/components/ai-elements/*` (via CLI)
 
 **Editados:**
-- `src/styles.css` — fontes, tokens, utilitários.
-- `src/routes/__root.tsx` — `<link>` das novas fontes.
-- `src/components/site/SiteHeader.tsx` — topbar, header, nav.
-- `src/routes/index.tsx` — hero e ajustes leves nas seções.
-- `src/components/site/PageHero.tsx`, `ArticleCard.tsx`, `SiteFooter.tsx` — restyle leve para harmonizar.
-
-**Sem alterações:** rotas, loaders, banco de dados, lógica de admin, componentes do dossiê de Casos (já alinhados).
+- `src/routes/__root.tsx` — renderiza `<FloatingAssistant />`.
+- `src/components/site/SiteHeader.tsx` — link "Assistente IA".
+- `package.json` — `ai`, `@ai-sdk/react`, `@ai-sdk/openai-compatible`, `zod` (se faltar).
 
 ## Fora de escopo
-
-- Redesign das páginas internas (Notícias, Casos detalhe, Admin) — fica para iterações seguintes se desejar.
-- Mudanças de conteúdo/copy além das mostradas no hero.
-- Novas libs de animação.
+- Login/sync entre dispositivos (escolha foi localStorage).
+- Moderação de conteúdo via API externa.
+- Voz/áudio, anexos, ferramentas (tools) — apenas chat texto streaming.
