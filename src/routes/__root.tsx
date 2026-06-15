@@ -15,6 +15,8 @@ import { SiteHeader } from "../components/site/SiteHeader";
 import { FloatingAssistant } from "../components/site/FloatingAssistant";
 import { SiteFooter } from "../components/site/SiteFooter";
 import { SkipLink } from "../components/site/SkipLink";
+import { PublicLayout } from "../components/layout/PublicLayout";
+import { AuthLayout } from "../components/layout/AuthLayout";
 import {
   organizationSchema,
   websiteSchema,
@@ -177,15 +179,28 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-dvh flex-col">
-        <SkipLink />
-        <SiteHeader />
-        <main id="conteudo" className="flex-1">
-          <Outlet />
-        </main>
-        <SiteFooter />
-        <FloatingAssistant />
-      </div>
+      <SkipLink />
+      
+      {(() => {
+        const path = router.state.location.pathname;
+        if (path.startsWith("/admin")) {
+          // AdminLayout is rendered inside _authenticated/admin/route.tsx
+          return <Outlet />;
+        }
+        if (path.startsWith("/auth")) {
+          return (
+            <AuthLayout>
+              <Outlet />
+            </AuthLayout>
+          );
+        }
+        return (
+          <PublicLayout>
+            <Outlet />
+          </PublicLayout>
+        );
+      })()}
+
       <Analytics />
       <SpeedInsights />
     </QueryClientProvider>

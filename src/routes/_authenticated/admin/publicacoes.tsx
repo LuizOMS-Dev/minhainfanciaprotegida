@@ -14,10 +14,10 @@ import {
 } from "lucide-react";
 import {
   deleteAdminArticle,
-  getMyRoles,
   listAdminArticles,
   type AdminArticle,
 } from "@/lib/admin.functions";
+import { useUserRole } from "@/hooks/useUserRole";
 import { z } from "zod";
 
 const tipoSchema = z.enum([
@@ -90,23 +90,21 @@ function PublicacoesPage() {
 
   const listFn = useServerFn(listAdminArticles);
   const deleteFn = useServerFn(deleteAdminArticle);
-  const rolesFn = useServerFn(getMyRoles);
+  const { roles, isAdmin, isEditor, isReviewer } = useUserRole();
+  const canCreate = isAdmin || isEditor;
+  const canEdit = isAdmin || isEditor || isReviewer;
+  const canDelete = isAdmin;
 
   const cfg = TIPO_MAP[tipo];
   const articlesQ = useQuery({
     queryKey: ["admin-articles", cfg.type ?? "all"],
     queryFn: () => listFn({ data: cfg.type ? { type: cfg.type } : {} }),
   });
-  const rolesQ = useQuery({ queryKey: ["my-roles"], queryFn: () => rolesFn() });
 
   const del = useMutation({
     mutationFn: (id: string) => deleteFn({ data: { id } }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-articles"] }),
   });
-
-  const roles = rolesQ.data?.roles ?? [];
-  const canEdit = roles.some((r) => r === "admin" || r === "editor");
-  const canDelete = roles.includes("admin");
 
   const all = (articlesQ.data?.articles ?? []) as AdminArticle[];
   const articles = useMemo(() => {
@@ -135,7 +133,7 @@ function PublicacoesPage() {
             Gerencie notícias, casos reais, riscos online, guias e conteúdos por público-alvo.
           </p>
         </div>
-        {canEdit && (
+        {canCreate && (
           <Link
             to="/admin/article/$id"
             params={{ id: "new" }}
@@ -225,7 +223,7 @@ function PublicacoesPage() {
                 <tr>
                   <td colSpan={5} className="px-4 py-10 text-center text-muted-foreground">
                     Nenhum conteúdo encontrado.
-                    {canEdit && ' Clique em "Nova publicação" para criar.'}
+                    {canCreate && ' Clique em "Nova publicação" para criar.'}
                   </td>
                 </tr>
               )}

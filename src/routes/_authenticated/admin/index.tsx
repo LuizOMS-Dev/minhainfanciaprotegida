@@ -25,7 +25,6 @@ import {
   getRecentActivity,
   type RecentActivityItem,
 } from "@/lib/admin-overview.functions";
-import { getMyRoles } from "@/lib/admin.functions";
 import {
   AdminError,
   AdminSkeleton,
@@ -33,6 +32,7 @@ import {
   QuickActionCard,
   SectionCard,
 } from "@/components/admin/AdminUI";
+import { useUserRole } from "@/hooks/useUserRole";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
   component: DashboardPage,
@@ -117,10 +117,8 @@ function DashboardPage() {
     queryFn: () => activityFn({ data: { limit: 15 } }),
     refetchInterval: 60_000,
   });
-  const rolesQ = useQuery({ queryKey: ["my-roles"], queryFn: () => getMyRoles() });
-  const roles = rolesQ.data?.roles ?? [];
-  const isAdmin = roles.includes("admin");
-  const canEdit = roles.some((r) => r === "admin" || r === "editor");
+  const { roles, isAdmin, isEditor, isReviewer } = useUserRole();
+  const canEdit = isAdmin || isEditor;
 
   const o = overviewQ.data;
 
@@ -158,29 +156,31 @@ function DashboardPage() {
       </div>
 
       {/* KPIs operacionais */}
-      <div>
-        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-          Operação e segurança
-        </p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-          <KpiCard label="Materiais" value={o?.library ?? "—"} icon={BookOpen} />
-          <KpiCard label="Locais" value={o?.locations ?? "—"} icon={MapPin} />
-          <KpiCard label="Usuários" value={o?.users ?? "—"} icon={Users} />
-          <KpiCard
-            label="Sessões ativas"
-            value={o?.sessions.active ?? "—"}
-            icon={MonitorSmartphone}
-            hint={`${o?.sessions.last24h ?? 0} nas últimas 24h`}
-          />
-          <KpiCard
-            label="Falhas 24h"
-            value={o?.failedLogins24h ?? "—"}
-            icon={AlertTriangle}
-            tone={(o?.failedLogins24h ?? 0) > 0 ? "text-[color:var(--red-inst)]" : "text-muted-foreground"}
-            hint={`${o?.activeLockouts ?? 0} bloqueio(s) ativo(s)`}
-          />
+      {isAdmin && (
+        <div>
+          <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            Operação e segurança
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            <KpiCard label="Materiais" value={o?.library ?? "—"} icon={BookOpen} />
+            <KpiCard label="Locais" value={o?.locations ?? "—"} icon={MapPin} />
+            <KpiCard label="Usuários" value={o?.users ?? "—"} icon={Users} />
+            <KpiCard
+              label="Sessões ativas"
+              value={o?.sessions.active ?? "—"}
+              icon={MonitorSmartphone}
+              hint={`${o?.sessions.last24h ?? 0} nas últimas 24h`}
+            />
+            <KpiCard
+              label="Falhas 24h"
+              value={o?.failedLogins24h ?? "—"}
+              icon={AlertTriangle}
+              tone={(o?.failedLogins24h ?? 0) > 0 ? "text-[color:var(--red-inst)]" : "text-muted-foreground"}
+              hint={`${o?.activeLockouts ?? 0} bloqueio(s) ativo(s)`}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Quick actions */}
       <SectionCard title="Ações rápidas" description="Crie ou gerencie em um clique.">
@@ -254,18 +254,19 @@ function DashboardPage() {
       </SectionCard>
 
       {/* Recent activity */}
-      <SectionCard
-        title="Atividade recente"
-        description="Últimos eventos registrados na auditoria."
-        action={
-          <Link
-            to="/admin/auditoria"
-            className="text-sm font-semibold text-[color:var(--navy-deep)] hover:underline inline-flex items-center gap-1"
-          >
-            Ver tudo <Activity className="size-3.5" />
-          </Link>
-        }
-      >
+      {isAdmin && (
+        <SectionCard
+          title="Atividade recente"
+          description="Últimos eventos registrados na auditoria."
+          action={
+            <Link
+              to="/admin/auditoria"
+              className="text-sm font-semibold text-[color:var(--navy-deep)] hover:underline inline-flex items-center gap-1"
+            >
+              Ver tudo <Activity className="size-3.5" />
+            </Link>
+          }
+        >
         {activityQ.isLoading && <AdminSkeleton rows={6} />}
         {activityQ.isError && <AdminError message="Falha ao carregar atividade." />}
         {!activityQ.isLoading && (activityQ.data?.items ?? []).length === 0 && (
@@ -298,8 +299,9 @@ function DashboardPage() {
               </li>
             );
           })}
-        </ul>
-      </SectionCard>
+          </ul>
+        </SectionCard>
+      )}
 
       <p className="text-center text-xs text-muted-foreground pt-4">
         Dica: pressione <kbd className="rounded border border-border px-1 font-mono">⌘K</kbd> /{" "}

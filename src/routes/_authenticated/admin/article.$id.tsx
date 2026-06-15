@@ -13,6 +13,7 @@ import { SafeHtml, readingTimeMinutes } from "@/components/site/SafeHtml";
 import { laws } from "@/content/laws";
 import { nationalContext } from "@/content/nationalContext";
 import { risks } from "@/content/risks";
+import { useUserRole } from "@/hooks/useUserRole";
 
 export const Route = createFileRoute("/_authenticated/admin/article/$id")({
   head: () => ({
@@ -101,6 +102,7 @@ function ArticleEditor() {
   const getFn = useServerFn(getAdminArticle);
   const upsertFn = useServerFn(upsertAdminArticle);
   const isNew = id === "new";
+  const { isReviewer, isAdmin, isEditor } = useUserRole();
 
   const [form, setForm] = useState<FormState>(empty);
   const [error, setError] = useState<string | null>(null);
@@ -374,13 +376,26 @@ function ArticleEditor() {
                   value={form.status}
                   onChange={(e) => update("status", e.target.value as AdminArticle["status"])}
                   className={inputCls}
+                  disabled={isReviewer && (form.status === "published" || form.status === "archived")}
                 >
                   <option value="draft">Rascunho</option>
                   <option value="review">Em revisão</option>
-                  <option value="scheduled">Agendado</option>
-                  <option value="published">Publicado</option>
-                  <option value="archived">Arquivado</option>
+                  {!isReviewer && <option value="scheduled">Agendado</option>}
+                  {!isReviewer && <option value="published">Publicado</option>}
+                  {!isReviewer && <option value="archived">Arquivado</option>}
+                  
+                  {isReviewer && (form.status === "published" || form.status === "archived") && (
+                     <option value={form.status}>
+                       {form.status === "published" ? "Publicado" : "Arquivado"} (Bloqueado)
+                     </option>
+                  )}
                 </select>
+                {isReviewer && (
+                  <p className="mt-1 flex items-center gap-1.5 text-[11px] font-medium text-[color:var(--orange)]">
+                    <ShieldAlert className="size-3" />
+                    Como revisor, você só pode alterar rascunhos ou marcar como em revisão.
+                  </p>
+                )}
               </Field>
               <div className="grid sm:grid-cols-2 gap-4">
                 <Field label="Agendar publicação">
