@@ -13,6 +13,7 @@ import {
 import type { ReactNode } from "react";
 import { PageHero } from "@/components/public/PageHero";
 import { Reveal } from "@/components/shared/Reveal";
+import { FaqBlock } from "@/components/public/ArticleBlocks";
 import heroImg from "@/assets/hero-protection.jpg";
 
 const SITE_URL = "https://minhainfanciaprotegida.com.br";
@@ -209,6 +210,28 @@ function Page() {
           </aside>
         </Reveal>
       </article>
+
+      {/* FAQ Sobre */}
+      <section className="py-20 bg-background border-t border-border">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <FaqBlock
+            items={[
+              {
+                q: "O portal Minha Infância Protegida recebe denúncias ou faz investigações?",
+                a: "Não. Somos um portal focado exclusivamente na educação, prevenção e conscientização. Não recebemos nem investigamos denúncias. Para isso, encaminhamos os usuários aos canais oficiais e seguros do Estado brasileiro, como o Disque 100, 190 e SaferNet.",
+              },
+              {
+                q: "Como o projeto é financiado?",
+                a: "O portal é um projeto independente, sem fins lucrativos, comerciais ou políticos, desenvolvido e mantido voluntariamente. Não aceitamos doações em dinheiro. O objetivo é unicamente servir à sociedade.",
+              },
+              {
+                q: "Como posso ajudar o Infância Protegida?",
+                a: "A melhor forma de ajudar é compartilhando os materiais do portal. Envie os links para o grupo da escola, para outros pais e familiares. A informação e a conscientização são as ferramentas mais poderosas para quebrar o ciclo do abuso.",
+              },
+            ]}
+          />
+        </div>
+      </section>
     </>
   );
 }

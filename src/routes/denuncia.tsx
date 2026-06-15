@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Building2, ExternalLink, Globe, MessageCircle, Phone, Shield, ShieldAlert, Siren } from "lucide-react";
 import { Reveal } from "@/components/shared/Reveal";
 import { SectionHeader } from "@/components/shared/SectionHeader";
+import { FaqBlock } from "@/components/public/ArticleBlocks";
+import { JsonLd } from "@/components/shared/JsonLd";
 import { useState } from "react";
 
 export const Route = createFileRoute("/denuncia")({
@@ -100,6 +102,25 @@ const institutions = [
 
 function Page() {
   const [city, setCity] = useState("");
+
+  const faqData = [
+    {
+      q: "A denúncia é realmente anônima?",
+      a: "Sim. O Disque 100 garante o anonimato absoluto. O atendente não solicita seus dados pessoais, a não ser que você queira se identificar. O foco é na informação sobre a suspeita, não em quem está denunciando.",
+    },
+    {
+      q: "Quando devo ligar para o 190 (Polícia Militar) e quando ligo para o 100?",
+      a: "O 190 deve ser acionado em situações de emergência, quando o crime está ocorrendo naquele momento e há risco imediato à vida. O Disque 100 é voltado para denúncias investigativas de violações de direitos (suspeitas, situações recorrentes ou passadas) e para receber orientação.",
+    },
+    {
+      q: "Preciso ter certeza absoluta ou provas antes de denunciar?",
+      a: "Não. Você não precisa ser o investigador. Se você tem uma suspeita fundamentada ou notou sinais de alerta persistentes, o papel da rede de proteção (Conselho Tutelar, Polícia) é investigar. A sua ligação pode ser o único socorro da criança.",
+    },
+    {
+      q: "O que acontece depois que eu denuncio no Disque 100?",
+      a: "A central analisa o relato e o encaminha, em poucas horas, para a rede de proteção do município correspondente (geralmente o Conselho Tutelar e/ou a Polícia local) para que as providências sejam tomadas.",
+    },
+  ];
 
   return (
     <>
@@ -264,6 +285,28 @@ function Page() {
           </Reveal>
         </div>
       </section>
+
+      {/* FAQ */}
+      <section className="py-20 bg-background border-t border-border">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <FaqBlock items={faqData} />
+        </div>
+      </section>
+
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqData.map((qa) => ({
+            "@type": "Question",
+            name: qa.q,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: qa.a,
+            },
+          })),
+        }}
+      />
     </>
   );
 }

@@ -73,8 +73,8 @@ export const cases: CaseItem[] = [
     ],
   },
   {
-    slug: "caso-vitoria-mineblox-2025",
-    title: "Caso \"Mineblox\" — aliciamento de adolescente em comunidade de jogo online",
+    slug: "caso-vitoria-jogos-online-2025",
+    title: "Caso Vitória — aliciamento de adolescente em comunidade de jogo online",
     date: "2025-07-15",
     location: "Brasil",
     summary:
@@ -86,9 +86,9 @@ export const cases: CaseItem[] = [
     source: { name: "SaferNet Brasil — Indicadores", url: "https://new.safernet.org.br/helpline/indicadores" },
     body: `
       <h2>O esquema do aliciamento</h2>
-      <p>O caso conhecido como "Mineblox" envolveu uma adolescente brasileira, identificada apenas como Vitória, aliciada por um homem adulto após meses de contato em servidores ligados a jogos como Roblox/Mineblox e em canais do Discord. O agressor utilizou a estratégia clássica do <strong>grooming</strong>: ganho de confiança, presentes virtuais (skins, V-Bucks), isolamento emocional e migração da conversa para canais privados.</p>
+      <p>O caso envolveu uma adolescente brasileira, identificada apenas como Vitória, aliciada por um homem adulto após meses de contato em servidores ligados a jogos online com salas de bate-papo e em canais do Discord. O agressor utilizou a estratégia clássica do <strong>grooming</strong>: ganho de confiança, presentes virtuais (skins, V-Bucks), isolamento emocional e migração da conversa para canais privados.</p>
       <h2>Por que o caso virou paradigma</h2>
-      <p>Diferente de incidentes pontuais, "Mineblox" expôs uma rotina: comunidades inteiras criadas com a finalidade explícita de capturar crianças e adolescentes em torno de jogos. A SaferNet Brasil registrou, em 2024-2025, aumento de <strong>87% nas denúncias</strong> de aliciamento em plataformas de jogos.</p>
+      <p>Diferente de incidentes pontuais, este caso expôs uma rotina: comunidades inteiras criadas com a finalidade explícita de capturar crianças e adolescentes em torno de jogos. A SaferNet Brasil registrou, em 2024-2025, aumento de <strong>87% nas denúncias</strong> de aliciamento em plataformas de jogos.</p>
       <h2>Recomendações para famílias</h2>
       <ul>
         <li>Use os controles parentais nativos da plataforma (Roblox Account Restrictions, Discord Family Center).</li>

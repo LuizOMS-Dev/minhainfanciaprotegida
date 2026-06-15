@@ -14,6 +14,7 @@ import {
 import listeningImg from "@/assets/listening.jpg";
 import { Reveal } from "@/components/shared/Reveal";
 import { SectionHeader } from "@/components/shared/SectionHeader";
+import { FaqBlock } from "@/components/public/ArticleBlocks";
 
 export const Route = createFileRoute("/sinais")({
   head: () => ({
@@ -109,6 +110,28 @@ function Page() {
               .
             </p>
           </Reveal>
+        </div>
+      </section>
+
+      {/* FAQ Sinais */}
+      <section className="py-20 bg-background border-t border-border">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <FaqBlock
+            items={[
+              {
+                q: "Meu filho apresentou um desses sinais. É certeza que algo grave aconteceu?",
+                a: "Não. Sinais de ansiedade, mudanças de humor ou queda de rendimento escolar podem ter diversas causas, como bullying, mudança de escola ou conflitos familiares. O importante é não ignorar a mudança, oferecer um ambiente de escuta e buscar apoio para investigar a raiz do problema.",
+              },
+              {
+                q: "E se a criança negar ou ficar calada ao ser perguntada?",
+                a: "Nunca force a criança a falar nem realize interrogatórios. O medo e as ameaças do agressor muitas vezes impõem o silêncio. Deixe claro que ela está segura e que você acredita nela. Procure profissionais (psicólogos, Conselho Tutelar) capacitados para a escuta protegida.",
+              },
+              {
+                q: "A criança apontou alguém da família ou pessoa próxima. Devo acreditar?",
+                a: "Sim. A grande maioria dos casos de abuso ocorre dentro do círculo de confiança da criança. Desacreditar a vítima para proteger um adulto ou a imagem da família a deixa ainda mais vulnerável. Acolha o relato e busque ajuda da rede de proteção.",
+              },
+            ]}
+          />
         </div>
       </section>
 

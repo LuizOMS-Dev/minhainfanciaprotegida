@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Eye, Gamepad2, MessageCircle, ShieldCheck, Smartphone, Timer } from "lucide-react";
 import { Reveal } from "@/components/shared/Reveal";
 import { SectionHeader } from "@/components/shared/SectionHeader";
+import { FaqBlock } from "@/components/public/ArticleBlocks";
 import { ReferencesBlock } from "@/components/public/ReferencesBlock";
 import { JsonLd, articleSchema, breadcrumb } from "@/components/shared/JsonLd";
 import familyImg from "@/assets/family-dialogue.jpg";
@@ -210,6 +211,32 @@ function Page() {
               </Link>
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      {/* FAQ Pais */}
+      <section className="py-20 bg-background border-t border-border">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <FaqBlock
+            items={[
+              {
+                q: "A partir de que idade devo me preocupar com o que meu filho acessa?",
+                a: "Desde o primeiro contato com telas. Crianças pequenas podem acessar acidentalmente conteúdos inapropriados no YouTube ou jogos. A supervisão deve ser constante e adaptada à idade.",
+              },
+              {
+                q: "Proibir o uso do celular ou videogame é a melhor solução?",
+                a: "A proibição total muitas vezes leva o adolescente a usar escondido, sem a sua supervisão. O melhor caminho é o diálogo aberto, regras claras (como tempo de tela) e usar o controle parental.",
+              },
+              {
+                q: "E se eu descobrir que meu filho está conversando com um adulto estranho?",
+                a: "Mantenha a calma. Não brigue nem culpe a criança. Faça capturas de tela (prints) das conversas, não apague o aplicativo, bloqueie o contato e denuncie imediatamente (SaferNet ou Disque 100).",
+              },
+              {
+                q: "Como configuro o controle parental?",
+                a: "Cada sistema (Android via Family Link, iOS via Tempo de Uso) e aplicativo (Roblox, TikTok) tem suas próprias configurações nas abas de Privacidade ou Controle Parental. Use nosso guia acima para links diretos.",
+              },
+            ]}
+          />
         </div>
       </section>
 

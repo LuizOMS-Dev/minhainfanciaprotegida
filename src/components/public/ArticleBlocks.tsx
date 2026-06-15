@@ -1,6 +1,7 @@
 import { Info, Lightbulb, BookOpenCheck, ListChecks, ShieldAlert, Phone, MapPin, ArrowRight, GraduationCap, Home as HomeIcon, Wifi, Library, AlertCircle, AlertTriangle, BadgeCheck, CheckCircle2, Eye, TrendingUp } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { SafeHtml } from "@/components/shared/SafeHtml";
+import { JsonLd, faqSchema } from "@/components/shared/JsonLd";
 import type { LawItem } from "@/content/laws";
 import type { NationalContextItem } from "@/content/nationalContext";
 import type { RiskItem } from "@/content/risks";
@@ -314,32 +315,35 @@ export interface FaqQA { q: string; a: string }
 export function FaqBlock({ items }: { items: FaqQA[] }) {
   if (!items?.length) return null;
   return (
-    <section
-      aria-label="Perguntas frequentes"
-      className="mt-12 rounded-3xl border border-border bg-card p-6 sm:p-8"
-    >
-      <h2 className="font-display text-2xl font-bold text-[color:var(--navy-deep)]">
-        Perguntas frequentes
-      </h2>
-      <div className="mt-5 divide-y divide-border">
-        {items.map((qa, i) => (
-          <details key={i} className="group py-4">
-            <summary className="flex cursor-pointer list-none items-start justify-between gap-3 text-base font-semibold text-[color:var(--navy-deep)]">
-              <span className="leading-snug">{qa.q}</span>
-              <span
-                aria-hidden
-                className="mt-1 inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-[color:var(--orange)]/15 text-[color:var(--orange)] transition-transform group-open:rotate-45"
-              >
-                +
-              </span>
-            </summary>
-            <div className="mt-3 text-sm text-foreground/85 leading-relaxed">
-              <SafeHtml html={qa.a} />
-            </div>
-          </details>
-        ))}
-      </div>
-    </section>
+    <>
+      <JsonLd data={faqSchema(items)} />
+      <section
+        aria-label="Perguntas frequentes"
+        className="mt-12 rounded-3xl border border-border bg-card p-6 sm:p-8"
+      >
+        <h2 className="font-display text-2xl font-bold text-[color:var(--navy-deep)]">
+          Perguntas frequentes
+        </h2>
+        <div className="mt-5 divide-y divide-border">
+          {items.map((qa, i) => (
+            <details key={i} className="group py-4">
+              <summary className="flex cursor-pointer list-none items-start justify-between gap-3 text-base font-semibold text-[color:var(--navy-deep)]">
+                <span className="leading-snug">{qa.q}</span>
+                <span
+                  aria-hidden
+                  className="mt-1 inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-[color:var(--orange)]/15 text-[color:var(--orange)] transition-transform group-open:rotate-45"
+                >
+                  +
+                </span>
+              </summary>
+              <div className="mt-3 text-sm text-foreground/85 leading-relaxed">
+                <SafeHtml html={qa.a} />
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+    </>
   );
 }
 

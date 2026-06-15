@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ExternalLink, Phone, ShieldAlert } from "lucide-react";
 import { risks } from "@/content/risks";
 import { SectionHeader } from "@/components/shared/SectionHeader";
+import { FaqBlock } from "@/components/public/ArticleBlocks";
 import { Reveal } from "@/components/shared/Reveal";
 import { SourceTag } from "@/components/shared/SourceTag";
 import digitalImg from "@/assets/digital-safety.jpg";
@@ -54,7 +55,7 @@ function RiscosPage() {
           <Reveal delay={220}>
             <p className="mt-5 text-lg text-white/85 max-w-3xl leading-relaxed">
               Adultização, aliciamento em jogos, sextorsão e deepfakes feitos por IA estão entre as ameaças mais
-              graves do ambiente digital. Casos como <strong>Felca</strong> e <strong>Mineblox</strong> mostram
+              graves do ambiente digital. Casos recentes de repercussão nacional mostram
               que informação e ação rápida salvam vidas.
             </p>
           </Reveal>
@@ -174,6 +175,28 @@ function RiscosPage() {
               </div>
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      {/* FAQ Riscos Online */}
+      <section className="py-20 bg-background border-t border-border">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <FaqBlock
+            items={[
+              {
+                q: "Meu filho recebeu foto íntima de um colega. Se ele repassar só para os amigos, é crime?",
+                a: "Sim. O ECA (Art. 241-A) considera crime o compartilhamento, distribuição ou publicação de imagens ou vídeos íntimos de menores de 18 anos, mesmo que quem esteja repassando também seja adolescente (neste caso, responde por ato infracional). A orientação é não repassar, apagar o material e avisar um adulto responsável.",
+              },
+              {
+                q: "Como denunciar um perfil que está assediando meu filho em um jogo?",
+                a: "Não denuncie apenas dentro do jogo. Primeiro, tire prints de todas as conversas, do perfil do assediador e anote o ID/nome de usuário. Depois de preservar essas provas, bloqueie o contato no jogo e faça uma denúncia no portal da SaferNet ou um Boletim de Ocorrência na Polícia Civil.",
+              },
+              {
+                q: "O que fazer se imagens íntimas do meu filho vazarem na internet?",
+                a: "Aja rápido e acolha a vítima sem julgamentos. Não apague nada antes de salvar as provas (prints com URLs ou links visíveis). Registre um B.O. imediatamente. Com o B.O. em mãos, utilize os canais das próprias plataformas (Instagram, WhatsApp, etc.) para solicitar a remoção do conteúdo baseando-se em violação de regras e crime de pedofilia.",
+              },
+            ]}
+          />
         </div>
       </section>
     </>

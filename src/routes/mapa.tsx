@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Building2, Compass, ExternalLink, MapPin, Navigation, Phone, Search, Shield } from "lucide-react";
+import { Building2, Compass, ExternalLink, MapPin, Navigation, Phone, Search, Shield, Heart, GraduationCap, Activity, Users, Siren, Globe } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Reveal } from "@/components/shared/Reveal";
 import { SectionHeader } from "@/components/shared/SectionHeader";
@@ -107,6 +107,77 @@ function Page() {
         </div>
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 mt-3 text-xs text-muted-foreground">
           {list.length} {list.length === 1 ? "serviço encontrado" : "serviços encontrados"}
+        </div>
+      </section>
+
+      {/* BLOCO EDUCATIVO DA REDE */}
+      <section className="py-20 bg-[color:var(--orange-soft)]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeader
+            eyebrow="Trabalho em conjunto"
+            title="Como funciona a Rede de Proteção?"
+            description="A proteção da infância não é dever apenas da polícia ou do governo. É uma rede articulada onde cada pessoa e instituição tem um papel vital definido por lei."
+          />
+          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                icon: Heart,
+                title: "Família",
+                desc: "Primeiro núcleo de proteção. Tem o dever de assegurar um ambiente seguro, observar mudanças de comportamento, acolher sem julgamentos e pedir ajuda.",
+              },
+              {
+                icon: GraduationCap,
+                title: "Escola",
+                desc: "Ambiente fundamental. Educadores notam sinais (marcas físicas, isolamento) e têm a responsabilidade de acionar o Conselho Tutelar de forma protocolar.",
+              },
+              {
+                icon: Shield,
+                title: "Conselho Tutelar",
+                desc: "Recebe denúncias de ameaça ou violação de direitos, requisita serviços públicos e aplica medidas de proteção. É a porta de entrada da rede.",
+              },
+              {
+                icon: Activity,
+                title: "Saúde",
+                desc: "Hospitais, UBS e CAPs. Além do atendimento, profissionais de saúde têm o dever de notificação compulsória em casos suspeitos de violência.",
+              },
+              {
+                icon: Users,
+                title: "Assistência Social",
+                desc: "CRAS e CREAS acompanham famílias em situação de vulnerabilidade, oferecendo suporte psicológico e social para romper o ciclo de violência.",
+              },
+              {
+                icon: Siren,
+                title: "Segurança Pública",
+                desc: "Delegacias e Polícia Militar. Atuam na repressão, investigação de crimes, prisões em flagrante e garantia de medidas protetivas emergenciais.",
+              },
+              {
+                icon: Building2,
+                title: "Ministério Público",
+                desc: "Fiscal da lei. Pode instaurar inquéritos, propor ações penais contra agressores e exigir do Estado o cumprimento de políticas públicas.",
+              },
+              {
+                icon: Globe,
+                title: "Comunidade",
+                desc: "Vizinhos, líderes e sociedade. O dever legal de denunciar (Disque 100) e não se omitir diante de violações é responsabilidade de todo cidadão.",
+              },
+            ].map((actor, i) => (
+              <Reveal key={actor.title} delay={i * 40}>
+                <article className="h-full rounded-2xl border border-[color:var(--orange)]/20 bg-background p-6 hover-lift">
+                  <div className="flex items-center gap-3">
+                    <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-[color:var(--orange)] text-[color:var(--navy-deep)]">
+                      <actor.icon className="size-5" aria-hidden />
+                    </span>
+                    <h3 className="font-display text-lg font-semibold text-[color:var(--navy-deep)]">
+                      {actor.title}
+                    </h3>
+                  </div>
+                  <p className="mt-4 text-sm text-foreground/80 leading-relaxed">
+                    {actor.desc}
+                  </p>
+                </article>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 

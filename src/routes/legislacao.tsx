@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { BookMarked, ExternalLink, Gavel, Scale } from "lucide-react";
 import { Reveal } from "@/components/shared/Reveal";
 import { SectionHeader } from "@/components/shared/SectionHeader";
+import { FaqBlock } from "@/components/public/ArticleBlocks";
 import { PageHero } from "@/components/public/PageHero";
 import heroLegislacao from "@/assets/hero-legislacao.jpg";
 
@@ -148,6 +149,28 @@ function Page() {
               </div>
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      {/* FAQ Legislação */}
+      <section className="py-20 bg-background border-t border-border">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <FaqBlock
+            items={[
+              {
+                q: "Qual a diferença entre o ECA e a Constituição Federal na proteção da infância?",
+                a: "A Constituição Federal (Art. 227) estabelece o princípio da 'Prioridade Absoluta', dizendo que é dever de todos proteger a criança. O ECA (Estatuto da Criança e do Adolescente) é a lei que regulamenta como essa proteção deve ser feita na prática, estabelecendo os mecanismos, direitos e punições.",
+              },
+              {
+                q: "O que mudou com a Lei Henry Borel?",
+                a: "A Lei 14.344/2022 (Lei Henry Borel) aumentou penas para quem se omite diante de violência e criou mecanismos semelhantes à Lei Maria da Penha (como medidas protetivas de urgência com afastamento do agressor) especificamente para crianças e adolescentes em situação de violência doméstica e familiar.",
+              },
+              {
+                q: "Como a lei brasileira lida com a violência no ambiente digital?",
+                a: "O ECA criminaliza a produção, posse e compartilhamento de material de abuso sexual infantil (Art. 240, 241, 241-A). Adicionalmente, leis recentes como o 'ECA Digital' e decisões judiciais baseadas no Marco Civil da Internet exigem que plataformas atuem para coibir e remover conteúdos ilícitos rapidamente.",
+              },
+            ]}
+          />
         </div>
       </section>
     </>

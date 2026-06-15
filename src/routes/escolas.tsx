@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { BookMarked, ClipboardList, GraduationCap, ShieldCheck, UsersRound } from "lucide-react";
 import { Reveal } from "@/components/shared/Reveal";
 import { SectionHeader } from "@/components/shared/SectionHeader";
+import { FaqBlock } from "@/components/public/ArticleBlocks";
 import { ReferencesBlock } from "@/components/public/ReferencesBlock";
 import { JsonLd, articleSchema, breadcrumb } from "@/components/shared/JsonLd";
 import { PageHero } from "@/components/public/PageHero";
@@ -115,6 +116,28 @@ function Page() {
               </p>
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      {/* FAQ Escolas */}
+      <section className="py-20 bg-background border-b border-border">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <FaqBlock
+            items={[
+              {
+                q: "Sou obrigado a denunciar se tiver uma suspeita, mas não certeza?",
+                a: "Sim. O ECA (Art. 245) estabelece como infração administrativa a omissão do profissional de educação ou saúde que não comunica à autoridade competente (Conselho Tutelar) os casos de suspeita ou confirmação de maus-tratos. Você não precisa ter provas, apenas uma suspeita fundamentada.",
+              },
+              {
+                q: "Devo conversar com os pais do aluno antes de denunciar?",
+                a: "Depende de quem é o suspeito. Se a suspeita recai sobre familiares ou pessoas do convívio da casa, avisar a família pode colocar a criança em risco imediato de ocultação de provas ou violência mais grave. Nesses casos, acione diretamente o Conselho Tutelar de forma sigilosa.",
+              },
+              {
+                q: "A escola precisa investigar ou reunir provas do crime?",
+                a: "Não. A escola acolhe a criança, realiza a escuta sem julgamentos ou interrogatório, registra a suspeita e encaminha. A investigação criminal é atribuição exclusiva da Polícia, e a verificação social é do Conselho Tutelar. O papel do educador é garantir o primeiro socorro institucional.",
+              },
+            ]}
+          />
         </div>
       </section>
 

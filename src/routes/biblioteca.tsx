@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
-import { BookMarked, ExternalLink, FileText, Filter, Search } from "lucide-react";
+import { BookMarked, ExternalLink, FileText, Filter, Search, Bookmark } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Reveal } from "@/components/shared/Reveal";
 import { PageHero } from "@/components/public/PageHero";
@@ -122,58 +122,107 @@ function Page() {
 
       <section className="py-16 bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {list.map((i, idx) => (
-              <Reveal key={i.slug} delay={idx * 40}>
-                <article className="h-full rounded-2xl border border-border bg-card p-6 hover-lift flex flex-col">
-                  <div className="flex items-start justify-between gap-3">
-                    <span className="inline-flex size-11 items-center justify-center rounded-xl bg-gradient-orange text-[color:var(--navy-deep)]">
-                      <FileText className="size-5" aria-hidden />
-                    </span>
-                    <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                      {i.category} · {i.year}
-                    </span>
-                  </div>
-                  <Link
-                    to="/biblioteca/$slug"
-                    params={{ slug: i.slug }}
-                    className="mt-4 font-display text-lg font-semibold leading-snug hover:text-[color:var(--orange)] transition-colors"
-                  >
-                    {i.title}
-                  </Link>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-1">{i.description}</p>
-                  <div className="mt-4 pt-4 border-t border-border flex items-center justify-between gap-2">
-                    <span className="text-xs text-muted-foreground min-w-0">
-                      <span className="font-semibold text-foreground block truncate">{i.sourceOrg}</span>
-                      Público: {i.audience}
-                    </span>
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      <Link
-                        to="/biblioteca/$slug"
-                        params={{ slug: i.slug }}
-                        className="inline-flex items-center rounded-full border border-border bg-background px-3 py-1.5 text-xs font-semibold hover:bg-muted"
-                      >
-                        Ver
-                      </Link>
-                      <a
-                        href={i.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-3 py-1.5 text-xs font-semibold hover:opacity-95"
-                        aria-label={`Acessar ${i.title} (fonte oficial)`}
-                      >
-                        <ExternalLink className="size-3" />
-                      </a>
+          {(() => {
+            const visualCategories = [
+              { id: "familias", label: "Guias para famílias", filter: (i: LibraryItem) => i.audience === "Famílias" },
+              { id: "escolas", label: "Guias para escolas", filter: (i: LibraryItem) => i.audience === "Educadores" },
+              { id: "digital", label: "Segurança digital", filter: (i: LibraryItem) => i.slug.includes("safernet") || i.title.includes("digital") || i.title.toLowerCase().includes("online") },
+              { id: "sinais", label: "Sinais de alerta", filter: (i: LibraryItem) => i.slug.includes("sinais") || i.title.includes("Sinais") || i.description.includes("sinais") },
+              { id: "legislacao", label: "Legislação", filter: (i: LibraryItem) => i.slug.includes("lei") || i.title.includes("ECA") || i.title.includes("Convenção") },
+              { id: "denuncia", label: "Como denunciar", filter: (i: LibraryItem) => i.slug.includes("disque") || i.title.toLowerCase().includes("denúncia") || i.description.toLowerCase().includes("denúncia") },
+              { id: "apoio", label: "Materiais de apoio", filter: (i: LibraryItem) => i.audience === "Profissionais" || i.category === "Pesquisa" || i.category === "Estudo" },
+            ];
+
+            // Deduplicate items so an item only appears in its first matching category
+            const usedSlugs = new Set<string>();
+            const groupedList = visualCategories.map((cat) => {
+              const matched = list.filter((i) => {
+                if (usedSlugs.has(i.slug)) return false;
+                if (cat.filter(i)) {
+                  usedSlugs.add(i.slug);
+                  return true;
+                }
+                return false;
+              });
+              return { ...cat, items: matched };
+            }).filter((g) => g.items.length > 0);
+
+            // Any remaining items that didn't fit categories go to "Outros materiais"
+            const remaining = list.filter((i) => !usedSlugs.has(i.slug));
+            if (remaining.length > 0) {
+              groupedList.push({ id: "outros", label: "Outros materiais", filter: () => true, items: remaining });
+            }
+
+            if (groupedList.length === 0) {
+              return (
+                <div className="rounded-2xl border border-dashed border-border bg-card p-10 text-center text-muted-foreground">
+                  <p className="text-lg font-medium text-foreground">Nenhum material encontrado.</p>
+                  <p className="mt-2 text-sm">Tente limpar os filtros de busca para ver todas as categorias.</p>
+                </div>
+              );
+            }
+
+            return (
+              <div className="space-y-16">
+                {groupedList.map((group) => (
+                  <div key={group.id}>
+                    <h2 className="font-display text-2xl font-bold mb-6 flex items-center gap-2 text-[color:var(--navy-deep)]">
+                      <Bookmark className="size-5 text-[color:var(--orange)]" aria-hidden />
+                      {group.label}
+                    </h2>
+                    <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                      {group.items.map((i, idx) => (
+                        <Reveal key={i.slug} delay={idx * 40}>
+                          <article className="h-full rounded-2xl border border-border bg-card p-6 hover-lift flex flex-col">
+                            <div className="flex items-start justify-between gap-3">
+                              <span className="inline-flex size-11 items-center justify-center rounded-xl bg-gradient-orange text-[color:var(--navy-deep)]">
+                                <FileText className="size-5" aria-hidden />
+                              </span>
+                              <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground text-right">
+                                {i.category} · {i.year}
+                              </span>
+                            </div>
+                            <Link
+                              to="/biblioteca/$slug"
+                              params={{ slug: i.slug }}
+                              className="mt-4 font-display text-lg font-semibold leading-snug hover:text-[color:var(--orange)] transition-colors"
+                            >
+                              {i.title}
+                            </Link>
+                            <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-1">{i.description}</p>
+                            <div className="mt-4 pt-4 border-t border-border flex flex-wrap items-center justify-between gap-3">
+                              <span className="text-xs text-muted-foreground min-w-0">
+                                <span className="font-semibold text-foreground block truncate">{i.sourceOrg}</span>
+                                Público: {i.audience}
+                              </span>
+                              <div className="flex items-center gap-1.5 shrink-0">
+                                <Link
+                                  to="/biblioteca/$slug"
+                                  params={{ slug: i.slug }}
+                                  className="inline-flex items-center rounded-full border border-border bg-background px-3 py-1.5 text-xs font-semibold hover:bg-muted"
+                                >
+                                  Ver
+                                </Link>
+                                <a
+                                  href={i.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-3 py-1.5 text-xs font-semibold hover:opacity-95"
+                                  aria-label={`Acessar ${i.title} (fonte oficial)`}
+                                >
+                                  <ExternalLink className="size-3" />
+                                </a>
+                              </div>
+                            </div>
+                          </article>
+                        </Reveal>
+                      ))}
                     </div>
                   </div>
-                </article>
-              </Reveal>
-            ))}
-          </div>
-
-          {list.length === 0 && (
-            <p className="text-center text-muted-foreground py-16">Nenhum material encontrado com esses filtros.</p>
-          )}
+                ))}
+              </div>
+            );
+          })()}
         </div>
       </section>
 

@@ -2,8 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { Newspaper } from "lucide-react";
+import { Newspaper, ArrowRight, ShieldCheck, Scale, BookOpen, Phone } from "lucide-react";
 import { news } from "@/content/news";
+import { FaqBlock } from "@/components/public/ArticleBlocks";
 import { ArticleCard } from "@/components/public/ArticleCard";
 import { Reveal } from "@/components/shared/Reveal";
 import { PageHero } from "@/components/public/PageHero";
@@ -139,6 +140,94 @@ function NoticiasPage() {
           </div>
         </div>
       </section>
+
+      {/* FAQ */}
+      <section className="py-20 bg-background border-t border-border">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <FaqBlock
+            items={[
+              {
+                q: "Qual a fonte das notícias publicadas aqui?",
+                a: "Apenas fontes oficiais, como Ministérios (MDHC, Ministério da Justiça), Polícia Federal, ONGs reconhecidas (SaferNet, Childhood Brasil) e portais governamentais.",
+              },
+              {
+                q: "Vocês publicam casos em andamento?",
+                a: "Para proteger as vítimas e não atrapalhar investigações, não fazemos cobertura jornalística de casos em tempo real. Publicamos apenas atualizações legislativas, operações policiais deflagradas ou pesquisas consolidadas.",
+              },
+              {
+                q: "Como posso denunciar algo que vi nas notícias?",
+                a: "Qualquer violação de direitos humanos na internet pode ser denunciada anonimamente pelo portal da SaferNet ou pelo Disque 100. Em caso de emergência, ligue 190.",
+              },
+            ]}
+          />
+        </div>
+      </section>
+
+      <InstitutionalStripe />
     </>
+  );
+}
+
+function InstitutionalStripe() {
+  return (
+    <section className="bg-[color:var(--navy-deep)] text-white py-12 sm:py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid gap-6 md:grid-cols-3">
+        <StripeCard
+          icon={ShieldCheck}
+          title="Nossa metodologia"
+          description="Entenda os critérios de seleção e curadoria do conteúdo antes da publicação."
+          to="/metodologia"
+          cta="Ver metodologia"
+        />
+        <StripeCard
+          icon={Phone}
+          title="Canais de denúncia"
+          description="Saiba como e onde denunciar anonimamente situações de risco ou suspeitas."
+          to="/denuncia"
+          cta="Acessar canais"
+        />
+        <StripeCard
+          icon={Scale}
+          title="Legislação"
+          description="O que dizem as leis brasileiras sobre os crimes relatados."
+          to="/legislacao"
+          cta="Ver leis"
+        />
+      </div>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8 flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-white/60">
+        <BookOpen className="size-3.5 text-[color:var(--orange)]" aria-hidden />
+        Portal educativo e independente · Sem fins lucrativos
+      </div>
+    </section>
+  );
+}
+
+function StripeCard({
+  icon: Icon,
+  title,
+  description,
+  to,
+  cta,
+}: {
+  icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
+  title: string;
+  description: string;
+  to: string;
+  cta: string;
+}) {
+  return (
+    <Link
+      to={to}
+      className="group flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur transition hover:border-[color:var(--orange)]/60 hover:bg-white/[0.07]"
+    >
+      <span className="inline-flex size-10 items-center justify-center rounded-xl bg-[color:var(--orange)] text-[color:var(--navy-deep)]">
+        <Icon className="size-5" aria-hidden />
+      </span>
+      <h3 className="font-display text-xl font-bold leading-tight">{title}</h3>
+      <p className="text-sm text-white/80 leading-relaxed">{description}</p>
+      <span className="mt-2 inline-flex items-center gap-1 text-xs font-bold uppercase tracking-[0.2em] text-[color:var(--orange)]">
+        {cta} <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
+      </span>
+    </Link>
   );
 }

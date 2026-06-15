@@ -346,7 +346,7 @@ function Index() {
             {[
               { to: "/maio-laranja", icon: Heart, title: "Maio Laranja", desc: "Origem, história e por que o dia 18 de maio importa.", img: ribbonImg },
               { to: "/sinais", icon: Eye, title: "Identificar Sinais", desc: "Mudanças de comportamento que merecem atenção.", img: joyImg },
-              { to: "/riscos-online", icon: Wifi, title: "Riscos Online", desc: "Adultização, grooming e deepfakes — casos Felca e Mineblox.", img: silenceImg },
+              { to: "/riscos-online", icon: Wifi, title: "Riscos Online", desc: "Adultização, grooming e deepfakes em jogos e redes sociais.", img: silenceImg },
               { to: "/pais", icon: Users, title: "Para Pais", desc: "Controle parental e configurações em Roblox, Discord, TikTok e mais.", img: joyImg },
               { to: "/escolas", icon: GraduationCap, title: "Para Escolas", desc: "Protocolo de suspeita e escuta protegida para educadores.", img: heroImg },
               { to: "/biblioteca", icon: Library, title: "Biblioteca", desc: "Cartilhas e estudos oficiais (UNICEF, SaferNet, MDHC).", img: ribbonImg },
