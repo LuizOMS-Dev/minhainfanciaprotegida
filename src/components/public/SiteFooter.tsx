@@ -99,6 +99,7 @@ export function SiteFooter() {
               ["/metodologia", "Metodologia"],
               ["/fontes", "Fontes utilizadas"],
               ["/faq", "FAQ"],
+              ["/atualizacoes", "Atualizações"],
             ].map(([to, label]) => (
               <li key={to}>
                 <Link to={to} className="opacity-80 hover:opacity-100 hover:text-[color:var(--orange)] transition-colors">

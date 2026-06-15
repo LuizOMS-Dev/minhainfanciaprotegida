@@ -29,6 +29,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/objetivos", changefreq: "monthly", priority: "0.6", lastmod: today },
           { path: "/metodologia", changefreq: "monthly", priority: "0.6", lastmod: today },
           { path: "/fontes", changefreq: "monthly", priority: "0.6", lastmod: today },
+          { path: "/atualizacoes", changefreq: "monthly", priority: "0.7", lastmod: today },
         ];
 
         // Conteúdo dinâmico — Notícias e Casos publicados no banco.

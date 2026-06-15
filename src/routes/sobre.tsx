@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   BookOpen,
   CheckCircle2,
@@ -9,6 +9,7 @@ import {
   Sparkles,
   Target,
   UserCircle2,
+  History,
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { PageHero } from "@/components/public/PageHero";
@@ -208,6 +209,19 @@ function Page() {
               — Luiz, criador do Infância Protegida
             </p>
           </aside>
+        </Reveal>
+
+        {/* Link para Atualizações */}
+        <Reveal delay={150}>
+          <div className="mt-12 flex justify-center">
+            <Link
+              to="/atualizacoes"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold text-[color:var(--navy-deep)] hover:bg-muted transition"
+            >
+              <History className="size-4 text-[color:var(--orange)]" aria-hidden />
+              Ver histórico de atualizações
+            </Link>
+          </div>
         </Reveal>
       </article>
 

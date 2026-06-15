@@ -29,6 +29,7 @@ import { Route as ComoAjudarRouteImport } from './routes/como-ajudar'
 import { Route as CasosRouteImport } from './routes/casos'
 import { Route as BibliotecaRouteImport } from './routes/biblioteca'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AtualizacoesRouteImport } from './routes/atualizacoes'
 import { Route as AssistenteRouteImport } from './routes/assistente'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -152,6 +153,11 @@ const BibliotecaRoute = BibliotecaRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AtualizacoesRoute = AtualizacoesRouteImport.update({
+  id: '/atualizacoes',
+  path: '/atualizacoes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AssistenteRoute = AssistenteRouteImport.update({
@@ -288,6 +294,7 @@ const AuthenticatedAdminArticleIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/assistente': typeof AssistenteRouteWithChildren
+  '/atualizacoes': typeof AtualizacoesRoute
   '/auth': typeof AuthRoute
   '/biblioteca': typeof BibliotecaRouteWithChildren
   '/casos': typeof CasosRouteWithChildren
@@ -333,6 +340,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/assistente': typeof AssistenteRouteWithChildren
+  '/atualizacoes': typeof AtualizacoesRoute
   '/auth': typeof AuthRoute
   '/biblioteca': typeof BibliotecaRouteWithChildren
   '/como-ajudar': typeof ComoAjudarRoute
@@ -377,6 +385,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/assistente': typeof AssistenteRouteWithChildren
+  '/atualizacoes': typeof AtualizacoesRoute
   '/auth': typeof AuthRoute
   '/biblioteca': typeof BibliotecaRouteWithChildren
   '/casos': typeof CasosRouteWithChildren
@@ -424,6 +433,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/assistente'
+    | '/atualizacoes'
     | '/auth'
     | '/biblioteca'
     | '/casos'
@@ -469,6 +479,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/assistente'
+    | '/atualizacoes'
     | '/auth'
     | '/biblioteca'
     | '/como-ajudar'
@@ -512,6 +523,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/assistente'
+    | '/atualizacoes'
     | '/auth'
     | '/biblioteca'
     | '/casos'
@@ -559,6 +571,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AssistenteRoute: typeof AssistenteRouteWithChildren
+  AtualizacoesRoute: typeof AtualizacoesRoute
   AuthRoute: typeof AuthRoute
   BibliotecaRoute: typeof BibliotecaRouteWithChildren
   CasosRoute: typeof CasosRouteWithChildren
@@ -722,6 +735,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/atualizacoes': {
+      id: '/atualizacoes'
+      path: '/atualizacoes'
+      fullPath: '/atualizacoes'
+      preLoaderRoute: typeof AtualizacoesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/assistente': {
@@ -999,6 +1019,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AssistenteRoute: AssistenteRouteWithChildren,
+  AtualizacoesRoute: AtualizacoesRoute,
   AuthRoute: AuthRoute,
   BibliotecaRoute: BibliotecaRouteWithChildren,
   CasosRoute: CasosRouteWithChildren,
