@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { MonitorSmartphone } from "lucide-react";
-import { listAdminSessions } from "@/lib/security.functions";
+import { listAdminSessions } from "@/services/authService";
 
 export const Route = createFileRoute("/_authenticated/admin/sessoes")({
   head: () => ({

@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Eye, Gamepad2, MessageCircle, ShieldCheck, Smartphone, Timer } from "lucide-react";
-import { Reveal } from "@/components/site/Reveal";
-import { SectionHeader } from "@/components/site/SectionHeader";
-import { ReferencesBlock } from "@/components/site/ReferencesBlock";
-import { JsonLd, articleSchema, breadcrumb } from "@/components/site/JsonLd";
+import { Reveal } from "@/components/shared/Reveal";
+import { SectionHeader } from "@/components/shared/SectionHeader";
+import { ReferencesBlock } from "@/components/public/ReferencesBlock";
+import { JsonLd, articleSchema, breadcrumb } from "@/components/shared/JsonLd";
 import familyImg from "@/assets/family-dialogue.jpg";
 import digitalImg from "@/assets/digital-safety.jpg";
 

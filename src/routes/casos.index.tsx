@@ -4,11 +4,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { ArrowRight, ShieldCheck, Scale, BookOpen, Phone } from "lucide-react";
 import { cases } from "@/content/cases";
-import { CaseCard } from "@/components/site/CaseCard";
-import { CasosHero } from "@/components/site/CasosHero";
-import { CasosFilters, type SeverityFilter } from "@/components/site/CasosFilters";
-import { Reveal } from "@/components/site/Reveal";
-import { listPublishedArticles } from "@/lib/content.functions";
+import { CaseCard } from "@/components/public/CaseCard";
+import { CasosHero } from "@/components/public/CasosHero";
+import { CasosFilters, type SeverityFilter } from "@/components/public/CasosFilters";
+import { Reveal } from "@/components/shared/Reveal";
+import { listPublishedArticles } from "@/services/articleService";
 import journalismImg from "@/assets/journalism.jpg";
 
 export const Route = createFileRoute("/casos/")({

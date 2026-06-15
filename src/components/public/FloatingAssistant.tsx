@@ -1,7 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { MessageCircleHeart, X } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { AssistantChat } from "@/components/site/AssistantChat";
+import { AssistantChat } from "@/components/public/AssistantChat";
 import { useChatThreads } from "@/hooks/use-chat-threads";
 
 const QUICK_THREAD_KEY = "mip.chat.quickThreadId";

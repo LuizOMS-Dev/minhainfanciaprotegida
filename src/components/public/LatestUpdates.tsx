@@ -2,9 +2,9 @@ import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, Calendar } from "lucide-react";
-import { listLatestForHome } from "@/lib/content.functions";
-import { SectionHeader } from "./SectionHeader";
-import { Reveal } from "./Reveal";
+import { listLatestForHome } from "@/services/articleService";
+import { SectionHeader } from "@/components/shared/SectionHeader";
+import { Reveal } from "@/components/shared/Reveal";
 
 const fmt = new Intl.DateTimeFormat("pt-BR", {
   day: "2-digit",

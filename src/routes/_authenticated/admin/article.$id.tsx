@@ -7,9 +7,9 @@ import {
   getAdminArticle,
   upsertAdminArticle,
   type AdminArticle,
-} from "@/lib/admin.functions";
-import { RichTextEditor } from "@/components/site/RichTextEditor";
-import { SafeHtml, readingTimeMinutes } from "@/components/site/SafeHtml";
+} from "@/services/articleService";
+import { RichTextEditor } from "@/components/forms/RichTextEditor";
+import { SafeHtml, readingTimeMinutes } from "@/components/shared/SafeHtml";
 import { laws } from "@/content/laws";
 import { nationalContext } from "@/content/nationalContext";
 import { risks } from "@/content/risks";

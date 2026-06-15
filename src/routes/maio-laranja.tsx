@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CalendarDays, ExternalLink, Flame, Goal, HeartHandshake, Users } from "lucide-react";
 import ribbonImg from "@/assets/ribbon.jpg";
-import { Reveal } from "@/components/site/Reveal";
-import { SectionHeader } from "@/components/site/SectionHeader";
+import { Reveal } from "@/components/shared/Reveal";
+import { SectionHeader } from "@/components/shared/SectionHeader";
 
 export const Route = createFileRoute("/maio-laranja")({
   head: () => ({

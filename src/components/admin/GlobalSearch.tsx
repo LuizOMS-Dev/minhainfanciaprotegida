@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Search, X, BookOpen, MapPin, Newspaper, Users } from "lucide-react";
-import { adminGlobalSearch, type GlobalSearchResult } from "@/lib/admin-overview.functions";
+import { adminGlobalSearch, type GlobalSearchResult } from "@/services/dashboardService";
 
 export function GlobalSearch() {
   const [open, setOpen] = useState(false);

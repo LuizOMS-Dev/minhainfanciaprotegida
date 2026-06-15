@@ -18,7 +18,7 @@ import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
-import { recordAdminLogout } from "@/lib/security.functions";
+import { recordAdminLogout } from "@/services/authService";
 import { GlobalSearch } from "@/components/admin/GlobalSearch";
 import { useUserRole } from "@/hooks/useUserRole";
 

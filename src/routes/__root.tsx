@@ -11,10 +11,10 @@ import { useEffect, type ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import appCss from "../styles.css?url";
-import { SiteHeader } from "../components/site/SiteHeader";
-import { FloatingAssistant } from "../components/site/FloatingAssistant";
-import { SiteFooter } from "../components/site/SiteFooter";
-import { SkipLink } from "../components/site/SkipLink";
+import { SiteHeader } from "@/components/public/SiteHeader";
+import { FloatingAssistant } from "@/components/public/FloatingAssistant";
+import { SiteFooter } from "@/components/public/SiteFooter";
+import { SkipLink } from "@/components/shared/SkipLink";
 import { PublicLayout } from "../components/layout/PublicLayout";
 import { AuthLayout } from "../components/layout/AuthLayout";
 import {

@@ -20,11 +20,8 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
-import {
-  getAdminOverview,
-  getRecentActivity,
-  type RecentActivityItem,
-} from "@/lib/admin-overview.functions";
+import { type RecentActivityItem } from "@/services/dashboardService";
+import { useDashboardOverview, useDashboardActivity } from "@/hooks/useDashboard";
 import {
   AdminError,
   AdminSkeleton,
@@ -105,18 +102,8 @@ function categoryFor(action: string): { label: string; color: string } {
 }
 
 function DashboardPage() {
-  const overviewFn = useServerFn(getAdminOverview);
-  const activityFn = useServerFn(getRecentActivity);
-  const overviewQ = useQuery({
-    queryKey: ["admin-overview"],
-    queryFn: () => overviewFn(),
-    refetchInterval: 60_000,
-  });
-  const activityQ = useQuery({
-    queryKey: ["admin-recent-activity"],
-    queryFn: () => activityFn({ data: { limit: 15 } }),
-    refetchInterval: 60_000,
-  });
+  const overviewQ = useDashboardOverview();
+  const activityQ = useDashboardActivity(15);
   const { roles, isAdmin, isEditor, isReviewer } = useUserRole();
   const canEdit = isAdmin || isEditor;
 

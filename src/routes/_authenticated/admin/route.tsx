@@ -4,8 +4,8 @@ import {
   redirect,
 } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
-import { getMyRoles } from "@/lib/admin.functions";
-import { recordUnauthorizedAccess } from "@/lib/audit.functions";
+import { getMyRoles } from "@/services/articleService";
+import { recordUnauthorizedAccess } from "@/services/auditService";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 import { ProtectedRoute } from "@/components/layout/ProtectedRoute";
 

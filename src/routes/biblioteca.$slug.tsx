@@ -1,10 +1,10 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { ArrowLeft, BookMarked, Calendar, Download, ExternalLink, Tag, Users } from "lucide-react";
 import { library } from "@/content/library";
-import { SafeHtml } from "@/components/site/SafeHtml";
-import { ReferencesBlock } from "@/components/site/ReferencesBlock";
-import { JsonLd } from "@/components/site/JsonLd";
-import { ShareButtons } from "@/components/site/ShareButtons";
+import { SafeHtml } from "@/components/shared/SafeHtml";
+import { ReferencesBlock } from "@/components/public/ReferencesBlock";
+import { JsonLd } from "@/components/shared/JsonLd";
+import { ShareButtons } from "@/components/shared/ShareButtons";
 
 const SITE = "https://minhainfanciaprotegida.com.br";
 

@@ -10,8 +10,8 @@ import {
   getTurnstileSiteKey,
   recordLoginAttemptV2,
   recordMfaEvent,
-} from "@/lib/security.functions";
-import { Turnstile } from "@/components/site/Turnstile";
+} from "@/services/authService";
+import { Turnstile } from "@/components/forms/Turnstile";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({

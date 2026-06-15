@@ -3,11 +3,11 @@ import { useEffect, useState, type FormEvent } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { ShieldCheck, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { recordMfaEvent } from "@/lib/security.functions";
+import { recordMfaEvent } from "@/services/authService";
 import {
   generateRecoveryCodes,
   getRecoveryCodesStatus,
-} from "@/lib/recovery-codes.functions";
+} from "@/services/recoveryService";
 
 export const Route = createFileRoute("/_authenticated/admin/mfa")({
   head: () => ({

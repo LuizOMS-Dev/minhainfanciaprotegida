@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Ear, Heart, Phone, Shield, ShieldCheck, Sparkles } from "lucide-react";
 import supportImg from "@/assets/support.jpg";
-import { Reveal } from "@/components/site/Reveal";
-import { SectionHeader } from "@/components/site/SectionHeader";
+import { Reveal } from "@/components/shared/Reveal";
+import { SectionHeader } from "@/components/shared/SectionHeader";
 
 export const Route = createFileRoute("/como-ajudar")({
   head: () => ({

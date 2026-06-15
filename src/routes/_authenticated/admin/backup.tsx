@@ -12,8 +12,8 @@ import {
   ScrollText,
   Users,
 } from "lucide-react";
-import { exportDataset } from "@/lib/security.functions";
-import { listAuditLog } from "@/lib/audit.functions";
+import { exportDataset } from "@/services/authService";
+import { listAuditLog } from "@/services/auditService";
 import { AdminError, SectionCard } from "@/components/admin/AdminUI";
 
 export const Route = createFileRoute("/_authenticated/admin/backup")({

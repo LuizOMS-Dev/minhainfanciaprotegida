@@ -6,19 +6,19 @@ import {
   listRelatedArticles,
   getArticleSiblings,
   getArticleRelations,
-} from "@/lib/content.functions";
-import { ReferencesBlock } from "@/components/site/ReferencesBlock";
-import { JsonLd } from "@/components/site/JsonLd";
-import { SafeHtml, readingTimeMinutes } from "@/components/site/SafeHtml";
-import { ShareButtons } from "@/components/site/ShareButtons";
-import { RelatedArticles, ArticleSiblingNav } from "@/components/site/RelatedArticles";
-import { Timeline } from "@/components/site/Timeline";
-import { CaseActions } from "@/components/site/CaseActions";
-import { ArticleHero } from "@/components/site/ArticleHero";
-import { CaseSidebar } from "@/components/site/CaseSidebar";
-import { ExecutiveSummaryBlock } from "@/components/site/ExecutiveSummaryBlock";
-import { WhyItMattersBlock } from "@/components/site/WhyItMattersBlock";
-import { HowToActBlock } from "@/components/site/HowToActBlock";
+} from "@/services/articleService";
+import { ReferencesBlock } from "@/components/public/ReferencesBlock";
+import { JsonLd } from "@/components/shared/JsonLd";
+import { SafeHtml, readingTimeMinutes } from "@/components/shared/SafeHtml";
+import { ShareButtons } from "@/components/shared/ShareButtons";
+import { RelatedArticles, ArticleSiblingNav } from "@/components/public/RelatedArticles";
+import { Timeline } from "@/components/public/Timeline";
+import { CaseActions } from "@/components/public/CaseActions";
+import { ArticleHero } from "@/components/public/ArticleHero";
+import { CaseSidebar } from "@/components/public/CaseSidebar";
+import { ExecutiveSummaryBlock } from "@/components/public/ExecutiveSummaryBlock";
+import { WhyItMattersBlock } from "@/components/public/WhyItMattersBlock";
+import { HowToActBlock } from "@/components/public/HowToActBlock";
 import {
   UnderstandBlock,
   LessonsBlock,
@@ -30,7 +30,7 @@ import {
   FaqBlock,
   RecommendedReading,
   AnonymizedNotice,
-} from "@/components/site/ArticleBlocks";
+} from "@/components/public/ArticleBlocks";
 import { getLawsBySlugs } from "@/content/laws";
 import { getContextByKeys } from "@/content/nationalContext";
 import { risks as allRisks } from "@/content/risks";

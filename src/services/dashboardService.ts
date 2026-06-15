@@ -3,8 +3,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { requireRole } from "@/lib/require-role";
-import type { AuditActionType } from "@/lib/audit.functions";
+import { requireRole } from "@/services/roleService";
+import type { AuditActionType } from "@/services/auditService";
 
 export interface AdminOverview {
   articles: {

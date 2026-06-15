@@ -12,7 +12,7 @@ import {
   listAuditLog,
   type AuditActionType,
   type AuditLogRow,
-} from "@/lib/audit.functions";
+} from "@/services/auditService";
 import { AdminError, AdminSkeleton, SectionCard } from "@/components/admin/AdminUI";
 
 export const Route = createFileRoute("/_authenticated/admin/auditoria")({

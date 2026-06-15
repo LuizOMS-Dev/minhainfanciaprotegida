@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BookMarked, ExternalLink, Gavel, Scale } from "lucide-react";
-import { Reveal } from "@/components/site/Reveal";
-import { SectionHeader } from "@/components/site/SectionHeader";
-import { PageHero } from "@/components/site/PageHero";
+import { Reveal } from "@/components/shared/Reveal";
+import { SectionHeader } from "@/components/shared/SectionHeader";
+import { PageHero } from "@/components/public/PageHero";
 import heroLegislacao from "@/assets/hero-legislacao.jpg";
 
 export const Route = createFileRoute("/legislacao")({

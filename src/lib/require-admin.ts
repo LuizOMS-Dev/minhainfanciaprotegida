@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { requireRole, type AppRole } from "@/lib/require-role";
+import { requireRole, type AppRole } from "@/services/roleService";
 
 /**
  * Stronger admin gate to use inside server-fn handlers. Validates:

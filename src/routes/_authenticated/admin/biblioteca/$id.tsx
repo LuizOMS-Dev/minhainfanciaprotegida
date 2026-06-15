@@ -6,7 +6,7 @@ import { ArrowLeft, Save } from "lucide-react";
 import {
   getAdminLibraryItem,
   upsertAdminLibrary,
-} from "@/lib/library.functions";
+} from "@/services/libraryService";
 
 export const Route = createFileRoute("/_authenticated/admin/biblioteca/$id")({
   component: LibraryEditor,

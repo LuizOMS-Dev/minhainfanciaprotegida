@@ -7,7 +7,7 @@ import {
   getAdminLocation,
   upsertAdminLocation,
   type LocationType,
-} from "@/lib/locations.functions";
+} from "@/services/locationService";
 
 export const Route = createFileRoute("/_authenticated/admin/mapa/$id")({
   component: LocationEditor,

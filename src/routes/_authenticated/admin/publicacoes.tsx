@@ -16,7 +16,7 @@ import {
   deleteAdminArticle,
   listAdminArticles,
   type AdminArticle,
-} from "@/lib/admin.functions";
+} from "@/services/articleService";
 import { useUserRole } from "@/hooks/useUserRole";
 import { z } from "zod";
 

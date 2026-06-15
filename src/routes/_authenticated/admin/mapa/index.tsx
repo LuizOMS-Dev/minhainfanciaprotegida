@@ -8,7 +8,7 @@ import {
   importAdminLocationsCsv,
   listAdminLocations,
   type AdminHelpLocation,
-} from "@/lib/locations.functions";
+} from "@/services/locationService";
 
 export const Route = createFileRoute("/_authenticated/admin/mapa/")({
   component: LocationsList,

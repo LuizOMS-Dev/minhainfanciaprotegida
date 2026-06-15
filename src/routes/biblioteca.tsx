@@ -2,9 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { BookMarked, ExternalLink, FileText, Filter, Search } from "lucide-react";
 import { useMemo, useState } from "react";
-import { Reveal } from "@/components/site/Reveal";
-import { PageHero } from "@/components/site/PageHero";
-import { ReferencesBlock } from "@/components/site/ReferencesBlock";
+import { Reveal } from "@/components/shared/Reveal";
+import { PageHero } from "@/components/public/PageHero";
+import { ReferencesBlock } from "@/components/public/ReferencesBlock";
 import { library, type LibraryItem } from "@/content/library";
 import heroBiblioteca from "@/assets/hero-biblioteca.jpg";
 

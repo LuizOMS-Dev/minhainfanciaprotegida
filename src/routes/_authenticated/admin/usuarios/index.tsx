@@ -11,7 +11,7 @@ import {
   resetUserPassword,
   type AdminUser,
   type AppRole,
-} from "@/lib/users.functions";
+} from "@/services/sessionService";
 
 export const Route = createFileRoute("/_authenticated/admin/usuarios/")({
   component: UsersPage,

@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Calendar, User, ShieldCheck, Clock, CalendarDays, CalendarCheck2, BadgeCheck, Phone } from "lucide-react";
-import { ShareButtons } from "@/components/site/ShareButtons";
-import { SeverityBadge, ConfidenceBadge } from "@/components/site/ArticleBlocks";
+import { ShareButtons } from "@/components/shared/ShareButtons";
+import { SeverityBadge, ConfidenceBadge } from "@/components/public/ArticleBlocks";
 
 const fmtLong = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
 const fmtShort = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short", year: "numeric" });

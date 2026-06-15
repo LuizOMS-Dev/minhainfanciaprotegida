@@ -1,6 +1,6 @@
 import { Info, Lightbulb, BookOpenCheck, ListChecks, ShieldAlert, Phone, MapPin, ArrowRight, GraduationCap, Home as HomeIcon, Wifi, Library, AlertCircle, AlertTriangle, BadgeCheck, CheckCircle2, Eye, TrendingUp } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { SafeHtml } from "@/components/site/SafeHtml";
+import { SafeHtml } from "@/components/shared/SafeHtml";
 import type { LawItem } from "@/content/laws";
 import type { NationalContextItem } from "@/content/nationalContext";
 import type { RiskItem } from "@/content/risks";

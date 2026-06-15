@@ -20,12 +20,12 @@ import heroImg from "@/assets/hero-protection.jpg";
 import silenceImg from "@/assets/silence.jpg";
 import ribbonImg from "@/assets/ribbon.jpg";
 import joyImg from "@/assets/children-joy.jpg";
-import { Reveal } from "@/components/site/Reveal";
-import { SectionHeader } from "@/components/site/SectionHeader";
-import { AnimatedNumber } from "@/components/site/AnimatedNumber";
-import { SourceTag } from "@/components/site/SourceTag";
-import { LatestUpdates } from "@/components/site/LatestUpdates";
-import { MonthlyAlert } from "@/components/site/MonthlyAlert";
+import { Reveal } from "@/components/shared/Reveal";
+import { SectionHeader } from "@/components/shared/SectionHeader";
+import { AnimatedNumber } from "@/components/shared/AnimatedNumber";
+import { SourceTag } from "@/components/shared/SourceTag";
+import { LatestUpdates } from "@/components/public/LatestUpdates";
+import { MonthlyAlert } from "@/components/public/MonthlyAlert";
 
 
 export const Route = createFileRoute("/")({

@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useCallback } from "react";
-import { AssistantChat } from "@/components/site/AssistantChat";
+import { AssistantChat } from "@/components/public/AssistantChat";
 import { useChatThreads } from "@/hooks/use-chat-threads";
 
 export const Route = createFileRoute("/assistente/$threadId")({

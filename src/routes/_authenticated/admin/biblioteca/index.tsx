@@ -6,7 +6,7 @@ import {
   deleteAdminLibrary,
   listAdminLibrary,
   type AdminLibraryItem,
-} from "@/lib/library.functions";
+} from "@/services/libraryService";
 
 export const Route = createFileRoute("/_authenticated/admin/biblioteca/")({
   component: LibraryList,

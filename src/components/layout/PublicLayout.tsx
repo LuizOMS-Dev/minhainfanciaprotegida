@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import { SiteHeader } from "../site/SiteHeader";
-import { SiteFooter } from "../site/SiteFooter";
-import { FloatingAssistant } from "../site/FloatingAssistant";
+import { SiteHeader } from "@/components/public/SiteHeader";
+import { SiteFooter } from "@/components/public/SiteFooter";
+import { FloatingAssistant } from "@/components/public/FloatingAssistant";
 
 export function PublicLayout({ children }: { children: ReactNode }) {
   return (

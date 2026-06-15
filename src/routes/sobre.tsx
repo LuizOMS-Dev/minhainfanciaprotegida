@@ -11,8 +11,8 @@ import {
   UserCircle2,
 } from "lucide-react";
 import type { ReactNode } from "react";
-import { PageHero } from "@/components/site/PageHero";
-import { Reveal } from "@/components/site/Reveal";
+import { PageHero } from "@/components/public/PageHero";
+import { Reveal } from "@/components/shared/Reveal";
 import heroImg from "@/assets/hero-protection.jpg";
 
 const SITE_URL = "https://minhainfanciaprotegida.com.br";

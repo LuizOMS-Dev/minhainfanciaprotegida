@@ -1,5 +1,5 @@
 import { ArrowUpRight, Calendar } from "lucide-react";
-import { SourceTag } from "./SourceTag";
+import { SourceTag } from "@/components/shared/SourceTag";
 
 interface ArticleCardProps {
   title: string;

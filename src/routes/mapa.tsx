@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Building2, Compass, ExternalLink, MapPin, Navigation, Phone, Search, Shield } from "lucide-react";
 import { useMemo, useState } from "react";
-import { Reveal } from "@/components/site/Reveal";
-import { SectionHeader } from "@/components/site/SectionHeader";
-import { ReferencesBlock } from "@/components/site/ReferencesBlock";
-import { PageHero } from "@/components/site/PageHero";
+import { Reveal } from "@/components/shared/Reveal";
+import { SectionHeader } from "@/components/shared/SectionHeader";
+import { ReferencesBlock } from "@/components/public/ReferencesBlock";
+import { PageHero } from "@/components/public/PageHero";
 import { helpLocations, ufList, type HelpType } from "@/content/helpLocations";
 import heroMapa from "@/assets/hero-mapa.jpg";
 

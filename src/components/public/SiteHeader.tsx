@@ -16,7 +16,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { GlobalSearch } from "@/components/site/GlobalSearch";
+import { GlobalSearch } from "@/components/shared/GlobalSearch";
 
 const primaryNav = [
   { to: "/", label: "Início" },

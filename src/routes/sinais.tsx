@@ -12,8 +12,8 @@ import {
   Waves,
 } from "lucide-react";
 import listeningImg from "@/assets/listening.jpg";
-import { Reveal } from "@/components/site/Reveal";
-import { SectionHeader } from "@/components/site/SectionHeader";
+import { Reveal } from "@/components/shared/Reveal";
+import { SectionHeader } from "@/components/shared/SectionHeader";
 
 export const Route = createFileRoute("/sinais")({
   head: () => ({

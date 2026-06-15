@@ -1,4 +1,4 @@
-import { Reveal } from "@/components/site/Reveal";
+import { Reveal } from "@/components/shared/Reveal";
 import type { ReactNode } from "react";
 
 interface PageHeroProps {

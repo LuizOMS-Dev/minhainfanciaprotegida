@@ -13,7 +13,7 @@ import {
   ShieldAlert,
   ShieldCheck,
 } from "lucide-react";
-import { getSecurityOverview } from "@/lib/admin-overview.functions";
+import { getSecurityOverview } from "@/services/dashboardService";
 import {
   AdminError,
   AdminSkeleton,

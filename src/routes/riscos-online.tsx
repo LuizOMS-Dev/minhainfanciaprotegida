@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ExternalLink, Phone, ShieldAlert } from "lucide-react";
 import { risks } from "@/content/risks";
-import { SectionHeader } from "@/components/site/SectionHeader";
-import { Reveal } from "@/components/site/Reveal";
-import { SourceTag } from "@/components/site/SourceTag";
+import { SectionHeader } from "@/components/shared/SectionHeader";
+import { Reveal } from "@/components/shared/Reveal";
+import { SourceTag } from "@/components/shared/SourceTag";
 import digitalImg from "@/assets/digital-safety.jpg";
 
 export const Route = createFileRoute("/riscos-online")({

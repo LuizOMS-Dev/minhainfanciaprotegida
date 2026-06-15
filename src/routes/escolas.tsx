@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BookMarked, ClipboardList, GraduationCap, ShieldCheck, UsersRound } from "lucide-react";
-import { Reveal } from "@/components/site/Reveal";
-import { SectionHeader } from "@/components/site/SectionHeader";
-import { ReferencesBlock } from "@/components/site/ReferencesBlock";
-import { JsonLd, articleSchema, breadcrumb } from "@/components/site/JsonLd";
-import { PageHero } from "@/components/site/PageHero";
+import { Reveal } from "@/components/shared/Reveal";
+import { SectionHeader } from "@/components/shared/SectionHeader";
+import { ReferencesBlock } from "@/components/public/ReferencesBlock";
+import { JsonLd, articleSchema, breadcrumb } from "@/components/shared/JsonLd";
+import { PageHero } from "@/components/public/PageHero";
 import schoolImg from "@/assets/hero-escolas.jpg";
 
 export const Route = createFileRoute("/escolas")({
