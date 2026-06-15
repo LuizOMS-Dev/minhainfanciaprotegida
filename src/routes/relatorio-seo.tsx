@@ -94,7 +94,7 @@ function RelatorioSEO() {
           tone="warn"
           title="Problemas encontrados"
           items={[
-            { text: "Canônicas incorretas", detail: "rotas apontavam para lovable.app em vez do domínio próprio." },
+            { text: "Canônicas incorretas", detail: "rotas apontavam para domínio de homologação em vez do domínio próprio." },
             { text: "Metadata raiz sobrescrevendo páginas", detail: "og:image e title genéricos no __root.tsx." },
             { text: "SearchAction sem endpoint funcional", detail: "apontava para /?q= sem handler." },
             { text: "Schemas isolados", detail: "páginas institucionais sem @id consolidado para Knowledge Graph." },
@@ -211,7 +211,7 @@ function RelatorioSEO() {
           tone="warn"
           title="Pendências externas (dependem de Google / Bing / tempo)"
           items={[
-            { text: "Verificar propriedade no Google Search Console", detail: "exige meta tag de verificação OU conexão do conector GSC no painel Lovable." },
+            { text: "Verificar propriedade no Google Search Console", detail: "exige meta tag de verificação." },
             { text: "Verificar propriedade no Bing Webmaster Tools", detail: "importar diretamente da GSC após verificação." },
             { text: "Indexação dos novos schemas", detail: "Google leva 7–30 dias para re-rastrear." },
             { text: "Aparição em Knowledge Panel", detail: "90–180 dias; depende de menções externas." },
@@ -251,7 +251,7 @@ function RelatorioSEO() {
           <h2 className="font-display text-xl font-semibold">Próximos passos manuais</h2>
           <ol className="mt-4 space-y-2 text-sm text-foreground list-decimal pl-5">
             <li>
-              Conectar o connector <strong>Google Search Console</strong> em Configurações → Connectors no painel Lovable.
+              Conectar a <strong>Meta Tag do Google Search Console</strong> no projeto.
             </li>
             <li>
               Após conectar, solicitar verificação automática da propriedade <code>https://minhainfanciaprotegida.com.br/</code>.

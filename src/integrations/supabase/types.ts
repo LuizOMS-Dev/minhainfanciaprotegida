@@ -441,7 +441,12 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_author_profiles: {
+        Row: {
+          id: string
+          display_name: string | null
+        }
+      }
     }
     Functions: {
       has_role: {
@@ -453,7 +458,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "editor" | "revisor"
+      app_role: "admin" | "editor" | "reviewer" | "viewer"
       article_status:
         | "draft"
         | "review"

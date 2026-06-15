@@ -109,7 +109,7 @@ export const listPublishedArticles = createServerFn({ method: "GET" })
     const profilesById = new Map<string, string>();
     if (ids.length > 0) {
       const { data: profs } = await supabaseAdmin
-        .from("profiles")
+        .from("public_author_profiles")
         .select("id, display_name")
         .in("id", ids);
       profs?.forEach((p) => profilesById.set(p.id, p.display_name ?? ""));
@@ -202,7 +202,7 @@ export const getPublishedArticle = createServerFn({ method: "GET" })
         .eq("article_id", row.id)
         .order("position", { ascending: true }),
       supabaseAdmin
-        .from("profiles")
+        .from("public_author_profiles")
         .select("id, display_name")
         .in("id", [row.author_id, row.reviewer_id].filter((v): v is string => Boolean(v))),
     ]);

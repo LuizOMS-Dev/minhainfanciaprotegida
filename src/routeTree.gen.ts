@@ -38,7 +38,6 @@ import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 import { Route as CasosSlugRouteImport } from './routes/casos.$slug'
 import { Route as BibliotecaSlugRouteImport } from './routes/biblioteca.$slug'
 import { Route as AssistenteThreadIdRouteImport } from './routes/assistente.$threadId'
-import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as ApiPublicCspReportRouteImport } from './routes/api/public/csp-report'
@@ -199,11 +198,6 @@ const AssistenteThreadIdRoute = AssistenteThreadIdRouteImport.update({
   path: '/$threadId',
   getParentRoute: () => AssistenteRoute,
 } as any)
-const ApiChatRoute = ApiChatRouteImport.update({
-  id: '/api/chat',
-  path: '/api/chat',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -315,7 +309,6 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
-  '/api/chat': typeof ApiChatRoute
   '/assistente/$threadId': typeof AssistenteThreadIdRoute
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
@@ -358,7 +351,6 @@ export interface FileRoutesByTo {
   '/sinais': typeof SinaisRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
-  '/api/chat': typeof ApiChatRoute
   '/assistente/$threadId': typeof AssistenteThreadIdRoute
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
@@ -406,7 +398,6 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
-  '/api/chat': typeof ApiChatRoute
   '/assistente/$threadId': typeof AssistenteThreadIdRoute
   '/biblioteca/$slug': typeof BibliotecaSlugRoute
   '/casos/$slug': typeof CasosSlugRoute
@@ -454,7 +445,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/sobre'
     | '/admin'
-    | '/api/chat'
     | '/assistente/$threadId'
     | '/biblioteca/$slug'
     | '/casos/$slug'
@@ -497,7 +487,6 @@ export interface FileRouteTypes {
     | '/sinais'
     | '/sitemap.xml'
     | '/sobre'
-    | '/api/chat'
     | '/assistente/$threadId'
     | '/biblioteca/$slug'
     | '/casos/$slug'
@@ -544,7 +533,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/sobre'
     | '/_authenticated/admin'
-    | '/api/chat'
     | '/assistente/$threadId'
     | '/biblioteca/$slug'
     | '/casos/$slug'
@@ -591,7 +579,6 @@ export interface RootRouteChildren {
   SinaisRoute: typeof SinaisRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
-  ApiChatRoute: typeof ApiChatRoute
   ApiPublicCspReportRoute: typeof ApiPublicCspReportRoute
 }
 
@@ -799,13 +786,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/assistente/$threadId'
       preLoaderRoute: typeof AssistenteThreadIdRouteImport
       parentRoute: typeof AssistenteRoute
-    }
-    '/api/chat': {
-      id: '/api/chat'
-      path: '/api/chat'
-      fullPath: '/api/chat'
-      preLoaderRoute: typeof ApiChatRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
@@ -1039,7 +1019,6 @@ const rootRouteChildren: RootRouteChildren = {
   SinaisRoute: SinaisRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SobreRoute: SobreRoute,
-  ApiChatRoute: ApiChatRoute,
   ApiPublicCspReportRoute: ApiPublicCspReportRoute,
 }
 export const routeTree = rootRouteImport
