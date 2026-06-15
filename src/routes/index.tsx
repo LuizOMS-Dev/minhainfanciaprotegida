@@ -13,7 +13,6 @@ import {
   Phone,
   Scale,
   ShieldAlert,
-  Sparkles,
   Users,
   Wifi,
 } from "lucide-react";
