@@ -158,7 +158,9 @@ function BackupPage() {
                 <div className="min-w-0">
                   <div className="text-sm font-medium">
                     {ds}{" "}
-                    <span className="text-muted-foreground font-normal">· {fmt} · {String(count)} registros</span>
+                    <span className="text-muted-foreground font-normal">
+                      · {fmt} · {String(count)} registros
+                    </span>
                   </div>
                   <div className="text-xs text-muted-foreground">
                     {r.user_email ?? "sistema"} · {new Date(r.created_at).toLocaleString("pt-BR")}

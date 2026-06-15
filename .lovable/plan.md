@@ -5,6 +5,7 @@ Adicionar um chatbot real e integrado ao portal, deixando claro em todo momento 
 ## 1. Backend (TanStack server route)
 
 **`src/routes/api/chat.ts`** — endpoint de streaming via AI SDK + Lovable AI Gateway.
+
 - Modelo: `google/gemini-3-flash-preview`.
 - `LOVABLE_API_KEY` lida via `process.env` no handler (auto-provisionada).
 - System prompt em PT-BR define:
@@ -21,6 +22,7 @@ Adicionar um chatbot real e integrado ao portal, deixando claro em todo momento 
 Instalar: `conversation`, `message`, `prompt-input`, `shimmer`.
 
 **Componente compartilhado** `src/components/site/AssistantChat.tsx`:
+
 - `useChat` com `DefaultChatTransport({ api: "/api/chat" })`.
 - `id` derivado do `threadId` ativo (remonta ao trocar de thread).
 - Renderiza `message.parts` (não `content`).
@@ -34,6 +36,7 @@ Instalar: `conversation`, `message`, `prompt-input`, `shimmer`.
 ## 3. Threads em localStorage
 
 **Hook** `src/hooks/use-chat-threads.ts`:
+
 - Bootstrap idempotente guarded por `typeof window !== "undefined"` (não em `useEffect` solto — evita threads duplicadas em StrictMode).
 - Forma `{ id, title, updatedAt, messages: UIMessage[] }[]` em `localStorage["mip.chat.threads"]`.
 - Título derivado da primeira mensagem do usuário (primeiros ~40 chars).
@@ -42,12 +45,14 @@ Instalar: `conversation`, `message`, `prompt-input`, `shimmer`.
 ## 4. Rotas e UI
 
 **Página dedicada** `src/routes/assistente.tsx` (`/assistente`):
+
 - Layout com sidebar de threads à esquerda (lista, botão "Nova conversa", deletar como botão **irmão**, não aninhado) e chat à direita.
 - Rota dinâmica `src/routes/assistente.$threadId.tsx` para URL por thread; `/assistente` cria/seleciona thread e navega.
 - `head()` com title/description próprios + aviso "não-oficial".
 - Link no menu principal do `SiteHeader` ("Assistente IA").
 
 **Botão flutuante** `src/components/site/FloatingAssistant.tsx`:
+
 - Renderizado no `__root.tsx` (oculto em rotas `/assistente*` e `/admin*`).
 - Botão redondo canto inferior direito, ícone `MessageCircleHeart`, label "Tire suas dúvidas".
 - Abre `Sheet` (lateral direita, ~420px) com o mesmo `AssistantChat`, usando uma thread "rápida" ou a thread ativa atual.
@@ -62,6 +67,7 @@ Instalar: `conversation`, `message`, `prompt-input`, `shimmer`.
 ## 6. Arquivos
 
 **Criados:**
+
 - `src/routes/api/chat.ts`
 - `src/routes/assistente.tsx`, `src/routes/assistente.$threadId.tsx`
 - `src/lib/ai-gateway.server.ts`
@@ -71,11 +77,13 @@ Instalar: `conversation`, `message`, `prompt-input`, `shimmer`.
 - `src/components/ai-elements/*` (via CLI)
 
 **Editados:**
+
 - `src/routes/__root.tsx` — renderiza `<FloatingAssistant />`.
 - `src/components/site/SiteHeader.tsx` — link "Assistente IA".
 - `package.json` — `ai`, `@ai-sdk/react`, `@ai-sdk/openai-compatible`, `zod` (se faltar).
 
 ## Fora de escopo
+
 - Login/sync entre dispositivos (escolha foi localStorage).
 - Moderação de conteúdo via API externa.
 - Voz/áudio, anexos, ferramentas (tools) — apenas chat texto streaming.

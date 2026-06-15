@@ -23,7 +23,10 @@ export interface AdminHelpLocation {
 
 const safeOptionalUrl = z
   .union([
-    z.string().url().refine((v) => /^https?:\/\//i.test(v), { message: "URL inválida." }),
+    z
+      .string()
+      .url()
+      .refine((v) => /^https?:\/\//i.test(v), { message: "URL inválida." }),
     z.literal(""),
   ])
   .optional()
@@ -142,10 +145,7 @@ export const deleteAdminLocation = createServerFn({ method: "POST" })
       .select("name")
       .eq("id", data.id)
       .maybeSingle();
-    const { error } = await context.supabase
-      .from("help_locations")
-      .delete()
-      .eq("id", data.id);
+    const { error } = await context.supabase.from("help_locations").delete().eq("id", data.id);
     if (error) {
       console.error("[locations.delete]", error);
       throw new Error("Não foi possível excluir o local.");

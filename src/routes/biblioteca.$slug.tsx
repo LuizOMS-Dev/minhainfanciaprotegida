@@ -33,13 +33,17 @@ export const Route = createFileRoute("/biblioteca/$slug")({
   errorComponent: () => (
     <div className="mx-auto max-w-2xl px-4 py-24 text-center">
       <h1 className="font-display text-2xl font-bold">Não foi possível carregar este material</h1>
-      <Link to="/biblioteca" className="mt-6 inline-block text-[color:var(--red-inst)] underline">Voltar para Biblioteca</Link>
+      <Link to="/biblioteca" className="mt-6 inline-block text-[color:var(--red-inst)] underline">
+        Voltar para Biblioteca
+      </Link>
     </div>
   ),
   notFoundComponent: () => (
     <div className="mx-auto max-w-2xl px-4 py-24 text-center">
       <h1 className="font-display text-2xl font-bold">Material não encontrado</h1>
-      <Link to="/biblioteca" className="mt-6 inline-block text-[color:var(--red-inst)] underline">Voltar para Biblioteca</Link>
+      <Link to="/biblioteca" className="mt-6 inline-block text-[color:var(--red-inst)] underline">
+        Voltar para Biblioteca
+      </Link>
     </div>
   ),
 });
@@ -52,19 +56,30 @@ function LibraryDetail() {
     <article className="bg-background">
       <header className="border-b border-border bg-[color:var(--navy-deep)] text-white">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <Link to="/biblioteca" className="inline-flex items-center gap-1.5 text-sm font-semibold text-white/80 hover:text-white">
+          <Link
+            to="/biblioteca"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-white/80 hover:text-white"
+          >
             <ArrowLeft className="size-4" aria-hidden /> Biblioteca
           </Link>
           <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider">
             <BookMarked className="size-3.5 text-[color:var(--orange)]" aria-hidden />
             {item.category}
           </span>
-          <h1 className="mt-3 font-display text-3xl sm:text-4xl font-bold leading-tight text-balance">{item.title}</h1>
+          <h1 className="mt-3 font-display text-3xl sm:text-4xl font-bold leading-tight text-balance">
+            {item.title}
+          </h1>
           <p className="mt-3 text-lg text-white/85 leading-relaxed">{item.description}</p>
           <dl className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/80">
-            <div className="inline-flex items-center gap-1.5"><Tag className="size-4" aria-hidden /> {item.sourceOrg}</div>
-            <div className="inline-flex items-center gap-1.5"><Calendar className="size-4" aria-hidden /> {item.year}</div>
-            <div className="inline-flex items-center gap-1.5"><Users className="size-4" aria-hidden /> {item.audience}</div>
+            <div className="inline-flex items-center gap-1.5">
+              <Tag className="size-4" aria-hidden /> {item.sourceOrg}
+            </div>
+            <div className="inline-flex items-center gap-1.5">
+              <Calendar className="size-4" aria-hidden /> {item.year}
+            </div>
+            <div className="inline-flex items-center gap-1.5">
+              <Users className="size-4" aria-hidden /> {item.audience}
+            </div>
           </dl>
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <a
@@ -83,7 +98,10 @@ function LibraryDetail() {
 
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         {item.body ? (
-          <SafeHtml html={item.body} className="prose prose-neutral max-w-none text-foreground/90 leading-relaxed" />
+          <SafeHtml
+            html={item.body}
+            className="prose prose-neutral max-w-none text-foreground/90 leading-relaxed"
+          />
         ) : (
           <p className="text-muted-foreground">{item.description}</p>
         )}

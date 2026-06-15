@@ -87,7 +87,8 @@ const CRITICAL = new Set([
 ]);
 
 function categoryFor(action: string): { label: string; color: string } {
-  if (action.startsWith("content_")) return { label: "Publicação", color: "bg-blue-50 text-blue-700" };
+  if (action.startsWith("content_"))
+    return { label: "Publicação", color: "bg-blue-50 text-blue-700" };
   if (action.startsWith("mfa_") || action.startsWith("recovery_code_"))
     return { label: "MFA", color: "bg-purple-50 text-purple-700" };
   if (action.startsWith("user_") || action === "role_change")
@@ -100,7 +101,10 @@ function categoryFor(action: string): { label: string; color: string } {
   )
     return { label: "Conteúdo", color: "bg-emerald-50 text-emerald-700" };
   if (CRITICAL.has(action) || action === "login_failed")
-    return { label: "Segurança", color: "bg-[color:var(--red-inst)]/10 text-[color:var(--red-inst)]" };
+    return {
+      label: "Segurança",
+      color: "bg-[color:var(--red-inst)]/10 text-[color:var(--red-inst)]",
+    };
   return { label: "Sistema", color: "bg-muted text-muted-foreground" };
 }
 
@@ -134,14 +138,12 @@ function DashboardPage() {
           Bem-vindo(a) à central de operações
         </h2>
         <p className="mt-2 text-sm text-white/70 max-w-2xl">
-          Acompanhe a saúde editorial, a segurança do painel e os principais
-          eventos administrativos em tempo real.
+          Acompanhe a saúde editorial, a segurança do painel e os principais eventos administrativos
+          em tempo real.
         </p>
       </div>
 
-      {overviewQ.isError && (
-        <AdminError message="Falha ao carregar os indicadores." />
-      )}
+      {overviewQ.isError && <AdminError message="Falha ao carregar os indicadores." />}
 
       {/* KPIs editoriais */}
       <div>
@@ -149,11 +151,36 @@ function DashboardPage() {
           Conteúdo editorial
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-          <KpiCard label="Publicados" value={o?.articles.published ?? "—"} icon={CheckCircle2} tone="text-emerald-600" />
-          <KpiCard label="Em revisão" value={o?.articles.review ?? "—"} icon={ShieldCheck} tone="text-amber-600" />
-          <KpiCard label="Agendados" value={o?.articles.scheduled ?? "—"} icon={Clock} tone="text-blue-600" />
-          <KpiCard label="Rascunhos" value={o?.articles.drafts ?? "—"} icon={Pencil} tone="text-muted-foreground" />
-          <KpiCard label="Total" value={o?.articles.total ?? "—"} icon={FileText} tone="text-foreground" />
+          <KpiCard
+            label="Publicados"
+            value={o?.articles.published ?? "—"}
+            icon={CheckCircle2}
+            tone="text-emerald-600"
+          />
+          <KpiCard
+            label="Em revisão"
+            value={o?.articles.review ?? "—"}
+            icon={ShieldCheck}
+            tone="text-amber-600"
+          />
+          <KpiCard
+            label="Agendados"
+            value={o?.articles.scheduled ?? "—"}
+            icon={Clock}
+            tone="text-blue-600"
+          />
+          <KpiCard
+            label="Rascunhos"
+            value={o?.articles.drafts ?? "—"}
+            icon={Pencil}
+            tone="text-muted-foreground"
+          />
+          <KpiCard
+            label="Total"
+            value={o?.articles.total ?? "—"}
+            icon={FileText}
+            tone="text-foreground"
+          />
         </div>
       </div>
 
@@ -176,7 +203,11 @@ function DashboardPage() {
             label="Falhas 24h"
             value={o?.failedLogins24h ?? "—"}
             icon={AlertTriangle}
-            tone={(o?.failedLogins24h ?? 0) > 0 ? "text-[color:var(--red-inst)]" : "text-muted-foreground"}
+            tone={
+              (o?.failedLogins24h ?? 0) > 0
+                ? "text-[color:var(--red-inst)]"
+                : "text-muted-foreground"
+            }
             hint={`${o?.activeLockouts ?? 0} bloqueio(s) ativo(s)`}
           />
         </div>
@@ -269,9 +300,7 @@ function DashboardPage() {
         {activityQ.isLoading && <AdminSkeleton rows={6} />}
         {activityQ.isError && <AdminError message="Falha ao carregar atividade." />}
         {!activityQ.isLoading && (activityQ.data?.items ?? []).length === 0 && (
-          <p className="text-sm text-muted-foreground text-center py-6">
-            Nenhum evento ainda.
-          </p>
+          <p className="text-sm text-muted-foreground text-center py-6">Nenhum evento ainda.</p>
         )}
         <ul className="divide-y divide-border">
           {(activityQ.data?.items ?? []).map((it: RecentActivityItem) => {
@@ -285,10 +314,15 @@ function DashboardPage() {
                   {cat.label}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <div className={`text-sm font-medium ${isCritical ? "text-[color:var(--red-inst)]" : ""}`}>
+                  <div
+                    className={`text-sm font-medium ${isCritical ? "text-[color:var(--red-inst)]" : ""}`}
+                  >
                     {ACTION_LABEL[it.action] ?? it.action}
                     {it.target_title && (
-                      <span className="text-muted-foreground font-normal"> · {it.target_title}</span>
+                      <span className="text-muted-foreground font-normal">
+                        {" "}
+                        · {it.target_title}
+                      </span>
                     )}
                   </div>
                   <div className="text-xs text-muted-foreground">

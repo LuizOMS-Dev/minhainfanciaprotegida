@@ -29,19 +29,97 @@ interface Entry {
 
 const pages: Entry[] = [
   { group: "Páginas", title: "Início", to: "/", haystack: "inicio home", icon: ShieldAlert },
-  { group: "Páginas", title: "Sinais de alerta", to: "/sinais", haystack: "sinais alerta indicadores", icon: ShieldAlert },
-  { group: "Páginas", title: "Riscos online", to: "/riscos-online", haystack: "riscos online internet digital safernet", icon: ShieldAlert },
-  { group: "Páginas", title: "Para pais", to: "/pais", haystack: "pais familias responsavel", icon: ShieldAlert },
-  { group: "Páginas", title: "Para escolas", to: "/escolas", haystack: "escolas educadores professores", icon: ShieldAlert },
-  { group: "Páginas", title: "Como ajudar", to: "/como-ajudar", haystack: "ajudar voluntariado doar", icon: ShieldAlert },
-  { group: "Páginas", title: "Denuncie agora", to: "/denuncia", haystack: "denuncia disque 100 conselho tutelar", icon: ShieldAlert },
-  { group: "Páginas", title: "Maio Laranja", to: "/maio-laranja", haystack: "maio laranja campanha 18 maio", icon: ShieldAlert },
-  { group: "Páginas", title: "Perguntas frequentes", to: "/faq", haystack: "faq duvidas perguntas frequentes", icon: ShieldAlert },
-  { group: "Páginas", title: "Sobre o projeto", to: "/sobre", haystack: "sobre projeto missao quem somos", icon: ShieldAlert },
-  { group: "Páginas", title: "Objetivos", to: "/objetivos", haystack: "objetivos metas missao", icon: ShieldAlert },
-  { group: "Páginas", title: "Metodologia", to: "/metodologia", haystack: "metodologia editorial fontes verificacao", icon: ShieldAlert },
-  { group: "Páginas", title: "Fontes utilizadas", to: "/fontes", haystack: "fontes referencias bibliografia", icon: ShieldAlert },
-  { group: "Páginas", title: "Mapa de ajuda", to: "/mapa", haystack: "mapa conselho tutelar delegacia centro apoio", icon: MapPin },
+  {
+    group: "Páginas",
+    title: "Sinais de alerta",
+    to: "/sinais",
+    haystack: "sinais alerta indicadores",
+    icon: ShieldAlert,
+  },
+  {
+    group: "Páginas",
+    title: "Riscos online",
+    to: "/riscos-online",
+    haystack: "riscos online internet digital safernet",
+    icon: ShieldAlert,
+  },
+  {
+    group: "Páginas",
+    title: "Para pais",
+    to: "/pais",
+    haystack: "pais familias responsavel",
+    icon: ShieldAlert,
+  },
+  {
+    group: "Páginas",
+    title: "Para escolas",
+    to: "/escolas",
+    haystack: "escolas educadores professores",
+    icon: ShieldAlert,
+  },
+  {
+    group: "Páginas",
+    title: "Como ajudar",
+    to: "/como-ajudar",
+    haystack: "ajudar voluntariado doar",
+    icon: ShieldAlert,
+  },
+  {
+    group: "Páginas",
+    title: "Denuncie agora",
+    to: "/denuncia",
+    haystack: "denuncia disque 100 conselho tutelar",
+    icon: ShieldAlert,
+  },
+  {
+    group: "Páginas",
+    title: "Maio Laranja",
+    to: "/maio-laranja",
+    haystack: "maio laranja campanha 18 maio",
+    icon: ShieldAlert,
+  },
+  {
+    group: "Páginas",
+    title: "Perguntas frequentes",
+    to: "/faq",
+    haystack: "faq duvidas perguntas frequentes",
+    icon: ShieldAlert,
+  },
+  {
+    group: "Páginas",
+    title: "Sobre o projeto",
+    to: "/sobre",
+    haystack: "sobre projeto missao quem somos",
+    icon: ShieldAlert,
+  },
+  {
+    group: "Páginas",
+    title: "Objetivos",
+    to: "/objetivos",
+    haystack: "objetivos metas missao",
+    icon: ShieldAlert,
+  },
+  {
+    group: "Páginas",
+    title: "Metodologia",
+    to: "/metodologia",
+    haystack: "metodologia editorial fontes verificacao",
+    icon: ShieldAlert,
+  },
+  {
+    group: "Páginas",
+    title: "Fontes utilizadas",
+    to: "/fontes",
+    haystack: "fontes referencias bibliografia",
+    icon: ShieldAlert,
+  },
+  {
+    group: "Páginas",
+    title: "Mapa de ajuda",
+    to: "/mapa",
+    haystack: "mapa conselho tutelar delegacia centro apoio",
+    icon: MapPin,
+  },
 ];
 
 function norm(s: string) {
@@ -145,9 +223,7 @@ export function GlobalSearch() {
   const results = useMemo(() => {
     const term = norm(q.trim());
     if (!term) return index.slice(0, 12);
-    return index
-      .filter((e) => e.haystack.includes(term))
-      .slice(0, 30);
+    return index.filter((e) => e.haystack.includes(term)).slice(0, 30);
   }, [q, index]);
 
   const grouped = useMemo(() => {
@@ -262,7 +338,9 @@ export function GlobalSearch() {
                         <span className="min-w-0 flex-1">
                           <span className="block text-sm font-semibold truncate">{it.title}</span>
                           {it.subtitle && (
-                            <span className="block text-xs text-muted-foreground truncate">{it.subtitle}</span>
+                            <span className="block text-xs text-muted-foreground truncate">
+                              {it.subtitle}
+                            </span>
                           )}
                         </span>
                       </button>

@@ -98,7 +98,10 @@ function LocationEditor() {
 
   return (
     <section>
-      <Link to="/admin/mapa" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+      <Link
+        to="/admin/mapa"
+        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+      >
         <ArrowLeft className="size-4" /> Voltar
       </Link>
       <h2 className="mt-4 font-display text-2xl font-semibold">
@@ -107,48 +110,109 @@ function LocationEditor() {
 
       <form onSubmit={submit} className="mt-6 space-y-5 max-w-3xl">
         <Field label="Nome *">
-          <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required maxLength={200} className={inputCls} />
+          <input
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            required
+            maxLength={200}
+            className={inputCls}
+          />
         </Field>
         <div className="grid sm:grid-cols-3 gap-4">
           <Field label="Tipo *">
-            <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value as LocationType })} className={inputCls}>
-              {typeOptions.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+            <select
+              value={form.type}
+              onChange={(e) => setForm({ ...form, type: e.target.value as LocationType })}
+              className={inputCls}
+            >
+              {typeOptions.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
             </select>
           </Field>
           <Field label="UF *" hint="2 letras">
-            <input value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value.toUpperCase() })} required maxLength={2} minLength={2} className={inputCls} />
+            <input
+              value={form.state}
+              onChange={(e) => setForm({ ...form, state: e.target.value.toUpperCase() })}
+              required
+              maxLength={2}
+              minLength={2}
+              className={inputCls}
+            />
           </Field>
           <Field label="Cidade *">
-            <input value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} required maxLength={120} className={inputCls} />
+            <input
+              value={form.city}
+              onChange={(e) => setForm({ ...form, city: e.target.value })}
+              required
+              maxLength={120}
+              className={inputCls}
+            />
           </Field>
         </div>
         <Field label="Endereço">
-          <input value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} maxLength={300} className={inputCls} />
+          <input
+            value={form.address}
+            onChange={(e) => setForm({ ...form, address: e.target.value })}
+            maxLength={300}
+            className={inputCls}
+          />
         </Field>
         <div className="grid sm:grid-cols-2 gap-4">
           <Field label="Telefone">
-            <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} maxLength={40} className={inputCls} />
+            <input
+              value={form.phone}
+              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+              maxLength={40}
+              className={inputCls}
+            />
           </Field>
           <Field label="Horário de atendimento">
-            <input value={form.hours} onChange={(e) => setForm({ ...form, hours: e.target.value })} maxLength={160} className={inputCls} />
+            <input
+              value={form.hours}
+              onChange={(e) => setForm({ ...form, hours: e.target.value })}
+              maxLength={160}
+              className={inputCls}
+            />
           </Field>
         </div>
         <Field label="Site oficial">
-          <input type="url" value={form.official_url} onChange={(e) => setForm({ ...form, official_url: e.target.value })} placeholder="https://..." className={inputCls} />
+          <input
+            type="url"
+            value={form.official_url}
+            onChange={(e) => setForm({ ...form, official_url: e.target.value })}
+            placeholder="https://..."
+            className={inputCls}
+          />
         </Field>
         <div className="grid sm:grid-cols-2 gap-4">
           <Field label="Latitude">
-            <input value={form.lat} onChange={(e) => setForm({ ...form, lat: e.target.value })} className={inputCls} placeholder="-23.55" />
+            <input
+              value={form.lat}
+              onChange={(e) => setForm({ ...form, lat: e.target.value })}
+              className={inputCls}
+              placeholder="-23.55"
+            />
           </Field>
           <Field label="Longitude">
-            <input value={form.lng} onChange={(e) => setForm({ ...form, lng: e.target.value })} className={inputCls} placeholder="-46.63" />
+            <input
+              value={form.lng}
+              onChange={(e) => setForm({ ...form, lng: e.target.value })}
+              className={inputCls}
+              placeholder="-46.63"
+            />
           </Field>
         </div>
 
         {error && <p className="text-sm text-[color:var(--red-inst)]">{error}</p>}
 
         <div className="flex justify-end gap-3 pt-2">
-          <Link to="/admin/mapa" className="inline-flex items-center rounded-full border border-border px-5 py-2.5 text-sm font-semibold">
+          <Link
+            to="/admin/mapa"
+            className="inline-flex items-center rounded-full border border-border px-5 py-2.5 text-sm font-semibold"
+          >
             Cancelar
           </Link>
           <button
@@ -164,12 +228,23 @@ function LocationEditor() {
   );
 }
 
-const inputCls = "w-full rounded-xl bg-card border border-border px-3 py-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]";
+const inputCls =
+  "w-full rounded-xl bg-card border border-border px-3 py-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]";
 
-function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
+function Field({
+  label,
+  hint,
+  children,
+}: {
+  label: string;
+  hint?: string;
+  children: React.ReactNode;
+}) {
   return (
     <label className="block">
-      <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{label}</span>
+      <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+        {label}
+      </span>
       <div className="mt-1.5">{children}</div>
       {hint && <span className="block mt-1 text-[11px] text-muted-foreground">{hint}</span>}
     </label>

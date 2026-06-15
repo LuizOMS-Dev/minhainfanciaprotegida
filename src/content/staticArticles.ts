@@ -27,10 +27,7 @@ export interface StaticArticleDetail {
   timeline?: TimelineEntry[];
 }
 
-export function getStaticArticle(
-  type: "news" | "case",
-  slug: string,
-): StaticArticleDetail | null {
+export function getStaticArticle(type: "news" | "case", slug: string): StaticArticleDetail | null {
   if (type === "case") {
     const c = cases.find((x) => x.slug === slug);
     if (!c) return null;

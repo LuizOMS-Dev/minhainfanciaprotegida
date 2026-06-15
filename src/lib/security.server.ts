@@ -67,17 +67,15 @@ export async function recordAttempt(
 
   if ((count ?? 0) >= LOCKOUT_THRESHOLD) {
     const lockedUntil = new Date(Date.now() + LOCKOUT_DURATION_MIN * 60_000).toISOString();
-    await supabaseAdmin
-      .from("account_lockouts")
-      .upsert(
-        {
-          email: normalized,
-          locked_until: lockedUntil,
-          reason: `${count} failed attempts in ${LOCKOUT_WINDOW_MIN}min`,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: "email" },
-      );
+    await supabaseAdmin.from("account_lockouts").upsert(
+      {
+        email: normalized,
+        locked_until: lockedUntil,
+        reason: `${count} failed attempts in ${LOCKOUT_WINDOW_MIN}min`,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "email" },
+    );
     await logAudit({
       action: "brute_force_detected",
       userEmail: normalized,

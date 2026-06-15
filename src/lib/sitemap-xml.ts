@@ -40,7 +40,10 @@ export function buildSitemapXml(baseUrl: string, entries: SitemapEntry[]): strin
   ].join("\n");
 }
 
-export function articlePathFor(type: "news" | "case" | "risk" | "guide", slug: string): string | null {
+export function articlePathFor(
+  type: "news" | "case" | "risk" | "guide",
+  slug: string,
+): string | null {
   switch (type) {
     case "news":
       return `/noticias/${slug}`;

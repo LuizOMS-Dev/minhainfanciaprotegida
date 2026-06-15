@@ -9,12 +9,7 @@ export interface ShareTarget {
   description?: string;
 }
 
-export type ShareNetwork =
-  | "whatsapp"
-  | "twitter"
-  | "facebook"
-  | "linkedin"
-  | "telegram";
+export type ShareNetwork = "whatsapp" | "twitter" | "facebook" | "linkedin" | "telegram";
 
 export function buildShareLink(network: ShareNetwork, t: ShareTarget): string {
   const title = encodeURIComponent(t.title);

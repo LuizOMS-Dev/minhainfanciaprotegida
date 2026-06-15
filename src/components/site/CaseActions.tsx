@@ -17,9 +17,12 @@ export function CaseActions() {
           <AlertTriangle className="size-5" aria-hidden />
         </span>
         <div>
-          <h2 className="font-display text-xl font-bold leading-tight">Suspeita ou presenciou uma situação parecida?</h2>
+          <h2 className="font-display text-xl font-bold leading-tight">
+            Suspeita ou presenciou uma situação parecida?
+          </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            A denúncia é anônima, gratuita e funciona 24 horas. Em situação de risco imediato, ligue 190.
+            A denúncia é anônima, gratuita e funciona 24 horas. Em situação de risco imediato, ligue
+            190.
           </p>
         </div>
       </div>
@@ -33,7 +36,9 @@ export function CaseActions() {
             <Phone className="size-4" aria-hidden />
           </span>
           <span>
-            <span className="block text-xs uppercase tracking-wider text-muted-foreground">Disque 100</span>
+            <span className="block text-xs uppercase tracking-wider text-muted-foreground">
+              Disque 100
+            </span>
             <span className="block font-semibold">Denuncie agora — 24h, anônimo</span>
           </span>
         </a>
@@ -45,7 +50,9 @@ export function CaseActions() {
             <AlertTriangle className="size-4" aria-hidden />
           </span>
           <span>
-            <span className="block text-xs uppercase tracking-wider text-muted-foreground">Canais oficiais</span>
+            <span className="block text-xs uppercase tracking-wider text-muted-foreground">
+              Canais oficiais
+            </span>
             <span className="block font-semibold">Como denunciar passo a passo</span>
           </span>
         </Link>
@@ -57,7 +64,9 @@ export function CaseActions() {
             <MapPin className="size-4" aria-hidden />
           </span>
           <span>
-            <span className="block text-xs uppercase tracking-wider text-muted-foreground">Encaminhamento</span>
+            <span className="block text-xs uppercase tracking-wider text-muted-foreground">
+              Encaminhamento
+            </span>
             <span className="block font-semibold">Conselho Tutelar / Delegacia perto de você</span>
           </span>
         </Link>
@@ -69,7 +78,9 @@ export function CaseActions() {
             <BookOpen className="size-4" aria-hidden />
           </span>
           <span>
-            <span className="block text-xs uppercase tracking-wider text-muted-foreground">Apoio e orientação</span>
+            <span className="block text-xs uppercase tracking-wider text-muted-foreground">
+              Apoio e orientação
+            </span>
             <span className="block font-semibold">Materiais para famílias e escolas</span>
           </span>
         </Link>

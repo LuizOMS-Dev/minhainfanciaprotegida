@@ -76,7 +76,11 @@ function SecurityPage() {
           label="Bloqueios ativos"
           value={d?.metrics.activeLockoutCount ?? "—"}
           icon={Lock}
-          tone={(d?.metrics.activeLockoutCount ?? 0) > 0 ? "text-[color:var(--red-inst)]" : "text-emerald-600"}
+          tone={
+            (d?.metrics.activeLockoutCount ?? 0) > 0
+              ? "text-[color:var(--red-inst)]"
+              : "text-emerald-600"
+          }
         />
         <KpiCard
           label="Falhas 24h"
@@ -84,16 +88,16 @@ function SecurityPage() {
           icon={AlertTriangle}
           tone={(d?.metrics.failedLogins24h ?? 0) > 5 ? "text-amber-600" : "text-muted-foreground"}
         />
-        <KpiCard
-          label="Falhas 7d"
-          value={d?.metrics.failedLogins7d ?? "—"}
-          icon={ShieldAlert}
-        />
+        <KpiCard label="Falhas 7d" value={d?.metrics.failedLogins7d ?? "—"} icon={ShieldAlert} />
         <KpiCard
           label="Eventos críticos 7d"
           value={d?.metrics.criticalEvents7d ?? "—"}
           icon={ScrollText}
-          tone={(d?.metrics.criticalEvents7d ?? 0) > 0 ? "text-[color:var(--red-inst)]" : "text-emerald-600"}
+          tone={
+            (d?.metrics.criticalEvents7d ?? 0) > 0
+              ? "text-[color:var(--red-inst)]"
+              : "text-emerald-600"
+          }
         />
       </div>
 
@@ -156,23 +160,21 @@ function SecurityPage() {
           )}
           <ul className="divide-y divide-border">
             {(d?.topFailingEmails ?? []).map((it) => (
-              <li
-                key={it.email}
-                className="py-2 flex items-center justify-between text-sm"
-              >
+              <li key={it.email} className="py-2 flex items-center justify-between text-sm">
                 <span className="inline-flex items-center gap-2">
                   <Mail className="size-3.5 text-muted-foreground" /> {it.email}
                 </span>
-                <span className="font-semibold text-[color:var(--red-inst)]">
-                  {it.failures}
-                </span>
+                <span className="font-semibold text-[color:var(--red-inst)]">{it.failures}</span>
               </li>
             ))}
           </ul>
         </SectionCard>
 
         {/* Críticos */}
-        <SectionCard title="Eventos críticos recentes" description="Últimos 15 eventos de alta gravidade.">
+        <SectionCard
+          title="Eventos críticos recentes"
+          description="Últimos 15 eventos de alta gravidade."
+        >
           {q.isLoading && <AdminSkeleton rows={4} />}
           {!q.isLoading && (d?.recentCriticalEvents ?? []).length === 0 && (
             <p className="text-sm text-muted-foreground inline-flex items-center gap-2">
@@ -203,7 +205,10 @@ function SecurityPage() {
           )}
           <ul className="divide-y divide-border">
             {(d?.recentLogins ?? []).map((l, i) => (
-              <li key={`${l.email}-${i}`} className="py-2 flex items-center justify-between text-sm">
+              <li
+                key={`${l.email}-${i}`}
+                className="py-2 flex items-center justify-between text-sm"
+              >
                 <div>
                   <div className="inline-flex items-center gap-2">
                     <KeyRound className="size-3.5 text-emerald-600" />
@@ -241,12 +246,13 @@ function SecurityPage() {
             <code> object-src 'none'</code>, relatórios em <code>/api/public/csp-report</code>.
           </li>
           <li className="rounded-xl border border-border p-3">
-            <strong className="text-foreground">Headers</strong>: HSTS 2 anos+preload, X-Frame-Options
-            DENY, nosniff, Referrer-Policy strict-origin-when-cross-origin.
+            <strong className="text-foreground">Headers</strong>: HSTS 2 anos+preload,
+            X-Frame-Options DENY, nosniff, Referrer-Policy strict-origin-when-cross-origin.
           </li>
           <li className="rounded-xl border border-border p-3">
-            <strong className="text-foreground">Auditoria</strong>: <Database className="inline size-3" />
-            {" "}registra todos eventos sensíveis com IP + user-agent.
+            <strong className="text-foreground">Auditoria</strong>:{" "}
+            <Database className="inline size-3" /> registra todos eventos sensíveis com IP +
+            user-agent.
           </li>
         </ul>
       </SectionCard>

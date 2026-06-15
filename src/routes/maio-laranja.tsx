@@ -14,7 +14,10 @@ export const Route = createFileRoute("/maio-laranja")({
           "O que é o Maio Laranja, a história do 18 de maio, o Caso Araceli e como participar da campanha nacional de combate ao abuso e exploração sexual.",
       },
       { property: "og:title", content: "Maio Laranja — Campanha Nacional" },
-      { property: "og:description", content: "História do 18 de maio, Caso Araceli e objetivos da campanha." },
+      {
+        property: "og:description",
+        content: "História do 18 de maio, Caso Araceli e objetivos da campanha.",
+      },
       { property: "og:url", content: "https://minhainfanciaprotegida.com.br/maio-laranja" },
     ],
     links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/maio-laranja" }],
@@ -59,10 +62,17 @@ function Page() {
       <section className="relative isolate overflow-hidden bg-[color:var(--navy-deep)] text-white py-24 sm:py-32">
         <div
           className="absolute inset-0 -z-10 opacity-30"
-          style={{ backgroundImage: `url(${ribbonImg})`, backgroundSize: "cover", backgroundPosition: "center" }}
+          style={{
+            backgroundImage: `url(${ribbonImg})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
           aria-hidden
         />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[color:var(--navy-deep)]/85 via-[color:var(--navy-deep)]/75 to-[color:var(--navy-deep)]" aria-hidden />
+        <div
+          className="absolute inset-0 -z-10 bg-gradient-to-b from-[color:var(--navy-deep)]/85 via-[color:var(--navy-deep)]/75 to-[color:var(--navy-deep)]"
+          aria-hidden
+        />
 
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <Reveal>
@@ -97,8 +107,11 @@ function Page() {
             <p className="mt-5 text-muted-foreground leading-relaxed">
               O <strong>Maio Laranja</strong> é a campanha brasileira de enfrentamento à violência
               sexual contra crianças e adolescentes. A data central é o{" "}
-              <strong>18 de maio — Dia Nacional de Combate ao Abuso e à Exploração Sexual de
-              Crianças e Adolescentes</strong>, instituído pela{" "}
+              <strong>
+                18 de maio — Dia Nacional de Combate ao Abuso e à Exploração Sexual de Crianças e
+                Adolescentes
+              </strong>
+              , instituído pela{" "}
               <a
                 className="underline underline-offset-4 text-foreground hover:text-[color:var(--orange)]"
                 href="https://www.planalto.gov.br/ccivil_03/leis/l9970.htm"
@@ -128,7 +141,12 @@ function Page() {
 
           <Reveal delay={140}>
             <div className="rounded-3xl overflow-hidden shadow-elegant relative aspect-square">
-              <img src={ribbonImg} alt="Laço laranja, símbolo da campanha Maio Laranja" loading="lazy" className="size-full object-cover" />
+              <img
+                src={ribbonImg}
+                alt="Laço laranja, símbolo da campanha Maio Laranja"
+                loading="lazy"
+                className="size-full object-cover"
+              />
             </div>
           </Reveal>
         </div>
@@ -145,14 +163,24 @@ function Page() {
           <ol className="mt-14 relative border-l-2 border-[color:var(--orange)]/40 pl-8 space-y-10">
             {timeline.map((t, i) => (
               <Reveal key={t.year} delay={i * 80} as="li">
-                <div className="absolute -left-[11px] mt-1.5 size-5 rounded-full bg-[color:var(--orange)] ring-4 ring-[color:var(--orange-soft)]" aria-hidden />
+                <div
+                  className="absolute -left-[11px] mt-1.5 size-5 rounded-full bg-[color:var(--orange)] ring-4 ring-[color:var(--orange-soft)]"
+                  aria-hidden
+                />
                 <div className="flex items-baseline gap-3">
                   <CalendarDays className="size-4 text-[color:var(--orange)]" aria-hidden />
-                  <span className="font-display text-2xl font-semibold text-[color:var(--navy)]">{t.year}</span>
+                  <span className="font-display text-2xl font-semibold text-[color:var(--navy)]">
+                    {t.year}
+                  </span>
                 </div>
                 <h3 className="mt-2 text-xl font-semibold">{t.title}</h3>
                 <p className="mt-2 text-muted-foreground leading-relaxed">{t.text}</p>
-                <a href={t.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-[color:var(--red-inst)] hover:underline">
+                <a
+                  href={t.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-[color:var(--red-inst)] hover:underline"
+                >
                   Fonte: {t.source} <ExternalLink className="size-3" />
                 </a>
               </Reveal>
@@ -167,10 +195,26 @@ function Page() {
           <SectionHeader eyebrow="Objetivos" title="Por que esta campanha existe" />
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {[
-              { icon: Goal, title: "Conscientizar", text: "Romper o silêncio e levar informação qualificada à sociedade." },
-              { icon: Users, title: "Mobilizar", text: "Engajar famílias, escolas, empresas e governos na proteção infantil." },
-              { icon: HeartHandshake, title: "Acolher", text: "Oferecer escuta e orientação a vítimas, familiares e comunidades." },
-              { icon: Flame, title: "Denunciar", text: "Fortalecer canais oficiais — em especial o Disque 100." },
+              {
+                icon: Goal,
+                title: "Conscientizar",
+                text: "Romper o silêncio e levar informação qualificada à sociedade.",
+              },
+              {
+                icon: Users,
+                title: "Mobilizar",
+                text: "Engajar famílias, escolas, empresas e governos na proteção infantil.",
+              },
+              {
+                icon: HeartHandshake,
+                title: "Acolher",
+                text: "Oferecer escuta e orientação a vítimas, familiares e comunidades.",
+              },
+              {
+                icon: Flame,
+                title: "Denunciar",
+                text: "Fortalecer canais oficiais — em especial o Disque 100.",
+              },
             ].map((o, i) => (
               <Reveal key={o.title} delay={i * 70}>
                 <div className="h-full rounded-2xl border border-border p-6 hover-lift bg-card">
@@ -201,7 +245,9 @@ function Page() {
             ].map((t, i) => (
               <Reveal key={t} delay={i * 60}>
                 <div className="rounded-2xl bg-white/5 border border-white/10 p-5 backdrop-blur flex gap-4">
-                  <span className="font-display text-3xl text-[color:var(--orange)]">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="font-display text-3xl text-[color:var(--orange)]">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                   <p className="leading-relaxed text-white/90">{t}</p>
                 </div>
               </Reveal>

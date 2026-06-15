@@ -86,9 +86,7 @@ export function Turnstile({ siteKey, onToken, className }: TurnstileProps) {
 
   if (!siteKey) {
     return (
-      <p className={`text-xs text-muted-foreground ${className ?? ""}`}>
-        CAPTCHA não configurado.
-      </p>
+      <p className={`text-xs text-muted-foreground ${className ?? ""}`}>CAPTCHA não configurado.</p>
     );
   }
   return <div ref={containerRef} className={className} />;

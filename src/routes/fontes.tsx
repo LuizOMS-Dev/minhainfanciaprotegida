@@ -29,8 +29,18 @@ export const Route = createFileRoute("/fontes")({
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Início", item: "https://minhainfanciaprotegida.com.br/" },
-              { "@type": "ListItem", position: 2, name: "Fontes Utilizadas", item: "https://minhainfanciaprotegida.com.br/fontes" },
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Início",
+                item: "https://minhainfanciaprotegida.com.br/",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Fontes Utilizadas",
+                item: "https://minhainfanciaprotegida.com.br/fontes",
+              },
             ],
           },
           {
@@ -59,26 +69,56 @@ const fontes = [
   {
     grupo: "Governo Federal",
     itens: [
-      { nome: "Ministério dos Direitos Humanos e da Cidadania (MDHC)", url: "https://www.gov.br/mdh/pt-br" },
-      { nome: "Disque 100 — Disque Direitos Humanos", url: "https://www.gov.br/mdh/pt-br/assuntos/noticias/disque-100" },
-      { nome: "Plano Nacional de Enfrentamento à Violência Sexual contra Crianças e Adolescentes", url: "https://www.gov.br/mdh/pt-br" },
+      {
+        nome: "Ministério dos Direitos Humanos e da Cidadania (MDHC)",
+        url: "https://www.gov.br/mdh/pt-br",
+      },
+      {
+        nome: "Disque 100 — Disque Direitos Humanos",
+        url: "https://www.gov.br/mdh/pt-br/assuntos/noticias/disque-100",
+      },
+      {
+        nome: "Plano Nacional de Enfrentamento à Violência Sexual contra Crianças e Adolescentes",
+        url: "https://www.gov.br/mdh/pt-br",
+      },
     ],
   },
   {
     grupo: "Legislação",
     itens: [
-      { nome: "Lei nº 8.069/1990 — Estatuto da Criança e do Adolescente (ECA)", url: "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm" },
-      { nome: "Lei nº 13.431/2017 — Escuta especializada e depoimento especial", url: "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13431.htm" },
-      { nome: "Lei nº 15.211/2025 — ECA Digital (Lei Felca)", url: "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/lei/l15211.htm" },
-      { nome: "Lei nº 9.970/2000 — Dia Nacional de Combate ao Abuso e à Exploração Sexual", url: "https://www.planalto.gov.br/ccivil_03/leis/l9970.htm" },
+      {
+        nome: "Lei nº 8.069/1990 — Estatuto da Criança e do Adolescente (ECA)",
+        url: "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm",
+      },
+      {
+        nome: "Lei nº 13.431/2017 — Escuta especializada e depoimento especial",
+        url: "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13431.htm",
+      },
+      {
+        nome: "Lei nº 15.211/2025 — ECA Digital (Lei Felca)",
+        url: "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/lei/l15211.htm",
+      },
+      {
+        nome: "Lei nº 9.970/2000 — Dia Nacional de Combate ao Abuso e à Exploração Sexual",
+        url: "https://www.planalto.gov.br/ccivil_03/leis/l9970.htm",
+      },
     ],
   },
   {
     grupo: "Dados e pesquisa",
     itens: [
-      { nome: "Anuário Brasileiro de Segurança Pública — FBSP", url: "https://forumseguranca.org.br/anuario-brasileiro-seguranca-publica/" },
-      { nome: "Unicef Brasil — Proteção à infância", url: "https://www.unicef.org/brazil/protecao" },
-      { nome: "SafeNet Brasil — Central Nacional de Denúncias", url: "https://new.safernet.org.br/" },
+      {
+        nome: "Anuário Brasileiro de Segurança Pública — FBSP",
+        url: "https://forumseguranca.org.br/anuario-brasileiro-seguranca-publica/",
+      },
+      {
+        nome: "Unicef Brasil — Proteção à infância",
+        url: "https://www.unicef.org/brazil/protecao",
+      },
+      {
+        nome: "SafeNet Brasil — Central Nacional de Denúncias",
+        url: "https://new.safernet.org.br/",
+      },
       { nome: "Childhood Brasil", url: "https://www.childhood.org.br/" },
     ],
   },
@@ -105,9 +145,7 @@ function Page() {
         {fontes.map((g, i) => (
           <Reveal key={g.grupo} delay={i * 80}>
             <div>
-              <h2 className="font-display text-2xl font-semibold text-foreground">
-                {g.grupo}
-              </h2>
+              <h2 className="font-display text-2xl font-semibold text-foreground">{g.grupo}</h2>
               <ul className="mt-4 space-y-2">
                 {g.itens.map((it) => (
                   <li key={it.url}>

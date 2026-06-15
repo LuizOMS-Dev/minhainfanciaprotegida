@@ -34,8 +34,7 @@ export interface RecentActivityItem {
   created_at: string;
 }
 
-const sinceIso = (hours: number) =>
-  new Date(Date.now() - hours * 3_600_000).toISOString();
+const sinceIso = (hours: number) => new Date(Date.now() - hours * 3_600_000).toISOString();
 
 async function loadAdmin() {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -45,11 +44,7 @@ async function loadAdmin() {
 export const getAdminOverview = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<AdminOverview> => {
-    await requireRole(context.supabase, context.userId, [
-      "admin",
-      "editor",
-      "revisor",
-    ]);
+    await requireRole(context.supabase, context.userId, ["admin", "editor", "revisor"]);
     const admin = await loadAdmin();
 
     const [
@@ -76,10 +71,23 @@ export const getAdminOverview = createServerFn({ method: "GET" })
       admin.from("library_items").select("*", { count: "exact", head: true }),
       admin.from("help_locations").select("*", { count: "exact", head: true }),
       admin.from("profiles").select("*", { count: "exact", head: true }),
-      admin.from("admin_sessions").select("*", { count: "exact", head: true }).is("logout_at", null),
-      admin.from("admin_sessions").select("*", { count: "exact", head: true }).gte("login_at", sinceIso(24)),
-      admin.from("login_attempts").select("*", { count: "exact", head: true }).gte("created_at", sinceIso(24)),
-      admin.from("login_attempts").select("*", { count: "exact", head: true }).eq("success", false).gte("created_at", sinceIso(24)),
+      admin
+        .from("admin_sessions")
+        .select("*", { count: "exact", head: true })
+        .is("logout_at", null),
+      admin
+        .from("admin_sessions")
+        .select("*", { count: "exact", head: true })
+        .gte("login_at", sinceIso(24)),
+      admin
+        .from("login_attempts")
+        .select("*", { count: "exact", head: true })
+        .gte("created_at", sinceIso(24)),
+      admin
+        .from("login_attempts")
+        .select("*", { count: "exact", head: true })
+        .eq("success", false)
+        .gte("created_at", sinceIso(24)),
     ]);
 
     const { count: lockouts } = await admin
@@ -217,9 +225,7 @@ export const getSecurityOverview = createServerFn({ method: "GET" })
         .from("account_lockouts")
         .select("*", { count: "exact", head: true })
         .gt("locked_until", now),
-      admin
-        .from("mfa_recovery_codes")
-        .select("user_id"),
+      admin.from("mfa_recovery_codes").select("user_id"),
     ]);
 
     // top failing emails (aggregate in JS over last 7d)
@@ -265,9 +271,7 @@ export interface GlobalSearchResult {
 
 export const adminGlobalSearch = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i) =>
-    z.object({ q: z.string().min(1).max(120) }).parse(i),
-  )
+  .inputValidator((i) => z.object({ q: z.string().min(1).max(120) }).parse(i))
   .handler(async ({ data, context }): Promise<GlobalSearchResult> => {
     await requireRole(context.supabase, context.userId, ["admin", "editor", "revisor"]);
     const admin = await loadAdmin();
@@ -283,21 +287,13 @@ export const adminGlobalSearch = createServerFn({ method: "GET" })
         .select("id, title, slug, type, status")
         .or(`title.ilike.${like},slug.ilike.${like}`)
         .limit(5),
-      admin
-        .from("library_items")
-        .select("id, title, category")
-        .ilike("title", like)
-        .limit(5),
+      admin.from("library_items").select("id, title, category").ilike("title", like).limit(5),
       admin
         .from("help_locations")
         .select("id, name, city, state")
         .or(`name.ilike.${like},city.ilike.${like}`)
         .limit(5),
-      admin
-        .from("profiles")
-        .select("id, display_name")
-        .ilike("display_name", like)
-        .limit(5),
+      admin.from("profiles").select("id, display_name").ilike("display_name", like).limit(5),
     ]);
 
     let users: GlobalSearchResult["users"] = [];

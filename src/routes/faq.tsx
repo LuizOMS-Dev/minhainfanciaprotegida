@@ -14,7 +14,10 @@ export const Route = createFileRoute("/faq")({
           "Dúvidas comuns sobre denúncia, sigilo, ECA, Conselho Tutelar e atendimento a vítimas de violência sexual contra crianças e adolescentes.",
       },
       { property: "og:title", content: "FAQ — Perguntas Frequentes" },
-      { property: "og:description", content: "Tire suas dúvidas sobre denúncia e proteção infantil." },
+      {
+        property: "og:description",
+        content: "Tire suas dúvidas sobre denúncia e proteção infantil.",
+      },
       { property: "og:url", content: "https://minhainfanciaprotegida.com.br/faq" },
     ],
     links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/faq" }],

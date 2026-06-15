@@ -57,7 +57,9 @@ export function CaseSidebar({
       >
         <Phone className="size-5 shrink-0" aria-hidden />
         <div className="min-w-0">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-90">Denúncia 24h</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-90">
+            Denúncia 24h
+          </p>
           <p className="font-display text-lg font-bold leading-tight">Ligar Disque 100</p>
         </div>
       </a>
@@ -90,12 +92,17 @@ export function CaseSidebar({
           <ol className="mt-3 relative space-y-3 border-l border-[color:var(--dossier-rule)] pl-4">
             {miniTimeline.map((t, i) => (
               <li key={i} className="relative">
-                <span className="absolute -left-[18px] top-1 inline-flex size-2.5 rounded-full bg-[color:var(--orange)] ring-2 ring-white" aria-hidden />
+                <span
+                  className="absolute -left-[18px] top-1 inline-flex size-2.5 rounded-full bg-[color:var(--orange)] ring-2 ring-white"
+                  aria-hidden
+                />
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-[color:var(--navy-deep)]/70">
                   {fmt.format(t.d)}
                 </p>
                 <p className="text-sm text-[color:var(--dossier-ink)] leading-snug">
-                  {t.title ? <strong className="text-[color:var(--navy-deep)]">{t.title}: </strong> : null}
+                  {t.title ? (
+                    <strong className="text-[color:var(--navy-deep)]">{t.title}: </strong>
+                  ) : null}
                   {t.text}
                 </p>
               </li>

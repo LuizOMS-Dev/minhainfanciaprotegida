@@ -27,7 +27,9 @@ export function WhyItMattersBlock({ text }: WhyItMattersBlockProps) {
           <h2 className="font-display text-2xl font-bold leading-tight text-[color:var(--navy-deep)]">
             Por que este caso importa
           </h2>
-          <p className="mt-3 text-base leading-relaxed text-[color:var(--dossier-ink)]/90">{text}</p>
+          <p className="mt-3 text-base leading-relaxed text-[color:var(--dossier-ink)]/90">
+            {text}
+          </p>
         </div>
       </div>
     </section>

@@ -30,7 +30,7 @@ export default defineConfig({
   projects: [
     {
       name: "mobile-small",
-      use: { ...devices["iPhone SE (3rd gen)"] ?? devices["iPhone SE"] },
+      use: { ...(devices["iPhone SE (3rd gen)"] ?? devices["iPhone SE"]) },
     },
     {
       name: "mobile",

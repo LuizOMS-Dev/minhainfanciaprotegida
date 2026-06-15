@@ -33,14 +33,39 @@ const primaryNav = [
 type MoreItem = { to: string; label: string; desc: string; icon: LucideIcon };
 
 const moreNav: readonly MoreItem[] = [
-  { to: "/assistente", label: "Assistente IA", desc: "Tire dúvidas com nosso assistente (não-oficial)", icon: MessageCircleHeart },
+  {
+    to: "/assistente",
+    label: "Assistente IA",
+    desc: "Tire dúvidas com nosso assistente (não-oficial)",
+    icon: MessageCircleHeart,
+  },
   { to: "/maio-laranja", label: "Maio Laranja", desc: "Sobre a campanha 18 de maio", icon: Ribbon },
-  { to: "/mapa", label: "Mapa de Ajuda", desc: "Conselhos, delegacias e centros de apoio", icon: MapPin },
-  { to: "/faq", label: "Perguntas Frequentes", desc: "Dúvidas comuns sobre denúncia e proteção", icon: HelpCircle },
+  {
+    to: "/mapa",
+    label: "Mapa de Ajuda",
+    desc: "Conselhos, delegacias e centros de apoio",
+    icon: MapPin,
+  },
+  {
+    to: "/faq",
+    label: "Perguntas Frequentes",
+    desc: "Dúvidas comuns sobre denúncia e proteção",
+    icon: HelpCircle,
+  },
   { to: "/sobre", label: "Sobre o Projeto", desc: "Quem somos e por que existimos", icon: Info },
   { to: "/objetivos", label: "Objetivos", desc: "Missão e metas da campanha", icon: Target },
-  { to: "/metodologia", label: "Metodologia", desc: "Como produzimos o conteúdo", icon: FlaskConical },
-  { to: "/fontes", label: "Fontes Utilizadas", desc: "Referências oficiais consultadas", icon: BookOpen },
+  {
+    to: "/metodologia",
+    label: "Metodologia",
+    desc: "Como produzimos o conteúdo",
+    icon: FlaskConical,
+  },
+  {
+    to: "/fontes",
+    label: "Fontes Utilizadas",
+    desc: "Referências oficiais consultadas",
+    icon: BookOpen,
+  },
 ];
 
 const mobileNav = [...primaryNav, ...moreNav.map((m) => ({ to: m.to, label: m.label }))] as const;
@@ -88,9 +113,7 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-shadow duration-300 ${
-        scrolled ? "shadow-md" : ""
-      }`}
+      className={`sticky top-0 z-50 transition-shadow duration-300 ${scrolled ? "shadow-md" : ""}`}
     >
       {/* Faixa de emergência — gradiente vermelho com pill Disque 100 */}
       <div
@@ -103,7 +126,9 @@ export function SiteHeader() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-center gap-2 sm:gap-3 text-[11px] sm:text-xs tracking-wide">
           <ShieldAlert className="size-3.5 text-white/90 shrink-0" aria-hidden />
           <span className="font-bold uppercase tracking-[0.18em]">Denuncie agora</span>
-          <span className="text-white/55" aria-hidden>•</span>
+          <span className="text-white/55" aria-hidden>
+            •
+          </span>
           <a
             href="tel:100"
             className="inline-flex items-center gap-1.5 rounded-full border border-white/35 bg-white/10 px-2.5 py-0.5 font-semibold hover:bg-white/20 transition-colors"
@@ -180,7 +205,11 @@ export function SiteHeader() {
                 aria-expanded={open}
                 aria-controls="mobile-nav"
               >
-                {open ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
+                {open ? (
+                  <X className="size-5" aria-hidden />
+                ) : (
+                  <Menu className="size-5" aria-hidden />
+                )}
               </button>
             </div>
           </div>
@@ -197,8 +226,7 @@ export function SiteHeader() {
                     to={item.to}
                     className="relative inline-block px-2.5 py-1.5 text-[11px] xl:text-[12px] font-bold uppercase tracking-[0.14em] text-foreground/65 hover:text-foreground transition-colors whitespace-nowrap after:absolute after:inset-x-2.5 after:-bottom-2.5 after:h-[2px] after:bg-[color:var(--orange)] after:scale-x-0 after:origin-center after:transition-transform hover:after:scale-x-100"
                     activeProps={{
-                      className:
-                        "text-[color:var(--orange)] after:scale-x-100",
+                      className: "text-[color:var(--orange)] after:scale-x-100",
                     }}
                     activeOptions={{ exact: item.to === "/" }}
                   >
@@ -270,7 +298,10 @@ export function SiteHeader() {
 
       {/* Drawer mobile */}
       {open && (
-        <div id="mobile-nav" className="lg:hidden border-t border-border bg-background animate-fade-in">
+        <div
+          id="mobile-nav"
+          className="lg:hidden border-t border-border bg-background animate-fade-in"
+        >
           <nav
             className="px-4 py-4 flex flex-col gap-1 max-h-[calc(100dvh-8rem)] overflow-y-auto"
             aria-label="Navegação móvel"

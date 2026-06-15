@@ -23,7 +23,8 @@ export const Route = createFileRoute("/casos/")({
       { property: "og:title", content: "Dossiê nacional · Casos reais — Infância Protegida" },
       {
         property: "og:description",
-        content: "Casos que mudaram leis e a forma como o Brasil enfrenta a violência contra crianças.",
+        content:
+          "Casos que mudaram leis e a forma como o Brasil enfrenta a violência contra crianças.",
       },
     ],
     links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/casos" }],
@@ -53,7 +54,11 @@ interface NormalizedCase {
   source: { name: string; url?: string } | null;
 }
 
-const fmtVerified = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
+const fmtVerified = new Intl.DateTimeFormat("pt-BR", {
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+});
 
 function CasosPage() {
   const [category, setCategory] = useState<string>("Todos");
@@ -129,7 +134,8 @@ function CasosPage() {
         const y = c.eventDate ? new Date(c.eventDate).getFullYear() : null;
         if (y !== year) return false;
       }
-      if (q && !c.title.toLowerCase().includes(q) && !c.excerpt.toLowerCase().includes(q)) return false;
+      if (q && !c.title.toLowerCase().includes(q) && !c.excerpt.toLowerCase().includes(q))
+        return false;
       return true;
     });
   }, [merged, category, severity, year, query]);
@@ -255,10 +261,13 @@ function FeaturedCase({ item }: { item: NormalizedCase }) {
         <h3 className="font-display text-3xl sm:text-4xl font-semibold leading-tight text-[color:var(--navy-deep)] text-balance">
           {item.title}
         </h3>
-        <p className="text-base leading-relaxed text-[color:var(--dossier-ink)]/85 line-clamp-4">{item.excerpt}</p>
+        <p className="text-base leading-relaxed text-[color:var(--dossier-ink)]/85 line-clamp-4">
+          {item.excerpt}
+        </p>
         {item.source?.name && (
           <p className="text-xs text-[color:var(--navy-deep)]/70">
-            Fonte primária: <span className="font-semibold text-[color:var(--navy-deep)]">{item.source.name}</span>
+            Fonte primária:{" "}
+            <span className="font-semibold text-[color:var(--navy-deep)]">{item.source.name}</span>
           </p>
         )}
         <Link
@@ -331,7 +340,11 @@ function StripeCard({
       <h3 className="font-display text-xl font-bold leading-tight">{title}</h3>
       <p className="text-sm text-white/80 leading-relaxed">{description}</p>
       <span className="mt-2 inline-flex items-center gap-1 text-xs font-bold uppercase tracking-[0.2em] text-[color:var(--orange)]">
-        {cta} <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
+        {cta}{" "}
+        <ArrowRight
+          className="size-3.5 transition-transform group-hover:translate-x-0.5"
+          aria-hidden
+        />
       </span>
     </Link>
   );

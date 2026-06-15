@@ -26,7 +26,10 @@ export function SafeHtml({ html, className }: { html: string; className?: string
 
 export function readingTimeMinutes(html: string | null | undefined): number {
   if (!html) return 1;
-  const text = html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  const text = html
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
   const words = text.split(" ").filter(Boolean).length;
   return Math.max(1, Math.ceil(words / 200));
 }

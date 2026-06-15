@@ -114,13 +114,17 @@ export const Route = createFileRoute("/noticias/$slug")({
   errorComponent: () => (
     <div className="mx-auto max-w-2xl px-4 py-24 text-center">
       <h1 className="font-display text-2xl font-bold">Não foi possível carregar esta notícia</h1>
-      <Link to="/noticias" className="mt-6 inline-block text-[color:var(--red-inst)] underline">Voltar para Notícias</Link>
+      <Link to="/noticias" className="mt-6 inline-block text-[color:var(--red-inst)] underline">
+        Voltar para Notícias
+      </Link>
     </div>
   ),
   notFoundComponent: () => (
     <div className="mx-auto max-w-2xl px-4 py-24 text-center">
       <h1 className="font-display text-2xl font-bold">Notícia não encontrada</h1>
-      <Link to="/noticias" className="mt-6 inline-block text-[color:var(--red-inst)] underline">Voltar para Notícias</Link>
+      <Link to="/noticias" className="mt-6 inline-block text-[color:var(--red-inst)] underline">
+        Voltar para Notícias
+      </Link>
     </div>
   ),
 });
@@ -143,7 +147,8 @@ function NewsDetail() {
 
   const { data: rel } = useQuery({
     queryKey: ["related", "news", a.id, a.category],
-    queryFn: () => fetchRelated({ data: { id: a.id, type: "news", category: a.category, limit: 3 } }),
+    queryFn: () =>
+      fetchRelated({ data: { id: a.id, type: "news", category: a.category, limit: 3 } }),
     staleTime: 5 * 60_000,
   });
   const { data: sib } = useQuery({
@@ -201,8 +206,12 @@ function NewsDetail() {
             />
           </figure>
         )}
-        {a.body && <SafeHtml html={a.body} className="prose prose-neutral max-w-none text-foreground/90 leading-relaxed" />}
-
+        {a.body && (
+          <SafeHtml
+            html={a.body}
+            className="prose prose-neutral max-w-none text-foreground/90 leading-relaxed"
+          />
+        )}
 
         <ActionStepsBlock items={a.action_steps} />
         <WarningIndicatorsBlock items={a.warning_indicators} />
@@ -211,7 +220,11 @@ function NewsDetail() {
         <NationalContextChips items={context} />
         <Timeline
           items={a.timeline ?? []}
-          meta={{ publishAt: a.publish_at, updatedAt: a.updated_at, verifiedAt: a.last_verified_at }}
+          meta={{
+            publishAt: a.publish_at,
+            updatedAt: a.updated_at,
+            verifiedAt: a.last_verified_at,
+          }}
         />
         <LegislationBlock items={laws} />
         <SignalsBlock items={signals} />
@@ -253,9 +266,12 @@ function NewsDetail() {
           image: a.cover_url ?? undefined,
           mainEntityOfPage: url,
           articleSection: a.category ?? undefined,
-          keywords: [a.category, ...(a.warning_indicators ?? [])].filter(Boolean).join(", ") || undefined,
+          keywords:
+            [a.category, ...(a.warning_indicators ?? [])].filter(Boolean).join(", ") || undefined,
           inLanguage: "pt-BR",
-          author: a.author_name ? { "@type": "Person", name: a.author_name } : { "@type": "Organization", name: "Infância Protegida" },
+          author: a.author_name
+            ? { "@type": "Person", name: a.author_name }
+            : { "@type": "Organization", name: "Infância Protegida" },
           publisher: { "@type": "Organization", name: "Infância Protegida" },
         }}
       />

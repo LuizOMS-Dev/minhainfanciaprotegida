@@ -91,10 +91,7 @@ export function AssistantChat({
         className="shrink-0 border-b border-[color:var(--red-inst)]/20 bg-[color:var(--red-inst)]/5 px-4 py-2.5 text-[12px] leading-snug text-foreground/85 flex items-start gap-2"
         role="note"
       >
-        <ShieldAlert
-          className="size-4 mt-0.5 text-[color:var(--red-inst)] shrink-0"
-          aria-hidden
-        />
+        <ShieldAlert className="size-4 mt-0.5 text-[color:var(--red-inst)] shrink-0" aria-hidden />
         <p>
           <strong className="font-semibold">Não é canal oficial.</strong> Sou um assistente
           informativo. Em urgências, ligue{" "}
@@ -115,10 +112,7 @@ export function AssistantChat({
           <div className="max-w-2xl mx-auto">
             <div className="flex flex-col items-center text-center gap-3 mb-6">
               <span className="inline-flex size-12 items-center justify-center rounded-2xl bg-gradient-orange shadow-orange">
-                <Bot
-                  className="size-6 text-[color:var(--navy-deep)]"
-                  aria-hidden
-                />
+                <Bot className="size-6 text-[color:var(--navy-deep)]" aria-hidden />
               </span>
               <div>
                 <h2 className="font-display text-2xl text-foreground">
@@ -183,7 +177,11 @@ export function AssistantChat({
               }
             }}
             rows={1}
-            placeholder={compact ? "Escreva sua dúvida…" : "Escreva sua dúvida. Enter para enviar, Shift+Enter para nova linha."}
+            placeholder={
+              compact
+                ? "Escreva sua dúvida…"
+                : "Escreva sua dúvida. Enter para enviar, Shift+Enter para nova linha."
+            }
             disabled={isBusy}
             className="flex-1 resize-none bg-transparent text-sm leading-relaxed outline-none placeholder:text-muted-foreground max-h-40 py-1.5 disabled:opacity-60"
             aria-label="Mensagem para o assistente"

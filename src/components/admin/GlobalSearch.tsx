@@ -61,7 +61,9 @@ export function GlobalSearch() {
       >
         <Search className="size-3.5" aria-hidden />
         Pesquisar…
-        <kbd className="ml-2 rounded border border-border bg-muted px-1.5 py-0.5 text-[10px] font-mono">⌘K</kbd>
+        <kbd className="ml-2 rounded border border-border bg-muted px-1.5 py-0.5 text-[10px] font-mono">
+          ⌘K
+        </kbd>
       </button>
 
       {open && (
@@ -92,18 +94,14 @@ export function GlobalSearch() {
             </div>
             <div className="max-h-[60vh] overflow-y-auto p-2">
               {loading && (
-                <p className="px-3 py-6 text-sm text-muted-foreground text-center">
-                  Pesquisando…
-                </p>
+                <p className="px-3 py-6 text-sm text-muted-foreground text-center">Pesquisando…</p>
               )}
               {!loading && q.trim().length < 2 && (
                 <p className="px-3 py-6 text-sm text-muted-foreground text-center">
                   Digite pelo menos 2 caracteres.
                 </p>
               )}
-              {!loading && data && (
-                <Results data={data} onPick={() => setOpen(false)} />
-              )}
+              {!loading && data && <Results data={data} onPick={() => setOpen(false)} />}
             </div>
           </div>
         </div>
@@ -112,24 +110,11 @@ export function GlobalSearch() {
   );
 }
 
-function Results({
-  data,
-  onPick,
-}: {
-  data: GlobalSearchResult;
-  onPick: () => void;
-}) {
+function Results({ data, onPick }: { data: GlobalSearchResult; onPick: () => void }) {
   const total =
-    data.articles.length +
-    data.library.length +
-    data.locations.length +
-    data.users.length;
+    data.articles.length + data.library.length + data.locations.length + data.users.length;
   if (total === 0) {
-    return (
-      <p className="px-3 py-6 text-sm text-muted-foreground text-center">
-        Nenhum resultado.
-      </p>
-    );
+    return <p className="px-3 py-6 text-sm text-muted-foreground text-center">Nenhum resultado.</p>;
   }
   return (
     <div className="space-y-3">

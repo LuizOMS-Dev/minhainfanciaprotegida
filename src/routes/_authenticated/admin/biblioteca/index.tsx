@@ -56,12 +56,18 @@ function LibraryList() {
           </thead>
           <tbody>
             {q.isLoading && (
-              <tr><td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">Carregando…</td></tr>
+              <tr>
+                <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">
+                  Carregando…
+                </td>
+              </tr>
             )}
             {!q.isLoading && items.length === 0 && (
-              <tr><td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">
-                Nenhum material ainda.
-              </td></tr>
+              <tr>
+                <td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">
+                  Nenhum material ainda.
+                </td>
+              </tr>
             )}
             {items.map((it) => (
               <tr key={it.id} className="border-t border-border">
@@ -79,7 +85,9 @@ function LibraryList() {
                     Editar
                   </Link>
                   <button
-                    onClick={() => { if (confirm(`Excluir "${it.title}"?`)) del.mutate(it.id); }}
+                    onClick={() => {
+                      if (confirm(`Excluir "${it.title}"?`)) del.mutate(it.id);
+                    }}
                     className="text-sm font-semibold text-muted-foreground hover:text-[color:var(--red-inst)]"
                   >
                     Excluir

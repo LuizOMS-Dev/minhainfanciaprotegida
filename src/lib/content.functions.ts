@@ -52,7 +52,9 @@ function coerceStringArray(value: unknown): string[] | null {
   return out.length ? out : null;
 }
 
-function coerceHowToAct(value: unknown): { step?: number; title: string; description: string }[] | null {
+function coerceHowToAct(
+  value: unknown,
+): { step?: number; title: string; description: string }[] | null {
   if (!Array.isArray(value)) return null;
   const out: { step?: number; title: string; description: string }[] = [];
   for (const v of value) {
@@ -97,7 +99,10 @@ export const listPublishedArticles = createServerFn({ method: "GET" })
     if (data.type) q = q.eq("type", data.type);
 
     const { data: rows, error } = await q;
-    if (error) { console.error("[content] supabase error", error); throw new Error("Não foi possível carregar o conteúdo."); }
+    if (error) {
+      console.error("[content] supabase error", error);
+      throw new Error("Não foi possível carregar o conteúdo.");
+    }
 
     const ids = Array.from(
       new Set(
@@ -128,8 +133,8 @@ export const listPublishedArticles = createServerFn({ method: "GET" })
       publish_at: r.publish_at,
       last_verified_at: r.last_verified_at,
       updated_at: r.updated_at,
-      author_name: r.author_id ? profilesById.get(r.author_id) ?? null : null,
-      reviewer_name: r.reviewer_id ? profilesById.get(r.reviewer_id) ?? null : null,
+      author_name: r.author_id ? (profilesById.get(r.author_id) ?? null) : null,
+      reviewer_name: r.reviewer_id ? (profilesById.get(r.reviewer_id) ?? null) : null,
     }));
     return { articles };
   });
@@ -184,7 +189,10 @@ export const getPublishedArticle = createServerFn({ method: "GET" })
       .eq("status", "published")
       .or(`publish_at.is.null,publish_at.lte.${nowIso}`)
       .maybeSingle();
-    if (error) { console.error("[content] supabase error", error); throw new Error("Não foi possível carregar o conteúdo."); }
+    if (error) {
+      console.error("[content] supabase error", error);
+      throw new Error("Não foi possível carregar o conteúdo.");
+    }
     if (!row) {
       // Fallback: conteúdo estático curado em src/content (casos/notícias).
       if (data.type === "case" || data.type === "news") {
@@ -204,7 +212,10 @@ export const getPublishedArticle = createServerFn({ method: "GET" })
       supabaseAdmin
         .from("profiles")
         .select("id, display_name")
-        .in("id", [row.author_id, row.reviewer_id].filter((v): v is string => Boolean(v))),
+        .in(
+          "id",
+          [row.author_id, row.reviewer_id].filter((v): v is string => Boolean(v)),
+        ),
     ]);
 
     const profilesById = new Map<string, string>();
@@ -224,8 +235,8 @@ export const getPublishedArticle = createServerFn({ method: "GET" })
       publish_at: row.publish_at,
       last_verified_at: row.last_verified_at,
       updated_at: row.updated_at,
-      author_name: row.author_id ? profilesById.get(row.author_id) ?? null : null,
-      reviewer_name: row.reviewer_id ? profilesById.get(row.reviewer_id) ?? null : null,
+      author_name: row.author_id ? (profilesById.get(row.author_id) ?? null) : null,
+      reviewer_name: row.reviewer_id ? (profilesById.get(row.reviewer_id) ?? null) : null,
       sources: (sources ?? []).map((s) => ({
         id: s.id,
         label: s.label,
@@ -241,12 +252,18 @@ export const getPublishedArticle = createServerFn({ method: "GET" })
       related_signal_tags: row.related_signal_tags,
       national_context: row.national_context,
       action_steps: (row as { action_steps?: string[] | null }).action_steps ?? null,
-      warning_indicators: (row as { warning_indicators?: string[] | null }).warning_indicators ?? null,
-      severity_level: (row as { severity_level?: PublicArticleDetail["severity_level"] }).severity_level ?? null,
+      warning_indicators:
+        (row as { warning_indicators?: string[] | null }).warning_indicators ?? null,
+      severity_level:
+        (row as { severity_level?: PublicArticleDetail["severity_level"] }).severity_level ?? null,
       impact_summary: (row as { impact_summary?: string | null }).impact_summary ?? null,
-      source_confidence: (row as { source_confidence?: PublicArticleDetail["source_confidence"] }).source_confidence ?? null,
+      source_confidence:
+        (row as { source_confidence?: PublicArticleDetail["source_confidence"] })
+          .source_confidence ?? null,
       ai_summary: (row as { ai_summary?: string | null }).ai_summary ?? null,
-      executive_summary: coerceStringArray((row as { executive_summary?: unknown }).executive_summary),
+      executive_summary: coerceStringArray(
+        (row as { executive_summary?: unknown }).executive_summary,
+      ),
       why_it_matters: (row as { why_it_matters?: string | null }).why_it_matters ?? null,
       how_to_act: coerceHowToAct((row as { how_to_act?: unknown }).how_to_act),
     };
@@ -267,7 +284,10 @@ export const listLatestForHome = createServerFn({ method: "GET" }).handler(async
     .order("publish_at", { ascending: false, nullsFirst: false })
     .order("updated_at", { ascending: false })
     .limit(5);
-  if (error) { console.error("[content] supabase error", error); throw new Error("Não foi possível carregar o conteúdo."); }
+  if (error) {
+    console.error("[content] supabase error", error);
+    throw new Error("Não foi possível carregar o conteúdo.");
+  }
   return { latest: data ?? [] };
 });
 
@@ -290,7 +310,10 @@ export const listPublishedLibrary = createServerFn({ method: "GET" }).handler(as
     .select("id, title, description, category, audience, source_org, year, file_url, updated_at")
     .order("year", { ascending: false })
     .order("updated_at", { ascending: false });
-  if (error) { console.error("[library] supabase error", error); throw new Error("Não foi possível carregar a biblioteca."); }
+  if (error) {
+    console.error("[library] supabase error", error);
+    throw new Error("Não foi possível carregar a biblioteca.");
+  }
   return { items: (data ?? []) as PublicLibraryItem[] };
 });
 
@@ -383,8 +406,7 @@ export const getArticleRelations = createServerFn({ method: "GET" })
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const nowIso = new Date().toISOString();
-    const baseSelect =
-      "id, slug, title, subtitle, cover_url, category, publish_at, updated_at";
+    const baseSelect = "id, slug, title, subtitle, cover_url, category, publish_at, updated_at";
 
     const queryByType = async (type: "news" | "case", limit: number) => {
       let q = supabaseAdmin
@@ -426,7 +448,9 @@ export const getArticleRelations = createServerFn({ method: "GET" })
       queryByType("case", wantCases),
       supabaseAdmin
         .from("library_items")
-        .select("id, title, description, category, audience, source_org, year, file_url, updated_at")
+        .select(
+          "id, title, description, category, audience, source_org, year, file_url, updated_at",
+        )
         .order("year", { ascending: false })
         .limit(60),
     ]);
@@ -451,12 +475,14 @@ export const getArticleRelations = createServerFn({ method: "GET" })
       }));
 
     return {
-      relatedNews: data.type === "news"
-        ? news.filter((n) => n.id !== data.id) as CrossArticleSummary[]
-        : news as CrossArticleSummary[],
-      relatedCases: data.type === "case"
-        ? cases.filter((c) => c.id !== data.id) as CrossArticleSummary[]
-        : cases as CrossArticleSummary[],
+      relatedNews:
+        data.type === "news"
+          ? (news.filter((n) => n.id !== data.id) as CrossArticleSummary[])
+          : (news as CrossArticleSummary[]),
+      relatedCases:
+        data.type === "case"
+          ? (cases.filter((c) => c.id !== data.id) as CrossArticleSummary[])
+          : (cases as CrossArticleSummary[]),
       library: libraryItems,
       parents: (news[0] ?? null) as CrossArticleSummary | null,
       schools: (news[1] ?? null) as CrossArticleSummary | null,

@@ -82,7 +82,10 @@ function SessionsPage() {
                 <td className="px-4 py-3">{r.user_email ?? "—"}</td>
                 <td className="px-4 py-3 text-muted-foreground">{r.user_role ?? "—"}</td>
                 <td className="px-4 py-3 font-mono text-xs">{r.ip_address ?? "—"}</td>
-                <td className="px-4 py-3 text-xs text-muted-foreground max-w-[260px] truncate" title={r.user_agent ?? ""}>
+                <td
+                  className="px-4 py-3 text-xs text-muted-foreground max-w-[260px] truncate"
+                  title={r.user_agent ?? ""}
+                >
                   {r.user_agent ?? "—"}
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">

@@ -23,17 +23,8 @@ const CSP_DIRECTIVES: Record<string, string[]> = {
     "https://www.google-analytics.com",
     "https://*.clarity.ms",
   ],
-  "style-src": [
-    "'self'",
-    "'unsafe-inline'",
-    "https://fonts.googleapis.com",
-  ],
-  "img-src": [
-    "'self'",
-    "data:",
-    "blob:",
-    "https:",
-  ],
+  "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+  "img-src": ["'self'", "data:", "blob:", "https:"],
   "font-src": ["'self'", "https://fonts.gstatic.com", "data:"],
   "connect-src": [
     "'self'",

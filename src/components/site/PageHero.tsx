@@ -47,10 +47,7 @@ export function PageHero({
           aria-hidden
           className="absolute inset-0 h-full w-full object-cover animate-kenburns"
         />
-        <div
-          className="absolute inset-0"
-          style={{ backgroundImage: overlay }}
-        />
+        <div className="absolute inset-0" style={{ backgroundImage: overlay }} />
       </div>
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         {eyebrow && (
@@ -70,7 +67,9 @@ export function PageHero({
         </Reveal>
         {description && (
           <Reveal delay={220}>
-            <p className={`mt-6 text-lg max-w-2xl leading-relaxed ${subTextColor}`}>{description}</p>
+            <p className={`mt-6 text-lg max-w-2xl leading-relaxed ${subTextColor}`}>
+              {description}
+            </p>
           </Reveal>
         )}
       </div>

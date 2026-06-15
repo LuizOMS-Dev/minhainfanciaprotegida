@@ -56,9 +56,7 @@ export function SectionCard({
       <div className="p-5 sm:p-6 border-b border-border flex flex-wrap items-start justify-between gap-3">
         <div>
           <h3 className="font-display text-lg font-semibold">{title}</h3>
-          {description && (
-            <p className="text-sm text-muted-foreground mt-0.5">{description}</p>
-          )}
+          {description && <p className="text-sm text-muted-foreground mt-0.5">{description}</p>}
         </div>
         {action}
       </div>
@@ -71,11 +69,7 @@ export function AdminSkeleton({ rows = 4 }: { rows?: number }) {
   return (
     <div className="space-y-3" aria-busy="true">
       {Array.from({ length: rows }).map((_, i) => (
-        <div
-          key={i}
-          className="h-12 rounded-xl bg-muted/60 animate-pulse"
-          aria-hidden
-        />
+        <div key={i} className="h-12 rounded-xl bg-muted/60 animate-pulse" aria-hidden />
       ))}
     </div>
   );
@@ -96,9 +90,7 @@ export function AdminEmpty({
     <div className="rounded-2xl border border-dashed border-border p-10 text-center">
       <Icon className="mx-auto size-8 text-muted-foreground" aria-hidden />
       <p className="mt-3 font-display font-semibold">{title}</p>
-      {description && (
-        <p className="text-sm text-muted-foreground mt-1">{description}</p>
-      )}
+      {description && <p className="text-sm text-muted-foreground mt-1">{description}</p>}
       {action && <div className="mt-4">{action}</div>}
     </div>
   );
@@ -166,9 +158,7 @@ export function SecurityBadge({
   return (
     <div
       className={`rounded-2xl border p-4 flex items-start gap-3 ${
-        active
-          ? "border-emerald-200 bg-emerald-50/60"
-          : "border-amber-200 bg-amber-50/60"
+        active ? "border-emerald-200 bg-emerald-50/60" : "border-amber-200 bg-amber-50/60"
       }`}
     >
       <div
@@ -184,9 +174,7 @@ export function SecurityBadge({
       </div>
       <div className="min-w-0">
         <div className="font-display text-sm font-semibold text-foreground">{label}</div>
-        {detail && (
-          <div className="text-xs text-muted-foreground mt-0.5">{detail}</div>
-        )}
+        {detail && <div className="text-xs text-muted-foreground mt-0.5">{detail}</div>}
       </div>
     </div>
   );

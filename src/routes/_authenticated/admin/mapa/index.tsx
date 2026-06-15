@@ -42,10 +42,13 @@ function splitCsvLine(line: string): string[] {
   for (let i = 0; i < line.length; i++) {
     const c = line[i];
     if (c === '"') {
-      if (inQuotes && line[i + 1] === '"') { cur += '"'; i++; }
-      else inQuotes = !inQuotes;
+      if (inQuotes && line[i + 1] === '"') {
+        cur += '"';
+        i++;
+      } else inQuotes = !inQuotes;
     } else if (c === "," && !inQuotes) {
-      out.push(cur); cur = "";
+      out.push(cur);
+      cur = "";
     } else cur += c;
   }
   out.push(cur);
@@ -126,7 +129,8 @@ function LocationsList() {
       </div>
 
       <p className="mt-3 text-xs text-muted-foreground">
-        CSV: <code>name,type,state,city,address,phone,hours,official_url,lat,lng</code> — type entre {Object.keys(typeLabels).join(", ")}.
+        CSV: <code>name,type,state,city,address,phone,hours,official_url,lat,lng</code> — type entre{" "}
+        {Object.keys(typeLabels).join(", ")}.
       </p>
 
       {importMsg && (
@@ -148,18 +152,26 @@ function LocationsList() {
           </thead>
           <tbody>
             {q.isLoading && (
-              <tr><td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">Carregando…</td></tr>
+              <tr>
+                <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
+                  Carregando…
+                </td>
+              </tr>
             )}
             {!q.isLoading && locations.length === 0 && (
-              <tr><td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
-                Nenhum local cadastrado.
-              </td></tr>
+              <tr>
+                <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
+                  Nenhum local cadastrado.
+                </td>
+              </tr>
             )}
             {locations.map((l) => (
               <tr key={l.id} className="border-t border-border">
                 <td className="px-4 py-3 font-medium">{l.name}</td>
                 <td className="px-4 py-3 text-muted-foreground">{typeLabels[l.type] ?? l.type}</td>
-                <td className="px-4 py-3 text-muted-foreground">{l.city} / {l.state}</td>
+                <td className="px-4 py-3 text-muted-foreground">
+                  {l.city} / {l.state}
+                </td>
                 <td className="px-4 py-3 text-muted-foreground">{l.phone ?? "—"}</td>
                 <td className="px-4 py-3 text-right">
                   <Link
@@ -170,7 +182,9 @@ function LocationsList() {
                     Editar
                   </Link>
                   <button
-                    onClick={() => { if (confirm(`Excluir "${l.name}"?`)) del.mutate(l.id); }}
+                    onClick={() => {
+                      if (confirm(`Excluir "${l.name}"?`)) del.mutate(l.id);
+                    }}
                     className="text-sm font-semibold text-muted-foreground hover:text-[color:var(--red-inst)]"
                   >
                     Excluir

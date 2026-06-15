@@ -9,14 +9,22 @@ interface SectionHeaderProps {
   invert?: boolean;
 }
 
-export function SectionHeader({ eyebrow, title, description, align = "left", invert = false }: SectionHeaderProps) {
+export function SectionHeader({
+  eyebrow,
+  title,
+  description,
+  align = "left",
+  invert = false,
+}: SectionHeaderProps) {
   const alignment = align === "center" ? "text-center mx-auto" : "";
   const descColor = invert ? "text-white/80" : "text-muted-foreground";
   return (
     <Reveal>
       <div className={`max-w-3xl ${alignment}`}>
         {eyebrow && (
-          <div className={`inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--orange)] mb-4`}>
+          <div
+            className={`inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--orange)] mb-4`}
+          >
             <span className="h-px w-8 bg-[color:var(--orange)]" aria-hidden />
             {eyebrow}
           </div>

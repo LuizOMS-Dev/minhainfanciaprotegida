@@ -41,7 +41,10 @@ export function ShareButtons({ title, url, description }: ShareButtonsProps) {
 
   return (
     <div className="flex flex-wrap items-center gap-2" aria-label="Ferramentas de compartilhamento">
-      <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground mr-1" title="Estas plataformas são apenas ferramentas de compartilhamento e não são canais oficiais do projeto.">
+      <span
+        className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground mr-1"
+        title="Estas plataformas são apenas ferramentas de compartilhamento e não são canais oficiais do projeto."
+      >
         Compartilhar
       </span>
       {hasNativeShare && (
@@ -55,22 +58,63 @@ export function ShareButtons({ title, url, description }: ShareButtonsProps) {
           <Share2 className="size-4" />
         </button>
       )}
-      <a href={links.whatsapp} target="_blank" rel="noopener noreferrer" className={btn} aria-label="WhatsApp" title="WhatsApp">
+      <a
+        href={links.whatsapp}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={btn}
+        aria-label="WhatsApp"
+        title="WhatsApp"
+      >
         <MessageCircle className="size-4" />
       </a>
-      <a href={links.twitter} target="_blank" rel="noopener noreferrer" className={btn} aria-label="X / Twitter" title="X / Twitter">
+      <a
+        href={links.twitter}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={btn}
+        aria-label="X / Twitter"
+        title="X / Twitter"
+      >
         <Twitter className="size-4" />
       </a>
-      <a href={links.facebook} target="_blank" rel="noopener noreferrer" className={btn} aria-label="Facebook" title="Facebook">
+      <a
+        href={links.facebook}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={btn}
+        aria-label="Facebook"
+        title="Facebook"
+      >
         <Facebook className="size-4" />
       </a>
-      <a href={links.linkedin} target="_blank" rel="noopener noreferrer" className={btn} aria-label="LinkedIn" title="LinkedIn">
+      <a
+        href={links.linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={btn}
+        aria-label="LinkedIn"
+        title="LinkedIn"
+      >
         <Linkedin className="size-4" />
       </a>
-      <a href={links.telegram} target="_blank" rel="noopener noreferrer" className={btn} aria-label="Telegram" title="Telegram">
+      <a
+        href={links.telegram}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={btn}
+        aria-label="Telegram"
+        title="Telegram"
+      >
         <Send className="size-4" />
       </a>
-      <button onClick={copy} className={btn} aria-label="Copiar link" title="Copiar link" type="button">
+      <button
+        onClick={copy}
+        className={btn}
+        aria-label="Copiar link"
+        title="Copiar link"
+        type="button"
+      >
         <Link2 className="size-4" />
       </button>
     </div>

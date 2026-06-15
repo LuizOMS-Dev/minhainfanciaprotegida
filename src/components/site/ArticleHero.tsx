@@ -1,10 +1,28 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft, Calendar, User, ShieldCheck, Clock, CalendarDays, CalendarCheck2, BadgeCheck, Phone } from "lucide-react";
+import {
+  ArrowLeft,
+  Calendar,
+  User,
+  ShieldCheck,
+  Clock,
+  CalendarDays,
+  CalendarCheck2,
+  BadgeCheck,
+  Phone,
+} from "lucide-react";
 import { ShareButtons } from "@/components/site/ShareButtons";
 import { SeverityBadge, ConfidenceBadge } from "@/components/site/ArticleBlocks";
 
-const fmtLong = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
-const fmtShort = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short", year: "numeric" });
+const fmtLong = new Intl.DateTimeFormat("pt-BR", {
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+});
+const fmtShort = new Intl.DateTimeFormat("pt-BR", {
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
+});
 
 function safe(d?: string | null) {
   if (!d) return null;
@@ -103,12 +121,14 @@ export function ArticleHero(props: ArticleHeroProps) {
           )}
           {props.reviewerName && (
             <div className="inline-flex items-center gap-1.5">
-              <ShieldCheck className="size-4 text-[color:var(--orange)]" aria-hidden /> Revisão: {props.reviewerName}
+              <ShieldCheck className="size-4 text-[color:var(--orange)]" aria-hidden /> Revisão:{" "}
+              {props.reviewerName}
             </div>
           )}
           {props.readingMinutes && (
             <div className="inline-flex items-center gap-1.5">
-              <Clock className="size-4 text-[color:var(--orange)]" aria-hidden /> {props.readingMinutes} min de leitura
+              <Clock className="size-4 text-[color:var(--orange)]" aria-hidden />{" "}
+              {props.readingMinutes} min de leitura
             </div>
           )}
         </dl>
@@ -162,14 +182,19 @@ function DateChip({ icon: Icon, label, date, iso, accent }: DateChipProps) {
     >
       <span
         className={`mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-full ${
-          accent ? "bg-[color:var(--orange)] text-[color:var(--navy-deep)]" : "bg-white/10 text-[color:var(--orange)]"
+          accent
+            ? "bg-[color:var(--orange)] text-[color:var(--navy-deep)]"
+            : "bg-white/10 text-[color:var(--orange)]"
         }`}
       >
         <Icon className="size-4" aria-hidden />
       </span>
       <div className="min-w-0">
         <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/70">{label}</p>
-        <time dateTime={iso} className="mt-1 block font-display text-sm font-semibold leading-tight text-white">
+        <time
+          dateTime={iso}
+          className="mt-1 block font-display text-sm font-semibold leading-tight text-white"
+        >
           {fmtShort.format(date)}
         </time>
         <p className="mt-0.5 text-[11px] text-white/60">{fmtLong.format(date)}</p>
@@ -195,16 +220,30 @@ export function DatesStrip({
   const ver = safe(verifiedAt);
 
   const chips: React.ReactNode[] = [];
-  if (ev) chips.push(<DateChip key="ev" icon={CalendarDays} label="Acontecimento" date={ev} iso={eventDate!} />);
-  if (pub) chips.push(<DateChip key="pub" icon={Calendar} label="Publicação" date={pub} iso={publishAt!} accent />);
+  if (ev)
+    chips.push(
+      <DateChip key="ev" icon={CalendarDays} label="Acontecimento" date={ev} iso={eventDate!} />,
+    );
+  if (pub)
+    chips.push(
+      <DateChip key="pub" icon={Calendar} label="Publicação" date={pub} iso={publishAt!} accent />,
+    );
   if (upd && (!pub || upd.getTime() !== pub.getTime()))
-    chips.push(<DateChip key="upd" icon={CalendarCheck2} label="Atualização" date={upd} iso={updatedAt!} />);
-  if (ver) chips.push(<DateChip key="ver" icon={BadgeCheck} label="Verificação" date={ver} iso={verifiedAt!} />);
+    chips.push(
+      <DateChip key="upd" icon={CalendarCheck2} label="Atualização" date={upd} iso={updatedAt!} />,
+    );
+  if (ver)
+    chips.push(
+      <DateChip key="ver" icon={BadgeCheck} label="Verificação" date={ver} iso={verifiedAt!} />,
+    );
 
   if (chips.length === 0) return null;
 
   return (
-    <section aria-label="Linha cronológica" className="rounded-3xl border border-white/15 bg-white/5 p-4 sm:p-5 backdrop-blur">
+    <section
+      aria-label="Linha cronológica"
+      className="rounded-3xl border border-white/15 bg-white/5 p-4 sm:p-5 backdrop-blur"
+    >
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{chips}</div>
     </section>
   );

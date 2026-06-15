@@ -46,11 +46,21 @@ export function ArticleCard({ title, date, excerpt, image, tag, source, href }: 
         </p>
         <h3 className="font-display text-xl font-semibold leading-snug text-balance group-hover:text-[color:var(--red-inst)] transition-colors">
           {title}
-          {href && <ArrowUpRight className="inline-block ml-1 size-4 align-text-top opacity-60 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />}
+          {href && (
+            <ArrowUpRight
+              className="inline-block ml-1 size-4 align-text-top opacity-60 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              aria-hidden
+            />
+          )}
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed line-clamp-4">{excerpt}</p>
         <div className="mt-2 pt-3 border-t border-border">
-          <SourceTag source={source.name} year={new Date(date).getFullYear()} url={source.url} asText={!href} />
+          <SourceTag
+            source={source.name}
+            year={new Date(date).getFullYear()}
+            url={source.url}
+            asText={!href}
+          />
         </div>
       </div>
     </Wrapper>

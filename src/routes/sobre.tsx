@@ -151,10 +151,7 @@ function Page() {
       />
 
       {/* Sumário rápido */}
-      <nav
-        aria-label="Sumário desta página"
-        className="border-b border-border bg-muted/30"
-      >
+      <nav aria-label="Sumário desta página" className="border-b border-border bg-muted/30">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap gap-x-5 gap-y-2 text-[13px]">
           {sections.map((s) => (
             <a
@@ -195,13 +192,10 @@ function Page() {
         {/* Mensagem final destacada */}
         <Reveal delay={120}>
           <aside className="rounded-3xl border border-[color:var(--orange)]/30 bg-gradient-to-br from-[color:var(--orange-soft)] via-background to-background p-8 sm:p-10 text-center">
-            <Sparkles
-              className="size-7 text-[color:var(--orange)] mx-auto"
-              aria-hidden
-            />
+            <Sparkles className="size-7 text-[color:var(--orange)] mx-auto" aria-hidden />
             <p className="mt-4 font-display text-2xl sm:text-3xl font-semibold text-foreground text-balance leading-tight">
-              Se este projeto ajudar uma única criança a ser protegida, todo o
-              esforço já terá valido a pena.
+              Se este projeto ajudar uma única criança a ser protegida, todo o esforço já terá
+              valido a pena.
             </p>
             <p className="mt-4 text-sm text-muted-foreground">
               — Luiz, criador do Infância Protegida
@@ -222,21 +216,19 @@ const sections: Section[] = [
     body: (
       <>
         <p>
-          Meu nome é <strong>Luiz</strong>, tenho <strong>16 anos</strong> e sou
-          o criador do portal Infância Protegida.
+          Meu nome é <strong>Luiz</strong>, tenho <strong>16 anos</strong> e sou o criador do portal
+          Infância Protegida.
         </p>
         <p>
-          A ideia de criar este projeto surgiu após conhecer histórias reais e
-          dados alarmantes sobre abuso, violência e exploração sexual de
-          crianças e adolescentes no Brasil. Ao perceber que muitas pessoas não
-          sabem identificar sinais de alerta, desconhecem os canais de denúncia
-          ou não sabem como agir diante de uma suspeita, decidi criar um espaço
-          que pudesse ajudar a levar informação confiável para mais pessoas.
+          A ideia de criar este projeto surgiu após conhecer histórias reais e dados alarmantes
+          sobre abuso, violência e exploração sexual de crianças e adolescentes no Brasil. Ao
+          perceber que muitas pessoas não sabem identificar sinais de alerta, desconhecem os canais
+          de denúncia ou não sabem como agir diante de uma suspeita, decidi criar um espaço que
+          pudesse ajudar a levar informação confiável para mais pessoas.
         </p>
         <p>
-          Mesmo sendo jovem, entendi que a tecnologia poderia ser utilizada
-          para algo maior: <strong>proteger vidas</strong> por meio da
-          informação, da conscientização e da prevenção.
+          Mesmo sendo jovem, entendi que a tecnologia poderia ser utilizada para algo maior:{" "}
+          <strong>proteger vidas</strong> por meio da informação, da conscientização e da prevenção.
         </p>
       </>
     ),
@@ -249,15 +241,13 @@ const sections: Section[] = [
     body: (
       <>
         <p>
-          O Infância Protegida é um <strong>portal brasileiro</strong> de
-          conscientização, educação preventiva e combate ao abuso e à
-          exploração sexual de crianças e adolescentes.
+          O Infância Protegida é um <strong>portal brasileiro</strong> de conscientização, educação
+          preventiva e combate ao abuso e à exploração sexual de crianças e adolescentes.
         </p>
         <p>
-          O projeto reúne conteúdos educativos, materiais de referência,
-          orientações práticas, legislação, canais oficiais de ajuda e
-          informações baseadas em fontes confiáveis, com o objetivo de apoiar{" "}
-          <strong>pais, responsáveis, professores, educadores</strong> e toda a
+          O projeto reúne conteúdos educativos, materiais de referência, orientações práticas,
+          legislação, canais oficiais de ajuda e informações baseadas em fontes confiáveis, com o
+          objetivo de apoiar <strong>pais, responsáveis, professores, educadores</strong> e toda a
           sociedade.
         </p>
       </>
@@ -270,10 +260,9 @@ const sections: Section[] = [
     icon: <Target className="size-5" aria-hidden />,
     body: (
       <p>
-        Promover a conscientização sobre a proteção infantil, ajudando
-        famílias, escolas e comunidades a identificar situações de risco,
-        prevenir violências e conhecer os caminhos corretos para buscar ajuda e
-        realizar denúncias.
+        Promover a conscientização sobre a proteção infantil, ajudando famílias, escolas e
+        comunidades a identificar situações de risco, prevenir violências e conhecer os caminhos
+        corretos para buscar ajuda e realizar denúncias.
       </p>
     ),
   },
@@ -284,9 +273,8 @@ const sections: Section[] = [
     icon: <Eye className="size-5" aria-hidden />,
     body: (
       <p>
-        Contribuir para a construção de uma sociedade mais consciente,
-        preparada e comprometida com a <strong>proteção integral</strong> de
-        crianças e adolescentes.
+        Contribuir para a construção de uma sociedade mais consciente, preparada e comprometida com
+        a <strong>proteção integral</strong> de crianças e adolescentes.
       </p>
     ),
   },
@@ -330,17 +318,16 @@ const sections: Section[] = [
     body: (
       <>
         <p>
-          Milhares de casos de violência contra crianças e adolescentes
-          acontecem todos os anos.
+          Milhares de casos de violência contra crianças e adolescentes acontecem todos os anos.
         </p>
         <p>
-          Muitas dessas situações poderiam ser identificadas mais cedo se mais
-          pessoas soubessem <strong>reconhecer os sinais de alerta</strong> e
-          conhecessem os canais de proteção disponíveis.
+          Muitas dessas situações poderiam ser identificadas mais cedo se mais pessoas soubessem{" "}
+          <strong>reconhecer os sinais de alerta</strong> e conhecessem os canais de proteção
+          disponíveis.
         </p>
         <p>
-          O projeto existe para ajudar a preencher essa lacuna, tornando
-          informações importantes mais acessíveis e compreensíveis para todos.
+          O projeto existe para ajudar a preencher essa lacuna, tornando informações importantes
+          mais acessíveis e compreensíveis para todos.
         </p>
       </>
     ),
@@ -353,18 +340,16 @@ const sections: Section[] = [
     body: (
       <>
         <p>
-          O portal também apoia os princípios do <strong>Maio Laranja</strong>,
-          campanha nacional de combate ao abuso e à exploração sexual de
-          crianças e adolescentes.
+          O portal também apoia os princípios do <strong>Maio Laranja</strong>, campanha nacional de
+          combate ao abuso e à exploração sexual de crianças e adolescentes.
         </p>
         <p>
-          A conscientização é uma das ferramentas mais importantes na prevenção
-          da violência infantil.
+          A conscientização é uma das ferramentas mais importantes na prevenção da violência
+          infantil.
         </p>
         <p>
-          Quando mais pessoas conhecem os sinais, os direitos e os canais de
-          denúncia, maiores são as chances de proteger crianças em situação de
-          vulnerabilidade.
+          Quando mais pessoas conhecem os sinais, os direitos e os canais de denúncia, maiores são
+          as chances de proteger crianças em situação de vulnerabilidade.
         </p>
       </>
     ),
@@ -377,13 +362,13 @@ const sections: Section[] = [
     body: (
       <>
         <p>
-          O conteúdo disponibilizado no portal é produzido com base em
-          materiais oficiais, legislações brasileiras, cartilhas educativas e
-          referências reconhecidas nacionalmente na área da proteção infantil.
+          O conteúdo disponibilizado no portal é produzido com base em materiais oficiais,
+          legislações brasileiras, cartilhas educativas e referências reconhecidas nacionalmente na
+          área da proteção infantil.
         </p>
         <p>
-          O objetivo é fornecer informações <strong>seguras, atualizadas</strong>{" "}
-          e úteis para a sociedade.
+          O objetivo é fornecer informações <strong>seguras, atualizadas</strong> e úteis para a
+          sociedade.
         </p>
       </>
     ),
@@ -396,16 +381,15 @@ const sections: Section[] = [
     body: (
       <>
         <p>
-          A proteção da infância não é responsabilidade de apenas uma pessoa,
-          instituição ou órgão público.
+          A proteção da infância não é responsabilidade de apenas uma pessoa, instituição ou órgão
+          público.
         </p>
         <p>
           É uma <strong>responsabilidade coletiva</strong>.
         </p>
         <p>
-          Cada orientação compartilhada, cada denúncia realizada e cada criança
-          protegida representam um passo importante para construir um futuro
-          melhor.
+          Cada orientação compartilhada, cada denúncia realizada e cada criança protegida
+          representam um passo importante para construir um futuro melhor.
         </p>
       </>
     ),

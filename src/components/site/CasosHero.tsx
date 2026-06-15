@@ -89,7 +89,9 @@ function MetaCard({
         <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--navy-deep)]/70">
           {label}
         </p>
-        <p className="mt-1 font-display text-xl font-semibold text-[color:var(--navy-deep)]">{value}</p>
+        <p className="mt-1 font-display text-xl font-semibold text-[color:var(--navy-deep)]">
+          {value}
+        </p>
       </div>
     </div>
   );

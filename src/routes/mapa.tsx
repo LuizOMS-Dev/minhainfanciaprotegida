@@ -1,5 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Building2, Compass, ExternalLink, MapPin, Navigation, Phone, Search, Shield } from "lucide-react";
+import {
+  Building2,
+  Compass,
+  ExternalLink,
+  MapPin,
+  Navigation,
+  Phone,
+  Search,
+  Shield,
+} from "lucide-react";
 import { useMemo, useState } from "react";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
@@ -18,7 +27,10 @@ export const Route = createFileRoute("/mapa")({
           "Encontre Conselhos Tutelares, delegacias especializadas, CREAS, CRAS e Ministério Público por estado e cidade no Brasil.",
       },
       { property: "og:title", content: "Mapa de Ajuda — Infância Protegida" },
-      { property: "og:description", content: "Localize serviços de proteção próximos da sua cidade." },
+      {
+        property: "og:description",
+        content: "Localize serviços de proteção próximos da sua cidade.",
+      },
     ],
     links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/mapa" }],
   }),
@@ -71,19 +83,30 @@ function Page() {
       <section className="py-12 bg-background border-b border-border">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 grid gap-3 sm:grid-cols-[140px_200px_1fr]">
           <div className="flex items-center gap-2 rounded-full bg-card border border-border px-4 py-3">
-            <label htmlFor="uf" className="sr-only">Estado</label>
+            <label htmlFor="uf" className="sr-only">
+              Estado
+            </label>
             <select
               id="uf"
               value={uf}
-              onChange={(e) => { setUf(e.target.value); setCity(""); }}
+              onChange={(e) => {
+                setUf(e.target.value);
+                setCity("");
+              }}
               className="w-full bg-transparent text-sm focus:outline-none"
             >
               <option value="">Todos os estados</option>
-              {ufList.map((u) => <option key={u} value={u}>{u}</option>)}
+              {ufList.map((u) => (
+                <option key={u} value={u}>
+                  {u}
+                </option>
+              ))}
             </select>
           </div>
           <div className="flex items-center gap-2 rounded-full bg-card border border-border px-4 py-3">
-            <label htmlFor="city" className="sr-only">Cidade</label>
+            <label htmlFor="city" className="sr-only">
+              Cidade
+            </label>
             <select
               id="city"
               value={city}
@@ -91,11 +114,18 @@ function Page() {
               className="w-full bg-transparent text-sm focus:outline-none"
             >
               <option value="">Todas as cidades</option>
-              {cities.map((c) => <option key={c} value={c}>{c}</option>)}
+              {cities.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
             </select>
           </div>
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" aria-hidden />
+            <Search
+              className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground"
+              aria-hidden
+            />
             <input
               type="search"
               value={q}
@@ -110,7 +140,6 @@ function Page() {
         </div>
       </section>
 
-
       <section className="py-16 bg-background">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-5 md:grid-cols-2">
@@ -118,7 +147,7 @@ function Page() {
               const meta = typeMeta[l.type];
               const Icon = meta.icon;
               const mapsQuery = encodeURIComponent(
-                `${l.name} ${l.address ?? ""} ${l.city} ${l.state}`.trim()
+                `${l.name} ${l.address ?? ""} ${l.city} ${l.state}`.trim(),
               );
               return (
                 <Reveal key={l.name + l.city} delay={i * 40}>
@@ -131,19 +160,28 @@ function Page() {
                         {meta.label} · {l.state}
                       </span>
                     </div>
-                    <h3 className="mt-4 font-display text-lg font-semibold leading-snug">{l.name}</h3>
+                    <h3 className="mt-4 font-display text-lg font-semibold leading-snug">
+                      {l.name}
+                    </h3>
                     <p className="mt-1 text-sm text-muted-foreground">{l.city}</p>
                     {l.address && <p className="mt-2 text-sm text-foreground/80">{l.address}</p>}
                     <div className="mt-3 space-y-1 text-sm text-foreground/80">
                       {l.phone && (
                         <p>
                           <span className="font-semibold">Telefone:</span>{" "}
-                          <a href={`tel:${l.phone.replace(/\D/g, "")}`} className="text-[color:var(--red-inst)] hover:underline">
+                          <a
+                            href={`tel:${l.phone.replace(/\D/g, "")}`}
+                            className="text-[color:var(--red-inst)] hover:underline"
+                          >
                             {l.phone}
                           </a>
                         </p>
                       )}
-                      {l.hours && <p><span className="font-semibold">Horário:</span> {l.hours}</p>}
+                      {l.hours && (
+                        <p>
+                          <span className="font-semibold">Horário:</span> {l.hours}
+                        </p>
+                      )}
                     </div>
                     <div className="mt-4 pt-4 border-t border-border flex flex-wrap gap-2">
                       <a
@@ -177,7 +215,9 @@ function Page() {
               <p>Nenhum serviço cadastrado para este estado ainda.</p>
               <p className="mt-2 text-sm">
                 Em qualquer cidade do Brasil, você pode ligar para o{" "}
-                <a href="tel:100" className="font-semibold text-[color:var(--red-inst)]">Disque 100</a>{" "}
+                <a href="tel:100" className="font-semibold text-[color:var(--red-inst)]">
+                  Disque 100
+                </a>{" "}
                 ou procurar o Conselho Tutelar pelo telefone <strong>156</strong> (capitais).
               </p>
             </div>
@@ -195,7 +235,10 @@ function Page() {
             secondary={[
               { label: "Portais das Polícias Civis estaduais", url: "https://www.gov.br/pf/pt-br" },
               { label: "CNMP — Ministério Público", url: "https://www.cnmp.mp.br/portal/" },
-              { label: "MDS — Proteção Social Especial (CREAS)", url: "https://www.gov.br/mds/pt-br/acoes-e-programas/protecao-social-especial" },
+              {
+                label: "MDS — Proteção Social Especial (CREAS)",
+                url: "https://www.gov.br/mds/pt-br/acoes-e-programas/protecao-social-especial",
+              },
             ]}
             lastVerified="2025-11-15"
           />

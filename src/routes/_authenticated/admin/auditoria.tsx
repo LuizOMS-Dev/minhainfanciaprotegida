@@ -2,17 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useMemo, useState } from "react";
-import {
-  Calendar,
-  ScrollText,
-  ShieldAlert,
-  User,
-} from "lucide-react";
-import {
-  listAuditLog,
-  type AuditActionType,
-  type AuditLogRow,
-} from "@/lib/audit.functions";
+import { Calendar, ScrollText, ShieldAlert, User } from "lucide-react";
+import { listAuditLog, type AuditActionType, type AuditLogRow } from "@/lib/audit.functions";
 import { AdminError, AdminSkeleton, SectionCard } from "@/components/admin/AdminUI";
 
 export const Route = createFileRoute("/_authenticated/admin/auditoria")({
@@ -302,11 +293,16 @@ function AuditoriaPage() {
                       {CATEGORY_LABEL[cat]}
                     </span>
                     <div className="min-w-0 flex-1">
-                      <div className={`text-sm font-medium ${isCritical ? "text-[color:var(--red-inst)]" : ""}`}>
+                      <div
+                        className={`text-sm font-medium ${isCritical ? "text-[color:var(--red-inst)]" : ""}`}
+                      >
                         {isCritical && <ShieldAlert className="inline size-3.5 mr-1 -mt-0.5" />}
                         {ACTION_LABEL[r.action] ?? r.action}
                         {r.target_title && (
-                          <span className="text-muted-foreground font-normal"> · {r.target_title}</span>
+                          <span className="text-muted-foreground font-normal">
+                            {" "}
+                            · {r.target_title}
+                          </span>
                         )}
                       </div>
                       <div className="text-xs text-muted-foreground mt-0.5 flex flex-wrap gap-x-3">

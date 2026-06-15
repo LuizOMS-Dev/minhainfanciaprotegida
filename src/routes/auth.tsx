@@ -170,7 +170,10 @@ function AuthPage() {
         {step === "credentials" && (
           <form className="mt-6 space-y-4" onSubmit={submitCredentials}>
             <div>
-              <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground" htmlFor="email">
+              <label
+                className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                htmlFor="email"
+              >
                 E-mail
               </label>
               <input
@@ -184,7 +187,10 @@ function AuthPage() {
               />
             </div>
             <div>
-              <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground" htmlFor="password">
+              <label
+                className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                htmlFor="password"
+              >
                 Senha
               </label>
               <input
@@ -222,10 +228,14 @@ function AuthPage() {
         {step === "mfa" && (
           <form className="mt-6 space-y-4" onSubmit={submitMfa}>
             <p className="text-sm text-muted-foreground">
-              Insira o código de 6 dígitos do seu aplicativo autenticador (Google Authenticator, Authy, Microsoft Authenticator…).
+              Insira o código de 6 dígitos do seu aplicativo autenticador (Google Authenticator,
+              Authy, Microsoft Authenticator…).
             </p>
             <div>
-              <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground" htmlFor="mfa">
+              <label
+                className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                htmlFor="mfa"
+              >
                 Código de verificação
               </label>
               <input
@@ -265,7 +275,8 @@ function AuthPage() {
         )}
 
         <p className="mt-6 text-xs text-muted-foreground text-center">
-          Acesso restrito. Não há cadastro público — solicite a um administrador a criação do seu usuário.
+          Acesso restrito. Não há cadastro público — solicite a um administrador a criação do seu
+          usuário.
         </p>
       </div>
     </section>

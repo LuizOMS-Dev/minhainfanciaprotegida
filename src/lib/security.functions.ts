@@ -12,9 +12,7 @@ export const getTurnstileSiteKey = createServerFn({ method: "GET" }).handler(asy
 
 /** Public — call before signInWithPassword. Returns lockout status. */
 export const checkLoginAllowed = createServerFn({ method: "POST" })
-  .inputValidator((i) =>
-    z.object({ email: z.string().email().max(255) }).parse(i),
-  )
+  .inputValidator((i) => z.object({ email: z.string().email().max(255) }).parse(i))
   .handler(async ({ data }) => {
     const { checkAccountLockout } = await import("@/lib/security.server");
     return await checkAccountLockout(data.email);
@@ -37,9 +35,8 @@ export const recordLoginAttemptV2 = createServerFn({ method: "POST" })
       .parse(i),
   )
   .handler(async ({ data }) => {
-    const { verifyTurnstile, recordAttempt, openAdminSession } = await import(
-      "@/lib/security.server"
-    );
+    const { verifyTurnstile, recordAttempt, openAdminSession } =
+      await import("@/lib/security.server");
     const { logAudit } = await import("@/lib/audit.server");
 
     // Always verify CAPTCHA when present; track failures.
@@ -119,7 +116,9 @@ export const recordMfaEvent = createServerFn({ method: "POST" })
     z
       .object({
         action: mfaActionSchema,
-        metadata: z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
+        metadata: z
+          .record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()]))
+          .optional(),
       })
       .parse(i),
   )
@@ -150,8 +149,7 @@ export const bootstrapPrimaryAdmin = createServerFn({ method: "POST" }).handler(
   let userId: string | null = null;
   try {
     const { data: list } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 200 });
-    userId =
-      list?.users.find((u) => u.email?.toLowerCase() === PRIMARY_ADMIN_EMAIL)?.id ?? null;
+    userId = list?.users.find((u) => u.email?.toLowerCase() === PRIMARY_ADMIN_EMAIL)?.id ?? null;
   } catch (e) {
     console.error("[bootstrapPrimaryAdmin] list error", e);
     throw new Error("Falha ao inicializar administrador principal.");
@@ -246,7 +244,11 @@ export const listAdminSessions = createServerFn({ method: "GET" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const from = (data.page - 1) * data.pageSize;
     const to = from + data.pageSize - 1;
-    const { data: rows, count, error } = await supabaseAdmin
+    const {
+      data: rows,
+      count,
+      error,
+    } = await supabaseAdmin
       .from("admin_sessions")
       .select("*", { count: "exact" })
       .order("login_at", { ascending: false })
@@ -277,10 +279,9 @@ function toCsv(rows: Array<Record<string, unknown>>): string {
     const s = typeof v === "object" ? JSON.stringify(v) : String(v);
     return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
   };
-  return [
-    headers.join(","),
-    ...rows.map((r) => headers.map((h) => esc(r[h])).join(",")),
-  ].join("\n");
+  return [headers.join(","), ...rows.map((r) => headers.map((h) => esc(r[h])).join(","))].join(
+    "\n",
+  );
 }
 
 export const exportDataset = createServerFn({ method: "POST" })
@@ -312,9 +313,7 @@ export const exportDataset = createServerFn({ method: "POST" })
         const { data: profs } = await supabaseAdmin
           .from("profiles")
           .select("id, display_name, created_at");
-        const { data: roles } = await supabaseAdmin
-          .from("user_roles")
-          .select("user_id, role");
+        const { data: roles } = await supabaseAdmin.from("user_roles").select("user_id, role");
         const rolesByUser = new Map<string, string[]>();
         for (const r of roles ?? []) {
           const arr = rolesByUser.get(r.user_id) ?? [];

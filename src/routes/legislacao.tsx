@@ -15,7 +15,10 @@ export const Route = createFileRoute("/legislacao")({
           "Estatuto da Criança e do Adolescente (Lei 8.069/90), artigos da Constituição Federal e principais leis de proteção contra a violência sexual.",
       },
       { property: "og:title", content: "Legislação de Proteção à Infância" },
-      { property: "og:description", content: "ECA, CF/88 e leis brasileiras de combate à violência sexual infantil." },
+      {
+        property: "og:description",
+        content: "ECA, CF/88 e leis brasileiras de combate à violência sexual infantil.",
+      },
       { property: "og:url", content: "https://minhainfanciaprotegida.com.br/legislacao" },
     ],
     links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/legislacao" }],
@@ -27,57 +30,49 @@ const articles = [
   {
     code: "CF/88",
     title: "Constituição Federal — Artigo 227",
-    text:
-      "É dever da família, da sociedade e do Estado assegurar à criança, ao adolescente e ao jovem, com absoluta prioridade, o direito à vida, à saúde, à alimentação, à educação, ao lazer, à profissionalização, à cultura, à dignidade, ao respeito, à liberdade e à convivência familiar e comunitária, além de colocá-los a salvo de toda forma de negligência, discriminação, exploração, violência, crueldade e opressão.",
+    text: "É dever da família, da sociedade e do Estado assegurar à criança, ao adolescente e ao jovem, com absoluta prioridade, o direito à vida, à saúde, à alimentação, à educação, ao lazer, à profissionalização, à cultura, à dignidade, ao respeito, à liberdade e à convivência familiar e comunitária, além de colocá-los a salvo de toda forma de negligência, discriminação, exploração, violência, crueldade e opressão.",
     url: "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm",
   },
   {
     code: "ECA Art. 5º",
     title: "Estatuto da Criança e do Adolescente",
-    text:
-      "Nenhuma criança ou adolescente será objeto de qualquer forma de negligência, discriminação, exploração, violência, crueldade e opressão, punido na forma da lei qualquer atentado, por ação ou omissão, aos seus direitos fundamentais.",
+    text: "Nenhuma criança ou adolescente será objeto de qualquer forma de negligência, discriminação, exploração, violência, crueldade e opressão, punido na forma da lei qualquer atentado, por ação ou omissão, aos seus direitos fundamentais.",
     url: "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm",
   },
   {
     code: "ECA Art. 13",
     title: "Comunicação obrigatória",
-    text:
-      "Os casos de suspeita ou confirmação de castigo físico, de tratamento cruel ou degradante e de maus-tratos contra criança ou adolescente serão obrigatoriamente comunicados ao Conselho Tutelar, sem prejuízo de outras providências legais.",
+    text: "Os casos de suspeita ou confirmação de castigo físico, de tratamento cruel ou degradante e de maus-tratos contra criança ou adolescente serão obrigatoriamente comunicados ao Conselho Tutelar, sem prejuízo de outras providências legais.",
     url: "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm#art13",
   },
   {
     code: "ECA Art. 240",
     title: "Pornografia infantil",
-    text:
-      "Produzir, reproduzir, dirigir, fotografar, filmar ou registrar, por qualquer meio, cena de sexo explícito ou pornográfica, envolvendo criança ou adolescente. Pena — reclusão, de 4 a 8 anos, e multa.",
+    text: "Produzir, reproduzir, dirigir, fotografar, filmar ou registrar, por qualquer meio, cena de sexo explícito ou pornográfica, envolvendo criança ou adolescente. Pena — reclusão, de 4 a 8 anos, e multa.",
     url: "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm#art240",
   },
   {
     code: "ECA Art. 241-A",
     title: "Compartilhamento de material",
-    text:
-      "Oferecer, trocar, disponibilizar, transmitir, distribuir, publicar ou divulgar por qualquer meio, inclusive por sistema de informática ou telemático, fotografia, vídeo ou outro registro que contenha cena de sexo explícito ou pornográfica envolvendo criança ou adolescente. Pena — reclusão, de 3 a 6 anos, e multa.",
+    text: "Oferecer, trocar, disponibilizar, transmitir, distribuir, publicar ou divulgar por qualquer meio, inclusive por sistema de informática ou telemático, fotografia, vídeo ou outro registro que contenha cena de sexo explícito ou pornográfica envolvendo criança ou adolescente. Pena — reclusão, de 3 a 6 anos, e multa.",
     url: "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm#art241a",
   },
   {
     code: "CP Art. 217-A",
     title: "Código Penal — Estupro de vulnerável",
-    text:
-      "Ter conjunção carnal ou praticar outro ato libidinoso com menor de 14 anos. Pena — reclusão, de 8 a 15 anos.",
+    text: "Ter conjunção carnal ou praticar outro ato libidinoso com menor de 14 anos. Pena — reclusão, de 8 a 15 anos.",
     url: "https://www.planalto.gov.br/ccivil_03/decreto-lei/del2848compilado.htm",
   },
   {
     code: "Lei 13.431/17",
     title: "Escuta protegida",
-    text:
-      "Estabelece o sistema de garantia de direitos da criança e do adolescente vítima ou testemunha de violência, criando a escuta especializada e o depoimento especial.",
+    text: "Estabelece o sistema de garantia de direitos da criança e do adolescente vítima ou testemunha de violência, criando a escuta especializada e o depoimento especial.",
     url: "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13431.htm",
   },
   {
     code: "Lei 14.344/22",
     title: "Lei Henry Borel",
-    text:
-      "Cria mecanismos para a prevenção e o enfrentamento da violência doméstica e familiar contra a criança e o adolescente.",
+    text: "Cria mecanismos para a prevenção e o enfrentamento da violência doméstica e familiar contra a criança e o adolescente.",
     url: "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/lei/l14344.htm",
   },
 ];

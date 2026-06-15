@@ -42,7 +42,8 @@ export function CasosFilters({
   total,
   filtered,
 }: CasosFiltersProps) {
-  const hasActiveFilters = category !== "Todos" || severity !== "all" || year !== "all" || query.trim().length > 0;
+  const hasActiveFilters =
+    category !== "Todos" || severity !== "all" || year !== "all" || query.trim().length > 0;
 
   return (
     <div className="sticky top-[120px] z-30 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-4 mb-10 backdrop-blur-md bg-[color:var(--dossier-cream)]/85 border-y border-[color:var(--dossier-rule)]">
@@ -73,7 +74,10 @@ export function CasosFilters({
 
         <div className="flex flex-wrap items-center gap-3">
           <div className="relative flex-1 min-w-[220px] max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[color:var(--navy-deep)]/50" aria-hidden />
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[color:var(--navy-deep)]/50"
+              aria-hidden
+            />
             <input
               type="search"
               value={query}
@@ -85,7 +89,9 @@ export function CasosFilters({
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--navy-deep)]/60">Gravidade</span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[color:var(--navy-deep)]/60">
+              Gravidade
+            </span>
             {(Object.keys(SEVERITY_LABELS) as SeverityFilter[]).map((s) => (
               <button
                 key={s}
@@ -105,7 +111,9 @@ export function CasosFilters({
           {years.length > 0 && (
             <select
               value={year}
-              onChange={(e) => onYearChange(e.target.value === "all" ? "all" : Number(e.target.value))}
+              onChange={(e) =>
+                onYearChange(e.target.value === "all" ? "all" : Number(e.target.value))
+              }
               aria-label="Filtrar por ano"
               className="rounded-md border border-[color:var(--dossier-rule)] bg-white/80 px-3 py-1.5 text-xs font-semibold text-[color:var(--navy-deep)] focus:outline-none focus:ring-2 focus:ring-[color:var(--orange)]"
             >
