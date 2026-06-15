@@ -14,7 +14,7 @@ export function ExecutiveSummaryBlock({ items }: ExecutiveSummaryBlockProps) {
   return (
     <section
       aria-label="Resumo executivo"
-      className="mt-10 rounded-3xl border-2 border-[color:var(--navy-deep)]/90 bg-[color:var(--dossier-cream)] p-6 sm:p-8 shadow-[0_20px_45px_-25px_rgba(11,20,45,0.5)]"
+      className="mt-10 rounded-2xl border border-[color:var(--navy)]/20 bg-card p-6 sm:p-8 shadow-sm"
     >
       <div className="flex items-center gap-3">
         <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-[color:var(--navy-deep)] text-[color:var(--orange)]">
@@ -34,7 +34,7 @@ export function ExecutiveSummaryBlock({ items }: ExecutiveSummaryBlockProps) {
         {items.map((line, i) => (
           <li
             key={i}
-            className="flex items-start gap-3 rounded-xl border border-[color:var(--dossier-rule)] bg-white/70 p-3.5 leading-relaxed text-[color:var(--dossier-ink)]"
+            className="flex items-start gap-3 rounded-xl border border-border bg-background p-4 leading-relaxed text-foreground/90 shadow-sm"
           >
             <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-[color:var(--orange)]" aria-hidden />
             <span className="text-sm">{line}</span>

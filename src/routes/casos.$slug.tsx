@@ -190,7 +190,7 @@ function CaseDetail() {
         shareDescription={a.subtitle}
       />
 
-      <div className="bg-[color:var(--dossier-cream)]/40">
+      <div className="bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
           <div className="min-w-0">
             {a.cover_url && (
@@ -199,7 +199,7 @@ function CaseDetail() {
                   src={a.cover_url}
                   alt=""
                   loading="lazy"
-                  className="w-full rounded-3xl border border-[color:var(--dossier-rule)] object-cover aspect-[16/9] shadow-2xl"
+                  className="w-full rounded-3xl border border-border object-cover aspect-[16/9] shadow-elegant bg-card"
                 />
               </figure>
             )}
@@ -211,7 +211,7 @@ function CaseDetail() {
             {a.body && (
               <SafeHtml
                 html={a.body}
-                className="mt-10 prose prose-neutral max-w-none text-[color:var(--dossier-ink)]/95 leading-relaxed"
+                className="mt-10 prose prose-neutral max-w-none text-foreground/90 leading-relaxed"
               />
             )}
 
@@ -244,7 +244,7 @@ function CaseDetail() {
               </div>
             )}
 
-            <div className="mt-12 pt-8 border-t border-[color:var(--dossier-rule)]">
+            <div className="mt-12 pt-8 border-t border-border">
               <ShareButtons title={a.title} url={url} />
             </div>
           </div>

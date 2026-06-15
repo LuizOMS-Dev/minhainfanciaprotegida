@@ -85,41 +85,73 @@ const articles = [
 
 function Page() {
   return (
-    <>
-      <PageHero
-        image={heroLegislacao}
-        eyebrow="Legislação brasileira"
-        icon={<Scale className="size-3.5 text-[color:var(--orange)]" />}
-        title="A lei protege. Conheça e exija que seja cumprida."
-        description="O Brasil tem uma das legislações mais avançadas do mundo para a proteção da infância. Conheça os principais artigos."
-        tall
-      />
+    <div className="bg-background">
+      {/* Custom Hero for Legislacao to match the new visual identity */}
+      <section className="relative overflow-hidden bg-[color:var(--background)] pt-16 md:pt-24 lg:pt-32 pb-16 lg:pb-24 border-b border-border">
+        {/* Subtle blur background */}
+        <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/4 opacity-40 mix-blend-multiply pointer-events-none" aria-hidden>
+          <div className="w-[500px] h-[500px] rounded-full bg-[color:var(--navy)]/10 blur-3xl" />
+        </div>
 
-      <section className="py-20 sm:py-28 bg-background">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center relative z-10">
+          <div className="max-w-xl">
+            <Reveal>
+              <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--navy)]/10 bg-[color:var(--navy)]/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[color:var(--navy-deep)] shadow-sm">
+                <Scale className="size-3.5 text-[color:var(--orange)]" aria-hidden /> Legislação brasileira
+              </span>
+            </Reveal>
+            <Reveal delay={120}>
+              <h1 className="mt-8 font-display text-4xl sm:text-5xl lg:text-6xl font-medium leading-[1.1] tracking-tight text-[color:var(--navy-deep)] text-balance">
+                A lei protege. Conheça e exija que seja cumprida.
+              </h1>
+            </Reveal>
+            <Reveal delay={220}>
+              <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
+                O Brasil tem uma das legislações mais avançadas do mundo para a proteção da infância. Conheça os principais artigos.
+              </p>
+            </Reveal>
+          </div>
+          
+          <Reveal delay={300} className="lg:justify-self-end w-full">
+            <div className="relative aspect-[3/4] sm:aspect-[4/3] w-full max-w-md lg:max-w-lg rounded-2xl overflow-hidden shadow-elegant border border-border/50">
+              <img
+                src={heroLegislacao}
+                alt="Balança da justiça e Constituição Federal"
+                className="size-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--navy-deep)]/30 to-transparent" />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="py-20 sm:py-28 bg-card border-b border-border">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Principais artigos"
             title="Direitos fundamentais e dispositivos legais"
             description="Trechos extraídos integralmente das publicações oficiais do Planalto. Clique no título para acessar a lei completa."
           />
-          <div className="mt-14 space-y-5">
+          <div className="mt-16 space-y-6">
             {articles.map((a, i) => (
               <Reveal key={a.code} delay={i * 50}>
-                <article className="group rounded-2xl border border-border bg-card p-6 sm:p-8 hover-lift">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-3 py-1 text-xs font-bold uppercase tracking-wider">
-                      <Gavel className="size-3" /> {a.code}
+                <article className="group rounded-xl border border-border bg-background p-8 hover-lift hover:border-[color:var(--navy)]/20 shadow-sm relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-1 bg-[color:var(--orange)] h-full opacity-0 group-hover:opacity-100 transition-opacity" />
+                  
+                  <div className="flex flex-wrap items-center gap-4 mb-6">
+                    <span className="inline-flex items-center gap-1.5 rounded-lg bg-[color:var(--orange)]/10 text-[color:var(--navy-deep)] border border-[color:var(--orange)]/20 px-3 py-1.5 text-xs font-bold uppercase tracking-widest">
+                      <Gavel className="size-3.5 text-[color:var(--orange)]" /> {a.code}
                     </span>
                     <a
                       href={a.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-display text-xl sm:text-2xl font-semibold hover:text-[color:var(--red-inst)] inline-flex items-center gap-2"
+                      className="font-display text-2xl font-semibold text-[color:var(--navy-deep)] hover:text-[color:var(--red-inst)] transition-colors inline-flex items-center gap-2"
                     >
-                      {a.title} <ExternalLink className="size-4" />
+                      {a.title} <ExternalLink className="size-4 text-muted-foreground group-hover:text-[color:var(--red-inst)] transition-colors" />
                     </a>
                   </div>
-                  <blockquote className="mt-4 border-l-4 border-[color:var(--orange)] pl-5 text-foreground/90 leading-relaxed">
+                  <blockquote className="border-l-4 border-[color:var(--orange)]/40 pl-6 py-2 text-muted-foreground leading-relaxed italic text-lg">
                     "{a.text}"
                   </blockquote>
                 </article>
@@ -128,11 +160,18 @@ function Page() {
           </div>
 
           <Reveal delay={200}>
-            <div className="mt-14 rounded-2xl bg-[color:var(--orange-soft)] border border-[color:var(--orange)]/30 p-6 sm:p-8 flex flex-col sm:flex-row gap-5 items-start">
-              <BookMarked className="size-10 text-[color:var(--orange)] shrink-0" />
-              <div>
-                <h3 className="font-display text-xl font-semibold">Convenção da ONU</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
+            <div className="mt-16 rounded-2xl bg-[color:var(--navy)] text-white p-10 sm:p-12 flex flex-col sm:flex-row gap-8 items-start shadow-elegant relative overflow-hidden">
+              <div className="absolute inset-0 opacity-10 pointer-events-none" aria-hidden>
+                <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2" />
+              </div>
+              <div className="relative z-10 shrink-0">
+                <span className="inline-flex size-14 items-center justify-center rounded-xl bg-white/10 border border-white/20">
+                  <BookMarked className="size-7 text-[color:var(--orange)]" />
+                </span>
+              </div>
+              <div className="relative z-10">
+                <h3 className="font-display text-2xl font-semibold">Convenção da ONU</h3>
+                <p className="mt-4 text-white/80 leading-relaxed text-lg">
                   O Brasil é signatário da Convenção sobre os Direitos da Criança (ONU, 1989), o
                   tratado de direitos humanos mais ratificado do mundo. Ela estabelece que toda
                   criança tem direito à proteção contra todas as formas de violência, abuso e
@@ -142,9 +181,9 @@ function Page() {
                   href="https://www.unicef.org/brazil/convencao-sobre-os-direitos-da-crianca"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-[color:var(--red-inst)] hover:underline"
+                  className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-6 py-3 font-semibold hover:bg-[color:var(--orange)]/90 transition-colors shadow-sm"
                 >
-                  Acessar a Convenção (UNICEF) <ExternalLink className="size-3.5" />
+                  Acessar a Convenção (UNICEF) <ExternalLink className="size-4" />
                 </a>
               </div>
             </div>
@@ -153,26 +192,32 @@ function Page() {
       </section>
 
       {/* FAQ Legislação */}
-      <section className="py-20 bg-background border-t border-border">
+      <section className="py-20 bg-background border-b border-border">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <FaqBlock
-            items={[
-              {
-                q: "Qual a diferença entre o ECA e a Constituição Federal na proteção da infância?",
-                a: "A Constituição Federal (Art. 227) estabelece o princípio da 'Prioridade Absoluta', dizendo que é dever de todos proteger a criança. O ECA (Estatuto da Criança e do Adolescente) é a lei que regulamenta como essa proteção deve ser feita na prática, estabelecendo os mecanismos, direitos e punições.",
-              },
-              {
-                q: "O que mudou com a Lei Henry Borel?",
-                a: "A Lei 14.344/2022 (Lei Henry Borel) aumentou penas para quem se omite diante de violência e criou mecanismos semelhantes à Lei Maria da Penha (como medidas protetivas de urgência com afastamento do agressor) especificamente para crianças e adolescentes em situação de violência doméstica e familiar.",
-              },
-              {
-                q: "Como a lei brasileira lida com a violência no ambiente digital?",
-                a: "O ECA criminaliza a produção, posse e compartilhamento de material de abuso sexual infantil (Art. 240, 241, 241-A). Adicionalmente, leis recentes como o 'ECA Digital' e decisões judiciais baseadas no Marco Civil da Internet exigem que plataformas atuem para coibir e remover conteúdos ilícitos rapidamente.",
-              },
-            ]}
+          <SectionHeader
+            eyebrow="Dúvidas comuns"
+            title="Perguntas Frequentes (Legislação)"
           />
+          <div className="mt-12">
+            <FaqBlock
+              items={[
+                {
+                  q: "Qual a diferença entre o ECA e a Constituição Federal na proteção da infância?",
+                  a: "A Constituição Federal (Art. 227) estabelece o princípio da 'Prioridade Absoluta', dizendo que é dever de todos proteger a criança. O ECA (Estatuto da Criança e do Adolescente) é a lei que regulamenta como essa proteção deve ser feita na prática, estabelecendo os mecanismos, direitos e punições.",
+                },
+                {
+                  q: "O que mudou com a Lei Henry Borel?",
+                  a: "A Lei 14.344/2022 (Lei Henry Borel) aumentou penas para quem se omite diante de violência e criou mecanismos semelhantes à Lei Maria da Penha (como medidas protetivas de urgência com afastamento do agressor) especificamente para crianças e adolescentes em situação de violência doméstica e familiar.",
+                },
+                {
+                  q: "Como a lei brasileira lida com a violência no ambiente digital?",
+                  a: "O ECA criminaliza a produção, posse e compartilhamento de material de abuso sexual infantil (Art. 240, 241, 241-A). Adicionalmente, leis recentes como o 'ECA Digital' e decisões judiciais baseadas no Marco Civil da Internet exigem que plataformas atuem para coibir e remover conteúdos ilícitos rapidamente.",
+                },
+              ]}
+            />
+          </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

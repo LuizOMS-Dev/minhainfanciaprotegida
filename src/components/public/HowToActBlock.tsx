@@ -46,7 +46,7 @@ export function HowToActBlock({ steps }: HowToActBlockProps) {
   return (
     <section
       aria-label="Como agir agora"
-      className="mt-12 rounded-3xl border-2 border-[color:var(--red-inst)]/30 bg-gradient-to-br from-white to-[color:var(--dossier-cream)] p-6 sm:p-8"
+      className="mt-12 rounded-2xl border border-[color:var(--red-inst)]/20 bg-background p-6 sm:p-8 shadow-sm"
     >
       <div className="flex items-start gap-4">
         <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-[color:var(--red-inst)] text-white">
@@ -59,7 +59,7 @@ export function HowToActBlock({ steps }: HowToActBlockProps) {
           <h2 className="font-display text-2xl font-bold leading-tight text-[color:var(--navy-deep)]">
             Como agir agora
           </h2>
-          <p className="mt-2 text-sm text-[color:var(--dossier-ink)]/80 max-w-2xl">
+          <p className="mt-2 text-sm text-foreground/80 max-w-2xl">
             Em situações de suspeita ou risco, siga o passo a passo abaixo. A denúncia é anônima,
             gratuita e funciona 24 horas por dia.
           </p>
@@ -73,7 +73,7 @@ export function HowToActBlock({ steps }: HowToActBlockProps) {
           return (
             <li
               key={i}
-              className="relative flex gap-4 rounded-2xl border border-[color:var(--dossier-rule)] bg-white p-4 sm:p-5"
+              className="relative flex gap-4 rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm"
             >
               <div className="flex flex-col items-center gap-2">
                 <span className="inline-flex size-10 items-center justify-center rounded-full bg-[color:var(--navy-deep)] text-[color:var(--orange)] font-display text-lg font-bold">
@@ -85,7 +85,7 @@ export function HowToActBlock({ steps }: HowToActBlockProps) {
                 <h3 className="font-display text-base font-bold text-[color:var(--navy-deep)] leading-tight">
                   {s.title}
                 </h3>
-                <p className="mt-1.5 text-sm text-[color:var(--dossier-ink)]/85 leading-relaxed">
+                <p className="mt-1.5 text-sm text-foreground/85 leading-relaxed">
                   {s.description}
                 </p>
               </div>
@@ -109,7 +109,7 @@ export function HowToActBlock({ steps }: HowToActBlockProps) {
         </Link>
         <Link
           to="/mapa"
-          className="inline-flex items-center gap-2 rounded-full border border-[color:var(--dossier-rule)] bg-white px-5 py-2.5 text-sm font-semibold uppercase tracking-wider text-[color:var(--navy-deep)] hover:border-[color:var(--orange)] transition"
+          className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-5 py-2.5 text-sm font-semibold uppercase tracking-wider text-[color:var(--navy-deep)] hover:border-[color:var(--orange)] transition"
         >
           <MapPin className="size-4" aria-hidden /> Conselho Tutelar perto de você
         </Link>

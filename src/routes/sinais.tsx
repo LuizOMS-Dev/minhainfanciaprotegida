@@ -48,23 +48,27 @@ const signs = [
 
 function Page() {
   return (
-    <>
-      <section className="relative isolate overflow-hidden bg-[color:var(--navy-deep)] text-white py-20 sm:py-28">
-        <div className="absolute inset-0 -z-10 opacity-40" style={{ backgroundImage: `url(${listeningImg})`, backgroundSize: "cover", backgroundPosition: "center" }} aria-hidden />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[color:var(--navy-deep)] via-[color:var(--navy-deep)]/85 to-transparent" aria-hidden />
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <div className="bg-background">
+      {/* HEADER SECTION */}
+      <section className="relative overflow-hidden bg-[color:var(--background)] pt-16 md:pt-24 lg:pt-32 pb-16 lg:pb-24 border-b border-border">
+        {/* Subtle blur background */}
+        <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/4 opacity-40 mix-blend-multiply pointer-events-none" aria-hidden>
+          <div className="w-[500px] h-[500px] rounded-full bg-blue-50/50 blur-3xl" />
+        </div>
+
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em]">
-              <AlertTriangle className="size-3.5 text-[color:var(--orange)]" /> Atenção · Sinais de alerta
+            <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--navy)]/10 bg-[color:var(--navy)]/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[color:var(--navy-deep)] shadow-sm">
+              <AlertTriangle className="size-3.5 text-[color:var(--orange)]" /> Sinais de Alerta
             </span>
           </Reveal>
           <Reveal delay={120}>
-            <h1 className="mt-6 font-display text-5xl sm:text-6xl font-semibold leading-tight text-balance">
+            <h1 className="mt-8 font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-medium leading-[1.1] tracking-tight text-[color:var(--navy-deep)] text-balance">
               Aprenda a enxergar o que muitas vezes não é dito
             </h1>
           </Reveal>
           <Reveal delay={220}>
-            <p className="mt-6 text-lg text-white/85 max-w-2xl leading-relaxed">
+            <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               A maioria das crianças que sofrem violência sexual não verbaliza o que aconteceu. O
               corpo e o comportamento, no entanto, falam. Reconhecer os sinais é proteger.
             </p>
@@ -72,89 +76,91 @@ function Page() {
         </div>
       </section>
 
-      <section className="py-20 sm:py-28 bg-background">
+      {/* GRID DE SINAIS */}
+      <section className="py-20 sm:py-28 bg-card border-b border-border">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Comportamentos de alerta"
-            title="Sinais que merecem sua atenção"
-            description="Nenhum sinal isolado é prova de violência, mas a combinação de comportamentos persistentes deve ser observada com cuidado. Em caso de suspeita, busque orientação."
+            title="Sinais que exigem observação"
+            description="Nenhum sinal isolado é prova definitiva de violência, mas a combinação de comportamentos persistentes deve ser acompanhada de perto. Em caso de suspeita fundamentada, busque a rede de proteção."
           />
-          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {signs.map((s, i) => (
               <Reveal key={s.title} delay={i * 60}>
-                <article className="group h-full rounded-2xl border border-border bg-card p-6 hover-lift relative overflow-hidden">
-                  <div className="absolute -right-12 -top-12 size-32 rounded-full bg-[color:var(--orange)]/10 transition-transform duration-700 group-hover:scale-125" aria-hidden />
-                  <span className="relative inline-flex size-12 items-center justify-center rounded-2xl bg-gradient-orange text-[color:var(--navy-deep)]">
+                <article className="group h-full rounded-xl border border-border bg-background p-8 hover-lift hover:border-[color:var(--navy)]/20 transition-all shadow-sm hover:shadow-md relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[color:var(--orange)]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <span className="inline-flex size-12 items-center justify-center rounded-lg bg-[color:var(--navy)]/5 border border-[color:var(--navy)]/10 text-[color:var(--navy-deep)] group-hover:bg-[color:var(--navy)] group-hover:text-white transition-colors">
                     <s.icon className="size-6" aria-hidden />
                   </span>
-                  <h3 className="relative mt-4 text-lg font-semibold">{s.title}</h3>
-                  <p className="relative mt-2 text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
+                  <h3 className="mt-6 text-xl font-semibold text-[color:var(--navy-deep)]">{s.title}</h3>
+                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
                 </article>
               </Reveal>
             ))}
           </div>
           <Reveal delay={200}>
-            <p className="mt-10 text-xs text-muted-foreground max-w-3xl">
-              Referências:{" "}
-              <a className="underline underline-offset-2" href="https://www.unicef.org/brazil/protecao-de-criancas-e-adolescentes" target="_blank" rel="noopener noreferrer">
-                UNICEF Brasil — Proteção
-              </a>
-              ,{" "}
-              <a className="underline underline-offset-2" href="https://www.childhood.org.br/" target="_blank" rel="noopener noreferrer">
-                Childhood Brasil
-              </a>
-              ,{" "}
-              <a className="underline underline-offset-2" href="https://www.gov.br/mdh/pt-br/disque100" target="_blank" rel="noopener noreferrer">
-                Disque 100 / MDHC
-              </a>
-              .
-            </p>
+            <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 pt-8 border-t border-border/50 text-xs text-muted-foreground font-medium">
+              <span>Referências Oficiais:</span>
+              <a className="hover:text-[color:var(--navy)] transition-colors inline-flex items-center gap-1" href="https://www.unicef.org/brazil" target="_blank" rel="noopener noreferrer">UNICEF Brasil</a>
+              <a className="hover:text-[color:var(--navy)] transition-colors inline-flex items-center gap-1" href="https://www.childhood.org.br/" target="_blank" rel="noopener noreferrer">Childhood Brasil</a>
+              <a className="hover:text-[color:var(--navy)] transition-colors inline-flex items-center gap-1" href="https://www.gov.br/mdh" target="_blank" rel="noopener noreferrer">MDHC / Disque 100</a>
+            </div>
           </Reveal>
         </div>
       </section>
 
       {/* FAQ Sinais */}
-      <section className="py-20 bg-background border-t border-border">
+      <section className="py-20 bg-background border-b border-border">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <FaqBlock
-            items={[
-              {
-                q: "Meu filho apresentou um desses sinais. É certeza que algo grave aconteceu?",
-                a: "Não. Sinais de ansiedade, mudanças de humor ou queda de rendimento escolar podem ter diversas causas, como bullying, mudança de escola ou conflitos familiares. O importante é não ignorar a mudança, oferecer um ambiente de escuta e buscar apoio para investigar a raiz do problema.",
-              },
-              {
-                q: "E se a criança negar ou ficar calada ao ser perguntada?",
-                a: "Nunca force a criança a falar nem realize interrogatórios. O medo e as ameaças do agressor muitas vezes impõem o silêncio. Deixe claro que ela está segura e que você acredita nela. Procure profissionais (psicólogos, Conselho Tutelar) capacitados para a escuta protegida.",
-              },
-              {
-                q: "A criança apontou alguém da família ou pessoa próxima. Devo acreditar?",
-                a: "Sim. A grande maioria dos casos de abuso ocorre dentro do círculo de confiança da criança. Desacreditar a vítima para proteger um adulto ou a imagem da família a deixa ainda mais vulnerável. Acolha o relato e busque ajuda da rede de proteção.",
-              },
-            ]}
+          <SectionHeader
+            eyebrow="Dúvidas Frequentes"
+            title="Como agir diante da suspeita"
+            description="Entenda os limites da observação e o papel do adulto na proteção imediata da criança."
           />
+          <div className="mt-12">
+            <FaqBlock
+              items={[
+                {
+                  q: "Meu filho apresentou um desses sinais. É certeza que algo grave aconteceu?",
+                  a: "Não. Sinais de ansiedade, mudanças de humor ou queda de rendimento escolar podem ter diversas causas, como bullying, mudança de escola ou conflitos familiares. O importante é não ignorar a mudança, oferecer um ambiente de escuta livre de julgamentos e buscar apoio psicológico ou escolar para investigar a raiz do problema.",
+                },
+                {
+                  q: "E se a criança negar ou ficar calada ao ser perguntada?",
+                  a: "Nunca force a criança a falar nem realize interrogatórios domésticos. O medo e as ameaças do agressor muitas vezes impõem o silêncio absoluto. Deixe claro que ela está segura e que você acredita nela. Procure profissionais (psicólogos, Conselho Tutelar) capacitados para realizar a escuta protegida (Lei 13.431/2017).",
+                },
+                {
+                  q: "A criança apontou alguém da família ou pessoa próxima. Devo acreditar?",
+                  a: "Sim. A grande maioria dos casos de abuso ocorre dentro do círculo de confiança e convivência da criança. Desacreditar a vítima para proteger um adulto ou a imagem pública da família a deixa em situação de extremo risco. Acolha o relato e busque ajuda da rede de proteção imediatamente.",
+                },
+              ]}
+            />
+          </div>
         </div>
       </section>
 
-      <section className="py-16 bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)]">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+      <section className="py-24 bg-[color:var(--navy)] text-white text-center relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10" aria-hidden>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-white to-transparent opacity-50 blur-3xl" />
+        </div>
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 relative z-10">
           <Reveal>
-            <h2 className="font-display text-3xl sm:text-4xl font-semibold leading-tight">
-              Identificou um ou mais sinais?
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-medium leading-tight">
+              A suspeita fundamentada basta para denunciar.
             </h2>
-            <p className="mt-3 text-white/90 max-w-2xl mx-auto">
-              Não espere ter certeza. A denúncia é anônima e quem investiga é a autoridade competente.
+            <p className="mt-6 text-lg text-white/80 leading-relaxed">
+              Você não precisa ser investigador ou ter provas materiais. A denúncia ao Disque 100 transfere a responsabilidade da apuração para as autoridades competentes.
             </p>
-            <div className="mt-7 flex flex-wrap justify-center gap-3">
-              <a href="tel:100" className="inline-flex items-center gap-2 rounded-full bg-white text-[color:var(--red-inst)] px-7 py-3 font-bold">
-                <Phone className="size-5" /> Ligar 100
+            <div className="mt-10 flex flex-wrap justify-center gap-4">
+              <a href="tel:100" className="inline-flex items-center gap-2 rounded-lg bg-[color:var(--red-inst)] text-white px-8 py-3.5 font-bold shadow-sm hover:bg-[color:var(--red-inst)]/90 transition-colors">
+                <Phone className="size-5" /> Ligar 100 (Anonimamente)
               </a>
-              <Link to="/denuncia" className="inline-flex items-center gap-2 rounded-full border border-white/60 px-7 py-3 font-semibold hover:bg-white/10">
-                Outros canais
+              <Link to="/denuncia" className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-8 py-3.5 font-semibold hover:bg-white/10 transition-colors">
+                Rede de Proteção
               </Link>
             </div>
           </Reveal>
         </div>
       </section>
-    </>
+    </div>
   );
 }

@@ -124,149 +124,108 @@ const stats = [
 
 function Index() {
   return (
-    <>
-      {/* HERO */}
-      <section className="relative isolate overflow-hidden bg-[color:var(--navy-deep)] text-white">
-        <div className="absolute inset-0 -z-10 overflow-hidden" aria-hidden>
-          <img
-            src={heroImg}
-            alt=""
-            aria-hidden
-            className="absolute inset-0 h-full w-full object-cover opacity-50 mix-blend-luminosity animate-kenburns"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                "linear-gradient(to top, rgba(8,14,32,0.95) 0%, rgba(11,20,45,0.7) 45%, rgba(11,20,45,0.4) 100%)",
-            }}
-          />
-        </div>
-
-        {/* Ornamento floral decorativo */}
-        <div className="pointer-events-none absolute -bottom-10 -right-10 hidden md:block opacity-[0.08]" aria-hidden>
-          <svg width="420" height="420" viewBox="0 0 100 100" fill="none" className="text-[color:var(--orange)]">
-            <path
-              d="M50 10C55 35 75 35 90 50C75 65 55 65 50 90C45 65 25 65 10 50C25 35 45 35 50 10Z"
-              fill="currentColor"
-            />
-          </svg>
-        </div>
-
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-24 sm:pt-28 sm:pb-32 lg:pt-36 lg:pb-44">
-          <Reveal>
-            <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--orange)]/40 bg-[color:var(--orange)]/15 px-4 py-1.5 text-[11px] font-bold tracking-[0.22em] uppercase text-[color:var(--orange)] backdrop-blur-md">
-              <span className="relative inline-flex size-2">
-                <span className="absolute inset-0 rounded-full bg-[color:var(--orange)] animate-ping-slow" />
-                <span className="relative inline-block size-2 rounded-full bg-[color:var(--orange)]" />
-              </span>
-              Maio Laranja · 18 de Maio
-            </div>
-          </Reveal>
-
-          <Reveal delay={120}>
-            <h1 className="mt-6 font-display text-5xl sm:text-6xl lg:text-7xl xl:text-[88px] font-normal leading-[1.02] tracking-tight text-balance max-w-4xl">
-              Proteção é compromisso de{" "}
-              <span className="italic text-[color:var(--orange)]">todos nós.</span>
-            </h1>
-          </Reveal>
-
-          <Reveal delay={240}>
-            <p className="mt-6 max-w-2xl text-lg sm:text-xl text-white/80 leading-relaxed">
-              Educar para prevenir. Denunciar para proteger. Juntos contra o abuso e a exploração sexual de crianças e adolescentes.
-            </p>
-          </Reveal>
-
-          <Reveal delay={360}>
-            <div className="mt-10 flex flex-wrap items-center gap-4">
-              <Link
-                to="/sinais"
-                className="group inline-flex items-center gap-2 rounded-xl bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-7 py-4 text-base font-bold shadow-orange hover:shadow-2xl hover:-translate-y-0.5 transition"
-              >
-                <Eye className="size-5" aria-hidden />
-                Como Identificar Sinais
-                <ArrowRight className="size-4 transition group-hover:translate-x-1" aria-hidden />
-              </Link>
-              <Link
-                to="/biblioteca"
-                className="inline-flex items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-7 py-4 text-base font-bold text-white backdrop-blur-lg hover:bg-white/20 transition"
-              >
-                <BookOpen className="size-5" aria-hidden />
-                Materiais de Apoio
-              </Link>
-              <Link
-                to="/denuncia"
-                className="inline-flex items-center gap-2 rounded-xl bg-[color:var(--red-inst)]/95 px-7 py-4 text-base font-bold text-white hover:bg-[color:var(--red-inst)] transition"
-              >
-                <Phone className="size-5" aria-hidden />
-                Denunciar Agora
-              </Link>
-            </div>
-          </Reveal>
-
-          <Reveal delay={480}>
-            <div className="mt-16 grid grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 rounded-2xl overflow-hidden border border-white/10">
-              {[
-                ["100", "Disque Direitos Humanos"],
-                ["190", "Polícia Militar"],
-                ["192", "SAMU"],
-                ["181", "Disque-Denúncia"],
-              ].map(([num, label]) => (
-                <div
-                  key={num}
-                  className="bg-[color:var(--navy-deep)]/80 backdrop-blur px-5 py-5 flex flex-col gap-1"
-                >
-                  <a
-                    href={`tel:${num}`}
-                    className="font-display text-3xl sm:text-4xl font-semibold text-[color:var(--orange)] hover:underline underline-offset-4"
-                  >
-                    {num}
-                  </a>
-                  <span className="text-xs sm:text-sm text-white/75">{label}</span>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
+    <div className="bg-background">
       {/* ALERTA MENSAL / DIA 18 */}
       <MonthlyAlert />
 
-      {/* MARQUEE OFICIAL */}
+      {/* HERO SECTION - PREMIUM & CLEAN */}
+      <section className="relative overflow-hidden pt-16 md:pt-24 lg:pt-32 pb-16 lg:pb-24 border-b border-border">
+        <div className="absolute inset-0 bg-[color:var(--background)] -z-10" />
+        
+        {/* Subtle decorative background blur */}
+        <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/3 opacity-40 mix-blend-multiply pointer-events-none" aria-hidden>
+          <div className="w-[600px] h-[600px] rounded-full bg-blue-50/50 blur-3xl" />
+        </div>
 
-      <section className="bg-[color:var(--orange)] text-[color:var(--navy-deep)] py-4 overflow-hidden border-y border-[color:var(--navy-deep)]/10">
-        <div className="flex gap-12 whitespace-nowrap animate-marquee font-display text-lg sm:text-xl font-semibold">
-          {Array.from({ length: 2 }).map((_, i) => (
-            <div key={i} className="flex gap-12 shrink-0">
-              <span>★ Maio Laranja</span>
-              <span>★ Disque 100</span>
-              <span>★ ECA — Lei 8.069/90</span>
-              <span>★ Denuncie. É gratuito e anônimo.</span>
-              <span>★ Proteger é dever de todos</span>
-              <span>★ 18 de Maio</span>
-              <span>★ UNICEF Brasil</span>
-              <span>★ Childhood Brasil</span>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+            
+            {/* Texto do Hero */}
+            <div className="max-w-2xl">
+              <Reveal>
+                <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-xs font-semibold tracking-widest uppercase text-[color:var(--navy)] mb-8 shadow-sm">
+                  <span className="relative inline-flex size-2">
+                    <span className="absolute inset-0 rounded-full bg-[color:var(--orange)] animate-ping-slow opacity-75" />
+                    <span className="relative inline-block size-2 rounded-full bg-[color:var(--orange)]" />
+                  </span>
+                  Campanha Nacional Permanente
+                </div>
+              </Reveal>
+
+              <Reveal delay={100}>
+                <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-medium leading-[1.1] tracking-tight text-[color:var(--navy-deep)] text-balance">
+                  Proteção é dever de <span className="text-[color:var(--orange)] italic">todos nós.</span>
+                </h1>
+              </Reveal>
+
+              <Reveal delay={200}>
+                <p className="mt-6 text-lg sm:text-xl text-muted-foreground leading-relaxed">
+                  Portal institucional dedicado à conscientização, prevenção e combate ao abuso e exploração sexual de crianças e adolescentes. Informação segura que salva vidas.
+                </p>
+              </Reveal>
+
+              <Reveal delay={300}>
+                <div className="mt-10 flex flex-wrap items-center gap-4">
+                  <Link
+                    to="/denuncia"
+                    className="inline-flex items-center gap-2 rounded-lg bg-[color:var(--red-inst)] px-7 py-3.5 text-base font-semibold text-white shadow-sm hover:opacity-90 transition-opacity"
+                  >
+                    <Phone className="size-5" aria-hidden />
+                    Como Denunciar
+                  </Link>
+                  <Link
+                    to="/sinais"
+                    className="group inline-flex items-center gap-2 rounded-lg bg-[color:var(--navy)] px-7 py-3.5 text-base font-semibold text-white shadow-sm hover:bg-[color:var(--navy-deep)] transition-colors"
+                  >
+                    <Eye className="size-5" aria-hidden />
+                    Identificar Sinais
+                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
+                  </Link>
+                </div>
+              </Reveal>
+
+              <Reveal delay={400}>
+                <div className="mt-10 flex items-center gap-4 text-sm font-medium text-muted-foreground border-t border-border pt-8">
+                  <span>Canais Oficiais 24h:</span>
+                  <div className="flex gap-4">
+                    <a href="tel:100" className="flex items-center gap-1.5 text-[color:var(--navy)] hover:text-[color:var(--orange)] transition-colors"><Phone className="size-4" /> Disque 100</a>
+                    <a href="tel:190" className="flex items-center gap-1.5 text-[color:var(--navy)] hover:text-[color:var(--orange)] transition-colors"><Phone className="size-4" /> Polícia 190</a>
+                  </div>
+                </div>
+              </Reveal>
             </div>
-          ))}
+
+            {/* Imagem do Hero */}
+            <Reveal delay={300} className="lg:justify-self-end">
+              <div className="relative aspect-[4/5] lg:aspect-[3/4] w-full max-w-lg rounded-2xl overflow-hidden shadow-elegant border border-border/50">
+                <img
+                  src={heroImg}
+                  alt="Crianças brincando de forma segura, representando a infância protegida"
+                  className="size-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--navy-deep)]/40 to-transparent mix-blend-overlay" />
+              </div>
+            </Reveal>
+
+          </div>
         </div>
       </section>
 
-      {/* ESTATÍSTICAS */}
-      <section className="py-20 sm:py-28 bg-background">
+      {/* DADOS ESTATÍSTICOS - CLEAN */}
+      <section className="py-20 sm:py-28 bg-card border-b border-border">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Dados oficiais"
-            title="A realidade da infância no Brasil"
-            description="Cada número representa uma vida. Todos os dados abaixo são extraídos de fontes oficiais e públicas — clique para acessar a referência completa."
+            eyebrow="Panorama Nacional"
+            title="A urgência da proteção"
+            description="Dados oficiais reforçam que a violência sexual ocorre majoritariamente em ambientes familiares. O conhecimento é a principal ferramenta de intervenção."
           />
 
-          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             {stats.map((s, i) => (
               <Reveal key={i} delay={i * 80}>
-                <article className="group h-full rounded-2xl border border-border bg-card p-6 hover-lift relative overflow-hidden">
-                  <div className="absolute inset-x-0 top-0 h-1 bg-gradient-orange" aria-hidden />
-                  <p className="font-display text-5xl font-semibold text-[color:var(--navy)] leading-none">
+                <article className="group relative h-full rounded-xl bg-background border border-border p-8 hover-lift">
+                  <div className="absolute top-0 left-8 w-12 h-1 bg-[color:var(--orange)] rounded-b-md" />
+                  <p className="font-display text-4xl sm:text-5xl font-semibold text-[color:var(--navy)] tracking-tight mt-4">
                     {s.prefix}
                     {"customDisplay" in s ? (
                       <span>{(s as { customDisplay: string }).customDisplay}</span>
@@ -275,9 +234,9 @@ function Index() {
                     )}
                     {s.suffix}
                   </p>
-                  <h3 className="mt-4 text-base font-semibold leading-snug">{s.label}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.detail}</p>
-                  <div className="mt-4 pt-4 border-t border-border">
+                  <h3 className="mt-4 text-base font-semibold text-[color:var(--navy-deep)] leading-snug">{s.label}</h3>
+                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{s.detail}</p>
+                  <div className="mt-6 pt-6 border-t border-border">
                     <SourceTag source={s.source} year={s.year} url={s.url} />
                   </div>
                 </article>
@@ -287,99 +246,74 @@ function Index() {
         </div>
       </section>
 
-      {/* SILÊNCIO QUE FERE */}
-      <section className="relative py-20 sm:py-32 bg-[color:var(--navy-deep)] text-white overflow-hidden">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
-          <Reveal>
-            <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-elegant">
-              <img
-                src={silenceImg}
-                alt="Silhueta de criança olhando pela janela, simbolizando crianças que sofrem em silêncio"
-                loading="lazy"
-                className="size-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--navy-deep)]/80 to-transparent" />
-            </div>
-          </Reveal>
-          <Reveal delay={140}>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[color:var(--orange)]">
-              O silêncio que machuca
-            </p>
-            <h2 className="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-balance">
-              A violência sexual contra crianças acontece, na maioria das vezes, dentro de casa.
-            </h2>
-            <p className="mt-5 text-white/80 text-lg leading-relaxed">
-              Em cerca de 60% dos casos, o agressor é alguém da família ou do convívio próximo. O
-              medo, a vergonha e a dependência emocional fazem com que muitas crianças não consigam
-              pedir ajuda. Reconhecer os sinais é o primeiro passo para romper esse ciclo.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                to="/sinais"
-                className="inline-flex items-center gap-2 rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-6 py-3 font-semibold hover:opacity-95"
-              >
-                Conhecer os sinais <ArrowRight className="size-4" />
+      {/* NAVEGAÇÃO POR PÚBLICO (FAMÍLIAS E ESCOLAS) */}
+      <section className="py-20 sm:py-28 bg-background">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-8">
+            <Reveal>
+              <Link to="/pais" className="group block relative rounded-2xl overflow-hidden border border-border bg-card hover-lift">
+                <div className="absolute inset-0 bg-[color:var(--navy)]/5 group-hover:bg-[color:var(--navy)]/10 transition-colors" />
+                <div className="p-10 sm:p-12 relative z-10 flex flex-col h-full justify-between">
+                  <div>
+                    <Users className="size-10 text-[color:var(--navy)] mb-6" />
+                    <h3 className="font-display text-3xl font-semibold text-[color:var(--navy-deep)]">Orientação para Famílias</h3>
+                    <p className="mt-4 text-lg text-muted-foreground leading-relaxed max-w-md">
+                      Aprenda a conversar com seus filhos, aplicar controles parentais e reconhecer sinais precoces de vitimização.
+                    </p>
+                  </div>
+                  <div className="mt-10 flex items-center gap-2 text-[color:var(--navy)] font-semibold">
+                    Acessar guia para pais <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                  </div>
+                </div>
               </Link>
-              <Link
-                to="/como-ajudar"
-                className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3 font-semibold hover:bg-white/10"
-              >
-                Como acolher
+            </Reveal>
+
+            <Reveal delay={100}>
+              <Link to="/escolas" className="group block relative rounded-2xl overflow-hidden border border-border bg-card hover-lift">
+                <div className="absolute inset-0 bg-[color:var(--orange)]/5 group-hover:bg-[color:var(--orange)]/10 transition-colors" />
+                <div className="p-10 sm:p-12 relative z-10 flex flex-col h-full justify-between">
+                  <div>
+                    <GraduationCap className="size-10 text-[color:var(--orange)] mb-6" />
+                    <h3 className="font-display text-3xl font-semibold text-[color:var(--navy-deep)]">Protocolos para Escolas</h3>
+                    <p className="mt-4 text-lg text-muted-foreground leading-relaxed max-w-md">
+                      Diretrizes para educadores sobre escuta especializada, suspeita de abuso e acionamento da Rede de Proteção.
+                    </p>
+                  </div>
+                  <div className="mt-10 flex items-center gap-2 text-[color:var(--orange)] font-semibold">
+                    Acessar guia escolar <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                  </div>
+                </div>
               </Link>
-            </div>
-            <p className="mt-6 text-xs text-white/60">
-              Fonte: Childhood Brasil & Fórum Brasileiro de Segurança Pública (Anuário 2024).
-            </p>
-          </Reveal>
+            </Reveal>
+          </div>
         </div>
       </section>
 
-      {/* O QUE VOCÊ ENCONTRA */}
-      <section className="py-20 sm:py-28 bg-[color:var(--orange-soft)]">
+      {/* O QUE VOCÊ ENCONTRA - GRID INSTITUCIONAL */}
+      <section className="py-20 sm:py-28 bg-card border-y border-border">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
-            eyebrow="Conteúdo da campanha"
-            title="Informação que protege"
-            description="Tudo o que você precisa para reconhecer, acolher, agir e denunciar — em um só lugar."
+            eyebrow="Eixos de Atuação"
+            title="Conhecimento e prevenção"
+            description="Acesso estruturado a conteúdos de conscientização, materiais de apoio e canais seguros para a garantia dos direitos infantojuvenis."
           />
-          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          
+          <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {[
-              { to: "/maio-laranja", icon: Heart, title: "Maio Laranja", desc: "Origem, história e por que o dia 18 de maio importa.", img: ribbonImg },
-              { to: "/sinais", icon: Eye, title: "Identificar Sinais", desc: "Mudanças de comportamento que merecem atenção.", img: joyImg },
-              { to: "/riscos-online", icon: Wifi, title: "Riscos Online", desc: "Adultização, grooming e deepfakes em plataformas e comunidades online.", img: silenceImg },
-              { to: "/pais", icon: Users, title: "Para Pais", desc: "Controle parental e configurações em Roblox, Discord, TikTok e mais.", img: joyImg },
-              { to: "/escolas", icon: GraduationCap, title: "Para Escolas", desc: "Protocolo de suspeita e escuta protegida para educadores.", img: heroImg },
-              { to: "/biblioteca", icon: Library, title: "Biblioteca", desc: "Cartilhas e estudos oficiais (UNICEF, SaferNet, MDHC).", img: ribbonImg },
-              { to: "/casos", icon: BookOpen, title: "Casos Reais", desc: "Histórias verificadas que mudaram leis no Brasil.", img: heroImg },
-              { to: "/noticias", icon: Newspaper, title: "Notícias", desc: "Atualizações sobre o combate à violência infantil.", img: ribbonImg },
-              { to: "/como-ajudar", icon: HandHeart, title: "Como Ajudar", desc: "Escutar, acolher, não julgar, proteger e denunciar.", img: joyImg },
-              { to: "/denuncia", icon: Phone, title: "Canais de Denúncia", desc: "Telefones oficiais que funcionam 24 horas.", img: silenceImg },
-              { to: "/legislacao", icon: Scale, title: "Legislação", desc: "ECA, Constituição e o novo ECA Digital (Lei 15.211/2025).", img: ribbonImg },
-              { to: "/mapa", icon: MapPin, title: "Mapa de Ajuda", desc: "Conselhos tutelares, delegacias e centros de apoio por estado.", img: heroImg },
+              { to: "/sinais", icon: Eye, title: "Sinais de Alerta", desc: "Comportamentos que exigem atenção imediata." },
+              { to: "/riscos-online", icon: Wifi, title: "Riscos Digitais", desc: "Grooming, exploração em jogos e redes sociais." },
+              { to: "/biblioteca", icon: Library, title: "Biblioteca", desc: "Cartilhas oficiais, estudos e guias em PDF." },
+              { to: "/casos", icon: BookOpen, title: "Dossiês Oficiais", desc: "Casos reais que fundamentam as leis brasileiras." },
+              { to: "/legislacao", icon: Scale, title: "Legislação", desc: "Estatuto da Criança e do Adolescente e marcos legais." },
+              { to: "/mapa", icon: MapPin, title: "Rede de Proteção", desc: "Mapeamento de Conselhos Tutelares e delegacias." },
             ].map((c, i) => (
-              <Reveal key={c.to} delay={i * 70}>
-                <Link to={c.to} className="block h-full">
-                  <article className="h-full rounded-2xl overflow-hidden bg-card border border-border hover-lift group">
-                    <div className="relative aspect-[16/10] overflow-hidden">
-                      <img
-                        src={c.img}
-                        alt=""
-                        loading="lazy"
-                        className="size-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--navy-deep)]/70 via-transparent" />
-                      <span className="absolute top-4 left-4 inline-flex size-10 items-center justify-center rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)]">
-                        <c.icon className="size-5" aria-hidden />
-                      </span>
-                    </div>
-                    <div className="p-6">
-                      <h3 className="font-display text-xl font-semibold">{c.title}</h3>
-                      <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{c.desc}</p>
-                      <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[color:var(--red-inst)]">
-                        Acessar <ArrowRight className="size-4 transition group-hover:translate-x-1" />
-                      </span>
-                    </div>
-                  </article>
+              <Reveal key={c.to} delay={i * 50}>
+                <Link to={c.to} className="group flex flex-col h-full rounded-xl border border-border bg-background p-6 hover:border-[color:var(--navy)]/30 transition-colors shadow-sm hover:shadow-md">
+                  <div className="inline-flex size-10 items-center justify-center rounded-lg bg-[color:var(--background)] border border-border mb-5 group-hover:bg-[color:var(--navy)] group-hover:text-white transition-colors">
+                    <c.icon className="size-5" aria-hidden />
+                  </div>
+                  <h3 className="font-display text-xl font-semibold text-[color:var(--navy-deep)]">{c.title}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-grow">{c.desc}</p>
                 </Link>
               </Reveal>
             ))}
@@ -387,77 +321,59 @@ function Index() {
         </div>
       </section>
 
+      {/* LATEST UPDATES (NOTÍCIAS) */}
       <LatestUpdates />
 
-      {/* CTA FINAL */}
-
-      <section className="relative isolate overflow-hidden py-24 sm:py-32 bg-gradient-red text-white">
-        <div className="absolute inset-0 opacity-20" aria-hidden>
-          <div className="absolute -top-32 left-1/3 size-[30rem] rounded-full bg-white blur-3xl" />
+      {/* CTA INSTITUCIONAL (DENÚNCIA) */}
+      <section className="relative overflow-hidden py-24 sm:py-32 bg-[color:var(--navy)] text-white">
+        <div className="absolute inset-0 opacity-10 pointer-events-none" aria-hidden>
+          <svg className="absolute w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="1"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+          </svg>
         </div>
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+        
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <Reveal>
-            <ShieldAlert className="mx-auto size-12 text-white/90" aria-hidden />
-            <h2 className="mt-6 font-display text-4xl sm:text-5xl lg:text-6xl font-semibold leading-tight text-balance">
-              Não fique em silêncio.
+            <ShieldAlert className="mx-auto size-14 text-[color:var(--orange)]" aria-hidden />
+            <h2 className="mt-8 font-display text-3xl sm:text-4xl lg:text-5xl font-medium leading-tight text-balance">
+              A omissão agrava o crime. Denuncie.
             </h2>
-            <p className="mt-5 text-lg sm:text-xl text-white/90 leading-relaxed max-w-2xl mx-auto">
-              Ao denunciar você protege uma criança e ajuda a interromper um ciclo de violência. A
-              denúncia é anônima, gratuita e funciona 24 horas.
+            <p className="mt-6 text-lg text-white/80 leading-relaxed max-w-2xl mx-auto">
+              A denúncia ao Disque 100 é sigilosa, gratuita e analisada por autoridades competentes. Você não precisa ter provas absolutas, apenas a suspeita fundamentada.
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-4">
               <a
                 href="tel:100"
-                className="inline-flex items-center gap-2 rounded-full bg-white text-[color:var(--red-inst)] px-8 py-4 text-lg font-bold hover:scale-[1.02] transition"
+                className="inline-flex items-center gap-2 rounded-lg bg-[color:var(--red-inst)] text-white px-8 py-3.5 font-bold hover:bg-[color:var(--red-inst)]/90 transition-colors shadow-sm"
               >
-                <Phone className="size-5" /> Ligar 100
+                <Phone className="size-5" /> Disque 100
               </a>
               <Link
                 to="/denuncia"
-                className="inline-flex items-center gap-2 rounded-full border-2 border-white/50 px-8 py-4 text-lg font-semibold hover:bg-white/10"
+                className="inline-flex items-center gap-2 rounded-lg bg-white/10 text-white border border-white/20 px-8 py-3.5 font-semibold hover:bg-white/20 transition-colors"
               >
                 <MessageCircle className="size-5" />
-                Outros canais
+                Ver outros canais oficiais
               </Link>
             </div>
-            <p className="mt-8 text-sm text-white/70">
-              Fonte oficial:{" "}
-              <a
-                href="https://www.gov.br/mdh/pt-br/disque100"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline underline-offset-4"
-              >
-                Ministério dos Direitos Humanos e da Cidadania — Disque 100
-              </a>
-            </p>
           </Reveal>
         </div>
       </section>
 
       {/* BLOCO FONTES */}
-      <section className="py-16 bg-background border-t border-border">
+      <section className="py-12 bg-background border-t border-border">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">
-              Conteúdo baseado em fontes oficiais
-            </p>
-          </Reveal>
-          <Reveal delay={120}>
-            <div className="mt-6 flex flex-wrap items-center gap-x-10 gap-y-4 text-sm font-medium text-muted-foreground">
-              {[
-                "Ministério dos Direitos Humanos",
-                "Disque 100",
-                "UNICEF",
-                "Childhood Brasil",
-                "CONANDA",
-                "ECA — Lei 8.069/90",
-                "Ministério Público",
-                "Polícia Federal",
-                "ONU",
-              ].map((n) => (
-                <span key={n} className="inline-flex items-center gap-2">
-                  <BookOpen className="size-4 text-[color:var(--orange)]" aria-hidden />
+            <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+              <span className="text-sm font-semibold tracking-widest uppercase text-muted-foreground">Baseado em:</span>
+              {["Disque 100", "ECA", "Ministério dos Direitos Humanos", "Childhood Brasil", "UNICEF"].map((n) => (
+                <span key={n} className="inline-flex items-center gap-2 text-sm font-medium text-[color:var(--navy)]">
+                  <BookOpen className="size-4" aria-hidden />
                   {n}
                 </span>
               ))}
@@ -465,6 +381,6 @@ function Index() {
           </Reveal>
         </div>
       </section>
-    </>
+    </div>
   );
 }
