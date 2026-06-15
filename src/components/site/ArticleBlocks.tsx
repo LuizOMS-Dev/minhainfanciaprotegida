@@ -1,4 +1,23 @@
-import { Info, Lightbulb, BookOpenCheck, ListChecks, ShieldAlert, Phone, MapPin, ArrowRight, GraduationCap, Home as HomeIcon, Wifi, Library, AlertCircle, AlertTriangle, BadgeCheck, CheckCircle2, Eye, TrendingUp } from "lucide-react";
+import {
+  Info,
+  Lightbulb,
+  BookOpenCheck,
+  ListChecks,
+  ShieldAlert,
+  Phone,
+  MapPin,
+  ArrowRight,
+  GraduationCap,
+  Home as HomeIcon,
+  Wifi,
+  Library,
+  AlertCircle,
+  AlertTriangle,
+  BadgeCheck,
+  CheckCircle2,
+  Eye,
+  TrendingUp,
+} from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { SafeHtml } from "@/components/site/SafeHtml";
 import type { LawItem } from "@/content/laws";
@@ -37,8 +56,8 @@ export function LessonsBlock({ html }: { html: string | null | undefined }) {
       className="mt-12 rounded-3xl border border-border bg-card p-6 sm:p-8"
     >
       <h2 className="font-display text-2xl font-bold flex items-center gap-2 text-[color:var(--navy-deep)]">
-        <Lightbulb className="size-5 text-[color:var(--orange)]" aria-hidden />
-        O que aprendemos com este caso
+        <Lightbulb className="size-5 text-[color:var(--orange)]" aria-hidden />O que aprendemos com
+        este caso
       </h2>
       <SafeHtml
         html={html}
@@ -83,8 +102,8 @@ export function LegislationBlock({ items }: { items: LawItem[] }) {
       className="mt-12 rounded-3xl border border-border bg-card p-6 sm:p-8"
     >
       <h2 className="font-display text-2xl font-bold flex items-center gap-2 text-[color:var(--navy-deep)]">
-        <BookOpenCheck className="size-5 text-[color:var(--orange)]" aria-hidden />
-        O que diz a legislação
+        <BookOpenCheck className="size-5 text-[color:var(--orange)]" aria-hidden />O que diz a
+        legislação
       </h2>
       <p className="mt-1 text-sm text-muted-foreground">
         Marcos legais brasileiros que se aplicam diretamente a este tema.
@@ -101,9 +120,7 @@ export function LegislationBlock({ items }: { items: LawItem[] }) {
             <h3 className="mt-2 font-display text-sm font-semibold leading-snug text-[color:var(--navy-deep)]">
               {l.label}
             </h3>
-            <p className="mt-1.5 text-sm text-foreground/80 leading-relaxed">
-              {l.summary}
-            </p>
+            <p className="mt-1.5 text-sm text-foreground/80 leading-relaxed">{l.summary}</p>
             <a
               href={l.url}
               target="_blank"
@@ -136,7 +153,8 @@ export function SignalsBlock({ items }: { items: RiskItem[] }) {
         Sinais e situações associadas a este tema. Saiba mais em{" "}
         <Link to="/sinais" className="font-semibold text-[color:var(--red-inst)] hover:underline">
           /sinais
-        </Link>.
+        </Link>
+        .
       </p>
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         {items.map((r) => {
@@ -152,7 +170,10 @@ export function SignalsBlock({ items }: { items: RiskItem[] }) {
               <ul className="mt-2 space-y-1 text-sm text-foreground/80">
                 {r.signs.slice(0, 3).map((s, i) => (
                   <li key={i} className="flex gap-2">
-                    <span aria-hidden className="mt-2 size-1.5 shrink-0 rounded-full bg-[color:var(--orange)]" />
+                    <span
+                      aria-hidden
+                      className="mt-2 size-1.5 shrink-0 rounded-full bg-[color:var(--orange)]"
+                    />
                     <span className="leading-snug">{s}</span>
                   </li>
                 ))}
@@ -169,12 +190,41 @@ export function SignalsBlock({ items }: { items: RiskItem[] }) {
 
 export function ReportChannels() {
   const items = [
-    { label: "Disque 100", desc: "Denúncia anônima 24h — gratuito", href: "tel:100", icon: Phone, primary: true, badge: "24h" },
-    { label: "Emergência 190", desc: "Risco imediato — Polícia Militar", href: "tel:190", icon: AlertCircle, urgent: true, badge: "Urgente" },
-    { label: "Polícia Federal", desc: "Crimes online contra crianças", href: "https://www.gov.br/pf/pt-br/canais_atendimento/denuncie", icon: ShieldAlert },
-    { label: "SaferNet", desc: "Denúncia de conteúdo na internet", href: "https://new.safernet.org.br/denuncie", icon: ShieldAlert },
+    {
+      label: "Disque 100",
+      desc: "Denúncia anônima 24h — gratuito",
+      href: "tel:100",
+      icon: Phone,
+      primary: true,
+      badge: "24h",
+    },
+    {
+      label: "Emergência 190",
+      desc: "Risco imediato — Polícia Militar",
+      href: "tel:190",
+      icon: AlertCircle,
+      urgent: true,
+      badge: "Urgente",
+    },
+    {
+      label: "Polícia Federal",
+      desc: "Crimes online contra crianças",
+      href: "https://www.gov.br/pf/pt-br/canais_atendimento/denuncie",
+      icon: ShieldAlert,
+    },
+    {
+      label: "SaferNet",
+      desc: "Denúncia de conteúdo na internet",
+      href: "https://new.safernet.org.br/denuncie",
+      icon: ShieldAlert,
+    },
     { label: "Conselho Tutelar", desc: "Órgão local de proteção", href: "/mapa", icon: MapPin },
-    { label: "Ministério Público", desc: "Promotorias da Infância", href: "/mapa", icon: BookOpenCheck },
+    {
+      label: "Ministério Público",
+      desc: "Promotorias da Infância",
+      href: "/mapa",
+      icon: BookOpenCheck,
+    },
   ];
   const whatToInform = [
     "Nome e idade da criança ou adolescente (se souber)",
@@ -192,7 +242,10 @@ export function ReportChannels() {
       className="mt-12 overflow-hidden rounded-3xl bg-gradient-to-br from-[color:var(--navy-deep)] via-[color:var(--navy-deep)] to-[#0a1a2e] text-white shadow-2xl"
     >
       <div className="relative p-6 sm:p-8">
-        <div aria-hidden className="absolute -right-16 -top-16 size-64 rounded-full bg-[color:var(--orange)]/20 blur-3xl" />
+        <div
+          aria-hidden
+          className="absolute -right-16 -top-16 size-64 rounded-full bg-[color:var(--orange)]/20 blur-3xl"
+        />
         <div className="relative flex items-start gap-3">
           <div className="inline-flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[color:var(--orange)] text-[color:var(--navy-deep)] shadow-lg">
             <AlertCircle className="size-6" aria-hidden />
@@ -203,7 +256,9 @@ export function ReportChannels() {
             </span>
             <h2 className="mt-1 font-display text-2xl sm:text-3xl font-bold">Como denunciar</h2>
             <p className="mt-1.5 text-sm sm:text-base text-white/85 leading-relaxed">
-              Em <strong>risco imediato, ligue 190</strong>. Para denúncias, o <strong>Disque 100</strong> é gratuito, anônimo e funciona 24 horas, 7 dias por semana, em todo o Brasil.
+              Em <strong>risco imediato, ligue 190</strong>. Para denúncias, o{" "}
+              <strong>Disque 100</strong> é gratuito, anônimo e funciona 24 horas, 7 dias por
+              semana, em todo o Brasil.
             </p>
           </div>
         </div>
@@ -219,50 +274,85 @@ export function ReportChannels() {
                 ? "bg-[color:var(--red-inst)] text-white hover:brightness-110 shadow-lg"
                 : "bg-white/10 text-white hover:bg-white/15 backdrop-blur";
             const body = (
-              <div className={`group relative flex h-full items-start gap-3 rounded-2xl p-4 transition-all hover:-translate-y-0.5 ${tone}`}>
+              <div
+                className={`group relative flex h-full items-start gap-3 rounded-2xl p-4 transition-all hover:-translate-y-0.5 ${tone}`}
+              >
                 <Icon className="size-5 mt-0.5 shrink-0" aria-hidden />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-2">
                     <p className="font-display font-bold leading-tight">{it.label}</p>
                     {it.badge && (
-                      <span className={`text-[9px] font-bold uppercase tracking-wider rounded-full px-1.5 py-0.5 ${
-                        it.primary ? "bg-[color:var(--navy-deep)] text-[color:var(--orange)]" :
-                        it.urgent ? "bg-white text-[color:var(--red-inst)]" : "bg-white/20"
-                      }`}>{it.badge}</span>
+                      <span
+                        className={`text-[9px] font-bold uppercase tracking-wider rounded-full px-1.5 py-0.5 ${
+                          it.primary
+                            ? "bg-[color:var(--navy-deep)] text-[color:var(--orange)]"
+                            : it.urgent
+                              ? "bg-white text-[color:var(--red-inst)]"
+                              : "bg-white/20"
+                        }`}
+                      >
+                        {it.badge}
+                      </span>
                     )}
                   </div>
-                  <p className={`mt-0.5 text-xs leading-snug ${
-                    it.primary ? "text-[color:var(--navy-deep)]/80" :
-                    it.urgent ? "text-white/90" : "text-white/75"
-                  }`}>{it.desc}</p>
+                  <p
+                    className={`mt-0.5 text-xs leading-snug ${
+                      it.primary
+                        ? "text-[color:var(--navy-deep)]/80"
+                        : it.urgent
+                          ? "text-white/90"
+                          : "text-white/75"
+                    }`}
+                  >
+                    {it.desc}
+                  </p>
                 </div>
               </div>
             );
-            if (isExternal) return <a key={it.label} href={it.href} target="_blank" rel="noopener noreferrer">{body}</a>;
-            if (isTel) return <a key={it.label} href={it.href}>{body}</a>;
-            return <Link key={it.label} to={it.href as "/mapa"}>{body}</Link>;
+            if (isExternal)
+              return (
+                <a key={it.label} href={it.href} target="_blank" rel="noopener noreferrer">
+                  {body}
+                </a>
+              );
+            if (isTel)
+              return (
+                <a key={it.label} href={it.href}>
+                  {body}
+                </a>
+              );
+            return (
+              <Link key={it.label} to={it.href as "/mapa"}>
+                {body}
+              </Link>
+            );
           })}
         </div>
       </div>
 
       <div className="border-t border-white/10 bg-black/20 backdrop-blur p-6 sm:p-8">
         <h3 className="font-display text-lg font-bold flex items-center gap-2">
-          <ListChecks className="size-5 text-[color:var(--orange)]" aria-hidden />
-          O que informar na denúncia
+          <ListChecks className="size-5 text-[color:var(--orange)]" aria-hidden />O que informar na
+          denúncia
         </h3>
         <p className="mt-1 text-xs text-white/70">
-          Você não precisa ter todos os dados. Informe o que souber — o atendimento orienta o restante.
+          Você não precisa ter todos os dados. Informe o que souber — o atendimento orienta o
+          restante.
         </p>
         <ul className="mt-4 grid gap-2 sm:grid-cols-2">
           {whatToInform.map((t, i) => (
             <li key={i} className="flex items-start gap-2.5 text-sm text-white/90">
-              <CheckCircle2 className="size-4 mt-0.5 shrink-0 text-[color:var(--orange)]" aria-hidden />
+              <CheckCircle2
+                className="size-4 mt-0.5 shrink-0 text-[color:var(--orange)]"
+                aria-hidden
+              />
               <span className="leading-snug">{t}</span>
             </li>
           ))}
         </ul>
         <p className="mt-5 text-[11px] text-white/60 leading-relaxed">
-          A denúncia pode ser <strong className="text-white/85">anônima</strong>. Manter o sigilo é direito do denunciante e está previsto em lei.
+          A denúncia pode ser <strong className="text-white/85">anônima</strong>. Manter o sigilo é
+          direito do denunciante e está previsto em lei.
         </p>
       </div>
     </section>
@@ -274,10 +364,7 @@ export function ReportChannels() {
 export function RelatedMaterials({ items }: { items: LibraryItem[] }) {
   if (!items.length) return null;
   return (
-    <section
-      aria-label="Materiais relacionados na biblioteca"
-      className="mt-12"
-    >
+    <section aria-label="Materiais relacionados na biblioteca" className="mt-12">
       <h2 className="font-display text-2xl font-bold flex items-center gap-2 text-[color:var(--navy-deep)]">
         <Library className="size-5 text-[color:var(--orange)]" aria-hidden />
         Materiais relacionados
@@ -309,7 +396,10 @@ export function RelatedMaterials({ items }: { items: LibraryItem[] }) {
 
 /* ─────────────────── FAQ ─────────────────── */
 
-export interface FaqQA { q: string; a: string }
+export interface FaqQA {
+  q: string;
+  a: string;
+}
 
 export function FaqBlock({ items }: { items: FaqQA[] }) {
   if (!items?.length) return null;
@@ -364,7 +454,11 @@ export function RecommendedReading({
   library?: LibraryItem[];
 }) {
   const hasAny =
-    (parents?.length ?? 0) + (schools?.length ?? 0) + (risks?.length ?? 0) + (library?.length ?? 0) > 0;
+    (parents?.length ?? 0) +
+      (schools?.length ?? 0) +
+      (risks?.length ?? 0) +
+      (library?.length ?? 0) >
+    0;
   if (!hasAny) return null;
 
   return (
@@ -374,13 +468,34 @@ export function RecommendedReading({
       </h2>
       <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {parents?.slice(0, 1).map((p) => (
-          <RecCard key={`p-${p.id}`} icon={HomeIcon} tag="Para Pais" title={p.title} href="/pais" desc={p.subtitle} />
+          <RecCard
+            key={`p-${p.id}`}
+            icon={HomeIcon}
+            tag="Para Pais"
+            title={p.title}
+            href="/pais"
+            desc={p.subtitle}
+          />
         ))}
         {schools?.slice(0, 1).map((s) => (
-          <RecCard key={`s-${s.id}`} icon={GraduationCap} tag="Para Escolas" title={s.title} href="/escolas" desc={s.subtitle} />
+          <RecCard
+            key={`s-${s.id}`}
+            icon={GraduationCap}
+            tag="Para Escolas"
+            title={s.title}
+            href="/escolas"
+            desc={s.subtitle}
+          />
         ))}
         {risks?.slice(0, 1).map((r) => (
-          <RecCard key={`r-${r.slug}`} icon={Wifi} tag="Riscos Online" title={r.title} href="/riscos-online" desc={r.summary} />
+          <RecCard
+            key={`r-${r.slug}`}
+            icon={Wifi}
+            tag="Riscos Online"
+            title={r.title}
+            href="/riscos-online"
+            desc={r.summary}
+          />
         ))}
         {library?.slice(0, 1).map((it) => (
           <RecCard
@@ -445,8 +560,8 @@ export function AnonymizedNotice() {
         Identidades preservadas.
       </strong>{" "}
       Vítimas nunca são identificadas. Quando há registro público (mídia nacional ou processo
-      transitado em julgado), nomes podem aparecer apenas em fontes externas linkadas — nunca
-      em destaque editorial.
+      transitado em julgado), nomes podem aparecer apenas em fontes externas linkadas — nunca em
+      destaque editorial.
     </aside>
   );
 }
@@ -474,9 +589,18 @@ export function SeverityBadge({ level }: { level?: string | null }) {
 }
 
 const CONFIDENCE_LABELS: Record<string, { label: string; tone: string }> = {
-  alta: { label: "Fontes de alta confiabilidade", tone: "bg-[color:var(--navy-deep)] text-white border-[color:var(--navy-deep)]" },
-  media: { label: "Fontes de média confiabilidade", tone: "bg-card text-[color:var(--navy-deep)] border-border" },
-  baixa: { label: "Fontes de baixa confiabilidade", tone: "bg-muted text-foreground/80 border-border" },
+  alta: {
+    label: "Fontes de alta confiabilidade",
+    tone: "bg-[color:var(--navy-deep)] text-white border-[color:var(--navy-deep)]",
+  },
+  media: {
+    label: "Fontes de média confiabilidade",
+    tone: "bg-card text-[color:var(--navy-deep)] border-border",
+  },
+  baixa: {
+    label: "Fontes de baixa confiabilidade",
+    tone: "bg-muted text-foreground/80 border-border",
+  },
 };
 
 export function ConfidenceBadge({ level }: { level?: string | null }) {
@@ -502,18 +626,14 @@ export function ActionStepsBlock({ items }: { items?: string[] | null }) {
       className="mt-12 rounded-3xl border border-[color:var(--orange)]/30 bg-[color:var(--orange-soft)]/40 p-6 sm:p-8"
     >
       <h2 className="font-display text-2xl font-bold flex items-center gap-2 text-[color:var(--navy-deep)]">
-        <CheckCircle2 className="size-5 text-[color:var(--orange)]" aria-hidden />
-        O que fazer agora
+        <CheckCircle2 className="size-5 text-[color:var(--orange)]" aria-hidden />O que fazer agora
       </h2>
       <p className="mt-1 text-sm text-muted-foreground">
         Passos práticos de prevenção, proteção e denúncia.
       </p>
       <ol className="mt-5 grid gap-3 sm:grid-cols-2">
         {items.map((step, i) => (
-          <li
-            key={i}
-            className="flex gap-3 rounded-2xl border border-border bg-background p-4"
-          >
+          <li key={i} className="flex gap-3 rounded-2xl border border-border bg-background p-4">
             <span
               aria-hidden
               className="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-[color:var(--navy-deep)] text-white text-xs font-bold"
@@ -606,8 +726,16 @@ export function VerificationLine({
   if (!pub && !ver && !confidence) return null;
   return (
     <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
-      {pub && <span>Publicado em <strong className="text-foreground">{pub}</strong></span>}
-      {ver && <span>Verificado em <strong className="text-foreground">{ver}</strong></span>}
+      {pub && (
+        <span>
+          Publicado em <strong className="text-foreground">{pub}</strong>
+        </span>
+      )}
+      {ver && (
+        <span>
+          Verificado em <strong className="text-foreground">{ver}</strong>
+        </span>
+      )}
       <ConfidenceBadge level={confidence} />
     </div>
   );

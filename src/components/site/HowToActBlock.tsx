@@ -1,5 +1,12 @@
 import { Link } from "@tanstack/react-router";
-import { Phone, MapPin, HeartHandshake, NotebookPen, AlertTriangle, ArrowRight } from "lucide-react";
+import {
+  Phone,
+  MapPin,
+  HeartHandshake,
+  NotebookPen,
+  AlertTriangle,
+  ArrowRight,
+} from "lucide-react";
 
 interface Step {
   step?: number;

@@ -1,5 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Building2, ExternalLink, Globe, MessageCircle, Phone, Shield, ShieldAlert, Siren } from "lucide-react";
+import {
+  Building2,
+  ExternalLink,
+  Globe,
+  MessageCircle,
+  Phone,
+  Shield,
+  ShieldAlert,
+  Siren,
+} from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { useState } from "react";
@@ -14,7 +23,10 @@ export const Route = createFileRoute("/denuncia")({
           "Disque 100, Polícia Militar 190, Polícia Civil 197, SAMU 192, Conselho Tutelar e Ministério Público. Telefones reais que abrem o discador no celular.",
       },
       { property: "og:title", content: "Canais Oficiais de Denúncia" },
-      { property: "og:description", content: "Disque 100, 190, 192, Conselho Tutelar, MP. Ligue agora." },
+      {
+        property: "og:description",
+        content: "Disque 100, 190, 192, Conselho Tutelar, MP. Ligue agora.",
+      },
       { property: "og:url", content: "https://minhainfanciaprotegida.com.br/denuncia" },
     ],
     links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/denuncia" }],
@@ -158,8 +170,12 @@ function Page() {
                     className="group block h-full rounded-3xl overflow-hidden border border-border bg-card hover-lift"
                     aria-label={`Ligar para ${p.name} no número ${p.number}`}
                   >
-                    <div className={`p-6 bg-gradient-to-br ${accents[p.accent]} flex items-end justify-between`}>
-                      <span className="font-display text-6xl font-semibold leading-none">{p.number}</span>
+                    <div
+                      className={`p-6 bg-gradient-to-br ${accents[p.accent]} flex items-end justify-between`}
+                    >
+                      <span className="font-display text-6xl font-semibold leading-none">
+                        {p.number}
+                      </span>
                       <Phone className="size-7 opacity-80 group-hover:translate-x-1 transition" />
                     </div>
                     <div className="p-6">
@@ -218,7 +234,9 @@ function Page() {
                   </span>
                   <div>
                     <h3 className="font-display text-xl font-semibold">{inst.name}</h3>
-                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{inst.desc}</p>
+                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                      {inst.desc}
+                    </p>
                     <a
                       href={inst.url}
                       target="_blank"
@@ -239,7 +257,9 @@ function Page() {
       <section className="py-16 bg-[color:var(--navy-deep)] text-white">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <Reveal>
-            <h2 className="font-display text-2xl sm:text-3xl font-semibold">Conselho Tutelar do seu município</h2>
+            <h2 className="font-display text-2xl sm:text-3xl font-semibold">
+              Conselho Tutelar do seu município
+            </h2>
             <p className="mt-3 text-white/80">
               Digite sua cidade ou estado para localizar o Conselho Tutelar mais próximo no portal
               oficial do Ministério dos Direitos Humanos.

@@ -1,8 +1,24 @@
-import { CalendarDays, Calendar, FileText, RefreshCw, BadgeCheck, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  CalendarDays,
+  Calendar,
+  FileText,
+  RefreshCw,
+  BadgeCheck,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-const fmtFull = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
-const fmtShort = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short", year: "numeric" });
+const fmtFull = new Intl.DateTimeFormat("pt-BR", {
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+});
+const fmtShort = new Intl.DateTimeFormat("pt-BR", {
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
+});
 
 function safeFormat(input: string, short = false): string {
   if (/^\d{4}$/.test(input)) return input;
@@ -25,12 +41,45 @@ export interface TimelineItem {
   kind?: TimelineKind;
 }
 
-const KIND_STYLES: Record<TimelineKind, { label: string; icon: typeof Calendar; dot: string; ring: string; chip: string }> = {
-  event:     { label: "Acontecimento",        icon: Calendar,    dot: "bg-[color:var(--red-inst)]",    ring: "ring-[color:var(--red-inst)]/30",    chip: "bg-[color:var(--red-inst)]/10 text-[color:var(--red-inst)]" },
-  publish:   { label: "Publicação",          icon: FileText,    dot: "bg-[color:var(--orange)]",      ring: "ring-[color:var(--orange)]/30",      chip: "bg-[color:var(--orange)]/15 text-[color:var(--navy-deep)]" },
-  update:    { label: "Atualização",         icon: RefreshCw,   dot: "bg-[color:var(--navy-deep)]",   ring: "ring-[color:var(--navy-deep)]/20",   chip: "bg-[color:var(--navy-deep)]/10 text-[color:var(--navy-deep)]" },
-  verify:    { label: "Verificação editorial", icon: BadgeCheck,  dot: "bg-emerald-600",                ring: "ring-emerald-600/25",                chip: "bg-emerald-100 text-emerald-900" },
-  milestone: { label: "Marco",                 icon: CalendarDays, dot: "bg-[color:var(--orange)]",      ring: "ring-[color:var(--orange)]/30",      chip: "bg-[color:var(--orange)]/15 text-[color:var(--navy-deep)]" },
+const KIND_STYLES: Record<
+  TimelineKind,
+  { label: string; icon: typeof Calendar; dot: string; ring: string; chip: string }
+> = {
+  event: {
+    label: "Acontecimento",
+    icon: Calendar,
+    dot: "bg-[color:var(--red-inst)]",
+    ring: "ring-[color:var(--red-inst)]/30",
+    chip: "bg-[color:var(--red-inst)]/10 text-[color:var(--red-inst)]",
+  },
+  publish: {
+    label: "Publicação",
+    icon: FileText,
+    dot: "bg-[color:var(--orange)]",
+    ring: "ring-[color:var(--orange)]/30",
+    chip: "bg-[color:var(--orange)]/15 text-[color:var(--navy-deep)]",
+  },
+  update: {
+    label: "Atualização",
+    icon: RefreshCw,
+    dot: "bg-[color:var(--navy-deep)]",
+    ring: "ring-[color:var(--navy-deep)]/20",
+    chip: "bg-[color:var(--navy-deep)]/10 text-[color:var(--navy-deep)]",
+  },
+  verify: {
+    label: "Verificação editorial",
+    icon: BadgeCheck,
+    dot: "bg-emerald-600",
+    ring: "ring-emerald-600/25",
+    chip: "bg-emerald-100 text-emerald-900",
+  },
+  milestone: {
+    label: "Marco",
+    icon: CalendarDays,
+    dot: "bg-[color:var(--orange)]",
+    ring: "ring-[color:var(--orange)]/30",
+    chip: "bg-[color:var(--orange)]/15 text-[color:var(--navy-deep)]",
+  },
 };
 
 function toTs(s: string): number {
@@ -50,13 +99,32 @@ export function Timeline({
   meta?: { publishAt?: string | null; updatedAt?: string | null; verifiedAt?: string | null };
 }) {
   const merged = useMemo<TimelineItem[]>(() => {
-    const base: TimelineItem[] = (items ?? []).map((it) => ({ ...it, kind: it.kind ?? "milestone" }));
-    if (meta?.publishAt) base.push({ date: meta.publishAt, title: "Publicação original", text: "Conteúdo publicado no Infância Protegida.", kind: "publish" });
-    if (meta?.updatedAt && meta.updatedAt !== meta?.publishAt) base.push({ date: meta.updatedAt, title: "Última atualização", text: "Revisão editorial mais recente do conteúdo.", kind: "update" });
-    if (meta?.verifiedAt) base.push({ date: meta.verifiedAt, title: "Verificação editorial", text: "Fontes oficiais reconferidas pela equipe.", kind: "verify" });
-    return base
-      .filter((x) => toTs(x.date) > 0)
-      .sort((a, b) => toTs(a.date) - toTs(b.date));
+    const base: TimelineItem[] = (items ?? []).map((it) => ({
+      ...it,
+      kind: it.kind ?? "milestone",
+    }));
+    if (meta?.publishAt)
+      base.push({
+        date: meta.publishAt,
+        title: "Publicação original",
+        text: "Conteúdo publicado no Infância Protegida.",
+        kind: "publish",
+      });
+    if (meta?.updatedAt && meta.updatedAt !== meta?.publishAt)
+      base.push({
+        date: meta.updatedAt,
+        title: "Última atualização",
+        text: "Revisão editorial mais recente do conteúdo.",
+        kind: "update",
+      });
+    if (meta?.verifiedAt)
+      base.push({
+        date: meta.verifiedAt,
+        title: "Verificação editorial",
+        text: "Fontes oficiais reconferidas pela equipe.",
+        kind: "verify",
+      });
+    return base.filter((x) => toTs(x.date) > 0).sort((a, b) => toTs(a.date) - toTs(b.date));
   }, [items, meta?.publishAt, meta?.updatedAt, meta?.verifiedAt]);
 
   const [active, setActive] = useState(0);
@@ -76,7 +144,7 @@ export function Timeline({
           if (!Number.isNaN(idx)) setActive(idx);
         }
       },
-      { root, threshold: [0.4, 0.7, 1], rootMargin: "0px -25% 0px -25%" }
+      { root, threshold: [0.4, 0.7, 1], rootMargin: "0px -25% 0px -25%" },
     );
     cardRefs.current.forEach((el) => el && obs.observe(el));
     return () => obs.disconnect();
@@ -139,7 +207,9 @@ export function Timeline({
       </div>
       <div className="mt-2 flex justify-between text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
         <span>{safeFormat(merged[0].date, true)}</span>
-        <span>{active + 1} / {merged.length}</span>
+        <span>
+          {active + 1} / {merged.length}
+        </span>
         <span>{safeFormat(merged[merged.length - 1].date, true)}</span>
       </div>
 
@@ -156,7 +226,9 @@ export function Timeline({
             <li
               key={i}
               data-idx={i}
-              ref={(el) => { cardRefs.current[i] = el; }}
+              ref={(el) => {
+                cardRefs.current[i] = el;
+              }}
               className="snap-center shrink-0 w-[85%] sm:w-[60%] md:w-[44%] lg:w-[34%]"
             >
               <button
@@ -170,10 +242,14 @@ export function Timeline({
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  <span className={`inline-flex size-8 items-center justify-center rounded-full text-white shadow-sm ${k.dot}`}>
+                  <span
+                    className={`inline-flex size-8 items-center justify-center rounded-full text-white shadow-sm ${k.dot}`}
+                  >
                     <Icon className="size-4" aria-hidden />
                   </span>
-                  <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${k.chip}`}>
+                  <span
+                    className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${k.chip}`}
+                  >
                     {k.label}
                   </span>
                 </div>

@@ -1,4 +1,12 @@
-import { AlertTriangle, Camera, Gamepad2, MessageSquareWarning, ShieldAlert, Sparkles, Users } from "lucide-react";
+import {
+  AlertTriangle,
+  Camera,
+  Gamepad2,
+  MessageSquareWarning,
+  ShieldAlert,
+  Sparkles,
+  Users,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 export interface RiskItem {
@@ -31,8 +39,8 @@ export const risks: RiskItem[] = [
       "Use o canal da SaferNet para conteúdos online",
     ],
     legalBase:
-      "Lei nº 15.211/2025 (ECA Digital / \"Lei Felca\") + ECA, art. 240 e 241 (produção e divulgação de material sexualizado).",
-    example: "Caso Felca (2025) — vídeo \"Adultização\" provocou a sanção do ECA Digital.",
+      'Lei nº 15.211/2025 (ECA Digital / "Lei Felca") + ECA, art. 240 e 241 (produção e divulgação de material sexualizado).',
+    example: 'Caso Felca (2025) — vídeo "Adultização" provocou a sanção do ECA Digital.',
     source: {
       name: "Agência Câmara",
       url: "https://www.camara.leg.br/noticias/1099083-camara-aprova-projeto-que-protege-criancas-e-adolescentes-em-ambientes-digitais",
@@ -55,7 +63,8 @@ export const risks: RiskItem[] = [
       "Denuncie à SaferNet (canal Helpline) e à Polícia Civil",
     ],
     legalBase: "ECA, art. 241-D — aliciar criança para fim libidinoso. Pena de 1 a 3 anos.",
-    example: "Casos noticiados em 2025 envolvendo aliciamento de adolescentes por meio de comunidades de jogo.",
+    example:
+      "Casos noticiados em 2025 envolvendo aliciamento de adolescentes por meio de comunidades de jogo.",
     source: {
       name: "SaferNet Brasil",
       url: "https://new.safernet.org.br/",
@@ -70,7 +79,7 @@ export const risks: RiskItem[] = [
     signs: [
       "Adolescente ansioso, evitando o celular",
       "Pedidos de dinheiro ou compras inesperadas",
-      "Comentários sobre \"alguém que está ameaçando\"",
+      'Comentários sobre "alguém que está ameaçando"',
     ],
     howToAct: [
       "Não pague e não envie novas imagens",
@@ -92,7 +101,7 @@ export const risks: RiskItem[] = [
       "Material de abuso sexual infantil (CSAM) e imagens falsas geradas por IA que sexualizam crianças reais, mesmo sem contato físico.",
     signs: [
       "Imagens de crianças manipuladas circulando em grupos",
-      "Bots ou contas oferecendo \"pacotes\" de conteúdo",
+      'Bots ou contas oferecendo "pacotes" de conteúdo',
       "Comunidades fechadas em apps de mensagens",
     ],
     howToAct: [

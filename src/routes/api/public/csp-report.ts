@@ -13,8 +13,7 @@ export const Route = createFileRoute("/api/public/csp-report")({
             /* keep as text */
           }
           // Normalise both legacy ("csp-report") and Reporting-API formats.
-          const report =
-            (payload as { "csp-report"?: unknown })?.["csp-report"] ?? payload;
+          const report = (payload as { "csp-report"?: unknown })?.["csp-report"] ?? payload;
           const { logAudit } = await import("@/lib/audit.server");
           await logAudit({
             action: "csp_violation",

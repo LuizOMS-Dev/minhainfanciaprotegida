@@ -28,8 +28,22 @@ export const Route = createFileRoute("/biblioteca")({
   component: Page,
 });
 
-const CATEGORIES = ["Todas", "Cartilha", "Guia", "Pesquisa", "Estudo", "Material educativo"] as const;
-const AUDIENCES = ["Todos", "Famílias", "Educadores", "Profissionais", "Adolescentes", "Geral"] as const;
+const CATEGORIES = [
+  "Todas",
+  "Cartilha",
+  "Guia",
+  "Pesquisa",
+  "Estudo",
+  "Material educativo",
+] as const;
+const AUDIENCES = [
+  "Todos",
+  "Famílias",
+  "Educadores",
+  "Profissionais",
+  "Adolescentes",
+  "Geral",
+] as const;
 
 function Page() {
   const [q, setQ] = useState("");
@@ -61,7 +75,10 @@ function Page() {
       <section className="py-12 bg-background border-b border-border">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid gap-3 md:grid-cols-[1fr_auto_auto]">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" aria-hidden />
+            <Search
+              className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground"
+              aria-hidden
+            />
             <input
               type="search"
               value={q}
@@ -73,25 +90,33 @@ function Page() {
           </div>
           <div className="flex items-center gap-2 rounded-full bg-card border border-border px-4 py-2">
             <Filter className="size-4 text-muted-foreground" aria-hidden />
-            <label className="sr-only" htmlFor="cat">Categoria</label>
+            <label className="sr-only" htmlFor="cat">
+              Categoria
+            </label>
             <select
               id="cat"
               value={cat}
               onChange={(e) => setCat(e.target.value as (typeof CATEGORIES)[number])}
               className="bg-transparent text-sm focus:outline-none"
             >
-              {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+              {CATEGORIES.map((c) => (
+                <option key={c}>{c}</option>
+              ))}
             </select>
           </div>
           <div className="flex items-center gap-2 rounded-full bg-card border border-border px-4 py-2">
-            <label className="sr-only" htmlFor="aud">Público</label>
+            <label className="sr-only" htmlFor="aud">
+              Público
+            </label>
             <select
               id="aud"
               value={aud}
               onChange={(e) => setAud(e.target.value as (typeof AUDIENCES)[number])}
               className="bg-transparent text-sm focus:outline-none"
             >
-              {AUDIENCES.map((a) => <option key={a}>{a}</option>)}
+              {AUDIENCES.map((a) => (
+                <option key={a}>{a}</option>
+              ))}
             </select>
           </div>
         </div>
@@ -118,10 +143,14 @@ function Page() {
                   >
                     {i.title}
                   </Link>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-1">{i.description}</p>
+                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed flex-1">
+                    {i.description}
+                  </p>
                   <div className="mt-4 pt-4 border-t border-border flex items-center justify-between gap-2">
                     <span className="text-xs text-muted-foreground min-w-0">
-                      <span className="font-semibold text-foreground block truncate">{i.sourceOrg}</span>
+                      <span className="font-semibold text-foreground block truncate">
+                        {i.sourceOrg}
+                      </span>
                       Público: {i.audience}
                     </span>
                     <div className="flex items-center gap-1.5 shrink-0">
@@ -149,7 +178,9 @@ function Page() {
           </div>
 
           {list.length === 0 && (
-            <p className="text-center text-muted-foreground py-16">Nenhum material encontrado com esses filtros.</p>
+            <p className="text-center text-muted-foreground py-16">
+              Nenhum material encontrado com esses filtros.
+            </p>
           )}
         </div>
       </section>
@@ -157,11 +188,23 @@ function Page() {
       <section className="pb-24 bg-background">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <ReferencesBlock
-            primary={{ label: "Centrais de conteúdo oficiais — MDHC, UNICEF, SaferNet, Childhood, MPF", url: "https://www.gov.br/mdh/pt-br/centrais-de-conteudo" }}
+            primary={{
+              label: "Centrais de conteúdo oficiais — MDHC, UNICEF, SaferNet, Childhood, MPF",
+              url: "https://www.gov.br/mdh/pt-br/centrais-de-conteudo",
+            }}
             secondary={[
-              { label: "SaferNet Brasil — Biblioteca", url: "https://new.safernet.org.br/biblioteca" },
-              { label: "UNICEF Brasil — Publicações", url: "https://www.unicef.org/brazil/relatorios" },
-              { label: "Childhood Brasil — Publicações", url: "https://www.childhood.org.br/publicacao" },
+              {
+                label: "SaferNet Brasil — Biblioteca",
+                url: "https://new.safernet.org.br/biblioteca",
+              },
+              {
+                label: "UNICEF Brasil — Publicações",
+                url: "https://www.unicef.org/brazil/relatorios",
+              },
+              {
+                label: "Childhood Brasil — Publicações",
+                url: "https://www.childhood.org.br/publicacao",
+              },
             ]}
             lastVerified="2025-11-15"
           />

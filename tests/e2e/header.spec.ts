@@ -30,10 +30,7 @@ test.describe("SiteHeader — mobile/tablet", () => {
     expect(Math.round(scrolledBox!.height)).toBe(Math.round(initialBox!.height));
   });
 
-  test("botão de busca está acessível e abre o diálogo de busca", async ({
-    page,
-    isMobile,
-  }) => {
+  test("botão de busca está acessível e abre o diálogo de busca", async ({ page, isMobile }) => {
     // Em telas menores existe um botão somente-ícone com aria-label "Abrir busca"
     const searchBtn = isMobile
       ? page.getByRole("button", { name: /abrir busca/i }).first()
@@ -74,12 +71,8 @@ test.describe("SiteHeader — mobile/tablet", () => {
 
     const mobileNav = page.locator("#mobile-nav");
     await expect(mobileNav).toBeVisible();
-    await expect(
-      mobileNav.getByRole("link", { name: /início/i }),
-    ).toBeVisible();
-    await expect(
-      mobileNav.getByRole("link", { name: /denunciar agora/i }),
-    ).toBeVisible();
+    await expect(mobileNav.getByRole("link", { name: /início/i })).toBeVisible();
+    await expect(mobileNav.getByRole("link", { name: /denunciar agora/i })).toBeVisible();
 
     // Escape fecha o menu
     await page.keyboard.press("Escape");
@@ -87,14 +80,9 @@ test.describe("SiteHeader — mobile/tablet", () => {
     await expect(mobileNav).toBeHidden();
   });
 
-  test("botão Denuncie aparece de acordo com o breakpoint", async ({
-    page,
-    viewport,
-  }) => {
+  test("botão Denuncie aparece de acordo com o breakpoint", async ({ page, viewport }) => {
     const width = viewport?.width ?? 0;
-    const denuncieDesktop = page
-      .locator("header")
-      .getByRole("link", { name: /denuncie agora/i });
+    const denuncieDesktop = page.locator("header").getByRole("link", { name: /denuncie agora/i });
 
     if (width >= 768) {
       await expect(denuncieDesktop).toBeVisible();
@@ -102,20 +90,14 @@ test.describe("SiteHeader — mobile/tablet", () => {
     } else {
       // Em telas pequenas o CTA fica dentro do menu mobile
       await expect(denuncieDesktop).toBeHidden();
-      await page
-        .getByRole("button", { name: /abrir menu de navegação/i })
-        .click();
-      const cta = page
-        .locator("#mobile-nav")
-        .getByRole("link", { name: /denunciar agora/i });
+      await page.getByRole("button", { name: /abrir menu de navegação/i }).click();
+      const cta = page.locator("#mobile-nav").getByRole("link", { name: /denunciar agora/i });
       await expect(cta).toBeVisible();
       await expect(cta).toHaveAttribute("href", "/denuncia");
     }
   });
 
-  test("faixa permanente do Disque 100 está visível e clicável", async ({
-    page,
-  }) => {
+  test("faixa permanente do Disque 100 está visível e clicável", async ({ page }) => {
     const tel = page.getByRole("link", { name: /disque 100/i }).first();
     await expect(tel).toBeVisible();
     await expect(tel).toHaveAttribute("href", "tel:100");

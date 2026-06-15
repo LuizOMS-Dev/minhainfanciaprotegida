@@ -188,12 +188,18 @@ function UsersPage() {
           </thead>
           <tbody>
             {q.isLoading && (
-              <tr><td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">Carregando…</td></tr>
+              <tr>
+                <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
+                  Carregando…
+                </td>
+              </tr>
             )}
             {!q.isLoading && users.length === 0 && (
-              <tr><td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
-                Nenhum usuário cadastrado.
-              </td></tr>
+              <tr>
+                <td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">
+                  Nenhum usuário cadastrado.
+                </td>
+              </tr>
             )}
             {users.map((u) => (
               <tr key={u.user_id} className="border-t border-border align-top">
@@ -205,7 +211,10 @@ function UsersPage() {
                   ) : (
                     <div className="flex flex-wrap gap-1.5">
                       {u.roles.map((r) => (
-                        <span key={r} className="inline-flex items-center rounded-full bg-[color:var(--orange)]/15 text-[color:var(--navy-deep)] px-2.5 py-0.5 text-[11px] font-semibold uppercase">
+                        <span
+                          key={r}
+                          className="inline-flex items-center rounded-full bg-[color:var(--orange)]/15 text-[color:var(--navy-deep)] px-2.5 py-0.5 text-[11px] font-semibold uppercase"
+                        >
                           {r}
                         </span>
                       ))}
@@ -222,7 +231,11 @@ function UsersPage() {
                           disabled={assignMut.isPending}
                           onClick={() => {
                             setError(null);
-                            assignMut.mutate({ user_id: u.user_id, role: r, action: has ? "remove" : "add" });
+                            assignMut.mutate({
+                              user_id: u.user_id,
+                              role: r,
+                              action: has ? "remove" : "add",
+                            });
                           }}
                           className={`rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wider transition-colors disabled:opacity-60 ${
                             has

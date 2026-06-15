@@ -71,7 +71,9 @@ export function CaseCard({
             </span>
           )}
           {sev && (
-            <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] ${sev.chip}`}>
+            <span
+              className={`inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] ${sev.chip}`}
+            >
               {sev.label}
             </span>
           )}
@@ -101,14 +103,20 @@ export function CaseCard({
 
         <h3 className="font-display text-lg sm:text-xl font-semibold leading-snug text-[color:var(--navy-deep)] group-hover:text-[color:var(--red-inst)] transition-colors text-balance">
           {title}
-          <ArrowUpRight className="ml-1 inline-block size-4 align-text-top opacity-60 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
+          <ArrowUpRight
+            className="ml-1 inline-block size-4 align-text-top opacity-60 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            aria-hidden
+          />
         </h3>
 
-        <p className="text-sm leading-relaxed text-[color:var(--dossier-ink)]/80 line-clamp-3">{excerpt}</p>
+        <p className="text-sm leading-relaxed text-[color:var(--dossier-ink)]/80 line-clamp-3">
+          {excerpt}
+        </p>
 
         {source?.name && (
           <p className="mt-auto pt-3 border-t border-[color:var(--dossier-rule)] text-[11px] text-[color:var(--navy-deep)]/60">
-            Fonte primária: <span className="font-semibold text-[color:var(--navy-deep)]">{source.name}</span>
+            Fonte primária:{" "}
+            <span className="font-semibold text-[color:var(--navy-deep)]">{source.name}</span>
           </p>
         )}
       </div>

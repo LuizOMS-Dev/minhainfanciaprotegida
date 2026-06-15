@@ -38,10 +38,11 @@ export const getRecoveryCodesStatus = createServerFn({ method: "GET" })
     if (error) throw new Error(error.message);
     const total = data?.length ?? 0;
     const used = (data ?? []).filter((r) => r.used_at !== null).length;
-    const generatedAt = (data ?? [])
-      .map((r) => r.created_at)
-      .sort()
-      .pop() ?? null;
+    const generatedAt =
+      (data ?? [])
+        .map((r) => r.created_at)
+        .sort()
+        .pop() ?? null;
     return { total, remaining: total - used, used, generatedAt };
   });
 
@@ -61,10 +62,7 @@ export const generateRecoveryCodes = createServerFn({ method: "POST" })
 
     // invalidate existing codes
     if (isRegenerate) {
-      await supabaseAdmin
-        .from("mfa_recovery_codes")
-        .delete()
-        .eq("user_id", context.userId);
+      await supabaseAdmin.from("mfa_recovery_codes").delete().eq("user_id", context.userId);
     }
 
     const plain: string[] = [];

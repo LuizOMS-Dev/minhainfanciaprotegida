@@ -65,8 +65,7 @@ export const Route = createFileRoute("/metodologia")({
       },
       {
         name: "twitter:description",
-        content:
-          "Fontes oficiais, verificação cruzada, linguagem protetiva e revisão periódica.",
+        content: "Fontes oficiais, verificação cruzada, linguagem protetiva e revisão periódica.",
       },
       { name: "twitter:image", content: heroImg },
     ],
@@ -329,16 +328,14 @@ function Page() {
               title="Conteúdo confiável, baseado em fontes oficiais"
             />
             <p className="text-[16px] leading-relaxed text-foreground/85">
-              Todo o conteúdo do <strong>Infância Protegida</strong> é
-              desenvolvido com base em fontes oficiais, legislação brasileira,
-              materiais educacionais reconhecidos e organizações especializadas
-              na defesa dos direitos da criança e do adolescente.
+              Todo o conteúdo do <strong>Infância Protegida</strong> é desenvolvido com base em
+              fontes oficiais, legislação brasileira, materiais educacionais reconhecidos e
+              organizações especializadas na defesa dos direitos da criança e do adolescente.
             </p>
             <p className="mt-4 text-[16px] leading-relaxed text-foreground/85">
-              O portal <strong>não produz opiniões</strong>: nosso trabalho é
-              organizar, verificar e traduzir informações confiáveis para
-              facilitar o acesso da população — de famílias e educadores a
-              profissionais da rede de proteção.
+              O portal <strong>não produz opiniões</strong>: nosso trabalho é organizar, verificar e
+              traduzir informações confiáveis para facilitar o acesso da população — de famílias e
+              educadores a profissionais da rede de proteção.
             </p>
           </section>
         </Reveal>
@@ -366,12 +363,8 @@ function Page() {
                     </span>
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-display text-lg font-semibold text-foreground">
-                      {title}
-                    </h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                      {text}
-                    </p>
+                    <h3 className="font-display text-lg font-semibold text-foreground">{title}</h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{text}</p>
                   </div>
                 </li>
               ))}
@@ -399,9 +392,7 @@ function Page() {
                   <h3 className="mt-3 font-display text-lg font-semibold text-foreground">
                     {title}
                   </h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                    {text}
-                  </p>
+                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{text}</p>
                 </article>
               ))}
             </div>
@@ -411,15 +402,11 @@ function Page() {
         {/* Fontes utilizadas */}
         <Reveal delay={180}>
           <section>
-            <SectionHeading
-              icon={Library}
-              eyebrow="Referências"
-              title="Fontes utilizadas"
-            />
+            <SectionHeading icon={Library} eyebrow="Referências" title="Fontes utilizadas" />
             <p className="mb-5 text-[15px] leading-relaxed text-foreground/85">
-              Essas instituições são utilizadas como referência por sua
-              autoridade reconhecida nacional e internacionalmente em direitos
-              da criança, segurança pública e proteção online.
+              Essas instituições são utilizadas como referência por sua autoridade reconhecida
+              nacional e internacionalmente em direitos da criança, segurança pública e proteção
+              online.
             </p>
             <ul className="space-y-3">
               {fontes.map((f) => (
@@ -431,12 +418,8 @@ function Page() {
                     <BookOpen className="size-4" aria-hidden />
                   </span>
                   <div className="min-w-0">
-                    <p className="font-semibold text-foreground text-[15px]">
-                      {f.nome}
-                    </p>
-                    <p className="text-sm text-muted-foreground leading-relaxed mt-0.5">
-                      {f.desc}
-                    </p>
+                    <p className="font-semibold text-foreground text-[15px]">{f.nome}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed mt-0.5">{f.desc}</p>
                   </div>
                 </li>
               ))}
@@ -464,11 +447,10 @@ function Page() {
             />
             <div className="rounded-2xl border-l-4 border-[color:var(--orange)] bg-[color:var(--orange-soft)]/40 p-6">
               <p className="text-[15.5px] leading-relaxed text-foreground/90">
-                O <strong>Infância Protegida</strong> não substitui atendimento
-                psicológico, jurídico, policial ou assistencial. Nosso papel é{" "}
-                <strong>informar, conscientizar e orientar</strong> com base em
-                fontes oficiais — e indicar, sempre, os canais e profissionais
-                competentes para cada situação.
+                O <strong>Infância Protegida</strong> não substitui atendimento psicológico,
+                jurídico, policial ou assistencial. Nosso papel é{" "}
+                <strong>informar, conscientizar e orientar</strong> com base em fontes oficiais — e
+                indicar, sempre, os canais e profissionais competentes para cada situação.
               </p>
             </div>
           </section>
@@ -492,12 +474,8 @@ function Page() {
                     <Icon className="size-4" aria-hidden />
                   </span>
                   <div className="min-w-0">
-                    <p className="text-sm font-semibold text-foreground">
-                      {title}
-                    </p>
-                    <p className="text-xs text-muted-foreground leading-snug mt-0.5">
-                      {text}
-                    </p>
+                    <p className="text-sm font-semibold text-foreground">{title}</p>
+                    <p className="text-xs text-muted-foreground leading-snug mt-0.5">{text}</p>
                   </div>
                 </article>
               ))}
@@ -508,18 +486,14 @@ function Page() {
         {/* Chamada final */}
         <Reveal delay={360}>
           <aside className="rounded-3xl border border-[color:var(--orange)]/30 bg-gradient-to-br from-[color:var(--orange-soft)] via-background to-background p-8 sm:p-10 text-center">
-            <Sparkles
-              className="size-7 text-[color:var(--orange)] mx-auto"
-              aria-hidden
-            />
+            <Sparkles className="size-7 text-[color:var(--orange)] mx-auto" aria-hidden />
             <h2 className="mt-4 font-display text-2xl sm:text-3xl font-semibold text-foreground text-balance leading-tight">
               Informação confiável salva vidas
             </h2>
             <p className="mt-4 text-[15.5px] leading-relaxed text-foreground/85 max-w-2xl mx-auto">
-              A proteção infantil começa pelo acesso à informação correta.
-              Quanto mais pessoas conhecem os sinais, os direitos e os canais
-              de denúncia, maior é a capacidade da sociedade de proteger
-              crianças e adolescentes.
+              A proteção infantil começa pelo acesso à informação correta. Quanto mais pessoas
+              conhecem os sinais, os direitos e os canais de denúncia, maior é a capacidade da
+              sociedade de proteger crianças e adolescentes.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
               <Link

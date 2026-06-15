@@ -214,9 +214,7 @@ export const siteNavigationSchema = {
   })),
 };
 
-export function breadcrumbSchema(
-  items: Array<{ name: string; path: string }>,
-) {
+export function breadcrumbSchema(items: Array<{ name: string; path: string }>) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -229,11 +227,7 @@ export function breadcrumbSchema(
   };
 }
 
-export function institutionalPageSchema(opts: {
-  path: string;
-  name: string;
-  description: string;
-}) {
+export function institutionalPageSchema(opts: { path: string; name: string; description: string }) {
   return {
     "@context": "https://schema.org",
     "@type": "AboutPage",

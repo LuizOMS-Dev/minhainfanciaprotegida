@@ -82,7 +82,8 @@ export const recordLoginAttempt = createServerFn({ method: "POST" })
     if (data.success && data.email) {
       try {
         const { data: list } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 200 });
-        userId = list?.users.find((u) => u.email?.toLowerCase() === data.email!.toLowerCase())?.id ?? null;
+        userId =
+          list?.users.find((u) => u.email?.toLowerCase() === data.email!.toLowerCase())?.id ?? null;
       } catch {
         /* ignore */
       }
@@ -108,9 +109,7 @@ export const recordLogout = createServerFn({ method: "POST" })
 
 export const recordUnauthorizedAccess = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i) =>
-    z.object({ path: z.string().max(300).optional() }).parse(i ?? {}),
-  )
+  .inputValidator((i) => z.object({ path: z.string().max(300).optional() }).parse(i ?? {}))
   .handler(async ({ data, context }) => {
     const { logAudit } = await import("@/lib/audit.server");
     await logAudit({
@@ -126,8 +125,14 @@ const listSchema = z.object({
   userId: z.string().uuid().optional(),
   targetType: z.string().max(80).optional(),
   search: z.string().max(200).optional(),
-  fromDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-  toDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  fromDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
+  toDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
   page: z.number().int().min(1).max(1000).default(1),
   pageSize: z.number().int().min(10).max(200).default(50),
 });

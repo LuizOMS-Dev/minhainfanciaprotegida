@@ -40,7 +40,8 @@ export const library: LibraryItem[] = [
   {
     slug: "disque100-balanco-anual",
     title: "Disque 100 — Balanço Anual",
-    description: "Relatório com dados consolidados de denúncias recebidas pelo Disque Direitos Humanos.",
+    description:
+      "Relatório com dados consolidados de denúncias recebidas pelo Disque Direitos Humanos.",
     sourceOrg: "Ministério dos Direitos Humanos e da Cidadania",
     year: 2024,
     category: "Pesquisa",
@@ -51,7 +52,8 @@ export const library: LibraryItem[] = [
   {
     slug: "indicadores-safernet",
     title: "Indicadores SaferNet Brasil",
-    description: "Dados públicos sobre denúncias de crimes cibernéticos contra crianças e adolescentes.",
+    description:
+      "Dados públicos sobre denúncias de crimes cibernéticos contra crianças e adolescentes.",
     sourceOrg: "SaferNet Brasil",
     year: 2025,
     category: "Pesquisa",
@@ -62,7 +64,8 @@ export const library: LibraryItem[] = [
   {
     slug: "childhood-publicacoes",
     title: "Childhood Brasil — Publicações sobre exploração sexual",
-    description: "Coletânea de cartilhas, pesquisas e materiais educativos sobre prevenção da violência sexual.",
+    description:
+      "Coletânea de cartilhas, pesquisas e materiais educativos sobre prevenção da violência sexual.",
     sourceOrg: "Childhood Brasil",
     year: 2024,
     category: "Cartilha",
@@ -95,7 +98,8 @@ export const library: LibraryItem[] = [
   {
     slug: "lei-13431-escuta",
     title: "Lei nº 13.431/2017 — Escuta especializada e depoimento especial",
-    description: "Estabelece o sistema de garantia de direitos de crianças vítimas ou testemunhas de violência.",
+    description:
+      "Estabelece o sistema de garantia de direitos de crianças vítimas ou testemunhas de violência.",
     sourceOrg: "Presidência da República",
     year: 2017,
     category: "Estudo",
@@ -106,7 +110,8 @@ export const library: LibraryItem[] = [
   {
     slug: "lei-15211-eca-digital",
     title: "Lei nº 15.211/2025 — ECA Digital",
-    description: "Lei sancionada em setembro de 2025 que protege crianças e adolescentes em ambientes digitais.",
+    description:
+      "Lei sancionada em setembro de 2025 que protege crianças e adolescentes em ambientes digitais.",
     sourceOrg: "Presidência da República",
     year: 2025,
     category: "Estudo",
@@ -117,7 +122,8 @@ export const library: LibraryItem[] = [
   {
     slug: "safernet-guia-familias",
     title: "Guia de Configuração de Privacidade para Famílias",
-    description: "Orientações da SaferNet para configurar privacidade em Roblox, Discord, TikTok, Instagram e WhatsApp.",
+    description:
+      "Orientações da SaferNet para configurar privacidade em Roblox, Discord, TikTok, Instagram e WhatsApp.",
     sourceOrg: "SaferNet Brasil",
     year: 2024,
     category: "Guia",

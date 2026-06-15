@@ -53,9 +53,9 @@ function RiscosPage() {
           </Reveal>
           <Reveal delay={220}>
             <p className="mt-5 text-lg text-white/85 max-w-3xl leading-relaxed">
-              Adultização, aliciamento em jogos, sextorsão e deepfakes feitos por IA estão entre as ameaças mais
-              graves do ambiente digital. Casos como <strong>Felca</strong> e <strong>Mineblox</strong> mostram
-              que informação e ação rápida salvam vidas.
+              Adultização, aliciamento em jogos, sextorsão e deepfakes feitos por IA estão entre as
+              ameaças mais graves do ambiente digital. Casos como <strong>Felca</strong> e{" "}
+              <strong>Mineblox</strong> mostram que informação e ação rápida salvam vidas.
             </p>
           </Reveal>
           <Reveal delay={320}>
@@ -103,7 +103,9 @@ function RiscosPage() {
                       <h2 className="font-display text-xl sm:text-2xl font-semibold leading-tight">
                         {r.title}
                       </h2>
-                      <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{r.summary}</p>
+                      <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                        {r.summary}
+                      </p>
                     </div>
                   </div>
 
@@ -138,7 +140,8 @@ function RiscosPage() {
 
                   <div className="mt-5 pt-5 border-t border-border space-y-3">
                     <p className="text-xs text-muted-foreground">
-                      <span className="font-semibold text-foreground">Base legal:</span> {r.legalBase}
+                      <span className="font-semibold text-foreground">Base legal:</span>{" "}
+                      {r.legalBase}
                     </p>
                     <SourceTag source={r.source.name} year={2025} url={r.source.url} />
                   </div>
@@ -154,8 +157,8 @@ function RiscosPage() {
                   Suspeita de crime online?
                 </h2>
                 <p className="mt-2 text-white/80 max-w-xl">
-                  Denuncie ao Disque 100, à Polícia Federal e ao canal Helpline da SaferNet. Sua denúncia pode ser
-                  anônima.
+                  Denuncie ao Disque 100, à Polícia Federal e ao canal Helpline da SaferNet. Sua
+                  denúncia pode ser anônima.
                 </p>
               </div>
               <div className="flex flex-wrap gap-3">

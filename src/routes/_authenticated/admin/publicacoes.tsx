@@ -2,16 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useMemo, useState } from "react";
-import {
-  BookOpen,
-  FileText,
-  Newspaper,
-  Pencil,
-  Plus,
-  Search,
-  Trash2,
-  Wifi,
-} from "lucide-react";
+import { BookOpen, FileText, Newspaper, Pencil, Plus, Search, Trash2, Wifi } from "lucide-react";
 import {
   deleteAdminArticle,
   getMyRoles,
@@ -32,9 +23,7 @@ const tipoSchema = z.enum([
 
 const searchSchema = z.object({
   tipo: tipoSchema.optional(),
-  status: z
-    .enum(["all", "draft", "review", "scheduled", "published", "archived"])
-    .optional(),
+  status: z.enum(["all", "draft", "review", "scheduled", "published", "archived"]).optional(),
   q: z.string().optional(),
 });
 
@@ -58,7 +47,10 @@ const TIPO_MAP: Record<
 
 const TIPOS = Object.keys(TIPO_MAP) as Array<keyof typeof TIPO_MAP>;
 
-const typeMeta: Record<AdminArticle["type"], { label: string; icon: typeof Newspaper; color: string }> = {
+const typeMeta: Record<
+  AdminArticle["type"],
+  { label: string; icon: typeof Newspaper; color: string }
+> = {
   news: { label: "Notícia", icon: Newspaper, color: "text-blue-600" },
   case: { label: "Caso", icon: BookOpen, color: "text-purple-600" },
   risk: { label: "Risco", icon: Wifi, color: "text-amber-600" },
@@ -184,7 +176,10 @@ function PublicacoesPage() {
           ))}
         </div>
         <div className="relative ml-auto w-full sm:w-72">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" aria-hidden />
+          <Search
+            className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground"
+            aria-hidden
+          />
           <input
             value={q}
             onChange={(e) => setSearch({ q: e.target.value || undefined })}
@@ -232,7 +227,10 @@ function PublicacoesPage() {
               {articles.map((a) => {
                 const meta = typeMeta[a.type];
                 return (
-                  <tr key={a.id} className="border-t border-border hover:bg-muted/30 transition-colors">
+                  <tr
+                    key={a.id}
+                    className="border-t border-border hover:bg-muted/30 transition-colors"
+                  >
                     <td className="px-4 py-3">
                       <span className="inline-flex items-center gap-2 text-xs font-semibold">
                         <meta.icon className={`size-3.5 ${meta.color}`} aria-hidden /> {meta.label}
@@ -268,11 +266,7 @@ function PublicacoesPage() {
                       {canDelete && (
                         <button
                           onClick={() => {
-                            if (
-                              confirm(
-                                `Excluir "${a.title}"? Esta ação não pode ser desfeita.`,
-                              )
-                            )
+                            if (confirm(`Excluir "${a.title}"? Esta ação não pode ser desfeita.`))
                               del.mutate(a.id);
                           }}
                           className="inline-flex items-center gap-1 text-sm font-semibold text-muted-foreground hover:text-[color:var(--red-inst)]"
@@ -291,9 +285,10 @@ function PublicacoesPage() {
 
       <p className="text-xs text-muted-foreground">
         Dica: <strong>Para pais</strong> e <strong>Para escolas</strong> filtram por
-        <code className="ml-1 rounded bg-muted px-1.5 py-0.5 text-[10px]">category</code> ·
-        defina <code className="ml-1 rounded bg-muted px-1.5 py-0.5 text-[10px]">para-pais</code> ou
-        <code className="ml-1 rounded bg-muted px-1.5 py-0.5 text-[10px]">para-escolas</code> no editor.
+        <code className="ml-1 rounded bg-muted px-1.5 py-0.5 text-[10px]">category</code> · defina{" "}
+        <code className="ml-1 rounded bg-muted px-1.5 py-0.5 text-[10px]">para-pais</code> ou
+        <code className="ml-1 rounded bg-muted px-1.5 py-0.5 text-[10px]">para-escolas</code> no
+        editor.
       </p>
     </section>
   );

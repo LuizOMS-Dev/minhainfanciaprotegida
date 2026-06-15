@@ -7,10 +7,16 @@ const orgs = [
   { name: "UNICEF Brasil", url: "https://www.unicef.org/brazil/" },
   { name: "Childhood Brasil", url: "https://www.childhood.org.br/" },
   { name: "CONANDA", url: "https://www.gov.br/participamaisbrasil/conanda" },
-  { name: "Estatuto da Criança e do Adolescente (Lei 8.069/90)", url: "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm" },
+  {
+    name: "Estatuto da Criança e do Adolescente (Lei 8.069/90)",
+    url: "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm",
+  },
   { name: "Ministério Público Federal", url: "https://www.mpf.mp.br/" },
   { name: "Polícia Federal", url: "https://www.gov.br/pf/pt-br" },
-  { name: "ONU — Convenção sobre os Direitos da Criança", url: "https://www.unicef.org/brazil/convencao-sobre-os-direitos-da-crianca" },
+  {
+    name: "ONU — Convenção sobre os Direitos da Criança",
+    url: "https://www.unicef.org/brazil/convencao-sobre-os-direitos-da-crianca",
+  },
 ];
 
 export function SiteFooter() {
@@ -69,8 +75,8 @@ export function SiteFooter() {
               </li>
             </ul>
             <p className="mt-3 text-[11px] leading-relaxed opacity-60 max-w-md">
-              Estes são os únicos canais oficiais do projeto. Botões de compartilhamento em
-              artigos são ferramentas do visitante e não representam redes oficiais.
+              Estes são os únicos canais oficiais do projeto. Botões de compartilhamento em artigos
+              são ferramentas do visitante e não representam redes oficiais.
             </p>
           </div>
         </div>
@@ -101,7 +107,10 @@ export function SiteFooter() {
               ["/faq", "FAQ"],
             ].map(([to, label]) => (
               <li key={to}>
-                <Link to={to} className="opacity-80 hover:opacity-100 hover:text-[color:var(--orange)] transition-colors">
+                <Link
+                  to={to}
+                  className="opacity-80 hover:opacity-100 hover:text-[color:var(--orange)] transition-colors"
+                >
                   {label}
                 </Link>
               </li>
@@ -137,7 +146,9 @@ export function SiteFooter() {
             Este site é uma iniciativa educativa independente. Não substitui canais oficiais. Em
             caso de emergência, ligue 190 (Polícia Militar) ou 100 (Disque Direitos Humanos).
           </p>
-          <p>© {new Date().getFullYear()} Infância Protegida · Conteúdo livre para fins educativos.</p>
+          <p>
+            © {new Date().getFullYear()} Infância Protegida · Conteúdo livre para fins educativos.
+          </p>
         </div>
       </div>
     </footer>

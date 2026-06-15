@@ -4,10 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { ShieldCheck, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { recordMfaEvent } from "@/lib/security.functions";
-import {
-  generateRecoveryCodes,
-  getRecoveryCodesStatus,
-} from "@/lib/recovery-codes.functions";
+import { generateRecoveryCodes, getRecoveryCodesStatus } from "@/lib/recovery-codes.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/mfa")({
   head: () => ({
@@ -150,7 +147,8 @@ function MfaPage() {
           <ShieldCheck className="size-5 text-emerald-600" /> Verificação em duas etapas
         </h2>
         <p className="text-sm text-muted-foreground mt-1">
-          Adicione uma camada extra de segurança usando um app autenticador (Google Authenticator, Microsoft Authenticator, Authy ou similar).
+          Adicione uma camada extra de segurança usando um app autenticador (Google Authenticator,
+          Microsoft Authenticator, Authy ou similar).
         </p>
       </header>
 
@@ -210,16 +208,17 @@ function MfaPage() {
               alt="QR code MFA"
               className="size-48 rounded-xl border border-border bg-white p-2"
             />
-            <p className="text-xs text-muted-foreground">
-              Ou digite manualmente o segredo:
-            </p>
+            <p className="text-xs text-muted-foreground">Ou digite manualmente o segredo:</p>
             <code className="text-xs font-mono bg-muted px-3 py-1.5 rounded-lg break-all">
               {enroll.secret}
             </code>
           </div>
 
           <div>
-            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground" htmlFor="otp">
+            <label
+              className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+              htmlFor="otp"
+            >
               2. Insira o código de 6 dígitos exibido pelo app
             </label>
             <input
@@ -281,14 +280,17 @@ function RecoveryCodesSection() {
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
-    getStatus().then(setStatus).catch((e: Error) => setErr(e.message));
+    getStatus()
+      .then(setStatus)
+      .catch((e: Error) => setErr(e.message));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function handleGenerate() {
-    const msg = status && status.total > 0
-      ? "Regerar códigos invalida TODOS os códigos antigos. Continuar?"
-      : "Gerar 10 códigos de recuperação? Eles serão exibidos apenas uma vez.";
+    const msg =
+      status && status.total > 0
+        ? "Regerar códigos invalida TODOS os códigos antigos. Continuar?"
+        : "Gerar 10 códigos de recuperação? Eles serão exibidos apenas uma vez.";
     if (!window.confirm(msg)) return;
     setBusy(true);
     setErr(null);
@@ -332,8 +334,8 @@ function RecoveryCodesSection() {
     <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
       <h3 className="font-display text-lg font-semibold">Códigos de recuperação</h3>
       <p className="text-sm text-muted-foreground">
-        Use estes códigos para recuperar o acesso caso perca o celular ou o aplicativo
-        autenticador. Cada código pode ser usado apenas uma vez.
+        Use estes códigos para recuperar o acesso caso perca o celular ou o aplicativo autenticador.
+        Cada código pode ser usado apenas uma vez.
       </p>
 
       {err && (

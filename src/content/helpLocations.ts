@@ -1,10 +1,4 @@
-export type HelpType =
-  | "conselho_tutelar"
-  | "delegacia"
-  | "creas"
-  | "cras"
-  | "mp"
-  | "disque";
+export type HelpType = "conselho_tutelar" | "delegacia" | "creas" | "cras" | "mp" | "disque";
 
 export interface HelpLocation {
   name: string;
@@ -62,7 +56,8 @@ export const helpLocations: HelpLocation[] = [
     state: "SP",
     city: "São Paulo",
     phone: "156",
-    officialUrl: "https://www.prefeitura.sp.gov.br/cidade/secretarias/direitos_humanos/crianca_e_adolescente/conselhos_tutelares/",
+    officialUrl:
+      "https://www.prefeitura.sp.gov.br/cidade/secretarias/direitos_humanos/crianca_e_adolescente/conselhos_tutelares/",
   },
   // RJ
   {
@@ -162,6 +157,31 @@ export const helpLocations: HelpLocation[] = [
 ];
 
 export const ufList = [
-  "AC","AL","AM","AP","BA","CE","DF","ES","GO","MA","MG","MS","MT","PA",
-  "PB","PE","PI","PR","RJ","RN","RO","RR","RS","SC","SE","SP","TO",
+  "AC",
+  "AL",
+  "AM",
+  "AP",
+  "BA",
+  "CE",
+  "DF",
+  "ES",
+  "GO",
+  "MA",
+  "MG",
+  "MS",
+  "MT",
+  "PA",
+  "PB",
+  "PE",
+  "PI",
+  "PR",
+  "RJ",
+  "RN",
+  "RO",
+  "RR",
+  "RS",
+  "SC",
+  "SE",
+  "SP",
+  "TO",
 ] as const;

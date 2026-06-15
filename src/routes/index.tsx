@@ -27,7 +27,6 @@ import { SourceTag } from "@/components/site/SourceTag";
 import { LatestUpdates } from "@/components/site/LatestUpdates";
 import { MonthlyAlert } from "@/components/site/MonthlyAlert";
 
-
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -144,8 +143,17 @@ function Index() {
         </div>
 
         {/* Ornamento floral decorativo */}
-        <div className="pointer-events-none absolute -bottom-10 -right-10 hidden md:block opacity-[0.08]" aria-hidden>
-          <svg width="420" height="420" viewBox="0 0 100 100" fill="none" className="text-[color:var(--orange)]">
+        <div
+          className="pointer-events-none absolute -bottom-10 -right-10 hidden md:block opacity-[0.08]"
+          aria-hidden
+        >
+          <svg
+            width="420"
+            height="420"
+            viewBox="0 0 100 100"
+            fill="none"
+            className="text-[color:var(--orange)]"
+          >
             <path
               d="M50 10C55 35 75 35 90 50C75 65 55 65 50 90C45 65 25 65 10 50C25 35 45 35 50 10Z"
               fill="currentColor"
@@ -173,7 +181,8 @@ function Index() {
 
           <Reveal delay={240}>
             <p className="mt-6 max-w-2xl text-lg sm:text-xl text-white/80 leading-relaxed">
-              Educar para prevenir. Denunciar para proteger. Juntos contra o abuso e a exploração sexual de crianças e adolescentes.
+              Educar para prevenir. Denunciar para proteger. Juntos contra o abuso e a exploração
+              sexual de crianças e adolescentes.
             </p>
           </Reveal>
 
@@ -344,18 +353,90 @@ function Index() {
           />
           <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {[
-              { to: "/maio-laranja", icon: Heart, title: "Maio Laranja", desc: "Origem, história e por que o dia 18 de maio importa.", img: ribbonImg },
-              { to: "/sinais", icon: Eye, title: "Identificar Sinais", desc: "Mudanças de comportamento que merecem atenção.", img: joyImg },
-              { to: "/riscos-online", icon: Wifi, title: "Riscos Online", desc: "Adultização, grooming e deepfakes — casos Felca e Mineblox.", img: silenceImg },
-              { to: "/pais", icon: Users, title: "Para Pais", desc: "Controle parental e configurações em Roblox, Discord, TikTok e mais.", img: joyImg },
-              { to: "/escolas", icon: GraduationCap, title: "Para Escolas", desc: "Protocolo de suspeita e escuta protegida para educadores.", img: heroImg },
-              { to: "/biblioteca", icon: Library, title: "Biblioteca", desc: "Cartilhas e estudos oficiais (UNICEF, SaferNet, MDHC).", img: ribbonImg },
-              { to: "/casos", icon: BookOpen, title: "Casos Reais", desc: "Histórias verificadas que mudaram leis no Brasil.", img: heroImg },
-              { to: "/noticias", icon: Newspaper, title: "Notícias", desc: "Atualizações sobre o combate à violência infantil.", img: ribbonImg },
-              { to: "/como-ajudar", icon: HandHeart, title: "Como Ajudar", desc: "Escutar, acolher, não julgar, proteger e denunciar.", img: joyImg },
-              { to: "/denuncia", icon: Phone, title: "Canais de Denúncia", desc: "Telefones oficiais que funcionam 24 horas.", img: silenceImg },
-              { to: "/legislacao", icon: Scale, title: "Legislação", desc: "ECA, Constituição e o novo ECA Digital (Lei 15.211/2025).", img: ribbonImg },
-              { to: "/mapa", icon: MapPin, title: "Mapa de Ajuda", desc: "Conselhos tutelares, delegacias e centros de apoio por estado.", img: heroImg },
+              {
+                to: "/maio-laranja",
+                icon: Heart,
+                title: "Maio Laranja",
+                desc: "Origem, história e por que o dia 18 de maio importa.",
+                img: ribbonImg,
+              },
+              {
+                to: "/sinais",
+                icon: Eye,
+                title: "Identificar Sinais",
+                desc: "Mudanças de comportamento que merecem atenção.",
+                img: joyImg,
+              },
+              {
+                to: "/riscos-online",
+                icon: Wifi,
+                title: "Riscos Online",
+                desc: "Adultização, grooming e deepfakes — casos Felca e Mineblox.",
+                img: silenceImg,
+              },
+              {
+                to: "/pais",
+                icon: Users,
+                title: "Para Pais",
+                desc: "Controle parental e configurações em Roblox, Discord, TikTok e mais.",
+                img: joyImg,
+              },
+              {
+                to: "/escolas",
+                icon: GraduationCap,
+                title: "Para Escolas",
+                desc: "Protocolo de suspeita e escuta protegida para educadores.",
+                img: heroImg,
+              },
+              {
+                to: "/biblioteca",
+                icon: Library,
+                title: "Biblioteca",
+                desc: "Cartilhas e estudos oficiais (UNICEF, SaferNet, MDHC).",
+                img: ribbonImg,
+              },
+              {
+                to: "/casos",
+                icon: BookOpen,
+                title: "Casos Reais",
+                desc: "Histórias verificadas que mudaram leis no Brasil.",
+                img: heroImg,
+              },
+              {
+                to: "/noticias",
+                icon: Newspaper,
+                title: "Notícias",
+                desc: "Atualizações sobre o combate à violência infantil.",
+                img: ribbonImg,
+              },
+              {
+                to: "/como-ajudar",
+                icon: HandHeart,
+                title: "Como Ajudar",
+                desc: "Escutar, acolher, não julgar, proteger e denunciar.",
+                img: joyImg,
+              },
+              {
+                to: "/denuncia",
+                icon: Phone,
+                title: "Canais de Denúncia",
+                desc: "Telefones oficiais que funcionam 24 horas.",
+                img: silenceImg,
+              },
+              {
+                to: "/legislacao",
+                icon: Scale,
+                title: "Legislação",
+                desc: "ECA, Constituição e o novo ECA Digital (Lei 15.211/2025).",
+                img: ribbonImg,
+              },
+              {
+                to: "/mapa",
+                icon: MapPin,
+                title: "Mapa de Ajuda",
+                desc: "Conselhos tutelares, delegacias e centros de apoio por estado.",
+                img: heroImg,
+              },
             ].map((c, i) => (
               <Reveal key={c.to} delay={i * 70}>
                 <Link to={c.to} className="block h-full">
@@ -376,7 +457,8 @@ function Index() {
                       <h3 className="font-display text-xl font-semibold">{c.title}</h3>
                       <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{c.desc}</p>
                       <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[color:var(--red-inst)]">
-                        Acessar <ArrowRight className="size-4 transition group-hover:translate-x-1" />
+                        Acessar{" "}
+                        <ArrowRight className="size-4 transition group-hover:translate-x-1" />
                       </span>
                     </div>
                   </article>

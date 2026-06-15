@@ -45,15 +45,10 @@ export interface AdminArticle {
 
 export const listAdminArticles = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input) =>
-    z.object({ type: articleTypeSchema.optional() }).parse(input ?? {}),
-  )
+  .inputValidator((input) => z.object({ type: articleTypeSchema.optional() }).parse(input ?? {}))
   .handler(async ({ data, context }) => {
     await requireRole(context.supabase, context.userId, ["admin", "editor", "revisor"]);
-    let q = context.supabase
-      .from("articles")
-      .select("*")
-      .order("updated_at", { ascending: false });
+    let q = context.supabase.from("articles").select("*").order("updated_at", { ascending: false });
     if (data.type) q = q.eq("type", data.type);
     const { data: rows, error } = await q;
     if (error) {
@@ -124,7 +119,11 @@ const upsertSchema = z.object({
   type: articleTypeSchema,
   title: z.string().min(3).max(255),
   subtitle: z.string().max(500).optional().nullable(),
-  slug: z.string().min(2).max(180).regex(/^[a-z0-9-]+$/),
+  slug: z
+    .string()
+    .min(2)
+    .max(180)
+    .regex(/^[a-z0-9-]+$/),
   category: z.string().max(80).optional().nullable(),
   body: z.string().max(20000).optional().nullable(),
   cover_url: safeHttpUrl.optional().nullable().or(z.literal("")),
@@ -132,7 +131,12 @@ const upsertSchema = z.object({
   primary_source_url: safeHttpUrl.optional().nullable().or(z.literal("")),
   status: statusSchema,
   publish_at: z.string().datetime().optional().nullable().or(z.literal("")),
-  last_verified_at: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().nullable().or(z.literal("")),
+  last_verified_at: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional()
+    .nullable()
+    .or(z.literal("")),
   sources: z.array(sourceSchema).max(50).optional(),
   // Editoriais avançados
   reading_minutes: z.number().int().min(1).max(120).optional().nullable(),
@@ -213,16 +217,14 @@ export const upsertAdminArticle = createServerFn({ method: "POST" })
         throw new Error("Não foi possível atualizar as fontes.");
       }
       if (sources.length > 0) {
-        const { error: insErr } = await context.supabase
-          .from("article_sources")
-          .insert(
-            sources.map((s, i) => ({
-              article_id: articleId,
-              label: s.label,
-              url: s.url,
-              position: s.position ?? i,
-            })),
-          );
+        const { error: insErr } = await context.supabase.from("article_sources").insert(
+          sources.map((s, i) => ({
+            article_id: articleId,
+            label: s.label,
+            url: s.url,
+            position: s.position ?? i,
+          })),
+        );
         if (insErr) {
           console.error("[admin.upsertArticle] sources insert error", insErr);
           throw new Error("Não foi possível salvar as fontes.");

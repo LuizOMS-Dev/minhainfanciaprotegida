@@ -26,12 +26,12 @@ bunx playwright install --with-deps
 
 ## Scripts disponíveis
 
-| Script              | Descrição                                                |
-| ------------------- | -------------------------------------------------------- |
-| `bun run test:e2e`  | Roda todos os testes E2E em todos os projetos.           |
-| `bun run test:a11y` | Roda apenas a suíte de acessibilidade (axe).             |
+| Script                | Descrição                                              |
+| --------------------- | ------------------------------------------------------ |
+| `bun run test:e2e`    | Roda todos os testes E2E em todos os projetos.         |
+| `bun run test:a11y`   | Roda apenas a suíte de acessibilidade (axe).           |
 | `bun run test:e2e:ui` | Abre o modo interativo do Playwright.                  |
-| `bun run ci:build`  | Roda `build` + `test:e2e` (gate de qualidade para CI).   |
+| `bun run ci:build`    | Roda `build` + `test:e2e` (gate de qualidade para CI). |
 
 O `playwright.config.ts` sobe automaticamente o `bun run dev` em
 `http://localhost:3000`. Para apontar para um deploy de preview, defina

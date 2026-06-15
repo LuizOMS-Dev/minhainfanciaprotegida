@@ -1,5 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Eye, Gamepad2, MessageCircle, ShieldCheck, Smartphone, Timer } from "lucide-react";
+import {
+  ArrowRight,
+  Eye,
+  Gamepad2,
+  MessageCircle,
+  ShieldCheck,
+  Smartphone,
+  Timer,
+} from "lucide-react";
 import { Reveal } from "@/components/site/Reveal";
 import { SectionHeader } from "@/components/site/SectionHeader";
 import { ReferencesBlock } from "@/components/site/ReferencesBlock";
@@ -19,7 +27,8 @@ export const Route = createFileRoute("/pais")({
       { property: "og:title", content: "Guia para Pais — Infância Protegida" },
       {
         property: "og:description",
-        content: "Orientações práticas para famílias proteger crianças e adolescentes no ambiente digital.",
+        content:
+          "Orientações práticas para famílias proteger crianças e adolescentes no ambiente digital.",
       },
       { property: "og:image", content: familyImg },
     ],
@@ -79,7 +88,7 @@ const platforms = [
 const conversationTips = [
   "Escolha um momento tranquilo e sem distrações.",
   "Use linguagem adequada à idade — sem julgamentos.",
-  "Faça perguntas abertas: \"como você se sente quando…?\"",
+  'Faça perguntas abertas: "como você se sente quando…?"',
   "Reforce que o adulto é responsável, não a criança.",
   "Combine sinais combinados (palavra-código) para pedir ajuda.",
   "Lembre que ela pode contar com você — sempre, sem punição.",
@@ -88,27 +97,37 @@ const conversationTips = [
 function Page() {
   return (
     <>
-      <JsonLd data={[
-        breadcrumb([
-          { name: "Início", url: "/" },
-          { name: "Guia para Pais", url: "/pais" },
-        ]),
-        articleSchema({
-          headline: "Guia para Pais e Responsáveis",
-          description: "Orientações práticas para proteger crianças e adolescentes no ambiente digital.",
-          datePublished: "2025-11-15",
-          image: familyImg,
-          url: "/pais",
-        }),
-      ]} />
+      <JsonLd
+        data={[
+          breadcrumb([
+            { name: "Início", url: "/" },
+            { name: "Guia para Pais", url: "/pais" },
+          ]),
+          articleSchema({
+            headline: "Guia para Pais e Responsáveis",
+            description:
+              "Orientações práticas para proteger crianças e adolescentes no ambiente digital.",
+            datePublished: "2025-11-15",
+            image: familyImg,
+            url: "/pais",
+          }),
+        ]}
+      />
 
       <section className="relative isolate overflow-hidden bg-[color:var(--navy-deep)] text-white py-20 sm:py-28">
         <div
           className="absolute inset-0 -z-10 opacity-30"
-          style={{ backgroundImage: `url(${familyImg})`, backgroundSize: "cover", backgroundPosition: "center" }}
+          style={{
+            backgroundImage: `url(${familyImg})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
           aria-hidden
         />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[color:var(--navy-deep)]/95 to-[color:var(--navy-deep)]/70" aria-hidden />
+        <div
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-[color:var(--navy-deep)]/95 to-[color:var(--navy-deep)]/70"
+          aria-hidden
+        />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeader
             eyebrow="Para pais e responsáveis"
@@ -122,9 +141,21 @@ function Page() {
       <section className="py-20 sm:py-24 bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-3 gap-6">
           {[
-            { icon: ShieldCheck, title: "Controle parental", desc: "Ative supervisão, PIN e filtros em todos os dispositivos compartilhados." },
-            { icon: Timer, title: "Tempo de tela", desc: "Limite diário por app, com pausas e horários sem tela (refeições, sono)." },
-            { icon: Eye, title: "Privacidade", desc: "Contas privadas, listas de amigos revisadas e desligar geolocalização." },
+            {
+              icon: ShieldCheck,
+              title: "Controle parental",
+              desc: "Ative supervisão, PIN e filtros em todos os dispositivos compartilhados.",
+            },
+            {
+              icon: Timer,
+              title: "Tempo de tela",
+              desc: "Limite diário por app, com pausas e horários sem tela (refeições, sono).",
+            },
+            {
+              icon: Eye,
+              title: "Privacidade",
+              desc: "Contas privadas, listas de amigos revisadas e desligar geolocalização.",
+            },
           ].map((c, i) => (
             <Reveal key={c.title} delay={i * 80}>
               <article className="h-full rounded-2xl border border-border bg-card p-6 hover-lift">
@@ -159,7 +190,10 @@ function Page() {
                   <ul className="mt-4 space-y-2 text-sm text-foreground/85 leading-relaxed">
                     {p.tips.map((t) => (
                       <li key={t} className="flex gap-2">
-                        <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-[color:var(--red-inst)]" aria-hidden />
+                        <span
+                          className="mt-1.5 size-1.5 shrink-0 rounded-full bg-[color:var(--red-inst)]"
+                          aria-hidden
+                        />
                         <span>{t}</span>
                       </li>
                     ))}
@@ -183,7 +217,12 @@ function Page() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
           <Reveal>
             <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-elegant">
-              <img src={digitalImg} alt="Família conversando com criança sobre uso do celular" loading="lazy" className="size-full object-cover" />
+              <img
+                src={digitalImg}
+                alt="Família conversando com criança sobre uso do celular"
+                loading="lazy"
+                className="size-full object-cover"
+              />
             </div>
           </Reveal>
           <Reveal delay={120}>
@@ -196,16 +235,25 @@ function Page() {
             <ul className="mt-6 space-y-3">
               {conversationTips.map((t) => (
                 <li key={t} className="flex gap-3 text-foreground/85">
-                  <span className="mt-2 size-1.5 shrink-0 rounded-full bg-[color:var(--orange)]" aria-hidden />
+                  <span
+                    className="mt-2 size-1.5 shrink-0 rounded-full bg-[color:var(--orange)]"
+                    aria-hidden
+                  />
                   <span>{t}</span>
                 </li>
               ))}
             </ul>
             <div className="mt-8 flex gap-3 flex-wrap">
-              <Link to="/sinais" className="inline-flex items-center gap-2 rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-5 py-3 font-semibold">
+              <Link
+                to="/sinais"
+                className="inline-flex items-center gap-2 rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-5 py-3 font-semibold"
+              >
                 <Eye className="size-4" /> Sinais de alerta
               </Link>
-              <Link to="/riscos-online" className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 font-semibold">
+              <Link
+                to="/riscos-online"
+                className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-3 font-semibold"
+              >
                 <Gamepad2 className="size-4" /> Riscos online
               </Link>
             </div>
@@ -221,9 +269,18 @@ function Page() {
               url: "https://new.safernet.org.br/familias",
             }}
             secondary={[
-              { label: "Childhood Brasil — Publicações", url: "https://www.childhood.org.br/publicacao" },
-              { label: "MDHC — Crianças e Adolescentes", url: "https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente" },
-              { label: "UNICEF Brasil — Proteção", url: "https://www.unicef.org/brazil/protecao-de-criancas-e-adolescentes" },
+              {
+                label: "Childhood Brasil — Publicações",
+                url: "https://www.childhood.org.br/publicacao",
+              },
+              {
+                label: "MDHC — Crianças e Adolescentes",
+                url: "https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente",
+              },
+              {
+                label: "UNICEF Brasil — Proteção",
+                url: "https://www.unicef.org/brazil/protecao-de-criancas-e-adolescentes",
+              },
             ]}
             lastVerified="2025-11-15"
           />

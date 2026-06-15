@@ -63,8 +63,7 @@ export const Route = createFileRoute("/casos/$slug")({
     const a = loaderData?.article;
     if (!a) return { meta: [{ title: "Caso — Infância Protegida" }] };
     const desc =
-      a.subtitle ??
-      (a.understand ? a.understand.replace(/<[^>]+>/g, "").slice(0, 155) : a.title);
+      a.subtitle ?? (a.understand ? a.understand.replace(/<[^>]+>/g, "").slice(0, 155) : a.title);
     const url = `${SITE}/casos/${a.slug}`;
     const faq = a.faq ?? [];
     const scripts: { type: string; children: string }[] = [
@@ -114,13 +113,17 @@ export const Route = createFileRoute("/casos/$slug")({
   errorComponent: () => (
     <div className="mx-auto max-w-2xl px-4 py-24 text-center">
       <h1 className="font-display text-2xl font-bold">Não foi possível carregar este caso</h1>
-      <Link to="/casos" className="mt-6 inline-block text-[color:var(--red-inst)] underline">Voltar para Casos</Link>
+      <Link to="/casos" className="mt-6 inline-block text-[color:var(--red-inst)] underline">
+        Voltar para Casos
+      </Link>
     </div>
   ),
   notFoundComponent: () => (
     <div className="mx-auto max-w-2xl px-4 py-24 text-center">
       <h1 className="font-display text-2xl font-bold">Caso não encontrado</h1>
-      <Link to="/casos" className="mt-6 inline-block text-[color:var(--red-inst)] underline">Voltar para Casos</Link>
+      <Link to="/casos" className="mt-6 inline-block text-[color:var(--red-inst)] underline">
+        Voltar para Casos
+      </Link>
     </div>
   ),
 });
@@ -143,7 +146,8 @@ function CaseDetail() {
 
   const { data: rel } = useQuery({
     queryKey: ["related", "case", a.id, a.category],
-    queryFn: () => fetchRelated({ data: { id: a.id, type: "case", category: a.category, limit: 3 } }),
+    queryFn: () =>
+      fetchRelated({ data: { id: a.id, type: "case", category: a.category, limit: 3 } }),
     staleTime: 5 * 60_000,
   });
   const { data: sib } = useQuery({
@@ -218,7 +222,11 @@ function CaseDetail() {
             <Timeline
               items={a.timeline ?? []}
               heading="Cronologia do caso"
-              meta={{ publishAt: a.publish_at, updatedAt: a.updated_at, verifiedAt: a.last_verified_at }}
+              meta={{
+                publishAt: a.publish_at,
+                updatedAt: a.updated_at,
+                verifiedAt: a.last_verified_at,
+              }}
             />
             <UnderstandBlock html={a.understand} />
             <SignalsBlock items={signals} />
@@ -265,7 +273,6 @@ function CaseDetail() {
         </div>
       </div>
 
-
       <ArticleSiblingNav prev={sib?.prev ?? null} next={sib?.next ?? null} type="case" />
       <RelatedArticles items={rel?.related ?? []} type="case" />
 
@@ -281,7 +288,9 @@ function CaseDetail() {
           mainEntityOfPage: url,
           articleSection: a.category ?? "Casos reais",
           inLanguage: "pt-BR",
-          author: a.author_name ? { "@type": "Person", name: a.author_name } : { "@type": "Organization", name: "Infância Protegida" },
+          author: a.author_name
+            ? { "@type": "Person", name: a.author_name }
+            : { "@type": "Organization", name: "Infância Protegida" },
           publisher: { "@type": "Organization", name: "Infância Protegida" },
         }}
       />

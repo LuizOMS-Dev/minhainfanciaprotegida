@@ -55,8 +55,7 @@ export const Route = createFileRoute("/objetivos")({
       { name: "twitter:title", content: "Nossa Missão e Objetivos — Infância Protegida" },
       {
         name: "twitter:description",
-        content:
-          "Missão, objetivos, impacto e públicos atendidos pelo portal Infância Protegida.",
+        content: "Missão, objetivos, impacto e públicos atendidos pelo portal Infância Protegida.",
       },
       { name: "twitter:image", content: heroImg },
     ],
@@ -90,7 +89,12 @@ export const Route = createFileRoute("/objetivos")({
             "@type": "BreadcrumbList",
             itemListElement: [
               { "@type": "ListItem", position: 1, name: "Início", item: SITE_URL + "/" },
-              { "@type": "ListItem", position: 2, name: "Nossa Missão e Objetivos", item: PAGE_URL },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Nossa Missão e Objetivos",
+                item: PAGE_URL,
+              },
             ],
           },
           {
@@ -180,11 +184,23 @@ const impacto: IconItem[] = [
 ];
 
 const publicos: IconItem[] = [
-  { icon: Users, title: "Pais e responsáveis", text: "Para reconhecer sinais e agir com segurança." },
-  { icon: GraduationCap, title: "Educadores", text: "Para identificar e acolher de forma protetiva." },
+  {
+    icon: Users,
+    title: "Pais e responsáveis",
+    text: "Para reconhecer sinais e agir com segurança.",
+  },
+  {
+    icon: GraduationCap,
+    title: "Educadores",
+    text: "Para identificar e acolher de forma protetiva.",
+  },
   { icon: School, title: "Escolas", text: "Para construir protocolos e cultura de prevenção." },
   { icon: Shield, title: "Conselheiros tutelares", text: "Para apoio em materiais e legislação." },
-  { icon: HeartHandshake, title: "Assistência social", text: "CRAS, CREAS e profissionais da rede." },
+  {
+    icon: HeartHandshake,
+    title: "Assistência social",
+    text: "CRAS, CREAS e profissionais da rede.",
+  },
   { icon: Globe2, title: "Comunidade em geral", text: "Porque proteger é tarefa coletiva." },
 ];
 
@@ -194,7 +210,11 @@ const comoAjudar: IconItem[] = [
   { icon: ShieldCheck, title: "Prevenir", text: "Sinais de alerta e fatores de risco." },
   { icon: Megaphone, title: "Conscientizar", text: "Mobilização em torno do Maio Laranja." },
   { icon: Network, title: "Conectar", text: "Direcionar ao órgão certo, na hora certa." },
-  { icon: Phone, title: "Denunciar", text: "Caminhos oficiais: Disque 100, Conselho Tutelar, Polícia." },
+  {
+    icon: Phone,
+    title: "Denunciar",
+    text: "Caminhos oficiais: Disque 100, Conselho Tutelar, Polícia.",
+  },
 ];
 
 const fontesChips = [
@@ -251,11 +271,10 @@ function Page() {
           <section>
             <SectionHeading icon={Sparkles} eyebrow="Introdução" title="Por que existimos" />
             <p className="text-[16px] leading-relaxed text-foreground/85">
-              O <strong>Infância Protegida</strong> existe para transformar
-              informação em proteção. Nosso objetivo é ajudar famílias,
-              educadores, profissionais e a sociedade a reconhecer sinais de
-              violência, agir de forma preventiva e fortalecer a rede de
-              proteção de crianças e adolescentes.
+              O <strong>Infância Protegida</strong> existe para transformar informação em proteção.
+              Nosso objetivo é ajudar famílias, educadores, profissionais e a sociedade a reconhecer
+              sinais de violência, agir de forma preventiva e fortalecer a rede de proteção de
+              crianças e adolescentes.
             </p>
           </section>
         </Reveal>
@@ -263,19 +282,19 @@ function Page() {
         {/* Objetivos centrais */}
         <Reveal delay={60}>
           <section>
-            <SectionHeading icon={Target} eyebrow="Objetivos centrais" title="O que queremos alcançar" />
+            <SectionHeading
+              icon={Target}
+              eyebrow="Objetivos centrais"
+              title="O que queremos alcançar"
+            />
             <div className="grid gap-4 sm:grid-cols-2">
               {objetivos.map((o) => (
                 <article
                   key={o.title}
                   className="rounded-2xl border border-border bg-card p-5 hover-lift"
                 >
-                  <h3 className="font-display text-lg font-semibold text-foreground">
-                    {o.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {o.text}
-                  </p>
+                  <h3 className="font-display text-lg font-semibold text-foreground">{o.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{o.text}</p>
                 </article>
               ))}
             </div>
@@ -285,7 +304,11 @@ function Page() {
         {/* Nosso Impacto */}
         <Reveal delay={120}>
           <section>
-            <SectionHeading icon={Sparkles} eyebrow="Nosso impacto" title="Como o projeto contribui" />
+            <SectionHeading
+              icon={Sparkles}
+              eyebrow="Nosso impacto"
+              title="Como o projeto contribui"
+            />
             <ul className="space-y-3">
               {impacto.map(({ icon: Icon, title, text }) => (
                 <li
@@ -297,9 +320,7 @@ function Page() {
                   </span>
                   <div>
                     <p className="font-semibold text-foreground text-[15px]">{title}</p>
-                    <p className="text-sm text-muted-foreground leading-relaxed mt-0.5">
-                      {text}
-                    </p>
+                    <p className="text-sm text-muted-foreground leading-relaxed mt-0.5">{text}</p>
                   </div>
                 </li>
               ))}
@@ -322,9 +343,7 @@ function Page() {
                   </span>
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-foreground">{title}</p>
-                    <p className="text-xs text-muted-foreground leading-snug mt-0.5">
-                      {text}
-                    </p>
+                    <p className="text-xs text-muted-foreground leading-snug mt-0.5">{text}</p>
                   </div>
                 </article>
               ))}
@@ -348,9 +367,7 @@ function Page() {
                   <h3 className="mt-3 font-display text-base font-semibold text-foreground">
                     {title}
                   </h3>
-                  <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">
-                    {text}
-                  </p>
+                  <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">{text}</p>
                 </article>
               ))}
             </div>
@@ -366,11 +383,10 @@ function Page() {
               title="Compromisso com a proteção infantil"
             />
             <p className="text-[15.5px] leading-relaxed text-foreground/85">
-              O Infância Protegida é uma <strong>iniciativa educativa</strong>{" "}
-              de utilidade pública, sem fins lucrativos. Todo o conteúdo é
-              produzido a partir de fontes oficiais, legislação brasileira e
-              materiais de referência reconhecidos nacionalmente, com revisão
-              periódica e linguagem protetiva — sem exposição de vítimas.
+              O Infância Protegida é uma <strong>iniciativa educativa</strong> de utilidade pública,
+              sem fins lucrativos. Todo o conteúdo é produzido a partir de fontes oficiais,
+              legislação brasileira e materiais de referência reconhecidos nacionalmente, com
+              revisão periódica e linguagem protetiva — sem exposição de vítimas.
             </p>
             <ul className="mt-4 flex flex-wrap gap-2">
               {fontesChips.map((f) => (
@@ -390,8 +406,8 @@ function Page() {
           <aside className="rounded-3xl border border-[color:var(--orange)]/30 bg-gradient-to-br from-[color:var(--orange-soft)] via-background to-background p-8 sm:p-10 text-center">
             <Sparkles className="size-7 text-[color:var(--orange)] mx-auto" aria-hidden />
             <p className="mt-4 font-display text-2xl sm:text-3xl font-semibold text-foreground text-balance leading-tight">
-              Proteger uma criança começa com informação. Cada pessoa
-              conscientizada pode se tornar parte da rede de proteção.
+              Proteger uma criança começa com informação. Cada pessoa conscientizada pode se tornar
+              parte da rede de proteção.
             </p>
             <div className="mt-7 flex flex-wrap justify-center gap-3">
               <Link

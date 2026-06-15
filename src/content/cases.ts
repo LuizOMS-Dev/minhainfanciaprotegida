@@ -18,7 +18,12 @@ export interface CaseItem {
   summary: string;
   impact: string;
   image: string;
-  tag: "Histórico" | "Repercussão nacional" | "Legislação" | "Ambiente digital" | "Operação policial";
+  tag:
+    | "Histórico"
+    | "Repercussão nacional"
+    | "Legislação"
+    | "Ambiente digital"
+    | "Operação policial";
   source: { name: string; url: string };
   /** Corpo em HTML (parágrafos, headings, listas) renderizado com SafeHtml. */
   body?: string;
@@ -31,13 +36,13 @@ export interface CaseItem {
 export const cases: CaseItem[] = [
   {
     slug: "caso-felca-adultizacao-2025",
-    title: "Caso Felca — vídeo \"Adultização\" e a criação do ECA Digital",
+    title: 'Caso Felca — vídeo "Adultização" e a criação do ECA Digital',
     date: "2025-08-06",
     location: "Brasil — repercussão nacional",
     summary:
       "O influenciador Felipe Bressanim Pereira (Felca) publicou em agosto de 2025 um vídeo-denúncia de mais de 50 minutos expondo a adultização e a exploração de crianças nas redes sociais.",
     impact:
-      "Acelerou a tramitação do Projeto de Lei nº 2.628/2022, sancionado como Lei nº 15.211/2025 (\"ECA Digital\" ou \"Lei Felca\").",
+      'Acelerou a tramitação do Projeto de Lei nº 2.628/2022, sancionado como Lei nº 15.211/2025 ("ECA Digital" ou "Lei Felca").',
     image: digitalImg,
     tag: "Legislação",
     source: {
@@ -60,21 +65,27 @@ export const cases: CaseItem[] = [
     `,
     timeline: [
       { date: "2022-10-18", text: "Senador Alessandro Vieira apresenta o PL 2.628/2022." },
-      { date: "2025-08-06", text: "Felca publica o vídeo \"Adultização\" no YouTube." },
+      { date: "2025-08-06", text: 'Felca publica o vídeo "Adultização" no YouTube.' },
       { date: "2025-08-12", text: "Vídeo atinge 40 milhões de visualizações; MPF abre apuração." },
       { date: "2025-08-20", text: "Câmara dos Deputados aprova o PL em regime de urgência." },
       { date: "2025-08-27", text: "Senado aprova o texto sem alterações." },
-      { date: "2025-09-17", text: "Sancionada a Lei nº 15.211/2025 — \"ECA Digital\"." },
+      { date: "2025-09-17", text: 'Sancionada a Lei nº 15.211/2025 — "ECA Digital".' },
     ],
     sources: [
-      { label: "Agência Senado — sanção da lei", url: "https://www12.senado.leg.br/noticias/materias/2025/09/17/sancionada-lei-que-protege-criancas-e-adolescentes-em-ambientes-digitais" },
-      { label: "Texto integral da Lei 15.211/2025", url: "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/lei/l15211.htm" },
+      {
+        label: "Agência Senado — sanção da lei",
+        url: "https://www12.senado.leg.br/noticias/materias/2025/09/17/sancionada-lei-que-protege-criancas-e-adolescentes-em-ambientes-digitais",
+      },
+      {
+        label: "Texto integral da Lei 15.211/2025",
+        url: "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/lei/l15211.htm",
+      },
       { label: "Canal do Felca no YouTube", url: "https://www.youtube.com/@Felca" },
     ],
   },
   {
     slug: "caso-vitoria-mineblox-2025",
-    title: "Caso \"Mineblox\" — aliciamento de adolescente em comunidade de jogo online",
+    title: 'Caso "Mineblox" — aliciamento de adolescente em comunidade de jogo online',
     date: "2025-07-15",
     location: "Brasil",
     summary:
@@ -83,7 +94,10 @@ export const cases: CaseItem[] = [
       "Reforçou a discussão sobre verificação de idade, moderação ativa e responsabilidade das plataformas de jogos.",
     image: silenceImg,
     tag: "Ambiente digital",
-    source: { name: "SaferNet Brasil — Indicadores", url: "https://new.safernet.org.br/helpline/indicadores" },
+    source: {
+      name: "SaferNet Brasil — Indicadores",
+      url: "https://new.safernet.org.br/helpline/indicadores",
+    },
     body: `
       <h2>O esquema do aliciamento</h2>
       <p>O caso conhecido como "Mineblox" envolveu uma adolescente brasileira, identificada apenas como Vitória, aliciada por um homem adulto após meses de contato em servidores ligados a jogos como Roblox/Mineblox e em canais do Discord. O agressor utilizou a estratégia clássica do <strong>grooming</strong>: ganho de confiança, presentes virtuais (skins, V-Bucks), isolamento emocional e migração da conversa para canais privados.</p>
@@ -98,14 +112,26 @@ export const cases: CaseItem[] = [
       </ul>
     `,
     timeline: [
-      { date: "2024-12", text: "Primeiros contatos do agressor com a adolescente em servidor de jogo." },
+      {
+        date: "2024-12",
+        text: "Primeiros contatos do agressor com a adolescente em servidor de jogo.",
+      },
       { date: "2025-03", text: "Migração da conversa para Discord privado." },
       { date: "2025-07-15", text: "Caso é publicizado; SaferNet emite alerta nacional." },
-      { date: "2025-08", text: "Operação policial identifica o agressor; rede de aliciamento desmontada." },
+      {
+        date: "2025-08",
+        text: "Operação policial identifica o agressor; rede de aliciamento desmontada.",
+      },
     ],
     sources: [
-      { label: "SaferNet — Indicadores de denúncia", url: "https://new.safernet.org.br/helpline/indicadores" },
-      { label: "Guia de privacidade no Roblox", url: "https://en.help.roblox.com/hc/en-us/articles/360027820752" },
+      {
+        label: "SaferNet — Indicadores de denúncia",
+        url: "https://new.safernet.org.br/helpline/indicadores",
+      },
+      {
+        label: "Guia de privacidade no Roblox",
+        url: "https://en.help.roblox.com/hc/en-us/articles/360027820752",
+      },
     ],
   },
   {
@@ -119,7 +145,10 @@ export const cases: CaseItem[] = [
       "Em homenagem a Araceli, a Lei nº 9.970/2000 instituiu o 18 de maio como Dia Nacional de Combate ao Abuso e à Exploração Sexual de Crianças e Adolescentes.",
     image: ribbonImg,
     tag: "Histórico",
-    source: { name: "Planalto — Lei 9.970/2000", url: "https://www.planalto.gov.br/ccivil_03/leis/l9970.htm" },
+    source: {
+      name: "Planalto — Lei 9.970/2000",
+      url: "https://www.planalto.gov.br/ccivil_03/leis/l9970.htm",
+    },
     body: `
       <h2>O crime</h2>
       <p>Em 18 de maio de 1973, Araceli Cabrera Sánchez Crespo, de apenas <strong>8 anos</strong>, foi sequestrada na saída do colégio em Vitória (ES). Seu corpo foi encontrado seis dias depois, desfigurado por ácido, em um terreno baldio. A perícia constatou abuso sexual.</p>
@@ -136,8 +165,14 @@ export const cases: CaseItem[] = [
       { date: "2000-05-17", text: "Sancionada a Lei nº 9.970/2000 instituindo o 18 de maio." },
     ],
     sources: [
-      { label: "Lei 9.970/2000 — Planalto", url: "https://www.planalto.gov.br/ccivil_03/leis/l9970.htm" },
-      { label: "Childhood Brasil — Maio Laranja", url: "https://www.childhood.org.br/maio-laranja" },
+      {
+        label: "Lei 9.970/2000 — Planalto",
+        url: "https://www.planalto.gov.br/ccivil_03/leis/l9970.htm",
+      },
+      {
+        label: "Childhood Brasil — Maio Laranja",
+        url: "https://www.childhood.org.br/maio-laranja",
+      },
     ],
   },
   {
@@ -151,7 +186,10 @@ export const cases: CaseItem[] = [
       "Resultou na Lei Henry Borel (Lei nº 14.344/2022), que cria mecanismos de prevenção e enfrentamento da violência doméstica contra crianças.",
     image: heroImg,
     tag: "Legislação",
-    source: { name: "Planalto — Lei 14.344/2022", url: "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/lei/l14344.htm" },
+    source: {
+      name: "Planalto — Lei 14.344/2022",
+      url: "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/lei/l14344.htm",
+    },
     body: `
       <h2>A tragédia</h2>
       <p>Na madrugada de 8 de março de 2021, Henry Borel Medeiros, 4 anos, foi levado ao hospital já sem vida. A versão inicial dos responsáveis — a mãe e o padrasto, então vereador no Rio — foi de queda da cama. A perícia revelou múltiplas lesões compatíveis com agressões prolongadas.</p>
@@ -167,7 +205,10 @@ export const cases: CaseItem[] = [
       { date: "2024-04-08", text: "Condenação criminal dos réus em primeira instância." },
     ],
     sources: [
-      { label: "Lei 14.344/2022 — Planalto", url: "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/lei/l14344.htm" },
+      {
+        label: "Lei 14.344/2022 — Planalto",
+        url: "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/lei/l14344.htm",
+      },
     ],
   },
   {
@@ -181,7 +222,10 @@ export const cases: CaseItem[] = [
       "Centenas de mandados cumpridos, prisões em todos os estados brasileiros e identificação de vítimas em parceria com Interpol e NCMEC.",
     image: journalismImg,
     tag: "Operação policial",
-    source: { name: "Ministério da Justiça e Segurança Pública", url: "https://www.gov.br/mj/pt-br/assuntos/noticias" },
+    source: {
+      name: "Ministério da Justiça e Segurança Pública",
+      url: "https://www.gov.br/mj/pt-br/assuntos/noticias",
+    },
     body: `
       <h2>O que é a operação</h2>
       <p>A <strong>Operação Luz na Infância</strong> é a maior ação coordenada do país contra o crime de armazenamento e compartilhamento de material de abuso sexual infantil (CSAM, na sigla em inglês). Conduzida pelo Ministério da Justiça e Segurança Pública em parceria com polícias civis estaduais, Polícia Federal, Interpol e o NCMEC (EUA), já está em sua 11ª edição.</p>
@@ -215,7 +259,10 @@ export const cases: CaseItem[] = [
       "Motivou debates sobre a Lei da Escuta Especializada (Lei nº 13.431/2017), que regulamenta a oitiva protegida de crianças vítimas ou testemunhas.",
     image: joyImg,
     tag: "Repercussão nacional",
-    source: { name: "Planalto — Lei 13.431/2017", url: "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13431.htm" },
+    source: {
+      name: "Planalto — Lei 13.431/2017",
+      url: "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13431.htm",
+    },
     body: `
       <h2>O caso</h2>
       <p>Bernardo Uglione Boldrini, 11 anos, desapareceu de Três Passos (RS) em 4 de abril de 2014. Após 10 dias de buscas, seu corpo foi encontrado enterrado em Frederico Westphalen. As investigações apontaram o pai, a madrasta e dois cúmplices como responsáveis pelo assassinato — premeditado e executado com administração de medicamento letal.</p>
@@ -231,7 +278,10 @@ export const cases: CaseItem[] = [
       { date: "2018-06", text: "Pai e madrasta são condenados em juízo." },
     ],
     sources: [
-      { label: "Lei 13.431/2017 — Planalto", url: "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13431.htm" },
+      {
+        label: "Lei 13.431/2017 — Planalto",
+        url: "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13431.htm",
+      },
     ],
   },
 ];

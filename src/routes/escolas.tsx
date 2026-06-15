@@ -19,7 +19,8 @@ export const Route = createFileRoute("/escolas")({
       { property: "og:title", content: "Guia para Escolas — Infância Protegida" },
       {
         property: "og:description",
-        content: "Protocolo de suspeita, escuta protegida (Lei 13.431/2017) e encaminhamento correto.",
+        content:
+          "Protocolo de suspeita, escuta protegida (Lei 13.431/2017) e encaminhamento correto.",
       },
       { property: "og:image", content: schoolImg },
     ],
@@ -54,19 +55,22 @@ const steps = [
 function Page() {
   return (
     <>
-      <JsonLd data={[
-        breadcrumb([
-          { name: "Início", url: "/" },
-          { name: "Guia para Escolas", url: "/escolas" },
-        ]),
-        articleSchema({
-          headline: "Guia para Escolas e Educadores",
-          description: "Protocolo de identificação, acolhimento e encaminhamento em casos de suspeita.",
-          datePublished: "2025-11-15",
-          image: schoolImg,
-          url: "/escolas",
-        }),
-      ]} />
+      <JsonLd
+        data={[
+          breadcrumb([
+            { name: "Início", url: "/" },
+            { name: "Guia para Escolas", url: "/escolas" },
+          ]),
+          articleSchema({
+            headline: "Guia para Escolas e Educadores",
+            description:
+              "Protocolo de identificação, acolhimento e encaminhamento em casos de suspeita.",
+            datePublished: "2025-11-15",
+            image: schoolImg,
+            url: "/escolas",
+          }),
+        ]}
+      />
 
       <PageHero
         image={schoolImg}
@@ -106,12 +110,14 @@ function Page() {
             <div className="mt-6 space-y-4 text-white/85 leading-relaxed">
               <p>
                 A Lei nº 13.431/2017 estabelece a <strong>escuta especializada</strong> (acolhimento
-                por profissional preparado, sem repetição do relato) e o <strong>depoimento especial</strong> (procedimento judicial em sala adequada, com profissional capacitado).
+                por profissional preparado, sem repetição do relato) e o{" "}
+                <strong>depoimento especial</strong> (procedimento judicial em sala adequada, com
+                profissional capacitado).
               </p>
               <p>
                 Na escola, o papel é acolher e registrar o que foi dito espontaneamente — sem
-                perguntas indutivas, sem confrontar o suposto agressor. A apuração é da Polícia e
-                do Ministério Público.
+                perguntas indutivas, sem confrontar o suposto agressor. A apuração é da Polícia e do
+                Ministério Público.
               </p>
             </div>
           </Reveal>
@@ -126,9 +132,18 @@ function Page() {
               url: "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13431.htm",
             }}
             secondary={[
-              { label: "ECA — Lei 8.069/90, art. 245 (notificação obrigatória)", url: "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm" },
-              { label: "MEC — Guia Escolar para identificação de sinais", url: "https://www.gov.br/mec/pt-br" },
-              { label: "Childhood Brasil — Publicações para educadores", url: "https://www.childhood.org.br/publicacao" },
+              {
+                label: "ECA — Lei 8.069/90, art. 245 (notificação obrigatória)",
+                url: "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm",
+              },
+              {
+                label: "MEC — Guia Escolar para identificação de sinais",
+                url: "https://www.gov.br/mec/pt-br",
+              },
+              {
+                label: "Childhood Brasil — Publicações para educadores",
+                url: "https://www.childhood.org.br/publicacao",
+              },
             ]}
             lastVerified="2025-11-15"
           />

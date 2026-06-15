@@ -66,7 +66,12 @@ export function FloatingAssistant() {
 
       {/* Drawer */}
       {open && (
-        <div className="fixed inset-0 z-50 flex" role="dialog" aria-modal="true" aria-label="Assistente de acolhimento">
+        <div
+          className="fixed inset-0 z-50 flex"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Assistente de acolhimento"
+        >
           <button
             type="button"
             onClick={() => setOpen(false)}

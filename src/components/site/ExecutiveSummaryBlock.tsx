@@ -36,7 +36,10 @@ export function ExecutiveSummaryBlock({ items }: ExecutiveSummaryBlockProps) {
             key={i}
             className="flex items-start gap-3 rounded-xl border border-[color:var(--dossier-rule)] bg-white/70 p-3.5 leading-relaxed text-[color:var(--dossier-ink)]"
           >
-            <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-[color:var(--orange)]" aria-hidden />
+            <CheckCircle2
+              className="mt-0.5 size-4 shrink-0 text-[color:var(--orange)]"
+              aria-hidden
+            />
             <span className="text-sm">{line}</span>
           </li>
         ))}

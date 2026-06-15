@@ -142,9 +142,7 @@ export const laws: LawItem[] = [
   },
 ];
 
-export const lawsBySlug: Record<string, LawItem> = Object.fromEntries(
-  laws.map((l) => [l.slug, l]),
-);
+export const lawsBySlug: Record<string, LawItem> = Object.fromEntries(laws.map((l) => [l.slug, l]));
 
 export function getLawsBySlugs(slugs?: string[] | null): LawItem[] {
   if (!slugs?.length) return [];

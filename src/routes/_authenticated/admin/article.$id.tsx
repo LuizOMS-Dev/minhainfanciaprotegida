@@ -3,11 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
 import { ArrowLeft, Save, Eye, Plus, Trash2, ShieldAlert } from "lucide-react";
-import {
-  getAdminArticle,
-  upsertAdminArticle,
-  type AdminArticle,
-} from "@/lib/admin.functions";
+import { getAdminArticle, upsertAdminArticle, type AdminArticle } from "@/lib/admin.functions";
 import { RichTextEditor } from "@/components/site/RichTextEditor";
 import { SafeHtml, readingTimeMinutes } from "@/components/site/SafeHtml";
 import { laws } from "@/content/laws";
@@ -142,8 +138,7 @@ function ArticleEditor() {
   }, [q.data]);
 
   const save = useMutation({
-    mutationFn: (payload: Record<string, unknown>) =>
-      upsertFn({ data: payload as never }),
+    mutationFn: (payload: Record<string, unknown>) => upsertFn({ data: payload as never }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin-articles"] });
       navigate({ to: "/admin" });
@@ -208,9 +203,9 @@ function ArticleEditor() {
           <div className="mt-6 flex gap-3 rounded-xl border border-[color:var(--orange)]/40 bg-[color:var(--orange)]/5 p-4 text-sm">
             <ShieldAlert className="size-5 shrink-0 text-[color:var(--orange)]" />
             <div>
-              <strong>Política de anonimização (Casos Reais):</strong> nunca cite o nome
-              da vítima. Use iniciais ou idade. Agressores podem ser citados por iniciais
-              ou por processo já público. Cidade/UF/ano são permitidos.
+              <strong>Política de anonimização (Casos Reais):</strong> nunca cite o nome da vítima.
+              Use iniciais ou idade. Agressores podem ser citados por iniciais ou por processo já
+              público. Cidade/UF/ano são permitidos.
             </div>
           </div>
         )}
@@ -249,22 +244,46 @@ function ArticleEditor() {
                   </select>
                 </Field>
                 <Field label="Categoria">
-                  <input value={form.category} onChange={(e) => update("category", e.target.value)} className={inputCls} />
+                  <input
+                    value={form.category}
+                    onChange={(e) => update("category", e.target.value)}
+                    className={inputCls}
+                  />
                 </Field>
               </div>
 
               <Field label="Título *">
-                <input value={form.title} onChange={(e) => update("title", e.target.value)} required maxLength={255} className={inputCls} />
+                <input
+                  value={form.title}
+                  onChange={(e) => update("title", e.target.value)}
+                  required
+                  maxLength={255}
+                  className={inputCls}
+                />
               </Field>
               <Field label="Subtítulo / olho">
-                <input value={form.subtitle} onChange={(e) => update("subtitle", e.target.value)} maxLength={500} className={inputCls} />
+                <input
+                  value={form.subtitle}
+                  onChange={(e) => update("subtitle", e.target.value)}
+                  maxLength={500}
+                  className={inputCls}
+                />
               </Field>
               <Field label="Slug (URL) *" hint="Apenas minúsculas, números e hífen">
-                <input value={form.slug} onChange={(e) => update("slug", slugify(e.target.value))} required className={inputCls} />
+                <input
+                  value={form.slug}
+                  onChange={(e) => update("slug", slugify(e.target.value))}
+                  required
+                  className={inputCls}
+                />
               </Field>
 
               <Field label="Conteúdo">
-                <RichTextEditor value={form.body} onChange={(html) => update("body", html)} placeholder="Escreva o conteúdo da publicação..." />
+                <RichTextEditor
+                  value={form.body}
+                  onChange={(html) => update("body", html)}
+                  placeholder="Escreva o conteúdo da publicação..."
+                />
                 <div className="mt-2 flex items-center justify-between text-[11px] text-muted-foreground">
                   <span>{readingTimeMinutes(form.body)} min de leitura</span>
                   <button
@@ -272,7 +291,8 @@ function ArticleEditor() {
                     onClick={() => setShowPreview((v) => !v)}
                     className="inline-flex items-center gap-1 hover:text-foreground"
                   >
-                    <Eye className="size-3" /> {showPreview ? "Ocultar preview" : "Visualizar preview"}
+                    <Eye className="size-3" />{" "}
+                    {showPreview ? "Ocultar preview" : "Visualizar preview"}
                   </button>
                 </div>
                 {showPreview && form.body && (
@@ -287,17 +307,38 @@ function ArticleEditor() {
           {tab === "midia" && (
             <>
               <Field label="Imagem de capa (URL)">
-                <input type="url" value={form.cover_url} onChange={(e) => update("cover_url", e.target.value)} className={inputCls} placeholder="https://..." />
+                <input
+                  type="url"
+                  value={form.cover_url}
+                  onChange={(e) => update("cover_url", e.target.value)}
+                  className={inputCls}
+                  placeholder="https://..."
+                />
               </Field>
               {form.cover_url && (
-                <img src={form.cover_url} alt="" className="rounded-xl max-h-64 object-cover border border-border" />
+                <img
+                  src={form.cover_url}
+                  alt=""
+                  className="rounded-xl max-h-64 object-cover border border-border"
+                />
               )}
               <div className="grid sm:grid-cols-2 gap-4">
                 <Field label="Fonte principal — rótulo">
-                  <input value={form.primary_source_label} onChange={(e) => update("primary_source_label", e.target.value)} className={inputCls} placeholder="Ex: Agência Câmara" />
+                  <input
+                    value={form.primary_source_label}
+                    onChange={(e) => update("primary_source_label", e.target.value)}
+                    className={inputCls}
+                    placeholder="Ex: Agência Câmara"
+                  />
                 </Field>
                 <Field label="Fonte principal — URL">
-                  <input type="url" value={form.primary_source_url} onChange={(e) => update("primary_source_url", e.target.value)} className={inputCls} placeholder="https://..." />
+                  <input
+                    type="url"
+                    value={form.primary_source_url}
+                    onChange={(e) => update("primary_source_url", e.target.value)}
+                    className={inputCls}
+                    placeholder="https://..."
+                  />
                 </Field>
               </div>
               <Field label="Tempo de leitura (min) — opcional, calculado automaticamente se vazio">
@@ -320,14 +361,22 @@ function ArticleEditor() {
                 label="Entenda o assunto"
                 hint="Contexto educativo curto (HTML simples). Aparece em destaque após a matéria."
               >
-                <RichTextEditor value={form.understand} onChange={(html) => update("understand", html)} placeholder="Por que este tema importa?" />
+                <RichTextEditor
+                  value={form.understand}
+                  onChange={(html) => update("understand", html)}
+                  placeholder="Por que este tema importa?"
+                />
               </Field>
               {isCase && (
                 <Field
                   label="O que aprendemos"
                   hint="Lições do caso — foco em prevenção e proteção. Nunca exponha a vítima."
                 >
-                  <RichTextEditor value={form.lessons} onChange={(html) => update("lessons", html)} placeholder="Que sinais poderiam ter sido percebidos? Como prevenir?" />
+                  <RichTextEditor
+                    value={form.lessons}
+                    onChange={(html) => update("lessons", html)}
+                    placeholder="Que sinais poderiam ter sido percebidos? Como prevenir?"
+                  />
                 </Field>
               )}
             </>
@@ -337,9 +386,7 @@ function ArticleEditor() {
             <TimelineEditor value={form.timeline} onChange={(v) => update("timeline", v)} />
           )}
 
-          {tab === "faq" && (
-            <FaqEditor value={form.faq} onChange={(v) => update("faq", v)} />
-          )}
+          {tab === "faq" && <FaqEditor value={form.faq} onChange={(v) => update("faq", v)} />}
 
           {tab === "relacionamentos" && (
             <>
@@ -384,10 +431,20 @@ function ArticleEditor() {
               </Field>
               <div className="grid sm:grid-cols-2 gap-4">
                 <Field label="Agendar publicação">
-                  <input type="datetime-local" value={form.publish_at} onChange={(e) => update("publish_at", e.target.value)} className={inputCls} />
+                  <input
+                    type="datetime-local"
+                    value={form.publish_at}
+                    onChange={(e) => update("publish_at", e.target.value)}
+                    className={inputCls}
+                  />
                 </Field>
                 <Field label="Última verificação editorial">
-                  <input type="date" value={form.last_verified_at} onChange={(e) => update("last_verified_at", e.target.value)} className={inputCls} />
+                  <input
+                    type="date"
+                    value={form.last_verified_at}
+                    onChange={(e) => update("last_verified_at", e.target.value)}
+                    className={inputCls}
+                  />
                 </Field>
               </div>
             </>
@@ -396,7 +453,10 @@ function ArticleEditor() {
           {error && <p className="text-sm text-[color:var(--red-inst)]">{error}</p>}
 
           <div className="flex justify-end gap-3 pt-4 border-t border-border">
-            <Link to="/admin" className="inline-flex items-center rounded-full border border-border px-5 py-2.5 text-sm font-semibold">
+            <Link
+              to="/admin"
+              className="inline-flex items-center rounded-full border border-border px-5 py-2.5 text-sm font-semibold"
+            >
               Cancelar
             </Link>
             <button
@@ -495,13 +555,7 @@ function TimelineEditor({
   );
 }
 
-function FaqEditor({
-  value,
-  onChange,
-}: {
-  value: FaqEntry[];
-  onChange: (v: FaqEntry[]) => void;
-}) {
+function FaqEditor({ value, onChange }: { value: FaqEntry[]; onChange: (v: FaqEntry[]) => void }) {
   function add() {
     onChange([...value, { q: "", a: "" }]);
   }
@@ -514,8 +568,8 @@ function FaqEditor({
   return (
     <div className="space-y-4">
       <p className="text-sm text-muted-foreground">
-        Perguntas frequentes — alimentam o bloco FAQ e o schema <code>FAQPage</code> para
-        Google e assistentes de IA.
+        Perguntas frequentes — alimentam o bloco FAQ e o schema <code>FAQPage</code> para Google e
+        assistentes de IA.
       </p>
       {value.map((entry, i) => (
         <div key={i} className="rounded-xl border border-border bg-card p-4 space-y-3">

@@ -13,7 +13,10 @@ export interface AdminUser {
   created_at: string | null;
 }
 
-async function ensureAdmin(supabase: typeof import("@/integrations/supabase/client").supabase, userId: string) {
+async function ensureAdmin(
+  supabase: typeof import("@/integrations/supabase/client").supabase,
+  userId: string,
+) {
   const { data, error } = await supabase
     .from("user_roles")
     .select("role")

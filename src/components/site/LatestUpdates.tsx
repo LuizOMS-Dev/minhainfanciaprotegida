@@ -71,7 +71,8 @@ export function LatestUpdates() {
                       </p>
                     )}
                     <span className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-[color:var(--red-inst)]">
-                      Ler {label.toLowerCase()} <ArrowRight className="size-4 transition group-hover:translate-x-1" />
+                      Ler {label.toLowerCase()}{" "}
+                      <ArrowRight className="size-4 transition group-hover:translate-x-1" />
                     </span>
                   </div>
                 </Link>

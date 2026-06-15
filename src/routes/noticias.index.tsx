@@ -63,7 +63,11 @@ function NoticiasPage() {
 
       <section className="py-12 sm:py-16 bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap gap-2 mb-10" role="tablist" aria-label="Filtrar por categoria">
+          <div
+            className="flex flex-wrap gap-2 mb-10"
+            role="tablist"
+            aria-label="Filtrar por categoria"
+          >
             {CATEGORIES.map((c) => (
               <button
                 key={c}

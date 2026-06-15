@@ -22,7 +22,7 @@ export interface NewsItem {
 export const news: NewsItem[] = [
   {
     slug: "eca-digital-lei-felca-sancionada",
-    title: "Sancionada a Lei nº 15.211/2025 — \"ECA Digital\" inspirado no caso Felca",
+    title: 'Sancionada a Lei nº 15.211/2025 — "ECA Digital" inspirado no caso Felca',
     date: "2025-09-17",
     excerpt:
       "A nova lei obriga plataformas digitais a adotar medidas para proteger crianças e adolescentes de conteúdos que envolvam adultização e exploração.",
@@ -45,8 +45,14 @@ export const news: NewsItem[] = [
       <p>O projeto, parado desde 2022, foi pautado em regime de urgência após a repercussão do vídeo "Adultização" publicado pelo influenciador Felca em agosto de 2025.</p>
     `,
     sources: [
-      { label: "Texto integral — Planalto", url: "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/lei/l15211.htm" },
-      { label: "Cobertura da Câmara dos Deputados", url: "https://www.camara.leg.br/noticias/1099083-camara-aprova-projeto-que-protege-criancas-e-adolescentes-em-ambientes-digitais" },
+      {
+        label: "Texto integral — Planalto",
+        url: "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/lei/l15211.htm",
+      },
+      {
+        label: "Cobertura da Câmara dos Deputados",
+        url: "https://www.camara.leg.br/noticias/1099083-camara-aprova-projeto-que-protege-criancas-e-adolescentes-em-ambientes-digitais",
+      },
     ],
   },
   {
@@ -122,7 +128,10 @@ export const news: NewsItem[] = [
       "Relatório global do Fundo das Nações Unidas para a Infância reforça que a violência sexual atinge proporções alarmantes e exige resposta intersetorial.",
     image: familyImg,
     category: "Pesquisa",
-    source: { name: "UNICEF", url: "https://www.unicef.org/brazil/protecao-de-criancas-e-adolescentes" },
+    source: {
+      name: "UNICEF",
+      url: "https://www.unicef.org/brazil/protecao-de-criancas-e-adolescentes",
+    },
     body: `
       <p>Em outubro de 2024, o UNICEF publicou o estudo <em>"When Numbers Demand Action: Confronting the global scale of sexual violence against children"</em>. O relatório indica que <strong>cerca de 370 milhões de mulheres e meninas</strong> sofreram estupro ou violência sexual antes dos 18 anos — o equivalente a 1 em cada 5.</p>
       <p>Para meninos, a estimativa é de 1 em cada 11 — totalizando entre 240 e 310 milhões.</p>
@@ -142,7 +151,10 @@ export const news: NewsItem[] = [
       "A Lei nº 13.431/2017 estabelece o sistema de garantia de direitos da criança vítima ou testemunha de violência, evitando a revitimização.",
     image: heroImg,
     category: "Direitos",
-    source: { name: "Planalto", url: "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13431.htm" },
+    source: {
+      name: "Planalto",
+      url: "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13431.htm",
+    },
     body: `
       <p>A <strong>Lei nº 13.431/2017</strong> normatizou no Brasil dois instrumentos fundamentais para proteger crianças vítimas ou testemunhas de violência:</p>
       <h2>Escuta especializada</h2>
