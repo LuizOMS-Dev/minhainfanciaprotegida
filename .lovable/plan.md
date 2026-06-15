@@ -1,93 +1,69 @@
-# Reformulação de Casos — Dossiê Institucional
+# Redesign — Empatia Institucional
 
-Identidade visual unificada entre `/casos` (listagem) e `/casos/:slug` (detalhe), com a estética **Dossiê Institucional**: fundo creme claro (`#F5F1EA`), navy profundo (`#0B142D`) como tipografia e estrutura, laranja institucional (`#D9531E`) como acento de urgência, e cinza grafite (`#1F2937`) para corpo de texto. Tipografia serifada nos títulos (display), sans-serif refinada no corpo, gerando ar de relatório nacional sério.
+Aplicar a direção escolhida ao portal **Minha Infância Protegida**, mantendo a paleta atual (navy `#0B142D`, laranja `#D9531E`, creme `#F5F1EA`, ink `#1F2937`) e tipografia **Instrument Serif + Work Sans**. Foco no chrome global (topbar, header, hero) + harmonização das seções da home.
 
-## 1. Listagem `/casos/index`
+## 1. Tokens & tipografia (`src/styles.css` + `__root.tsx`)
 
-Manter o modelo **Grid editorial + filtros**, mas reconstruído em camadas:
+- Trocar fontes carregadas: substituir Fraunces/Inter por **Instrument Serif** (display) + **Work Sans** (body) via `<link>` no `__root.tsx`.
+- Atualizar `--font-display` e `--font-sans` em `@theme`.
+- Adicionar utilitários novos: `glass-card` (backdrop-blur + borda translúcida), `shadow-orange-soft`, e refinar `--shadow-elegant`.
+- Garantir que vermelho de emergência (`--red-inst`) mantenha contraste AA na topbar.
 
-**a) Hero "capa de dossiê"**
-- Substituir `PageHero` genérico por um hero próprio em fundo creme com faixa superior navy.
-- Eyebrow: "DOSSIÊ NACIONAL · CASOS REAIS".
-- H1 serifado grande ("Histórias que mudaram leis").
-- Linha de metadados: total de casos publicados, faixa temporal coberta (ano mais antigo → mais recente), data da última verificação.
-- Selo "Conteúdo verificado · Fontes oficiais" em destaque.
+## 2. Topbar de emergência (`SiteHeader.tsx`)
 
-**b) Caso em destaque (featured)**
-- Primeiro caso (mais recente ou marcado) renderiza em layout largo 2 colunas: imagem à esquerda, título serifado + resumo + cronologia mínima + CTA "Ler dossiê" à direita.
+- Faixa vermelha mais discreta: ícone alerta + "DENUNCIE AGORA" à esquerda, divisor, "24h, gratuito e anônimo".
+- À direita: pílula branca com "Disque 100" e ícone telefone (link `tel:100`), hover suave.
+- Layout responsivo: mantém apenas Disque 100 visível em mobile.
 
-**c) Barra de filtros premium (sticky)**
-- Filtros por categoria (chips), severidade (Alta/Média/Baixa) e ano.
-- Campo de busca por título.
-- Contador "X casos · filtrando por Y".
-- Sticky ao rolar, com blur sutil sobre o creme.
+## 3. Header principal (`SiteHeader.tsx`)
 
-**d) Grid editorial**
-- Cards reformulados (componente novo `CaseCard` ou variante de `ArticleCard`): capa 4:3, chip de categoria + severidade, título serifado, data do acontecimento + data da publicação, fonte primária citada no rodapé do card.
-- Empty state ilustrado se filtros não retornarem nada.
+- Logo: tile arredondado 56px com gradiente laranja + ícone escudo animado (mantém o atual).
+- Título "INFÂNCIA PROTEGIDA" em Work Sans bold + sub-eyebrow laranja "Campanha Maio Laranja".
+- Busca: input pílula com fundo `slate-100`, foco branco com ring laranja, ícone à esquerda.
+- CTA "DENUNCIE AGORA" laranja com sombra suave laranja, ícone de alerta.
+- Nav abaixo, em linha própria com borda superior fina, links uppercase tracking-wide, ativo com underline laranja.
+- "Mais" no canto direito mantém dropdown atual.
 
-**e) Bloco institucional inferior**
-- Faixa navy com: "Como verificamos os casos" (link para metodologia) + "Como denunciar" (link para /denuncia) + "Veja a legislação" (link para /legislacao).
+## 4. Hero principal (`src/routes/index.tsx`)
 
-## 2. Detalhe `/casos/:slug`
+- Bloco full-width 640px, fundo navy `#0B142D` com imagem de mãos/silhuetas em `opacity-50 mix-blend-luminosity` + gradiente vertical para legibilidade.
+- Badge "MAIO LARANJA" com ponto pulsando.
+- H1 serifado gigante (`Instrument Serif`, 5xl→7xl): "Proteção é compromisso de **todos nós.**" (acento laranja na segunda parte).
+- Subtítulo em slate-300.
+- Dois CTAs: primário laranja "Como Identificar Sinais" → `/sinais`; secundário glass "Materiais de Apoio" → `/biblioteca`.
+- Ornamento SVG floral laranja decorativo no canto inferior direito (opacity 10%).
+- Respeitar `prefers-reduced-motion` (sem pulse).
 
-Reestruturado com identidade dossiê, dando destaque a **Resumo executivo / Por que importa** e **Sinais de alerta / Como agir** (escolhas do usuário).
+## 5. Harmonização das seções abaixo do hero
 
-**Nova ordem dos blocos:**
+Apenas ajustes de estilo para casar com o novo hero (não reescrever lógica):
+- **Pilares** (Sinais/Riscos/Pais/Escolas): cards brancos com ícone em tile laranja-suave, hover-lift.
+- **Casos em destaque**: manter componentes do dossiê (já alinhados à paleta).
+- **Notícias recentes**: cards editoriais com título serifado.
+- **Faixa final de denúncia**: bloco navy full-width com Disque 100 + canais.
+- **Footer**: pequenos ajustes tipográficos para combinar.
 
-1. **`ArticleHero` (ajuste leve)** — fundo creme escuro com overlay navy, eyebrow "Dossiê · Caso real", título serifado, faixa de datas cronológicas (mantém `DatesStrip` atual).
-2. **Resumo executivo (NOVO bloco `ExecutiveSummaryBlock`)** — caixa de abertura em creme com borda navy:
-   - 3-5 bullets factuais ("O que aconteceu", "Quando", "Onde", "Quem está envolvido", "Status atual").
-   - Lê de novo campo `executive_summary` no artigo (ver §4).
-3. **Por que importa (NOVO bloco `WhyItMattersBlock`)** — caixa laranja-suave com ícone de impacto, parágrafo curto explicando relevância nacional/legislativa. Lê de campo `why_it_matters`.
-4. `Timeline` (cronologia existente) — visual reforçado para combinar com o dossiê.
-5. `UnderstandBlock` ("Entenda o assunto").
-6. **Sinais de alerta em destaque** — `SignalsBlock` promovido visualmente: card laranja com borda forte, lista de sinais com ícones, CTA "Ver guia completo de sinais".
-7. **Como agir agora (NOVO `HowToActBlock`)** — passo a passo numerado (1. Acolha · 2. Registre · 3. Denuncie · 4. Encaminhe), com botões para Disque 100, /denuncia e /mapa. Substitui visualmente o `CaseActions` atual no meio do artigo (CaseActions vira o fechamento).
-8. `LessonsBlock`, `NationalContextChips`, `RecommendedReading`, `LegislationBlock`, `ReportChannels`, `RelatedMaterials`, `FaqBlock` — mantidos, com pequeno restyle para harmonizar com a paleta dossiê.
-9. `CaseActions` (fechamento) + `ReferencesBlock` + `ShareButtons` + `ArticleSiblingNav` + `RelatedArticles`.
+## 6. Acessibilidade & performance
 
-**Sidebar/coluna lateral em desktop (≥lg):**
-- Coluna direita sticky com: mini-timeline navegável, "Datas-chave", "Fontes" e botão "Como denunciar".
-- Em mobile vira blocos empilhados no fluxo normal.
+- `aria-label` em ícones-só.
+- Contraste AA verificado para todas as combinações.
+- `loading="lazy"` em imagens fora do hero.
+- `prefers-reduced-motion` desativa pulse/kenburns.
+- Sem mudanças de rota, schema ou backend.
 
-## 3. Componentes e arquivos
-
-**Novos:**
-- `src/components/site/CaseCard.tsx` — card editorial do dossiê.
-- `src/components/site/CasosHero.tsx` — hero da listagem.
-- `src/components/site/CasosFilters.tsx` — barra sticky de filtros.
-- `src/components/site/ExecutiveSummaryBlock.tsx`
-- `src/components/site/WhyItMattersBlock.tsx`
-- `src/components/site/HowToActBlock.tsx`
-- `src/components/site/CaseSidebar.tsx` — coluna lateral sticky.
+## 7. Arquivos afetados
 
 **Editados:**
-- `src/routes/casos.index.tsx` — nova composição (hero + featured + filtros + grid + faixa institucional).
-- `src/routes/casos.$slug.tsx` — layout em 2 colunas (lg+), nova ordem de blocos.
-- `src/components/site/ArticleHero.tsx` — variante visual "dossiê" para casos (fundo creme + faixa navy) preservando comportamento atual para notícias.
-- `src/components/site/ArticleBlocks.tsx` — pequenos restyles de `SignalsBlock`, `UnderstandBlock` para alinhar à paleta.
-- `src/styles.css` — tokens novos: `--dossier-cream: #F5F1EA`, `--dossier-ink: #1F2937`, e classe utilitária para a borda dupla de dossiê.
+- `src/styles.css` — fontes, tokens, utilitários.
+- `src/routes/__root.tsx` — `<link>` das novas fontes.
+- `src/components/site/SiteHeader.tsx` — topbar, header, nav.
+- `src/routes/index.tsx` — hero e ajustes leves nas seções.
+- `src/components/site/PageHero.tsx`, `ArticleCard.tsx`, `SiteFooter.tsx` — restyle leve para harmonizar.
 
-## 4. Dados / Schema
+**Sem alterações:** rotas, loaders, banco de dados, lógica de admin, componentes do dossiê de Casos (já alinhados).
 
-Para preencher Resumo executivo, Por que importa e Como agir, adicionar 3 colunas opcionais em `articles`:
-- `executive_summary jsonb` — array de strings (bullets).
-- `why_it_matters text` — parágrafo curto.
-- `how_to_act jsonb` — array de `{ step, title, description }` (opcional; se nulo, renderiza versão padrão do bloco).
+## Fora de escopo
 
-Migration adiciona colunas + ajusta `getPublishedArticle` para retorná-las. Casos sem esses campos continuam renderizando com fallback (bloco oculto ou conteúdo padrão), nenhum dado existente é alterado.
-
-## 5. Acessibilidade e performance
-
-- Manter `prefers-reduced-motion` em qualquer animação nova.
-- Sticky filters e sidebar só em ≥lg.
-- `aria-label` em todas as novas regiões.
-- Images com `loading="lazy"` exceto hero/featured.
-- Manter SSR/loader pattern existente; nenhum `useEffect+fetch`.
-
-## 6. Fora de escopo
-
-- Sem alterações em /noticias (escopo é apenas Casos).
-- Sem nova animação 3D ou libs adicionais — só Tailwind + tokens + classes já disponíveis.
-- Sem reescrita de `Timeline.tsx`, apenas restyle leve se necessário.
+- Redesign das páginas internas (Notícias, Casos detalhe, Admin) — fica para iterações seguintes se desejar.
+- Mudanças de conteúdo/copy além das mostradas no hero.
+- Novas libs de animação.
