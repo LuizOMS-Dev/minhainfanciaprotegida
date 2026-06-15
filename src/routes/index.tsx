@@ -133,61 +133,74 @@ function Index() {
             src={heroImg}
             alt=""
             aria-hidden
-            className="absolute inset-0 h-full w-full object-cover animate-kenburns"
+            className="absolute inset-0 h-full w-full object-cover opacity-50 mix-blend-luminosity animate-kenburns"
           />
           <div
             className="absolute inset-0"
             style={{
               backgroundImage:
-                "linear-gradient(120deg, rgba(11,20,45,0.92) 0%, rgba(11,20,45,0.78) 45%, rgba(232,108,42,0.35) 100%)",
+                "linear-gradient(to top, rgba(8,14,32,0.95) 0%, rgba(11,20,45,0.7) 45%, rgba(11,20,45,0.4) 100%)",
             }}
           />
         </div>
-        <div className="absolute inset-0 -z-10 opacity-30 mix-blend-overlay" aria-hidden>
-          <div className="absolute -top-24 -left-24 size-96 rounded-full bg-[color:var(--orange)] blur-3xl" />
-          <div className="absolute bottom-0 right-0 size-[28rem] rounded-full bg-[color:var(--red-inst)] blur-3xl" />
+
+        {/* Ornamento floral decorativo */}
+        <div className="pointer-events-none absolute -bottom-10 -right-10 hidden md:block opacity-[0.08]" aria-hidden>
+          <svg width="420" height="420" viewBox="0 0 100 100" fill="none" className="text-[color:var(--orange)]">
+            <path
+              d="M50 10C55 35 75 35 90 50C75 65 55 65 50 90C45 65 25 65 10 50C25 35 45 35 50 10Z"
+              fill="currentColor"
+            />
+          </svg>
         </div>
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-24 sm:pt-28 sm:pb-32 lg:pt-36 lg:pb-44">
           <Reveal>
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-semibold tracking-[0.2em] uppercase backdrop-blur">
-              <Sparkles className="size-3.5 text-[color:var(--orange)]" aria-hidden />
-              18 de Maio · Dia Nacional de Combate ao Abuso e Exploração Sexual
+            <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--orange)]/40 bg-[color:var(--orange)]/15 px-4 py-1.5 text-[11px] font-bold tracking-[0.22em] uppercase text-[color:var(--orange)] backdrop-blur-md">
+              <span className="relative inline-flex size-2">
+                <span className="absolute inset-0 rounded-full bg-[color:var(--orange)] animate-ping-slow" />
+                <span className="relative inline-block size-2 rounded-full bg-[color:var(--orange)]" />
+              </span>
+              Maio Laranja · 18 de Maio
             </div>
           </Reveal>
 
           <Reveal delay={120}>
-            <h1 className="mt-6 font-display text-4xl sm:text-6xl lg:text-7xl font-semibold leading-[1.02] text-balance max-w-4xl">
-              Uma infância protegida{" "}
-              <span className="bg-gradient-to-r from-[color:var(--orange)] via-amber-300 to-[color:var(--orange)] bg-clip-text text-transparent">
-                muda o futuro
-              </span>{" "}
-              de uma sociedade.
+            <h1 className="mt-6 font-display text-5xl sm:text-6xl lg:text-7xl xl:text-[88px] font-normal leading-[1.02] tracking-tight text-balance max-w-4xl">
+              Proteção é compromisso de{" "}
+              <span className="italic text-[color:var(--orange)]">todos nós.</span>
             </h1>
           </Reveal>
 
           <Reveal delay={240}>
-            <p className="mt-6 max-w-2xl text-lg sm:text-xl text-white/85 leading-relaxed">
-              Milhares de crianças sofrem em silêncio. Informação, atenção e denúncia salvam vidas.
+            <p className="mt-6 max-w-2xl text-lg sm:text-xl text-white/80 leading-relaxed">
+              Educar para prevenir. Denunciar para proteger. Juntos contra o abuso e a exploração sexual de crianças e adolescentes.
             </p>
           </Reveal>
 
           <Reveal delay={360}>
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Link
-                to="/denuncia"
-                className="group inline-flex items-center gap-2 rounded-full bg-[color:var(--red-inst)] px-7 py-4 text-base font-semibold shadow-lg hover:shadow-2xl hover:-translate-y-0.5 transition"
+                to="/sinais"
+                className="group inline-flex items-center gap-2 rounded-xl bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-7 py-4 text-base font-bold shadow-orange hover:shadow-2xl hover:-translate-y-0.5 transition"
               >
-                <Phone className="size-5" aria-hidden />
-                Denunciar Agora
+                <Eye className="size-5" aria-hidden />
+                Como Identificar Sinais
                 <ArrowRight className="size-4 transition group-hover:translate-x-1" aria-hidden />
               </Link>
               <Link
-                to="/sinais"
-                className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-7 py-4 text-base font-semibold backdrop-blur hover:bg-white/10 transition"
+                to="/biblioteca"
+                className="inline-flex items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-7 py-4 text-base font-bold text-white backdrop-blur-lg hover:bg-white/20 transition"
               >
-                <Eye className="size-5" aria-hidden />
-                Entender os Sinais
+                <BookOpen className="size-5" aria-hidden />
+                Materiais de Apoio
+              </Link>
+              <Link
+                to="/denuncia"
+                className="inline-flex items-center gap-2 rounded-xl bg-[color:var(--red-inst)]/95 px-7 py-4 text-base font-bold text-white hover:bg-[color:var(--red-inst)] transition"
+              >
+                <Phone className="size-5" aria-hidden />
+                Denunciar Agora
               </Link>
             </div>
           </Reveal>
