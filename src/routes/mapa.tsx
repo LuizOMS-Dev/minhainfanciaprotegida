@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { Reveal } from "@/components/shared/Reveal";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { ReferencesBlock } from "@/components/public/ReferencesBlock";
-import { PageHero } from "@/components/public/PageHero";
+import { PageBreadcrumb } from "@/components/shared/PageBreadcrumb";
 import { helpLocations, ufList, type HelpType } from "@/content/helpLocations";
 import heroMapa from "@/assets/hero-mapa.jpg";
 
@@ -68,6 +68,13 @@ function Page() {
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center relative z-10">
           <div className="max-w-xl">
+            <PageBreadcrumb
+              items={[
+                { label: "Início", to: "/" },
+                { label: "Mapa de ajuda" },
+              ]}
+              className="mb-6"
+            />
             <Reveal>
               <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--navy)]/10 bg-[color:var(--navy)]/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[color:var(--navy-deep)] shadow-sm">
                 <MapPin className="size-3.5 text-[color:var(--orange)]" /> Mapa de ajuda

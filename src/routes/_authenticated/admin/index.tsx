@@ -111,7 +111,7 @@ function DashboardPage() {
 
   return (
     <section className="space-y-8">
-      <div className="rounded-3xl border border-border bg-gradient-to-br from-[color:var(--navy-deep)] to-[color:var(--navy)] text-white p-6 sm:p-8 shadow-elegant">
+      <div className="rounded-3xl border border-border bg-[color:var(--navy-deep)] text-white p-6 sm:p-8 shadow-elegant">
         <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-white/70 font-semibold">
           <Sparkles className="size-3.5" /> Visão executiva
         </p>
