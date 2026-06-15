@@ -22,8 +22,31 @@ export const Route = createFileRoute("/biblioteca")({
         property: "og:description",
         content: "Materiais oficiais para famílias, educadores e profissionais.",
       },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://minhainfanciaprotegida.com.br/biblioteca" },
+      { property: "og:image", content: "https://minhainfanciaprotegida.com.br/hero-biblioteca.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Biblioteca — Infância Protegida" },
+      {
+        name: "twitter:description",
+        content: "Materiais oficiais para famílias, educadores e profissionais.",
+      },
+      { name: "twitter:image", content: "https://minhainfanciaprotegida.com.br/hero-biblioteca.jpg" },
     ],
     links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/biblioteca" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": "Biblioteca de materiais oficiais — Infância Protegida",
+          "url": "https://minhainfanciaprotegida.com.br/biblioteca",
+          "description": "Cartilhas, guias, pesquisas e estudos sobre proteção de crianças e adolescentes.",
+          "isPartOf": { "@id": "https://minhainfanciaprotegida.com.br/#website" }
+        })
+      }
+    ]
   }),
   component: Page,
 });

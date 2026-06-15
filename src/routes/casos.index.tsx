@@ -25,8 +25,31 @@ export const Route = createFileRoute("/casos/")({
         property: "og:description",
         content: "Casos que mudaram leis e a forma como o Brasil enfrenta a violência contra crianças.",
       },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://minhainfanciaprotegida.com.br/casos" },
+      { property: "og:image", content: "https://minhainfanciaprotegida.com.br/hero-casos.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Dossiê nacional · Casos reais — Infância Protegida" },
+      {
+        name: "twitter:description",
+        content: "Casos que mudaram leis e a forma como o Brasil enfrenta a violência contra crianças.",
+      },
+      { name: "twitter:image", content: "https://minhainfanciaprotegida.com.br/hero-casos.jpg" },
     ],
     links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/casos" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": "Dossiê nacional · Casos reais — Infância Protegida",
+          "url": "https://minhainfanciaprotegida.com.br/casos",
+          "description": "Casos verificados que marcaram o combate ao abuso e à exploração sexual de crianças e adolescentes no Brasil.",
+          "isPartOf": { "@id": "https://minhainfanciaprotegida.com.br/#website" }
+        })
+      }
+    ]
   }),
   component: CasosPage,
 });

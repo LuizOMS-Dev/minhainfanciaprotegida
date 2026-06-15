@@ -27,19 +27,33 @@ import {
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-[60vh] items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="font-display text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Página não encontrada</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          A página que você procura não existe ou foi movida.
+    <div className="flex min-h-[70vh] flex-col items-center justify-center bg-background px-4 py-16">
+      <div className="max-w-xl text-center">
+        <div className="mx-auto mb-6 flex size-20 items-center justify-center rounded-full bg-muted/50">
+          <span className="font-display text-4xl font-bold text-muted-foreground">404</span>
+        </div>
+        <h1 className="font-display text-3xl font-bold text-foreground sm:text-4xl">Página não encontrada</h1>
+        <p className="mt-4 text-base text-muted-foreground">
+          O conteúdo que você procura não existe ou foi movido. Explore os links abaixo para encontrar informações importantes.
         </p>
-        <div className="mt-6">
+        <div className="mt-10 flex flex-wrap justify-center gap-4">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-full bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-5 py-2.5 text-sm font-semibold hover:opacity-95"
+            className="inline-flex items-center justify-center rounded-full bg-[color:var(--orange)] px-6 py-3 text-sm font-bold text-[color:var(--navy-deep)] hover:opacity-95 transition"
           >
             Voltar para o início
+          </Link>
+          <Link
+            to="/biblioteca"
+            className="inline-flex items-center justify-center rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground hover:bg-muted transition"
+          >
+            Acessar Biblioteca
+          </Link>
+          <Link
+            to="/sinais"
+            className="inline-flex items-center justify-center rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground hover:bg-muted transition"
+          >
+            Sinais de Alerta
           </Link>
         </div>
       </div>

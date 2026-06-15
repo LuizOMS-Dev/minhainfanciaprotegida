@@ -25,8 +25,31 @@ export const Route = createFileRoute("/noticias/")({
         property: "og:description",
         content: "Acompanhe pesquisas, leis e mobilizações pelo direito à infância protegida.",
       },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://minhainfanciaprotegida.com.br/noticias" },
+      { property: "og:image", content: "https://minhainfanciaprotegida.com.br/hero-noticias.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Notícias — Infância Protegida" },
+      {
+        name: "twitter:description",
+        content: "Acompanhe pesquisas, leis e mobilizações pelo direito à infância protegida.",
+      },
+      { name: "twitter:image", content: "https://minhainfanciaprotegida.com.br/hero-noticias.jpg" },
     ],
     links: [{ rel: "canonical", href: "https://minhainfanciaprotegida.com.br/noticias" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": "Notícias — Infância Protegida",
+          "url": "https://minhainfanciaprotegida.com.br/noticias",
+          "description": "Atualizações, pesquisas, novas leis e ações sobre o combate à violência sexual contra crianças e adolescentes.",
+          "isPartOf": { "@id": "https://minhainfanciaprotegida.com.br/#website" }
+        })
+      }
+    ]
   }),
   component: NoticiasPage,
 });
