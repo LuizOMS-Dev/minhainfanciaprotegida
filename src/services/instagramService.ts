@@ -150,14 +150,317 @@ function publishingEnabled() {
   return process.env.INSTAGRAM_AUTO_PUBLISH_ENABLED === "true";
 }
 
-function oauthConfigured() {
-  return Boolean(
-    process.env.INSTAGRAM_APP_ID &&
-      process.env.INSTAGRAM_APP_SECRET &&
-      process.env.INSTAGRAM_REDIRECT_URI &&
-      process.env.INSTAGRAM_TOKEN_ENCRYPTION_KEY,
-  );
+const DEFAULT_SCOPES = ["instagram_business_basic", "instagram_business_content_publish"];
+
+function getInstagramConfig() {
+  const appId = process.env.INSTAGRAM_APP_ID;
+  const appSecret = process.env.INSTAGRAM_APP_SECRET;
+  const redirectUri = process.env.INSTAGRAM_REDIRECT_URI;
+  const tokenKey = process.env.INSTAGRAM_TOKEN_ENCRYPTION_KEY;
+  if (!appId || !appSecret || !redirectUri || !tokenKey) {
+    throw new Error("OAuth da Meta ainda nao configurado no servidor.");
+  }
+  return {
+    appId,
+    appSecret,
+    redirectUri,
+    tokenKey,
+    scopes: (process.env.INSTAGRAM_SCOPES ?? DEFAULT_SCOPES.join(","))
+      .split(/[,\s]+/)
+      .map((scope) => scope.trim())
+      .filter(Boolean),
+  };
 }
+
+function oauthConfigured() {
+  try {
+    getInstagramConfig();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function getCryptoApi() {
+  if (!globalThis.crypto?.subtle || !globalThis.crypto.getRandomValues) {
+    throw new Error("Web Crypto indisponivel no runtime.");
+  }
+  return globalThis.crypto;
+}
+
+function bytesToBase64Url(bytes: Uint8Array) {
+  let binary = "";
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/u, "");
+}
+
+function base64UrlToBytes(value: string) {
+  const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
+  const padded = normalized + "=".repeat((4 - (normalized.length % 4)) % 4);
+  const binary = atob(padded);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+  return bytes;
+}
+
+function bytesToHex(bytes: Uint8Array) {
+  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function concatBytes(left: Uint8Array, right: Uint8Array) {
+  const combined = new Uint8Array(left.length + right.length);
+  combined.set(left, 0);
+  combined.set(right, left.length);
+  return combined;
+}
+
+function encryptionKey(raw: string) {
+  const key = base64UrlToBytes(raw);
+  if (key.length !== 32) throw new Error("INSTAGRAM_TOKEN_ENCRYPTION_KEY deve ter 32 bytes em base64.");
+  return key;
+}
+
+async function importAesKey(rawKey: string, usages: KeyUsage[]) {
+  return getCryptoApi().subtle.importKey("raw", encryptionKey(rawKey), { name: "AES-GCM" }, false, usages);
+}
+
+function randomToken(byteLength: number) {
+  const bytes = new Uint8Array(byteLength);
+  getCryptoApi().getRandomValues(bytes);
+  return bytesToBase64Url(bytes);
+}
+
+async function encryptToken(token: string, rawKey: string) {
+  const cryptoApi = getCryptoApi();
+  const iv = new Uint8Array(12);
+  cryptoApi.getRandomValues(iv);
+  const key = await importAesKey(rawKey, ["encrypt"]);
+  const encryptedWithTag = new Uint8Array(
+    await cryptoApi.subtle.encrypt({ name: "AES-GCM", iv, tagLength: 128 }, key, new TextEncoder().encode(token)),
+  );
+  const encrypted = encryptedWithTag.slice(0, -16);
+  const tag = encryptedWithTag.slice(-16);
+  return `v1:${bytesToBase64Url(iv)}:${bytesToBase64Url(tag)}:${bytesToBase64Url(encrypted)}`;
+}
+
+async function decryptToken(ciphertext: string, rawKey: string) {
+  const [version, ivRaw, tagRaw, encryptedRaw] = ciphertext.split(":");
+  if (version !== "v1" || !ivRaw || !tagRaw || !encryptedRaw) {
+    throw new Error("Token Instagram em formato invalido.");
+  }
+  const cryptoApi = getCryptoApi();
+  const key = await importAesKey(rawKey, ["decrypt"]);
+  const decrypted = await cryptoApi.subtle.decrypt(
+    { name: "AES-GCM", iv: base64UrlToBytes(ivRaw), tagLength: 128 },
+    key,
+    concatBytes(base64UrlToBytes(encryptedRaw), base64UrlToBytes(tagRaw)),
+  );
+  return new TextDecoder().decode(decrypted);
+}
+
+async function hashState(state: string) {
+  const digest = await getCryptoApi().subtle.digest("SHA-256", new TextEncoder().encode(state));
+  return bytesToHex(new Uint8Array(digest));
+}
+
+function buildAuthorizeUrl(state: string) {
+  const config = getInstagramConfig();
+  const url = new URL("https://api.instagram.com/oauth/authorize");
+  url.searchParams.set("client_id", config.appId);
+  url.searchParams.set("redirect_uri", config.redirectUri);
+  url.searchParams.set("response_type", "code");
+  url.searchParams.set("scope", config.scopes.join(","));
+  url.searchParams.set("state", state);
+  return url.toString();
+}
+
+async function readJsonResponse(response: Response) {
+  const text = await response.text();
+  try {
+    return JSON.parse(text) as Record<string, unknown>;
+  } catch {
+    return { raw: text };
+  }
+}
+
+async function exchangeCodeForShortToken(code: string) {
+  const config = getInstagramConfig();
+  const response = await fetch("https://api.instagram.com/oauth/access_token", {
+    method: "POST",
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      client_id: config.appId,
+      client_secret: config.appSecret,
+      grant_type: "authorization_code",
+      redirect_uri: config.redirectUri,
+      code,
+    }),
+  });
+  const payload = await readJsonResponse(response);
+  if (!response.ok || typeof payload.access_token !== "string") {
+    throw new Error("A Meta recusou a troca do codigo OAuth.");
+  }
+  return {
+    accessToken: payload.access_token,
+    userId: typeof payload.user_id === "number" || typeof payload.user_id === "string"
+      ? String(payload.user_id)
+      : null,
+  };
+}
+
+async function exchangeForLongLivedToken(shortToken: string) {
+  const config = getInstagramConfig();
+  const url = new URL("https://graph.instagram.com/access_token");
+  url.searchParams.set("grant_type", "ig_exchange_token");
+  url.searchParams.set("client_secret", config.appSecret);
+  url.searchParams.set("access_token", shortToken);
+  const response = await fetch(url);
+  const payload = await readJsonResponse(response);
+  if (!response.ok || typeof payload.access_token !== "string") {
+    return { accessToken: shortToken, expiresIn: 3600 };
+  }
+  return {
+    accessToken: payload.access_token,
+    expiresIn: typeof payload.expires_in === "number" ? payload.expires_in : 60 * 24 * 60 * 60,
+  };
+}
+
+async function fetchInstagramProfile(accessToken: string) {
+  const query = async (fields: string) => {
+    const url = new URL("https://graph.instagram.com/me");
+    url.searchParams.set("fields", fields);
+    url.searchParams.set("access_token", accessToken);
+    const response = await fetch(url);
+    const payload = await readJsonResponse(response);
+    if (!response.ok) throw new Error("Nao foi possivel consultar o perfil Instagram.");
+    return payload;
+  };
+
+  try {
+    return await query("user_id,username,account_type");
+  } catch {
+    return await query("id,username,account_type");
+  }
+}
+
+export async function completeInstagramOAuthCallback(rawUrl: string) {
+  const url = new URL(rawUrl);
+  const code = url.searchParams.get("code")?.replace(/#_$/, "");
+  const state = url.searchParams.get("state");
+  const error = url.searchParams.get("error");
+
+  if (error) return { ok: false as const, code: "denied" };
+  if (!code || !state) return { ok: false as const, code: "missing_code_or_state" };
+
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const stateHash = await hashState(state);
+  const { data: stateRow, error: stateErr } = await db(supabaseAdmin)
+    .from("instagram_oauth_states")
+    .select("id, created_by, expires_at, used_at")
+    .eq("state_hash", stateHash)
+    .maybeSingle();
+
+  if (stateErr || !stateRow || stateRow.used_at) return { ok: false as const, code: "invalid_state" };
+  if (new Date(stateRow.expires_at).getTime() < Date.now()) return { ok: false as const, code: "expired_state" };
+
+  try {
+    const config = getInstagramConfig();
+    const shortToken = await exchangeCodeForShortToken(code);
+    const longToken = await exchangeForLongLivedToken(shortToken.accessToken);
+    const profile = await fetchInstagramProfile(longToken.accessToken);
+    const igUserId = String(profile.user_id ?? profile.id ?? shortToken.userId ?? "");
+    if (!igUserId) throw new Error("Perfil Instagram sem ID retornado pela Meta.");
+    const expiresAt = new Date(Date.now() + longToken.expiresIn * 1000).toISOString();
+    const encryptedToken = await encryptToken(longToken.accessToken, config.tokenKey);
+
+    const accountPayload = {
+      provider: "instagram",
+      ig_user_id: igUserId,
+      username: typeof profile.username === "string" ? profile.username : null,
+      account_name: typeof profile.username === "string" ? profile.username : null,
+      account_type: typeof profile.account_type === "string" ? profile.account_type : null,
+      scopes: config.scopes,
+      token_ciphertext: encryptedToken,
+      token_expires_at: expiresAt,
+      status: "connected",
+      last_test_at: new Date().toISOString(),
+      last_error: null,
+      connected_by: stateRow.created_by,
+      disconnected_at: null,
+    };
+
+    const existingAccount = await db(supabaseAdmin)
+      .from("social_accounts")
+      .select("id")
+      .eq("provider", "instagram")
+      .eq("ig_user_id", igUserId)
+      .is("disconnected_at", null)
+      .maybeSingle();
+
+    if (existingAccount.error) throw existingAccount.error;
+
+    const saveAccount = existingAccount.data?.id
+      ? await db(supabaseAdmin).from("social_accounts").update(accountPayload).eq("id", existingAccount.data.id)
+      : await db(supabaseAdmin).from("social_accounts").insert(accountPayload);
+
+    if (saveAccount.error) throw saveAccount.error;
+
+    await db(supabaseAdmin)
+      .from("instagram_oauth_states")
+      .update({ used_at: new Date().toISOString() })
+      .eq("id", stateRow.id);
+
+    await logInstagramEvent({
+      supabase: supabaseAdmin,
+      action: "oauth_callback",
+      status: "success",
+      createdBy: stateRow.created_by,
+      response: {
+        ig_user_id: igUserId,
+        username: typeof profile.username === "string" ? profile.username : null,
+        account_type: typeof profile.account_type === "string" ? profile.account_type : null,
+      },
+    });
+
+    return { ok: true as const, username: typeof profile.username === "string" ? profile.username : null };
+  } catch (e) {
+    await db(supabaseAdmin)
+      .from("instagram_oauth_states")
+      .update({ used_at: new Date().toISOString() })
+      .eq("id", stateRow.id);
+    await logInstagramEvent({
+      supabase: supabaseAdmin,
+      action: "oauth_callback",
+      status: "failed",
+      errorCode: "oauth_callback_failed",
+      errorMessage: e instanceof Error ? e.message : "Falha ao conectar Instagram.",
+      createdBy: stateRow.created_by,
+    });
+    return { ok: false as const, code: "callback_failed" };
+  }
+}
+
+export const createInstagramConnectUrl = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await requireInstagramAdmin(context);
+    const state = randomToken(32);
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString();
+    const { error } = await db(context.supabase).from("instagram_oauth_states").insert({
+      state_hash: await hashState(state),
+      created_by: context.userId,
+      expires_at: expiresAt,
+      redirect_to: "/admin/instagram",
+    });
+    if (error) {
+      if (isMissingInstagramSchema(error)) {
+        throw new Error("A migration OAuth do Instagram ainda nao foi aplicada no Supabase.");
+      }
+      console.error("[instagram.connect] state error", error);
+      throw new Error("Nao foi possivel iniciar a conexao com Instagram.");
+    }
+    return { url: buildAuthorizeUrl(state) };
+  });
 
 export const getInstagramDashboard = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -460,7 +763,32 @@ export const testInstagramConnection = createServerFn({ method: "POST" })
     if (!account.token_ciphertext) {
       return { ok: false, reason: "Token criptografado ausente. Reconecte a conta." };
     }
-    return { ok: false, reason: "Teste real bloqueado ate a fase OAuth/token vault ser homologada." };
+    const config = getInstagramConfig();
+    const token = await decryptToken(account.token_ciphertext, config.tokenKey);
+    const profile = await fetchInstagramProfile(token);
+    await db(context.supabase)
+      .from("social_accounts")
+      .update({
+        username: typeof profile.username === "string" ? profile.username : null,
+        account_name: typeof profile.username === "string" ? profile.username : null,
+        account_type: typeof profile.account_type === "string" ? profile.account_type : null,
+        last_test_at: new Date().toISOString(),
+        last_error: null,
+        status: "connected",
+      })
+      .eq("id", account.id);
+    await logInstagramEvent({
+      supabase: context.supabase,
+      accountId: account.id,
+      action: "test_connection",
+      status: "success",
+      createdBy: context.userId,
+      response: {
+        username: typeof profile.username === "string" ? profile.username : null,
+        account_type: typeof profile.account_type === "string" ? profile.account_type : null,
+      },
+    });
+    return { ok: true, username: typeof profile.username === "string" ? profile.username : null };
   });
 
 export const publishInstagramPost = createServerFn({ method: "POST" })

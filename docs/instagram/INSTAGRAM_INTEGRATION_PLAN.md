@@ -450,16 +450,14 @@ Implementado localmente:
 - Fase 2 local: migration `supabase/migrations/20260619090000_instagram_admin_module.sql`.
 - Fase 2 local: servico `src/services/instagramService.ts` com status, listagem, rascunho, agendamento, cancelamento, retry, exclusao controlada e logs seguros.
 - Fase 6 local: endpoint seguro de cron `src/routes/api/admin/instagram/cron/publish-due.ts`, bloqueado por `CRON_SECRET` e por `INSTAGRAM_AUTO_PUBLISH_ENABLED=false`.
+- Fase OAuth local: callback oficial, estados OAuth com hash, token vault criptografado e botao Conectar Instagram preparados.
 - Variaveis server-side documentadas em `.env.example`.
 
 Ainda bloqueado de proposito:
-- Aplicar migration no Supabase remoto.
 - Configurar Meta App ID/Secret.
-- Salvar token real.
-- OAuth callback real.
+- Salvar token real ate o OAuth real ser concluido no painel Meta.
 - Publicacao real na Meta.
 - Vercel Cron em producao.
-- Deploy de producao.
 
 Motivo do bloqueio:
 - Essas etapas tocam banco, credenciais, Meta App Review, automacao e producao.

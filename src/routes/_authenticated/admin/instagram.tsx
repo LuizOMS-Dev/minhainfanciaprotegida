@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import {
   cancelInstagramPost,
+  createInstagramConnectUrl,
   deleteInstagramPost,
   getInstagramDashboard,
   listInstagramLogs,
@@ -156,6 +157,7 @@ function InstagramAdminPage() {
   const publishFn = useServerFn(publishInstagramPost);
   const retryFn = useServerFn(retryInstagramPost);
   const cancelFn = useServerFn(cancelInstagramPost);
+  const connectFn = useServerFn(createInstagramConnectUrl);
   const deleteFn = useServerFn(deleteInstagramPost);
   const testFn = useServerFn(testInstagramConnection);
 
@@ -213,6 +215,14 @@ function InstagramAdminPage() {
       qc.invalidateQueries({ queryKey: ["instagram-logs"] });
     },
     onError: (err) => setNotice(err instanceof Error ? err.message : "Falha ao salvar publicacao."),
+  });
+
+  const connectMutation = useMutation({
+    mutationFn: () => connectFn(),
+    onSuccess: (result) => {
+      window.location.assign(result.url);
+    },
+    onError: (err) => setNotice(err instanceof Error ? err.message : "Nao foi possivel iniciar o OAuth Instagram."),
   });
 
   function simpleMutation(fn: () => Promise<unknown>, success: string) {
@@ -309,10 +319,11 @@ function InstagramAdminPage() {
           <div className="mt-5 flex flex-wrap gap-2">
             <button
               type="button"
-              disabled
-              className="inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-[color:var(--orange)]/60 px-4 py-2 text-sm font-semibold text-[color:var(--navy-deep)] opacity-70"
+              onClick={() => connectMutation.mutate()}
+              disabled={!schemaReady || !config?.oauthConfigured || connectMutation.isPending}
+              className="inline-flex items-center gap-2 rounded-full bg-[color:var(--orange)] px-4 py-2 text-sm font-semibold text-[color:var(--navy-deep)] hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              <Instagram className="size-4" /> Conectar Instagram
+              <Instagram className="size-4" /> {config?.oauthConfigured ? "Conectar Instagram" : "Aguardando Meta App"}
             </button>
             <button
               type="button"

@@ -10,16 +10,18 @@ The Instagram admin module is deployed and safe to access from the admin panel.
 Enabled:
 - Admin route for Instagram planning.
 - Supabase tables for social accounts, Instagram posts and publish logs.
+- OAuth state table for signed one-time Instagram connection state.
 - RLS enabled on all Instagram tables.
 - Admin + MFA policies on all Instagram tables.
 - Draft/review/scheduled workflow in code.
 - Safe logging structure.
 - Cron endpoint shell protected by CRON_SECRET.
+- Server-side OAuth callback and token encryption flow prepared.
 
 Blocked by design:
-- Real Instagram OAuth.
-- Meta App secret usage.
-- Token encryption/decryption vault.
+- Real Instagram OAuth until Meta envs are configured.
+- Meta App secret usage until it is stored server-side in Vercel.
+- Token encryption/decryption vault until INSTAGRAM_TOKEN_ENCRYPTION_KEY is set.
 - Real publish calls to Meta.
 - Automatic scheduled publishing.
 - Stories publishing.
@@ -56,6 +58,7 @@ Supabase:
 - social_accounts RLS enabled.
 - instagram_posts RLS enabled.
 - instagram_publish_logs RLS enabled.
+- instagram_oauth_states RLS enabled.
 - Admin MFA policies confirmed.
 
 Vercel:

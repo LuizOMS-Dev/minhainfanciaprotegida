@@ -52,6 +52,8 @@ import { Route as AuthenticatedAdminAuditoriaRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminUsuariosIndexRouteImport } from './routes/_authenticated/admin/usuarios/index'
 import { Route as AuthenticatedAdminMapaIndexRouteImport } from './routes/_authenticated/admin/mapa/index'
 import { Route as AuthenticatedAdminBibliotecaIndexRouteImport } from './routes/_authenticated/admin/biblioteca/index'
+import { Route as ApiAdminInstagramConnectRouteImport } from './routes/api/admin/instagram/connect'
+import { Route as ApiAdminInstagramCallbackRouteImport } from './routes/api/admin/instagram/callback'
 import { Route as AuthenticatedAdminMapaIdRouteImport } from './routes/_authenticated/admin/mapa/$id'
 import { Route as AuthenticatedAdminBibliotecaIdRouteImport } from './routes/_authenticated/admin/biblioteca/$id'
 import { Route as AuthenticatedAdminArticleIdRouteImport } from './routes/_authenticated/admin/article.$id'
@@ -280,6 +282,18 @@ const AuthenticatedAdminBibliotecaIndexRoute =
     path: '/biblioteca/',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const ApiAdminInstagramConnectRoute =
+  ApiAdminInstagramConnectRouteImport.update({
+    id: '/api/admin/instagram/connect',
+    path: '/api/admin/instagram/connect',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiAdminInstagramCallbackRoute =
+  ApiAdminInstagramCallbackRouteImport.update({
+    id: '/api/admin/instagram/callback',
+    path: '/api/admin/instagram/callback',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticatedAdminMapaIdRoute =
   AuthenticatedAdminMapaIdRouteImport.update({
     id: '/mapa/$id',
@@ -348,6 +362,8 @@ export interface FileRoutesByFullPath {
   '/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
   '/admin/biblioteca/$id': typeof AuthenticatedAdminBibliotecaIdRoute
   '/admin/mapa/$id': typeof AuthenticatedAdminMapaIdRoute
+  '/api/admin/instagram/callback': typeof ApiAdminInstagramCallbackRoute
+  '/api/admin/instagram/connect': typeof ApiAdminInstagramConnectRoute
   '/admin/biblioteca/': typeof AuthenticatedAdminBibliotecaIndexRoute
   '/admin/mapa/': typeof AuthenticatedAdminMapaIndexRoute
   '/admin/usuarios/': typeof AuthenticatedAdminUsuariosIndexRoute
@@ -393,6 +409,8 @@ export interface FileRoutesByTo {
   '/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
   '/admin/biblioteca/$id': typeof AuthenticatedAdminBibliotecaIdRoute
   '/admin/mapa/$id': typeof AuthenticatedAdminMapaIdRoute
+  '/api/admin/instagram/callback': typeof ApiAdminInstagramCallbackRoute
+  '/api/admin/instagram/connect': typeof ApiAdminInstagramConnectRoute
   '/admin/biblioteca': typeof AuthenticatedAdminBibliotecaIndexRoute
   '/admin/mapa': typeof AuthenticatedAdminMapaIndexRoute
   '/admin/usuarios': typeof AuthenticatedAdminUsuariosIndexRoute
@@ -443,6 +461,8 @@ export interface FileRoutesById {
   '/_authenticated/admin/article/$id': typeof AuthenticatedAdminArticleIdRoute
   '/_authenticated/admin/biblioteca/$id': typeof AuthenticatedAdminBibliotecaIdRoute
   '/_authenticated/admin/mapa/$id': typeof AuthenticatedAdminMapaIdRoute
+  '/api/admin/instagram/callback': typeof ApiAdminInstagramCallbackRoute
+  '/api/admin/instagram/connect': typeof ApiAdminInstagramConnectRoute
   '/_authenticated/admin/biblioteca/': typeof AuthenticatedAdminBibliotecaIndexRoute
   '/_authenticated/admin/mapa/': typeof AuthenticatedAdminMapaIndexRoute
   '/_authenticated/admin/usuarios/': typeof AuthenticatedAdminUsuariosIndexRoute
@@ -493,6 +513,8 @@ export interface FileRouteTypes {
     | '/admin/article/$id'
     | '/admin/biblioteca/$id'
     | '/admin/mapa/$id'
+    | '/api/admin/instagram/callback'
+    | '/api/admin/instagram/connect'
     | '/admin/biblioteca/'
     | '/admin/mapa/'
     | '/admin/usuarios/'
@@ -538,6 +560,8 @@ export interface FileRouteTypes {
     | '/admin/article/$id'
     | '/admin/biblioteca/$id'
     | '/admin/mapa/$id'
+    | '/api/admin/instagram/callback'
+    | '/api/admin/instagram/connect'
     | '/admin/biblioteca'
     | '/admin/mapa'
     | '/admin/usuarios'
@@ -587,6 +611,8 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/article/$id'
     | '/_authenticated/admin/biblioteca/$id'
     | '/_authenticated/admin/mapa/$id'
+    | '/api/admin/instagram/callback'
+    | '/api/admin/instagram/connect'
     | '/_authenticated/admin/biblioteca/'
     | '/_authenticated/admin/mapa/'
     | '/_authenticated/admin/usuarios/'
@@ -619,6 +645,8 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
   ApiPublicCspReportRoute: typeof ApiPublicCspReportRoute
+  ApiAdminInstagramCallbackRoute: typeof ApiAdminInstagramCallbackRoute
+  ApiAdminInstagramConnectRoute: typeof ApiAdminInstagramConnectRoute
   ApiAdminInstagramCronPublishDueRoute: typeof ApiAdminInstagramCronPublishDueRoute
 }
 
@@ -925,6 +953,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminBibliotecaIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/api/admin/instagram/connect': {
+      id: '/api/admin/instagram/connect'
+      path: '/api/admin/instagram/connect'
+      fullPath: '/api/admin/instagram/connect'
+      preLoaderRoute: typeof ApiAdminInstagramConnectRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/instagram/callback': {
+      id: '/api/admin/instagram/callback'
+      path: '/api/admin/instagram/callback'
+      fullPath: '/api/admin/instagram/callback'
+      preLoaderRoute: typeof ApiAdminInstagramCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin/mapa/$id': {
       id: '/_authenticated/admin/mapa/$id'
       path: '/mapa/$id'
@@ -1084,6 +1126,8 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SobreRoute: SobreRoute,
   ApiPublicCspReportRoute: ApiPublicCspReportRoute,
+  ApiAdminInstagramCallbackRoute: ApiAdminInstagramCallbackRoute,
+  ApiAdminInstagramConnectRoute: ApiAdminInstagramConnectRoute,
   ApiAdminInstagramCronPublishDueRoute: ApiAdminInstagramCronPublishDueRoute,
 }
 export const routeTree = rootRouteImport
