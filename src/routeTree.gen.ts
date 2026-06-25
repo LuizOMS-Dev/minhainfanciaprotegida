@@ -46,6 +46,7 @@ import { Route as AuthenticatedAdminSessoesRouteImport } from './routes/_authent
 import { Route as AuthenticatedAdminSegurancaRouteImport } from './routes/_authenticated/admin/seguranca'
 import { Route as AuthenticatedAdminPublicacoesRouteImport } from './routes/_authenticated/admin/publicacoes'
 import { Route as AuthenticatedAdminMfaRouteImport } from './routes/_authenticated/admin/mfa'
+import { Route as AuthenticatedAdminInstagramRouteImport } from './routes/_authenticated/admin/instagram'
 import { Route as AuthenticatedAdminBackupRouteImport } from './routes/_authenticated/admin/backup'
 import { Route as AuthenticatedAdminAuditoriaRouteImport } from './routes/_authenticated/admin/auditoria'
 import { Route as AuthenticatedAdminUsuariosIndexRouteImport } from './routes/_authenticated/admin/usuarios/index'
@@ -54,6 +55,7 @@ import { Route as AuthenticatedAdminBibliotecaIndexRouteImport } from './routes/
 import { Route as AuthenticatedAdminMapaIdRouteImport } from './routes/_authenticated/admin/mapa/$id'
 import { Route as AuthenticatedAdminBibliotecaIdRouteImport } from './routes/_authenticated/admin/biblioteca/$id'
 import { Route as AuthenticatedAdminArticleIdRouteImport } from './routes/_authenticated/admin/article.$id'
+import { Route as ApiAdminInstagramCronPublishDueRouteImport } from './routes/api/admin/instagram/cron/publish-due'
 
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
@@ -242,6 +244,12 @@ const AuthenticatedAdminMfaRoute = AuthenticatedAdminMfaRouteImport.update({
   path: '/mfa',
   getParentRoute: () => AuthenticatedAdminRouteRoute,
 } as any)
+const AuthenticatedAdminInstagramRoute =
+  AuthenticatedAdminInstagramRouteImport.update({
+    id: '/instagram',
+    path: '/instagram',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminBackupRoute =
   AuthenticatedAdminBackupRouteImport.update({
     id: '/backup',
@@ -290,6 +298,12 @@ const AuthenticatedAdminArticleIdRoute =
     path: '/article/$id',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const ApiAdminInstagramCronPublishDueRoute =
+  ApiAdminInstagramCronPublishDueRouteImport.update({
+    id: '/api/admin/instagram/cron/publish-due',
+    path: '/api/admin/instagram/cron/publish-due',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -324,6 +338,7 @@ export interface FileRoutesByFullPath {
   '/noticias/': typeof NoticiasIndexRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/admin/backup': typeof AuthenticatedAdminBackupRoute
+  '/admin/instagram': typeof AuthenticatedAdminInstagramRoute
   '/admin/mfa': typeof AuthenticatedAdminMfaRoute
   '/admin/publicacoes': typeof AuthenticatedAdminPublicacoesRoute
   '/admin/seguranca': typeof AuthenticatedAdminSegurancaRoute
@@ -336,6 +351,7 @@ export interface FileRoutesByFullPath {
   '/admin/biblioteca/': typeof AuthenticatedAdminBibliotecaIndexRoute
   '/admin/mapa/': typeof AuthenticatedAdminMapaIndexRoute
   '/admin/usuarios/': typeof AuthenticatedAdminUsuariosIndexRoute
+  '/api/admin/instagram/cron/publish-due': typeof ApiAdminInstagramCronPublishDueRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -367,6 +383,7 @@ export interface FileRoutesByTo {
   '/noticias': typeof NoticiasIndexRoute
   '/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/admin/backup': typeof AuthenticatedAdminBackupRoute
+  '/admin/instagram': typeof AuthenticatedAdminInstagramRoute
   '/admin/mfa': typeof AuthenticatedAdminMfaRoute
   '/admin/publicacoes': typeof AuthenticatedAdminPublicacoesRoute
   '/admin/seguranca': typeof AuthenticatedAdminSegurancaRoute
@@ -379,6 +396,7 @@ export interface FileRoutesByTo {
   '/admin/biblioteca': typeof AuthenticatedAdminBibliotecaIndexRoute
   '/admin/mapa': typeof AuthenticatedAdminMapaIndexRoute
   '/admin/usuarios': typeof AuthenticatedAdminUsuariosIndexRoute
+  '/api/admin/instagram/cron/publish-due': typeof ApiAdminInstagramCronPublishDueRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -415,6 +433,7 @@ export interface FileRoutesById {
   '/noticias/': typeof NoticiasIndexRoute
   '/_authenticated/admin/auditoria': typeof AuthenticatedAdminAuditoriaRoute
   '/_authenticated/admin/backup': typeof AuthenticatedAdminBackupRoute
+  '/_authenticated/admin/instagram': typeof AuthenticatedAdminInstagramRoute
   '/_authenticated/admin/mfa': typeof AuthenticatedAdminMfaRoute
   '/_authenticated/admin/publicacoes': typeof AuthenticatedAdminPublicacoesRoute
   '/_authenticated/admin/seguranca': typeof AuthenticatedAdminSegurancaRoute
@@ -427,6 +446,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/biblioteca/': typeof AuthenticatedAdminBibliotecaIndexRoute
   '/_authenticated/admin/mapa/': typeof AuthenticatedAdminMapaIndexRoute
   '/_authenticated/admin/usuarios/': typeof AuthenticatedAdminUsuariosIndexRoute
+  '/api/admin/instagram/cron/publish-due': typeof ApiAdminInstagramCronPublishDueRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -463,6 +483,7 @@ export interface FileRouteTypes {
     | '/noticias/'
     | '/admin/auditoria'
     | '/admin/backup'
+    | '/admin/instagram'
     | '/admin/mfa'
     | '/admin/publicacoes'
     | '/admin/seguranca'
@@ -475,6 +496,7 @@ export interface FileRouteTypes {
     | '/admin/biblioteca/'
     | '/admin/mapa/'
     | '/admin/usuarios/'
+    | '/api/admin/instagram/cron/publish-due'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -506,6 +528,7 @@ export interface FileRouteTypes {
     | '/noticias'
     | '/admin/auditoria'
     | '/admin/backup'
+    | '/admin/instagram'
     | '/admin/mfa'
     | '/admin/publicacoes'
     | '/admin/seguranca'
@@ -518,6 +541,7 @@ export interface FileRouteTypes {
     | '/admin/biblioteca'
     | '/admin/mapa'
     | '/admin/usuarios'
+    | '/api/admin/instagram/cron/publish-due'
   id:
     | '__root__'
     | '/'
@@ -553,6 +577,7 @@ export interface FileRouteTypes {
     | '/noticias/'
     | '/_authenticated/admin/auditoria'
     | '/_authenticated/admin/backup'
+    | '/_authenticated/admin/instagram'
     | '/_authenticated/admin/mfa'
     | '/_authenticated/admin/publicacoes'
     | '/_authenticated/admin/seguranca'
@@ -565,6 +590,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/biblioteca/'
     | '/_authenticated/admin/mapa/'
     | '/_authenticated/admin/usuarios/'
+    | '/api/admin/instagram/cron/publish-due'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -593,6 +619,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
   ApiPublicCspReportRoute: typeof ApiPublicCspReportRoute
+  ApiAdminInstagramCronPublishDueRoute: typeof ApiAdminInstagramCronPublishDueRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -856,6 +883,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminMfaRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/instagram': {
+      id: '/_authenticated/admin/instagram'
+      path: '/instagram'
+      fullPath: '/admin/instagram'
+      preLoaderRoute: typeof AuthenticatedAdminInstagramRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/backup': {
       id: '/_authenticated/admin/backup'
       path: '/backup'
@@ -912,12 +946,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminArticleIdRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/api/admin/instagram/cron/publish-due': {
+      id: '/api/admin/instagram/cron/publish-due'
+      path: '/api/admin/instagram/cron/publish-due'
+      fullPath: '/api/admin/instagram/cron/publish-due'
+      preLoaderRoute: typeof ApiAdminInstagramCronPublishDueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminAuditoriaRoute: typeof AuthenticatedAdminAuditoriaRoute
   AuthenticatedAdminBackupRoute: typeof AuthenticatedAdminBackupRoute
+  AuthenticatedAdminInstagramRoute: typeof AuthenticatedAdminInstagramRoute
   AuthenticatedAdminMfaRoute: typeof AuthenticatedAdminMfaRoute
   AuthenticatedAdminPublicacoesRoute: typeof AuthenticatedAdminPublicacoesRoute
   AuthenticatedAdminSegurancaRoute: typeof AuthenticatedAdminSegurancaRoute
@@ -935,6 +977,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
   {
     AuthenticatedAdminAuditoriaRoute: AuthenticatedAdminAuditoriaRoute,
     AuthenticatedAdminBackupRoute: AuthenticatedAdminBackupRoute,
+    AuthenticatedAdminInstagramRoute: AuthenticatedAdminInstagramRoute,
     AuthenticatedAdminMfaRoute: AuthenticatedAdminMfaRoute,
     AuthenticatedAdminPublicacoesRoute: AuthenticatedAdminPublicacoesRoute,
     AuthenticatedAdminSegurancaRoute: AuthenticatedAdminSegurancaRoute,
@@ -1041,6 +1084,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SobreRoute: SobreRoute,
   ApiPublicCspReportRoute: ApiPublicCspReportRoute,
+  ApiAdminInstagramCronPublishDueRoute: ApiAdminInstagramCronPublishDueRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

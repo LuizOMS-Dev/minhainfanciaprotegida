@@ -3,7 +3,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { requireRole } from "@/services/roleService";
+import { requireAdminContext } from "@/lib/require-admin";
 import type { AuditActionType } from "@/services/auditService";
 
 export interface AdminOverview {
@@ -115,7 +115,7 @@ export const getRecentActivity = createServerFn({ method: "GET" })
     z.object({ limit: z.number().int().min(1).max(50).default(15) }).parse(i ?? {}),
   )
   .handler(async ({ data, context }): Promise<{ items: RecentActivityItem[] }> => {
-    await requireRole(context.supabase, context.userId, ["admin", "editor", "revisor"]);
+    await requireAdminContext(context, { roles: ["admin", "editor", "revisor"], requireMfa: true });
     const admin = await loadAdmin();
     const { data: rows } = await admin
       .from("audit_log")
@@ -166,7 +166,7 @@ const CRITICAL_ACTIONS = [
 export const getSecurityOverview = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<SecurityOverview> => {
-    await requireRole(context.supabase, context.userId, ["admin"]);
+    await requireAdminContext(context, { roles: ["admin"], requireMfa: true });
     const admin = await loadAdmin();
     const now = new Date().toISOString();
 
@@ -269,7 +269,7 @@ export const adminGlobalSearch = createServerFn({ method: "GET" })
     z.object({ q: z.string().min(1).max(120) }).parse(i),
   )
   .handler(async ({ data, context }): Promise<GlobalSearchResult> => {
-    await requireRole(context.supabase, context.userId, ["admin", "editor", "revisor"]);
+    await requireAdminContext(context, { roles: ["admin", "editor", "revisor"], requireMfa: true });
     const admin = await loadAdmin();
     const term = data.q.replace(/[%,]/g, "").trim();
     if (!term) {

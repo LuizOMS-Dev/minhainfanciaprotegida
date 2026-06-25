@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireAdminContext } from "@/lib/require-admin";
 
 const roleSchema = z.enum(["admin", "editor", "revisor"]);
 export type AppRole = z.infer<typeof roleSchema>;
@@ -30,7 +31,7 @@ async function ensureAdmin(supabase: typeof import("@/integrations/supabase/clie
 export const listAdminUsers = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    await ensureAdmin(context.supabase, context.userId);
+    await requireAdminContext(context, { roles: ["admin"], requireMfa: true });
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     const { data: profiles, error: pErr } = await supabaseAdmin
@@ -90,7 +91,7 @@ export const assignAdminRole = createServerFn({ method: "POST" })
       .parse(i),
   )
   .handler(async ({ data, context }) => {
-    await ensureAdmin(context.supabase, context.userId);
+    await requireAdminContext(context, { roles: ["admin"], requireMfa: true });
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     // Guard: don't allow removing the last admin
@@ -151,7 +152,7 @@ export const createAdminUser = createServerFn({ method: "POST" })
       .parse(i),
   )
   .handler(async ({ data, context }) => {
-    await ensureAdmin(context.supabase, context.userId);
+    await requireAdminContext(context, { roles: ["admin"], requireMfa: true });
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     const { data: created, error } = await supabaseAdmin.auth.admin.createUser({
@@ -195,7 +196,7 @@ export const deleteAdminUser = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i) => z.object({ user_id: z.string().uuid() }).parse(i))
   .handler(async ({ data, context }) => {
-    await ensureAdmin(context.supabase, context.userId);
+    await requireAdminContext(context, { roles: ["admin"], requireMfa: true });
     if (data.user_id === context.userId) {
       throw new Error("Você não pode excluir a si mesmo.");
     }
@@ -238,7 +239,7 @@ export const resetUserPassword = createServerFn({ method: "POST" })
     z.object({ user_id: z.string().uuid(), password: z.string().min(8).max(128) }).parse(i),
   )
   .handler(async ({ data, context }) => {
-    await ensureAdmin(context.supabase, context.userId);
+    await requireAdminContext(context, { roles: ["admin"], requireMfa: true });
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin.auth.admin.updateUserById(data.user_id, {
       password: data.password,

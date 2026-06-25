@@ -1,17 +1,14 @@
 import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
 import { Lock, ShieldAlert } from "lucide-react";
-import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import {
-  bootstrapPrimaryAdmin,
   checkLoginAllowed,
-  getTurnstileSiteKey,
   recordLoginAttemptV2,
   recordMfaEvent,
+  recordSuccessfulLogin,
 } from "@/services/authService";
-import { Turnstile } from "@/components/forms/Turnstile";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -31,7 +28,6 @@ function AuthPage() {
   const [step, setStep] = useState<Step>("credentials");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
@@ -44,30 +40,18 @@ function AuthPage() {
   const checkAllowed = useServerFn(checkLoginAllowed);
   const recordV2 = useServerFn(recordLoginAttemptV2);
   const recordMfa = useServerFn(recordMfaEvent);
+  const recordLoginSuccess = useServerFn(recordSuccessfulLogin);
   const bootstrap = useServerFn(bootstrapPrimaryAdmin);
-
-  // Fetch Turnstile site key (server-side secret exposed via server fn)
-  const siteKeyQ = useQuery({
-    queryKey: ["turnstile-site-key"],
-    queryFn: () => getTurnstileSiteKey(),
-    staleTime: 5 * 60_000,
-  });
 
   // Idempotent: ensure primary admin exists. Runs once when /auth mounts.
   useEffect(() => {
     bootstrap().catch(() => {});
   }, [bootstrap]);
 
-  const onToken = useCallback((t: string | null) => setCaptchaToken(t), []);
-
   async function submitCredentials(e: FormEvent) {
     e.preventDefault();
     setError(null);
     setInfo(null);
-    if (siteKeyQ.data?.siteKey && !captchaToken) {
-      setError("Conclua a verificação 'não sou um robô'.");
-      return;
-    }
     setLoading(true);
     try {
       // 1) Lockout check
@@ -84,11 +68,10 @@ function AuthPage() {
       const { error: err } = await supabase.auth.signInWithPassword({ email, password });
       if (err) {
         recordV2({
-          data: { email, success: false, captchaToken, reason: err.message },
+          data: { email, success: false, reason: err.message },
         }).catch(() => {});
         setError("E-mail ou senha inválidos.");
         setLoading(false);
-        setCaptchaToken(null);
         return;
       }
 
@@ -114,7 +97,7 @@ function AuthPage() {
       }
 
       // 4) No MFA factor → record login + send to admin (gate will force enrollment)
-      await recordV2({ data: { email, success: true, captchaToken } }).catch(() => {});
+      await recordLoginSuccess().catch(() => {});
       router.invalidate();
       navigate({ to: "/admin" });
     } catch (e) {
@@ -142,7 +125,7 @@ function AuthPage() {
         return;
       }
       recordMfa({ data: { action: "mfa_success" } }).catch(() => {});
-      await recordV2({ data: { email, success: true, captchaToken } }).catch(() => {});
+      await recordLoginSuccess().catch(() => {});
       router.invalidate();
       navigate({ to: "/admin" });
     } catch (e) {
@@ -198,12 +181,6 @@ function AuthPage() {
                 className="mt-1 w-full rounded-xl bg-background border border-border px-4 py-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
               />
             </div>
-
-            <Turnstile
-              siteKey={siteKeyQ.data?.siteKey ?? null}
-              onToken={onToken}
-              className="flex justify-center"
-            />
 
             {error && <p className="text-sm text-[color:var(--red-inst)]">{error}</p>}
             {info && <p className="text-sm text-muted-foreground">{info}</p>}

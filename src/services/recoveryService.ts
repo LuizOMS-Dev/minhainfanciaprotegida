@@ -29,7 +29,7 @@ async function sha256Hex(input: string): Promise<string> {
 export const getRecoveryCodesStatus = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    await requireAdminContext(context, { roles: ["admin"], requireMfa: false });
+    await requireAdminContext(context, { roles: ["admin"], requireMfa: true });
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data, error } = await supabaseAdmin
       .from("mfa_recovery_codes")
@@ -48,7 +48,7 @@ export const getRecoveryCodesStatus = createServerFn({ method: "GET" })
 export const generateRecoveryCodes = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    await requireAdminContext(context, { roles: ["admin"], requireMfa: false });
+    await requireAdminContext(context, { roles: ["admin"], requireMfa: true });
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { logAudit } = await import("@/lib/audit.server");
 

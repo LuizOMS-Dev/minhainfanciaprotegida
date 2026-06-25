@@ -8,7 +8,7 @@ import {
   getArticleRelations,
 } from "@/services/articleService";
 import { ReferencesBlock } from "@/components/public/ReferencesBlock";
-import { JsonLd } from "@/components/shared/JsonLd";
+import { JsonLd, safeJsonLd } from "@/components/shared/JsonLd";
 import { SafeHtml, readingTimeMinutes } from "@/components/shared/SafeHtml";
 import { ShareButtons } from "@/components/shared/ShareButtons";
 import { RelatedArticles, ArticleSiblingNav } from "@/components/public/RelatedArticles";
@@ -68,7 +68,7 @@ export const Route = createFileRoute("/noticias/$slug")({
     const scripts: { type: string; children: string }[] = [
       {
         type: "application/ld+json",
-        children: JSON.stringify({
+        children: safeJsonLd({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           itemListElement: [
@@ -82,7 +82,7 @@ export const Route = createFileRoute("/noticias/$slug")({
     if (faq.length > 0) {
       scripts.push({
         type: "application/ld+json",
-        children: JSON.stringify({
+        children: safeJsonLd({
           "@context": "https://schema.org",
           "@type": "FAQPage",
           mainEntity: faq.map((qa) => ({

@@ -1,14 +1,10 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { requireRole } from "@/services/roleService";
+import { requireAdminContext } from "@/lib/require-admin";
 
 const PRIMARY_ADMIN_EMAIL = "luizotaviomscv@gmail.com";
 
-/** Public server fn — exposes the Turnstile site key to the browser. */
-export const getTurnstileSiteKey = createServerFn({ method: "GET" }).handler(async () => {
-  return { siteKey: process.env.TURNSTILE_SITE_KEY ?? null };
-});
 
 /** Public — call before signInWithPassword. Returns lockout status. */
 export const checkLoginAllowed = createServerFn({ method: "POST" })
@@ -21,9 +17,9 @@ export const checkLoginAllowed = createServerFn({ method: "POST" })
   });
 
 /**
- * Public — verifies a Turnstile token and records the login outcome.
+ * Public - records the login outcome.
  * Used both for failed and successful attempts. On success, opens admin session
- * and logs `login`; on failure increments rate limiter & may lock the account.
+ * and logs `login`; on failure increments rate limiter and may lock the account.
  */
 export const recordLoginAttemptV2 = createServerFn({ method: "POST" })
   .inputValidator((i) =>
@@ -31,65 +27,55 @@ export const recordLoginAttemptV2 = createServerFn({ method: "POST" })
       .object({
         email: z.string().email().max(255),
         success: z.boolean(),
-        captchaToken: z.string().min(1).max(2048).nullable().optional(),
         reason: z.string().max(200).optional(),
       })
       .parse(i),
   )
   .handler(async ({ data }) => {
-    const { verifyTurnstile, recordAttempt, openAdminSession } = await import(
-      "@/lib/security.server"
-    );
+    const { recordAttempt } = await import("@/lib/security.server");
     const { logAudit } = await import("@/lib/audit.server");
 
-    // Always verify CAPTCHA when present; track failures.
-    if (data.captchaToken !== undefined) {
-      const cap = await verifyTurnstile(data.captchaToken ?? null);
-      if (!cap.success) {
-        await recordAttempt(data.email, false, "captcha_failed");
-        await logAudit({
-          action: "captcha_failed",
-          userEmail: data.email,
-          metadata: { codes: cap.errorCodes ?? [] },
-        });
-        return { ok: false, reason: "captcha_failed" as const };
-      }
-    }
-
-    await recordAttempt(data.email, data.success, data.reason);
-
-    if (!data.success) {
+    if (data.success) {
       await logAudit({
-        action: "login_failed",
+        action: "unauthorized_access",
         userEmail: data.email,
-        metadata: { reason: data.reason ?? null },
+        metadata: { reason: "public_success_login_audit_rejected" },
       });
-      return { ok: false, reason: "login_failed" as const };
+      throw new Error("Registro de login bem-sucedido exige sessao autenticada.");
     }
 
-    // success path: resolve user_id + role and open admin session
+    await recordAttempt(data.email, false, data.reason);
+    await logAudit({
+      action: "login_failed",
+      userEmail: data.email,
+      metadata: { reason: data.reason ?? null },
+    });
+    return { ok: false, reason: "login_failed" as const };
+  });
+
+/** Authenticated - records a successful login from server-observed session state. */
+export const recordSuccessfulLogin = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { recordAttempt, openAdminSession } = await import("@/lib/security.server");
+    const { logAudit } = await import("@/lib/audit.server");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    let userId: string | null = null;
-    try {
-      const { data: list } = await supabaseAdmin.auth.admin.listUsers({
-        page: 1,
-        perPage: 200,
-      });
-      userId =
-        list?.users.find((u) => u.email?.toLowerCase() === data.email.toLowerCase())?.id ?? null;
-    } catch {
-      /* ignore */
-    }
+
+    const userId = context.userId;
+    const email = context.claims.email ?? null;
     let role: string | null = null;
-    if (userId) {
-      const { data: roles } = await supabaseAdmin
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", userId);
-      role = (roles ?? []).map((r) => r.role).join(",") || null;
-      await openAdminSession(userId, data.email, role);
+    const { data: roles } = await supabaseAdmin
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId);
+    role = (roles ?? []).map((r) => r.role).join(",") || null;
+
+    if (email) {
+      await recordAttempt(email, true);
+      await openAdminSession(userId, email, role);
     }
-    await logAudit({ action: "login", userId, userEmail: data.email, userRole: role });
+
+    await logAudit({ action: "login", userId, userEmail: email, userRole: role });
     return { ok: true };
   });
 
@@ -119,7 +105,6 @@ export const recordMfaEvent = createServerFn({ method: "POST" })
     z
       .object({
         action: mfaActionSchema,
-        metadata: z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()])).optional(),
       })
       .parse(i),
   )
@@ -128,7 +113,7 @@ export const recordMfaEvent = createServerFn({ method: "POST" })
     await logAudit({
       action: data.action,
       userId: context.userId,
-      metadata: data.metadata ?? null,
+      metadata: { source: "authenticated_client_event" },
     });
     return { ok: true };
   });
@@ -143,6 +128,13 @@ export const recordMfaEvent = createServerFn({ method: "POST" })
  * Public (no auth) — but only acts once per email; safe to call repeatedly.
  */
 export const bootstrapPrimaryAdmin = createServerFn({ method: "POST" }).handler(async () => {
+  const bootstrapEnabled =
+    process.env.NODE_ENV !== "production" ||
+    process.env.ENABLE_PRIMARY_ADMIN_BOOTSTRAP === "true";
+
+  if (!bootstrapEnabled) {
+    throw new Error("Bootstrap administrativo desativado em producao.");
+  }
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { logAudit } = await import("@/lib/audit.server");
 
@@ -242,7 +234,7 @@ export const listAdminSessions = createServerFn({ method: "GET" })
       .parse(i ?? {}),
   )
   .handler(async ({ data, context }) => {
-    await requireRole(context.supabase, context.userId, ["admin"]);
+    await requireAdminContext(context, { roles: ["admin"], requireMfa: true });
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const from = (data.page - 1) * data.pageSize;
     const to = from + data.pageSize - 1;
@@ -287,7 +279,7 @@ export const exportDataset = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i) => exportSchema.parse(i))
   .handler(async ({ data, context }) => {
-    await requireRole(context.supabase, context.userId, ["admin"]);
+    await requireAdminContext(context, { roles: ["admin"], requireMfa: true });
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { logAudit } = await import("@/lib/audit.server");
 

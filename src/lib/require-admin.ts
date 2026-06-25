@@ -5,7 +5,7 @@ import { requireRole, type AppRole } from "@/services/roleService";
  * Stronger admin gate to use inside server-fn handlers. Validates:
  * 1. e-mail confirmed
  * 2. one of the allowed roles
- * 3. (when `requireMfa` true) AAL2 — user authenticated with MFA
+ * 3. AAL2 by default - user authenticated with MFA — user authenticated with MFA
  *
  * Use after `requireSupabaseAuth` so `context.supabase`, `context.userId`,
  * and `context.claims` are populated.
@@ -28,7 +28,7 @@ export async function requireAdminContext(
   },
   options: AdminGateOptions = {},
 ): Promise<void> {
-  const { roles = ["admin", "editor", "revisor"], requireMfa = false } = options;
+  const { roles = ["admin", "editor", "revisor"], requireMfa = true } = options;
 
   // 1) e-mail verified — check via admin API (claims do not carry this).
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");

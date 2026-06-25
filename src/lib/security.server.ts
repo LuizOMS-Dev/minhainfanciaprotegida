@@ -1,11 +1,10 @@
-// Server-only security helpers: CAPTCHA verification, brute-force lockouts,
-// admin session tracking. NEVER import from client code.
+// Server-only security helpers: brute-force lockouts and admin session tracking.
+// NEVER import from client code.
 import { extractIp, extractUserAgent, logAudit } from "@/lib/audit.server";
 
 const LOCKOUT_THRESHOLD = 5;
 const LOCKOUT_WINDOW_MIN = 15;
 const LOCKOUT_DURATION_MIN = 15;
-const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
 export interface LockoutStatus {
   locked: boolean;
@@ -88,35 +87,6 @@ export async function recordAttempt(
       userEmail: normalized,
       metadata: { locked_until: lockedUntil, duration_minutes: LOCKOUT_DURATION_MIN },
     });
-  }
-}
-
-export interface TurnstileResult {
-  success: boolean;
-  errorCodes?: string[];
-}
-
-export async function verifyTurnstile(token: string | null): Promise<TurnstileResult> {
-  const secret = process.env.TURNSTILE_SECRET_KEY;
-  if (!secret) {
-    console.warn("[security] TURNSTILE_SECRET_KEY missing — skipping verification");
-    return { success: true }; // soft-fail to avoid lockout if misconfigured
-  }
-  if (!token) return { success: false, errorCodes: ["missing-input-response"] };
-
-  const ip = extractIp();
-  const form = new URLSearchParams();
-  form.set("secret", secret);
-  form.set("response", token);
-  if (ip) form.set("remoteip", ip);
-
-  try {
-    const res = await fetch(TURNSTILE_VERIFY_URL, { method: "POST", body: form });
-    const json = (await res.json()) as { success: boolean; "error-codes"?: string[] };
-    return { success: json.success === true, errorCodes: json["error-codes"] };
-  } catch (e) {
-    console.warn("[security] turnstile verify error", e);
-    return { success: false, errorCodes: ["network-error"] };
   }
 }
 

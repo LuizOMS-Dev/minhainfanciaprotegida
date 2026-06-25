@@ -1,5 +1,7 @@
--- 1. Criação da tabela separada e privada de Notas de Revisão
-CREATE TABLE public.article_review_notes (
+-- Phase 1 repair: reviewer update protection and low-risk advisor fixes.
+-- Idempotent by design so it can be safely re-applied if the remote schema was partially updated.
+
+CREATE TABLE IF NOT EXISTS public.article_review_notes (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   article_id UUID NOT NULL REFERENCES public.articles(id) ON DELETE CASCADE,
   reviewer_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -8,37 +10,40 @@ CREATE TABLE public.article_review_notes (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- Índices de performance e consulta
-CREATE INDEX IF NOT EXISTS idx_article_review_notes_article_id ON public.article_review_notes(article_id);
-CREATE INDEX IF NOT EXISTS idx_article_review_notes_reviewer_id ON public.article_review_notes(reviewer_id);
+CREATE INDEX IF NOT EXISTS idx_article_review_notes_article_id
+  ON public.article_review_notes(article_id);
+CREATE INDEX IF NOT EXISTS idx_article_review_notes_reviewer_id
+  ON public.article_review_notes(reviewer_id);
+CREATE INDEX IF NOT EXISTS article_sources_article_id_idx
+  ON public.article_sources(article_id);
+CREATE INDEX IF NOT EXISTS articles_author_id_idx
+  ON public.articles(author_id);
+CREATE INDEX IF NOT EXISTS articles_reviewer_id_idx
+  ON public.articles(reviewer_id);
 
--- Ativar RLS
 ALTER TABLE public.article_review_notes ENABLE ROW LEVEL SECURITY;
 
--- Conceder permissões operacionais
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.article_review_notes TO authenticated;
 GRANT ALL ON public.article_review_notes TO service_role;
 
--- Trigger para updated_at da nota (usando função padrão do projeto)
 DROP TRIGGER IF EXISTS set_updated_at_article_review_notes ON public.article_review_notes;
 CREATE TRIGGER set_updated_at_article_review_notes
 BEFORE UPDATE ON public.article_review_notes
 FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
 
--- Policies da nova tabela
--- Admins e Editors podem ler tudo e inserir/editar notas em geral
+DROP POLICY IF EXISTS "Admins and Editors have full access to review notes" ON public.article_review_notes;
 CREATE POLICY "Admins and Editors have full access to review notes" ON public.article_review_notes
   FOR ALL TO authenticated
   USING (
-    public.has_role(auth.uid(), 'admin'::public.app_role) OR 
+    public.has_role(auth.uid(), 'admin'::public.app_role) OR
     public.has_role(auth.uid(), 'editor'::public.app_role)
   )
   WITH CHECK (
-    public.has_role(auth.uid(), 'admin'::public.app_role) OR 
+    public.has_role(auth.uid(), 'admin'::public.app_role) OR
     public.has_role(auth.uid(), 'editor'::public.app_role)
   );
 
--- Reviewers só podem visualizar suas próprias notas OU notas atreladas aos seus artigos
+DROP POLICY IF EXISTS "Reviewers can view review notes" ON public.article_review_notes;
 CREATE POLICY "Reviewers can view review notes" ON public.article_review_notes
   FOR SELECT TO authenticated
   USING (
@@ -52,11 +57,11 @@ CREATE POLICY "Reviewers can view review notes" ON public.article_review_notes
     )
   );
 
--- Reviewers só podem criar notas atribuídas a si próprios em artigos que já pertencem a eles
+DROP POLICY IF EXISTS "Reviewers can insert their own notes" ON public.article_review_notes;
 CREATE POLICY "Reviewers can insert their own notes" ON public.article_review_notes
   FOR INSERT TO authenticated
   WITH CHECK (
-    public.has_role(auth.uid(), 'reviewer'::public.app_role) AND 
+    public.has_role(auth.uid(), 'reviewer'::public.app_role) AND
     reviewer_id = auth.uid() AND
     EXISTS (
       SELECT 1 FROM public.articles a
@@ -65,11 +70,11 @@ CREATE POLICY "Reviewers can insert their own notes" ON public.article_review_no
     )
   );
 
--- Reviewers só podem editar as suas próprias notas de revisão, e apenas de artigos que continuem com eles
+DROP POLICY IF EXISTS "Reviewers can update their own notes" ON public.article_review_notes;
 CREATE POLICY "Reviewers can update their own notes" ON public.article_review_notes
   FOR UPDATE TO authenticated
   USING (
-    public.has_role(auth.uid(), 'reviewer'::public.app_role) AND 
+    public.has_role(auth.uid(), 'reviewer'::public.app_role) AND
     reviewer_id = auth.uid() AND
     EXISTS (
       SELECT 1 FROM public.articles a
@@ -78,7 +83,7 @@ CREATE POLICY "Reviewers can update their own notes" ON public.article_review_no
     )
   )
   WITH CHECK (
-    public.has_role(auth.uid(), 'reviewer'::public.app_role) AND 
+    public.has_role(auth.uid(), 'reviewer'::public.app_role) AND
     reviewer_id = auth.uid() AND
     EXISTS (
       SELECT 1 FROM public.articles a
@@ -87,45 +92,34 @@ CREATE POLICY "Reviewers can update their own notes" ON public.article_review_no
     )
   );
 
--- 2. Trigger de Allow-list Dinâmica para updates na tabela articles
 CREATE OR REPLACE FUNCTION public.protect_reviewer_updates()
 RETURNS TRIGGER
 SECURITY DEFINER
 SET search_path = ''
 AS $$
 BEGIN
-  -- Bypass para admin ou editor (fluxo livre)
   IF public.has_role(auth.uid(), 'admin'::public.app_role) OR public.has_role(auth.uid(), 'editor'::public.app_role) THEN
     RETURN NEW;
   END IF;
 
-  -- Restrições rígoridas para Reviewer
   IF public.has_role(auth.uid(), 'reviewer'::public.app_role) THEN
-
-    -- Bloqueio mestre: Artigo publicado, arquivado ou agendado não pode ser alterado por reviewer
     IF OLD.status::text IN ('published', 'archived', 'scheduled') THEN
-       RAISE EXCEPTION 'Acesso negado: Reviewer não pode modificar artigos publicados, arquivados ou agendados.';
+       RAISE EXCEPTION 'Access denied: reviewers cannot modify published, archived, or scheduled articles.';
     END IF;
 
-    -- Controle de Posse (Ownership/Assignment)
-    -- O revisor só pode modificar se já for dele ou se ele estiver assumindo um órfão e atribuindo a si mesmo
     IF NOT (
-      (OLD.reviewer_id IS NULL AND NEW.reviewer_id = auth.uid()) OR 
+      (OLD.reviewer_id IS NULL AND NEW.reviewer_id = auth.uid()) OR
       (OLD.reviewer_id = auth.uid() AND NEW.reviewer_id = auth.uid())
     ) THEN
-       RAISE EXCEPTION 'Acesso negado: Reviewer só pode assumir artigos órfãos e só pode modificar artigos já atribuídos a si. Você não pode remover sua atribuição nem transferir o artigo.';
+       RAISE EXCEPTION 'Access denied: reviewers can only claim orphan articles or update articles assigned to themselves.';
     END IF;
 
-    -- Alteração de Status (Apenas draft ou review)
     IF NEW.status::text NOT IN ('draft', 'review') THEN
-       RAISE EXCEPTION 'Acesso negado: Reviewer apenas pode alterar status para draft ou review. Publicação, arquivamento e agendamento bloqueados.';
+       RAISE EXCEPTION 'Access denied: reviewers can only set status to draft or review.';
     END IF;
 
-    -- True Allow-List (via JSONB)
-    -- Compara a linha inteira, subtraindo os únicos 3 campos que o reviewer pode alterar de forma lícita.
-    -- Se restar qualquer diferença nos demais campos (incluindo campos recém-adicionados no futuro), barra o UPDATE.
     IF (to_jsonb(NEW) - 'status' - 'reviewer_id' - 'updated_at') IS DISTINCT FROM (to_jsonb(OLD) - 'status' - 'reviewer_id' - 'updated_at') THEN
-       RAISE EXCEPTION 'Acesso negado: Tentativa de alterar campos editoriais bloqueada pela política JSONB. Reviewer só pode alterar status e atribuição.';
+       RAISE EXCEPTION 'Access denied: reviewers can only change status and assignment fields.';
     END IF;
   END IF;
 
@@ -133,8 +127,14 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- 3. Acoplar a Trigger
 DROP TRIGGER IF EXISTS tr_protect_reviewer_updates ON public.articles;
 CREATE TRIGGER tr_protect_reviewer_updates
 BEFORE UPDATE ON public.articles
 FOR EACH ROW EXECUTE FUNCTION public.protect_reviewer_updates();
+
+REVOKE EXECUTE ON FUNCTION public.protect_reviewer_updates() FROM PUBLIC;
+REVOKE EXECUTE ON FUNCTION public.protect_reviewer_updates() FROM anon;
+REVOKE EXECUTE ON FUNCTION public.protect_reviewer_updates() FROM authenticated;
+REVOKE EXECUTE ON FUNCTION public.has_admin_mfa() FROM PUBLIC;
+REVOKE EXECUTE ON FUNCTION public.has_admin_mfa() FROM anon;
+GRANT EXECUTE ON FUNCTION public.has_admin_mfa() TO authenticated;

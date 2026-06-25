@@ -2,7 +2,7 @@ interface JsonLdProps {
   data: Record<string, unknown> | Record<string, unknown>[];
 }
 
-function safeJsonLd(data: unknown): string {
+export function safeJsonLd(data: unknown): string {
   // Escape characters that could break out of <script> or be misinterpreted
   // as HTML. These are valid JSON Unicode escapes — browsers decode them
   // transparently when parsing application/ld+json.

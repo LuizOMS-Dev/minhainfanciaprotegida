@@ -36,9 +36,9 @@ const ACTION_LABEL: Record<string, string> = {
   brute_force_detected: "Força bruta detectada",
   account_locked: "Conta bloqueada",
   unauthorized_access: "Acesso negado",
-  captcha_failed: "Falha de CAPTCHA",
-  captcha_bypassed_attempt: "Tentativa de burlar CAPTCHA",
-  login_blocked_by_captcha: "Login bloqueado por CAPTCHA",
+  captcha_failed: "Falha de verificacao legada",
+  captcha_bypassed_attempt: "Tentativa de burlar verificacao legada",
+  login_blocked_by_captcha: "Login bloqueado por verificacao legada",
   csp_violation: "Violação de CSP",
   role_change: "Papel alterado",
   user_delete: "Usuário excluído",
@@ -108,7 +108,7 @@ function SecurityPage() {
             label="MFA obrigatório"
             detail={`${d?.metrics.mfaEnrolledUsers ?? 0} usuário(s) com recovery codes`}
           />
-          <SecurityBadge active label="Turnstile (CAPTCHA)" detail="Cloudflare em /auth" />
+          <SecurityBadge active label="Protecao Vercel" detail="HTTPS, CDN e borda" />
           <SecurityBadge active label="Rate limit" detail="5 falhas / 15 min → 15 min" />
           <SecurityBadge active label="E-mail verificado" detail="Bloqueio se não confirmado" />
           <SecurityBadge active label="CSP" detail="Política estrita + report" />
@@ -229,8 +229,7 @@ function SecurityPage() {
             para acesso ao painel. Recovery codes hash SHA-256.
           </li>
           <li className="rounded-xl border border-border p-3">
-            <strong className="text-foreground">Turnstile</strong> verifica o token no servidor
-            antes de qualquer tentativa de login.
+            <strong className="text-foreground">Protecao Vercel</strong> mantem HTTPS, borda global e protecoes de plataforma antes da aplicacao.
           </li>
           <li className="rounded-xl border border-border p-3">
             <strong className="text-foreground">Rate limit</strong>: 5 falhas em 15 min ativam

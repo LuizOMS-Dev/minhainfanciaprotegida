@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { requireRole } from "@/services/roleService";
+import { requireAdminContext } from "@/lib/require-admin";
 
 export interface AdminLibraryItem {
   id: string;
@@ -35,7 +35,7 @@ const upsertSchema = z.object({
 export const listAdminLibrary = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    await requireRole(context.supabase, context.userId, ["admin", "editor", "revisor"]);
+    await requireAdminContext(context, { roles: ["admin", "editor", "revisor"], requireMfa: true });
     const { data, error } = await context.supabase
       .from("library_items")
       .select("*")
@@ -51,7 +51,7 @@ export const getAdminLibraryItem = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i) => z.object({ id: z.string().uuid() }).parse(i))
   .handler(async ({ data, context }) => {
-    await requireRole(context.supabase, context.userId, ["admin", "editor", "revisor"]);
+    await requireAdminContext(context, { roles: ["admin", "editor", "revisor"], requireMfa: true });
     const { data: row, error } = await context.supabase
       .from("library_items")
       .select("*")
@@ -68,7 +68,7 @@ export const upsertAdminLibrary = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i) => upsertSchema.parse(i))
   .handler(async ({ data, context }) => {
-    await requireRole(context.supabase, context.userId, ["admin", "editor"]);
+    await requireAdminContext(context, { roles: ["admin", "editor"], requireMfa: true });
     const payload = { ...data, description: data.description || null };
     const isUpdate = Boolean(data.id);
     let saved: AdminLibraryItem;
@@ -112,7 +112,7 @@ export const deleteAdminLibrary = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i) => z.object({ id: z.string().uuid() }).parse(i))
   .handler(async ({ data, context }) => {
-    await requireRole(context.supabase, context.userId, ["admin"]);
+    await requireAdminContext(context, { roles: ["admin"], requireMfa: true });
     const { data: prev } = await context.supabase
       .from("library_items")
       .select("title")

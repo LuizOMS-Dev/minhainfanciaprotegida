@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { requireRole } from "@/services/roleService";
+import { requireAdminContext } from "@/lib/require-admin";
 
 const actionEnum = z.enum([
   "login",
@@ -136,7 +136,7 @@ export const listAuditLog = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((i) => listSchema.parse(i ?? {}))
   .handler(async ({ data, context }) => {
-    await requireRole(context.supabase, context.userId, ["admin"]);
+    await requireAdminContext(context, { roles: ["admin"], requireMfa: true });
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const from = (data.page - 1) * data.pageSize;
     const to = from + data.pageSize - 1;

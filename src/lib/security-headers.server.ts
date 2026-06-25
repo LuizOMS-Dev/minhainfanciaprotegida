@@ -4,7 +4,6 @@
 // Whitelist rationale:
 // - 'self' covers our own origin (preview, production, custom domains).
 // - Supabase: REST/Realtime/Storage on *.supabase.co, *.supabase.in.
-// - Cloudflare Turnstile: challenges.cloudflare.com (script + frame).
 // - Google Analytics 4: googletagmanager.com (script), google-analytics.com,
 //   analytics.google.com, *.google-analytics.com (connect + img beacon).
 // - Microsoft Clarity: clarity.ms + *.clarity.ms (script, connect, img).
@@ -17,8 +16,6 @@ const CSP_DIRECTIVES: Record<string, string[]> = {
   "default-src": ["'self'"],
   "script-src": [
     "'self'",
-    "'unsafe-inline'",
-    "https://challenges.cloudflare.com",
     "https://www.googletagmanager.com",
     "https://www.google-analytics.com",
     "https://*.clarity.ms",
@@ -41,13 +38,12 @@ const CSP_DIRECTIVES: Record<string, string[]> = {
     "wss://*.supabase.co",
     "https://*.supabase.in",
     "wss://*.supabase.in",
-    "https://challenges.cloudflare.com",
     "https://www.google-analytics.com",
     "https://*.google-analytics.com",
     "https://analytics.google.com",
     "https://*.clarity.ms",
   ],
-  "frame-src": ["'self'", "https://challenges.cloudflare.com"],
+  "frame-src": ["'self'"],
   "frame-ancestors": ["'none'"],
   "object-src": ["'none'"],
   "base-uri": ["'self'"],
@@ -58,7 +54,16 @@ const CSP_DIRECTIVES: Record<string, string[]> = {
 };
 
 export function buildCsp(): string {
-  return Object.entries(CSP_DIRECTIVES)
+  const directives: Record<string, string[]> = {
+    ...CSP_DIRECTIVES,
+    "script-src": [...CSP_DIRECTIVES["script-src"]],
+  };
+
+  if (process.env.ALLOW_UNSAFE_INLINE_SCRIPTS === "true") {
+    directives["script-src"].push("'unsafe-inline'");
+  }
+
+  return Object.entries(directives)
     .map(([k, v]) => (v.length ? `${k} ${v.join(" ")}` : k))
     .join("; ");
 }
@@ -72,8 +77,8 @@ const STATIC_HEADERS: Record<string, string> = {
     "accelerometer=(), camera=(), geolocation=(), gyroscope=(), microphone=(), payment=(), usb=(), interest-cohort=()",
   "Cross-Origin-Opener-Policy": "same-origin",
   "Cross-Origin-Resource-Policy": "same-origin",
-  // COEP intentionally omitted: 'require-corp' breaks 3rd-party iframes
-  // (Turnstile, Analytics). Set to a permissive value for documentation.
+  // COEP intentionally omitted: 'require-corp' can break third-party embeds.
+  // Set to a permissive value for documentation.
   "Cross-Origin-Embedder-Policy": "unsafe-none",
   "X-DNS-Prefetch-Control": "on",
   "X-Permitted-Cross-Domain-Policies": "none",

@@ -9,6 +9,7 @@ import {
   Clock,
   Database,
   FileText,
+  Instagram,
   KeyRound,
   MapPin,
   MonitorSmartphone,
@@ -197,6 +198,14 @@ function DashboardPage() {
               icon={MapPin}
               title="Novo local"
               description="Conselhos, CREAS, delegacias"
+            />
+          )}
+          {isAdmin && (
+            <QuickActionCard
+              to="/admin/instagram"
+              icon={Instagram}
+              title="Instagram"
+              description="Conectar, planejar e publicar com seguranca"
             />
           )}
           {isAdmin && (

@@ -59,7 +59,7 @@ function safeHeader(name: string): string | null {
 export function extractIp(): string | null {
   const xff = safeHeader("x-forwarded-for");
   if (xff) return xff.split(",")[0]?.trim() || null;
-  return safeHeader("cf-connecting-ip") ?? safeHeader("x-real-ip");
+  return safeHeader("x-real-ip");
 }
 
 export function extractUserAgent(): string | null {
