@@ -241,6 +241,10 @@ function Page() {
         variant="orange"
         eyebrow="Missão e objetivos"
         title="Nossa Missão e Objetivos"
+        breadcrumb={[
+          { label: "Início", to: "/" },
+          { label: "Objetivos" },
+        ]}
         description="Transformar informação em proteção. Conheça as cinco frentes de atuação do Infância Protegida e o impacto que buscamos gerar."
         icon={<Target className="size-3.5" aria-hidden />}
       />

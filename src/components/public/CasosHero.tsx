@@ -12,7 +12,7 @@ interface CasosHeroProps {
  */
 export function CasosHero({ totalCases, yearRange, lastVerifiedLabel }: CasosHeroProps) {
   return (
-    <header className="relative isolate overflow-hidden bg-[color:var(--dossier-cream)] text-[color:var(--dossier-ink)]">
+    <header className="relative isolate overflow-hidden bg-background text-foreground">
       <div className="h-2 w-full bg-[color:var(--navy-deep)]" aria-hidden />
       <div
         aria-hidden
@@ -33,7 +33,7 @@ export function CasosHero({ totalCases, yearRange, lastVerifiedLabel }: CasosHer
           Histórias que mudaram leis — e ainda nos ensinam a proteger.
         </h1>
 
-        <p className="mt-5 max-w-3xl text-base sm:text-lg leading-relaxed text-[color:var(--dossier-ink)]/85">
+        <p className="mt-5 max-w-3xl text-base sm:text-lg leading-relaxed text-foreground/85">
           Cada dossiê reúne fatos verificados, cronologia, repercussão e desdobramentos legais.
           Todas as referências apontam para fontes públicas e oficiais.
         </p>
@@ -81,7 +81,7 @@ function MetaCard({
   value: string;
 }) {
   return (
-    <div className="flex items-start gap-3 rounded-2xl border border-[color:var(--dossier-rule)] bg-white/70 p-4 backdrop-blur">
+    <div className="flex items-start gap-3 rounded-2xl border border-border bg-card p-4 shadow-sm">
       <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-[color:var(--navy-deep)] text-[color:var(--orange)]">
         <Icon className="size-4" aria-hidden />
       </span>

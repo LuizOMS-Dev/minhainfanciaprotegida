@@ -3,6 +3,7 @@ import { Ear, Heart, Phone, Shield, ShieldCheck, Sparkles } from "lucide-react";
 import supportImg from "@/assets/support.jpg";
 import { Reveal } from "@/components/shared/Reveal";
 import { SectionHeader } from "@/components/shared/SectionHeader";
+import { PageHero } from "@/components/public/PageHero";
 
 export const Route = createFileRoute("/como-ajudar")({
   head: () => ({
@@ -33,28 +34,17 @@ const steps = [
 function Page() {
   return (
     <>
-      <section className="relative isolate overflow-hidden bg-[color:var(--navy-deep)] text-white py-20 sm:py-28">
-        <div className="absolute inset-0 -z-10 opacity-40" style={{ backgroundImage: `url(${supportImg})`, backgroundSize: "cover", backgroundPosition: "center" }} aria-hidden />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[color:var(--navy-deep)] via-[color:var(--navy-deep)]/85 to-transparent" aria-hidden />
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em]">
-              Acolher é proteger
-            </span>
-          </Reveal>
-          <Reveal delay={120}>
-            <h1 className="mt-6 font-display text-5xl sm:text-6xl font-semibold leading-tight text-balance">
-              Cinco passos que podem mudar uma vida
-            </h1>
-          </Reveal>
-          <Reveal delay={220}>
-            <p className="mt-6 text-lg text-white/85 max-w-2xl">
-              Quando uma criança rompe o silêncio, a forma como respondemos define se ela continuará
-              a falar. Siga estes passos baseados em orientações oficiais.
-            </p>
-          </Reveal>
-        </div>
-      </section>
+      <PageHero
+        image={supportImg}
+        eyebrow="Acolher é proteger"
+        icon={<Heart className="size-3.5 text-[color:var(--orange)]" />}
+        title="Cinco passos que podem mudar uma vida"
+        description="Quando uma criança rompe o silêncio, a forma como respondemos define se ela continuará a falar. Siga estes passos baseados em orientações oficiais."
+        breadcrumb={[
+          { label: "Início", to: "/" },
+          { label: "Como ajudar" },
+        ]}
+      />
 
       <section className="py-20 sm:py-28 bg-background">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">

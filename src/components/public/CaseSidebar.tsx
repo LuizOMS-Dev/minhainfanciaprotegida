@@ -63,7 +63,7 @@ export function CaseSidebar({
       </a>
 
       {dates.length > 0 && (
-        <div className="rounded-2xl border border-[color:var(--dossier-rule)] bg-white p-5">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
           <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--navy-deep)]/70">
             <CalendarDays className="size-3.5 text-[color:var(--orange)]" aria-hidden />
             Datas-chave
@@ -72,7 +72,7 @@ export function CaseSidebar({
             {dates.map((d) => (
               <li key={d.label} className="flex items-baseline justify-between gap-2 text-sm">
                 <span className="font-semibold text-[color:var(--navy-deep)]">{d.label}</span>
-                <time dateTime={d.iso} className="text-[color:var(--dossier-ink)]/80">
+                <time dateTime={d.iso} className="text-muted-foreground">
                   {fmt.format(d.date)}
                 </time>
               </li>
@@ -82,19 +82,19 @@ export function CaseSidebar({
       )}
 
       {miniTimeline.length > 0 && (
-        <div className="rounded-2xl border border-[color:var(--dossier-rule)] bg-white p-5">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
           <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--navy-deep)]/70">
             <BookOpen className="size-3.5 text-[color:var(--orange)]" aria-hidden />
             Cronologia
           </div>
-          <ol className="mt-3 relative space-y-3 border-l border-[color:var(--dossier-rule)] pl-4">
+          <ol className="mt-3 relative space-y-3 border-l border-border pl-4">
             {miniTimeline.map((t, i) => (
               <li key={i} className="relative">
                 <span className="absolute -left-[18px] top-1 inline-flex size-2.5 rounded-full bg-[color:var(--orange)] ring-2 ring-white" aria-hidden />
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-[color:var(--navy-deep)]/70">
                   {fmt.format(t.d)}
                 </p>
-                <p className="text-sm text-[color:var(--dossier-ink)] leading-snug">
+                <p className="text-sm text-foreground/80 leading-snug">
                   {t.title ? <strong className="text-[color:var(--navy-deep)]">{t.title}: </strong> : null}
                   {t.text}
                 </p>
@@ -105,13 +105,13 @@ export function CaseSidebar({
       )}
 
       {(primarySource || reviewerName) && (
-        <div className="rounded-2xl border border-[color:var(--dossier-rule)] bg-[color:var(--dossier-cream)] p-5">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
           <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--navy-deep)]/70">
             <BadgeCheck className="size-3.5 text-[color:var(--orange)]" aria-hidden />
             Verificação
           </div>
           {primarySource && (
-            <p className="mt-3 text-sm text-[color:var(--dossier-ink)]">
+            <p className="mt-3 text-sm text-foreground/90">
               <span className="block text-[11px] font-semibold uppercase tracking-wider text-[color:var(--navy-deep)]/70">
                 Fonte primária
               </span>
@@ -126,7 +126,7 @@ export function CaseSidebar({
             </p>
           )}
           {reviewerName && (
-            <p className="mt-3 text-xs text-[color:var(--dossier-ink)]/80">
+            <p className="mt-3 text-xs text-muted-foreground">
               Revisado por <strong className="text-[color:var(--navy-deep)]">{reviewerName}</strong>
             </p>
           )}

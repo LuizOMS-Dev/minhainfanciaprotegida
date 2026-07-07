@@ -176,14 +176,14 @@ function CasosPage() {
   }, [published]);
 
   return (
-    <>
+    <div className="bg-background">
       <CasosHero
         totalCases={merged.length}
         yearRange={yearRange}
         lastVerifiedLabel={lastVerifiedLabel}
       />
 
-      <section className="bg-[color:var(--dossier-cream)]/40 py-12 sm:py-16">
+      <section className="bg-background border-b border-border py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <CasosFilters
             categories={[...CATEGORIES]}
@@ -207,8 +207,8 @@ function CasosPage() {
           )}
 
           {rest.length > 0 && (
-            <div className="mt-12">
-              <h2 className="font-display text-2xl font-bold text-[color:var(--navy-deep)] mb-6">
+            <div className="mt-16 pt-16 border-t border-border/50">
+              <h2 className="font-display text-2xl font-bold text-[color:var(--navy-deep)] mb-8">
                 Todos os dossiês
               </h2>
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -232,9 +232,9 @@ function CasosPage() {
           )}
 
           {filtered.length === 0 && (
-            <div className="rounded-3xl border border-dashed border-[color:var(--dossier-rule)] bg-white py-16 text-center">
-              <p className="font-display text-xl font-semibold text-[color:var(--navy-deep)]">
-                Nenhum caso corresponde aos filtros aplicados.
+            <div className="rounded-2xl border border-dashed border-border bg-card py-20 text-center shadow-sm">
+              <p className="font-display text-xl font-medium text-[color:var(--navy-deep)]">
+                Nenhum dossiê corresponde aos filtros aplicados.
               </p>
               <button
                 onClick={() => {
@@ -243,9 +243,9 @@ function CasosPage() {
                   setYear("all");
                   setQuery("");
                 }}
-                className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[color:var(--red-inst)] hover:underline"
+                className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--navy)] hover:text-[color:var(--orange)] transition-colors"
               >
-                Limpar filtros <ArrowRight className="size-3.5" aria-hidden />
+                Limpar filtros <ArrowRight className="size-4" aria-hidden />
               </button>
             </div>
           )}
@@ -253,41 +253,42 @@ function CasosPage() {
       </section>
 
       <InstitutionalStripe />
-    </>
+    </div>
   );
 }
 
 function FeaturedCase({ item }: { item: NormalizedCase }) {
   const ev = item.eventDate ? new Date(item.eventDate) : null;
   return (
-    <article className="grid gap-0 overflow-hidden rounded-3xl border border-[color:var(--dossier-rule)] bg-white shadow-[0_25px_60px_-30px_rgba(11,20,45,0.45)] lg:grid-cols-[1.1fr_1fr]">
-      <div className="relative aspect-[16/10] lg:aspect-auto lg:min-h-[380px] overflow-hidden bg-[color:var(--dossier-cream-deep)]">
-        <img src={item.image} alt="" className="size-full object-cover" loading="eager" />
+    <article className="group grid gap-0 overflow-hidden rounded-2xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow lg:grid-cols-[1.1fr_1fr] mt-8">
+      <div className="relative aspect-[16/10] lg:aspect-auto lg:min-h-[380px] overflow-hidden bg-[color:var(--navy-deep)]">
+        <img src={item.image} alt="" className="size-full object-cover transition-transform duration-700 group-hover:scale-105" loading="eager" />
         <div className="absolute inset-0 bg-gradient-to-tr from-[color:var(--navy-deep)]/70 via-transparent to-transparent" />
-        <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-[color:var(--orange)] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--navy-deep)]">
-          <ShieldCheck className="size-3" aria-hidden /> Dossiê em destaque
+        <span className="absolute top-6 left-6 inline-flex items-center gap-1.5 rounded-full bg-[color:var(--navy)] px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white shadow-sm">
+          <ShieldCheck className="size-3 text-[color:var(--orange)]" aria-hidden /> Dossiê em destaque
         </span>
       </div>
-      <div className="flex flex-col justify-center gap-4 p-6 sm:p-10">
+      <div className="flex flex-col justify-center gap-5 p-8 sm:p-12 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-[color:var(--orange)]/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         {item.category && (
-          <span className="self-start text-[10px] font-bold uppercase tracking-[0.24em] text-[color:var(--navy-deep)]/70">
+          <span className="self-start text-[10px] font-bold uppercase tracking-widest text-muted-foreground relative z-10">
             {item.category}
             {ev ? ` · ${ev.getFullYear()}` : ""}
           </span>
         )}
-        <h3 className="font-display text-3xl sm:text-4xl font-semibold leading-tight text-[color:var(--navy-deep)] text-balance">
+        <h3 className="font-display text-3xl sm:text-4xl font-semibold leading-tight text-[color:var(--navy-deep)] text-balance relative z-10">
           {item.title}
         </h3>
-        <p className="text-base leading-relaxed text-[color:var(--dossier-ink)]/85 line-clamp-4">{item.excerpt}</p>
+        <p className="text-base leading-relaxed text-muted-foreground line-clamp-4 relative z-10">{item.excerpt}</p>
         {item.source?.name && (
-          <p className="text-xs text-[color:var(--navy-deep)]/70">
-            Fonte primária: <span className="font-semibold text-[color:var(--navy-deep)]">{item.source.name}</span>
+          <p className="text-xs text-muted-foreground relative z-10">
+            Fonte primária: <span className="font-semibold text-[color:var(--navy)]">{item.source.name}</span>
           </p>
         )}
         <Link
           to="/casos/$slug"
           params={{ slug: item.slug }}
-          className="mt-2 inline-flex w-fit items-center gap-2 rounded-full bg-[color:var(--navy-deep)] px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-white hover:bg-[color:var(--red-inst)] transition"
+          className="mt-4 inline-flex w-fit items-center gap-2 rounded-lg bg-[color:var(--navy)] px-6 py-3.5 text-sm font-semibold uppercase tracking-widest text-white hover:bg-[color:var(--navy-deep)] transition shadow-sm relative z-10"
         >
           Ler dossiê completo <ArrowRight className="size-4" aria-hidden />
         </Link>
@@ -298,8 +299,19 @@ function FeaturedCase({ item }: { item: NormalizedCase }) {
 
 function InstitutionalStripe() {
   return (
-    <section className="bg-[color:var(--navy-deep)] text-white py-12 sm:py-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid gap-6 md:grid-cols-3">
+    <section className="bg-[color:var(--navy)] text-white py-16 sm:py-20 relative overflow-hidden">
+      <div className="absolute inset-0 opacity-10 pointer-events-none" aria-hidden>
+        <svg className="absolute w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="stripe-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="1"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#stripe-grid)" />
+        </svg>
+      </div>
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid gap-8 md:grid-cols-3 relative z-10">
         <StripeCard
           icon={ShieldCheck}
           title="Como verificamos os casos"
@@ -322,8 +334,8 @@ function InstitutionalStripe() {
           cta="Ver leis"
         />
       </div>
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-8 flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-white/60">
-        <BookOpen className="size-3.5 text-[color:var(--orange)]" aria-hidden />
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-12 flex flex-wrap items-center gap-3 text-xs uppercase tracking-widest text-white/60 font-semibold relative z-10">
+        <BookOpen className="size-4 text-[color:var(--orange)]" aria-hidden />
         Portal educativo e independente · Sem fins lucrativos
       </div>
     </section>
@@ -346,15 +358,15 @@ function StripeCard({
   return (
     <Link
       to={to}
-      className="group flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur transition hover:border-[color:var(--orange)]/60 hover:bg-white/[0.07]"
+      className="group flex flex-col h-full rounded-xl border border-white/10 bg-white/5 p-8 hover:bg-white/10 hover:border-white/20 transition-all shadow-sm"
     >
-      <span className="inline-flex size-10 items-center justify-center rounded-xl bg-[color:var(--orange)] text-[color:var(--navy-deep)]">
-        <Icon className="size-5" aria-hidden />
+      <span className="inline-flex size-12 items-center justify-center rounded-lg bg-[color:var(--orange)] text-[color:var(--navy-deep)] mb-6 shadow-sm">
+        <Icon className="size-6" aria-hidden />
       </span>
-      <h3 className="font-display text-xl font-bold leading-tight">{title}</h3>
-      <p className="text-sm text-white/80 leading-relaxed">{description}</p>
-      <span className="mt-2 inline-flex items-center gap-1 text-xs font-bold uppercase tracking-[0.2em] text-[color:var(--orange)]">
-        {cta} <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
+      <h3 className="font-display text-2xl font-semibold leading-tight text-white">{title}</h3>
+      <p className="mt-3 text-sm text-white/80 leading-relaxed flex-grow">{description}</p>
+      <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--orange)]">
+        {cta} <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
       </span>
     </Link>
   );

@@ -14,6 +14,10 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
         outline: "text-foreground",
+        // Redesign v2 — categorias e selos institucionais
+        orange: "border-transparent bg-[color:var(--orange-soft)] text-[color:var(--navy-deep)]",
+        navy: "border-transparent bg-[color:var(--navy)] text-[color:var(--navy-foreground)]",
+        oficial: "border-[color:var(--navy)]/15 bg-[color:var(--navy)]/5 text-[color:var(--navy)]",
       },
     },
     defaultVariants: {

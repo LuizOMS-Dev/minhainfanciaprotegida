@@ -52,9 +52,9 @@ export function CaseCard({
       to="/casos/$slug"
       params={{ slug }}
       aria-label={title}
-      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[color:var(--dossier-rule)] bg-white shadow-[0_8px_30px_-18px_rgba(11,20,45,0.25)] transition hover:shadow-[0_20px_50px_-20px_rgba(11,20,45,0.4)] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:shadow-elegant hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-[color:var(--dossier-cream-deep)]">
+      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
         <img
           src={image}
           alt=""
@@ -104,10 +104,10 @@ export function CaseCard({
           <ArrowUpRight className="ml-1 inline-block size-4 align-text-top opacity-60 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
         </h3>
 
-        <p className="text-sm leading-relaxed text-[color:var(--dossier-ink)]/80 line-clamp-3">{excerpt}</p>
+        <p className="text-sm leading-relaxed text-muted-foreground line-clamp-3">{excerpt}</p>
 
         {source?.name && (
-          <p className="mt-auto pt-3 border-t border-[color:var(--dossier-rule)] text-[11px] text-[color:var(--navy-deep)]/60">
+          <p className="mt-auto pt-3 border-t border-border text-[11px] text-[color:var(--navy-deep)]/60">
             Fonte primária: <span className="font-semibold text-[color:var(--navy-deep)]">{source.name}</span>
           </p>
         )}

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/public/PageHero";
 import { Reveal } from "@/components/shared/Reveal";
+import { Badge } from "@/components/ui/badge";
 import { History, Shield, Layout, BookOpen, Search, Eye, Sparkles, Activity } from "lucide-react";
 import heroImg from "@/assets/hero-protection.jpg";
 
@@ -146,6 +147,10 @@ function AtualizacoesPage() {
         image={heroImg}
         eyebrow="Histórico"
         title="Atualizações do Projeto"
+        breadcrumb={[
+          { label: "Início", to: "/" },
+          { label: "Atualizações" },
+        ]}
         description="Acompanhe as melhorias, novidades e evoluções implementadas no portal Minha Infância Protegida."
         icon={<History className="size-3.5" aria-hidden />}
         tall
@@ -163,43 +168,40 @@ function AtualizacoesPage() {
           </div>
         </Reveal>
 
-        {/* Lista cronológica */}
-        <div className="space-y-8">
-          {updates.map((up, i) => {
-            const Icon = up.icon;
-            return (
-              <Reveal key={i} delay={i * 50}>
-                <div className="group relative flex flex-col sm:flex-row gap-6 rounded-3xl border border-border bg-card p-6 sm:p-8 hover-lift">
-                  
-                  {/* Meta / Icon */}
-                  <div className="flex-shrink-0 sm:w-48">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Icon className="size-5 text-[color:var(--orange)]" aria-hidden />
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-[color:var(--orange)]">
-                        {up.category}
-                      </span>
-                    </div>
-                    <p className="text-sm font-semibold text-muted-foreground">{up.date}</p>
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1">
-                    <h3 className="font-display text-xl sm:text-2xl font-bold text-[color:var(--navy-deep)] group-hover:text-[color:var(--orange)] transition-colors">
-                      {up.title}
-                    </h3>
-                    <p className="mt-3 text-base text-foreground/80 leading-relaxed">
-                      {up.desc}
-                    </p>
-                    <div className="mt-4 inline-flex items-center gap-2 rounded-xl bg-muted/50 px-3 py-2 text-sm text-foreground/90">
-                      <strong className="font-semibold text-[color:var(--navy-deep)]">Impacto:</strong>
-                      {up.impact}
+        {/* Timeline institucional — histórico de evolução do projeto */}
+        <div className="relative">
+          <span
+            className="absolute left-[15px] sm:left-[19px] top-3 bottom-3 w-px bg-border"
+            aria-hidden
+          />
+          <ol className="space-y-8">
+            {updates.map((up, i) => {
+              const Icon = up.icon;
+              return (
+                <Reveal key={i} delay={i * 50} as="li">
+                  <div className="relative pl-12 sm:pl-16">
+                    <span className="absolute left-0 top-0 inline-flex size-8 sm:size-10 items-center justify-center rounded-full bg-[color:var(--orange-soft)] text-[color:var(--orange)] ring-4 ring-background">
+                      <Icon className="size-4 sm:size-5" aria-hidden />
+                    </span>
+                    <div className="rounded-2xl border border-border bg-card p-6 sm:p-7 hover-lift">
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                        <Badge variant="orange">{up.category}</Badge>
+                        <span className="text-sm font-semibold text-muted-foreground">{up.date}</span>
+                      </div>
+                      <h3 className="mt-3 font-display text-xl sm:text-2xl font-semibold text-[color:var(--navy-deep)]">
+                        {up.title}
+                      </h3>
+                      <p className="mt-2 text-base text-foreground/80 leading-relaxed">{up.desc}</p>
+                      <div className="mt-4 flex items-start gap-2 rounded-xl bg-muted/50 px-3 py-2 text-sm text-foreground/90">
+                        <strong className="font-semibold text-[color:var(--navy-deep)] shrink-0">Impacto:</strong>
+                        <span>{up.impact}</span>
+                      </div>
                     </div>
                   </div>
-
-                </div>
-              </Reveal>
-            );
-          })}
+                </Reveal>
+              );
+            })}
+          </ol>
         </div>
 
         {/* CTA final */}

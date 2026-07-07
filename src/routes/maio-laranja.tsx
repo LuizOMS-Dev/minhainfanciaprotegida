@@ -56,31 +56,40 @@ const timeline = [
 function Page() {
   return (
     <>
-      <section className="relative isolate overflow-hidden bg-[color:var(--navy-deep)] text-white py-24 sm:py-32">
+      <section className="relative overflow-hidden bg-[color:var(--background)] pt-16 md:pt-24 lg:pt-32 pb-16 lg:pb-24 border-b border-border">
         <div
-          className="absolute inset-0 -z-10 opacity-30"
-          style={{ backgroundImage: `url(${ribbonImg})`, backgroundSize: "cover", backgroundPosition: "center" }}
+          className="absolute top-0 right-0 -translate-y-12 translate-x-1/4 opacity-40 mix-blend-multiply pointer-events-none"
           aria-hidden
-        />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[color:var(--navy-deep)]/85 via-[color:var(--navy-deep)]/75 to-[color:var(--navy-deep)]" aria-hidden />
+        >
+          <div className="w-[500px] h-[500px] rounded-full bg-[color:var(--orange)]/10 blur-3xl" />
+        </div>
 
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em]">
-              <Flame className="size-3.5 text-[color:var(--orange)]" />
-              Campanha Nacional · 18 de Maio
-            </span>
-          </Reveal>
-          <Reveal delay={120}>
-            <h1 className="mt-6 font-display text-5xl sm:text-6xl lg:text-7xl font-semibold leading-[1.02] text-balance">
-              Maio <span className="text-[color:var(--orange)]">Laranja</span>
-            </h1>
-          </Reveal>
-          <Reveal delay={220}>
-            <p className="mt-6 text-lg sm:text-xl text-white/85 max-w-3xl leading-relaxed">
-              Um mês inteiro dedicado a romper o silêncio sobre a violência sexual contra crianças e
-              adolescentes. A cor laranja simboliza alerta, urgência e proteção.
-            </p>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center relative z-10">
+          <div className="max-w-xl">
+            <Reveal>
+              <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--navy)]/10 bg-[color:var(--navy)]/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[color:var(--navy-deep)] shadow-sm">
+                <Flame className="size-3.5 text-[color:var(--orange)]" />
+                Campanha nacional · 18 de maio
+              </span>
+            </Reveal>
+            <Reveal delay={120}>
+              <h1 className="mt-8 font-display text-4xl sm:text-5xl lg:text-6xl font-medium leading-[1.1] tracking-tight text-[color:var(--navy-deep)] text-balance">
+                Maio <span className="text-[color:var(--orange)]">Laranja</span>
+              </h1>
+            </Reveal>
+            <Reveal delay={220}>
+              <p className="mt-6 text-lg sm:text-xl text-muted-foreground leading-relaxed">
+                Um mês inteiro dedicado a romper o silêncio sobre a violência sexual contra crianças e
+                adolescentes. A cor laranja simboliza alerta, urgência e proteção.
+              </p>
+            </Reveal>
+          </div>
+
+          <Reveal delay={300} className="lg:justify-self-end w-full">
+            <div className="relative aspect-[4/3] w-full max-w-lg rounded-2xl overflow-hidden shadow-elegant border border-border/50">
+              <img src={ribbonImg} alt="" aria-hidden className="size-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--navy-deep)]/20 to-transparent" />
+            </div>
           </Reveal>
         </div>
       </section>

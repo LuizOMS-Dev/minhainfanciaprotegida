@@ -197,7 +197,7 @@ function NewsDetail() {
               src={a.cover_url}
               alt=""
               loading="lazy"
-              className="w-full rounded-3xl border border-border object-cover aspect-[16/9] shadow-2xl"
+              className="w-full rounded-3xl border border-border object-cover aspect-[16/9] shadow-elegant bg-card"
             />
           </figure>
         )}
