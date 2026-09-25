@@ -245,13 +245,16 @@
     100% { background-position: 0% 50%; }
   }
   .animate-strip-flow {
-    background-size: 220% 220%;
-    animation: strip-flow 9s ease-in-out infinite;
+    background-size: 280% 280%;
+    animation: strip-flow 16s ease-in-out infinite;
+    will-change: background-position;
   }
 
   @keyframes strip-shine {
-    0% { transform: translateX(-120%) skewX(-18deg); }
-    55%, 100% { transform: translateX(240%) skewX(-18deg); }
+    0% { transform: translateX(-130%) skewX(-18deg); opacity: 0; }
+    8% { opacity: 1; }
+    32% { transform: translateX(260%) skewX(-18deg); opacity: 1; }
+    40%, 100% { transform: translateX(260%) skewX(-18deg); opacity: 0; }
   }
   .strip-shine {
     position: relative;
@@ -262,37 +265,37 @@
     content: "";
     position: absolute;
     inset: -20% auto -20% 0;
-    width: 34%;
-    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.22), transparent);
-    animation: strip-shine 5.5s ease-in-out infinite;
+    width: 26%;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.13), transparent);
+    animation: strip-shine 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     pointer-events: none;
   }
 
   @keyframes cta-pulse-glow {
-    0%, 100% { box-shadow: 0 0 0 0 rgb(255 255 255 / 0.55), 0 2px 8px rgb(0 0 0 / 0.25); }
-    50% { box-shadow: 0 0 0 6px rgb(255 255 255 / 0), 0 2px 8px rgb(0 0 0 / 0.25); }
+    0%, 100% { box-shadow: 0 0 0 0 rgb(255 255 255 / 0.4), 0 2px 8px rgb(0 0 0 / 0.25); }
+    50% { box-shadow: 0 0 0 5px rgb(255 255 255 / 0), 0 2px 8px rgb(0 0 0 / 0.25); }
   }
   .animate-cta-pulse {
-    animation: cta-pulse-glow 2.6s ease-out infinite;
+    animation: cta-pulse-glow 3.6s ease-in-out infinite;
   }
 
   @keyframes bell-ring {
     0%, 100% { transform: rotate(0); }
-    10%, 30% { transform: rotate(14deg); }
-    20%, 40% { transform: rotate(-12deg); }
-    50% { transform: rotate(0); }
+    12%, 32% { transform: rotate(10deg); }
+    22% { transform: rotate(-8deg); }
+    42% { transform: rotate(0); }
   }
   .animate-bell {
-    animation: bell-ring 3.2s ease-in-out infinite;
+    animation: bell-ring 4.2s ease-in-out infinite;
     transform-origin: top center;
   }
 
   @keyframes dot-blink {
     0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.45; transform: scale(0.8); }
+    50% { opacity: 0.55; transform: scale(0.85); }
   }
   .animate-dot-blink {
-    animation: dot-blink 1.6s ease-in-out infinite;
+    animation: dot-blink 2.2s ease-in-out infinite;
   }
 
   .line-clamp-4 {

@@ -198,10 +198,10 @@ export function SiteHeader() {
                 <li key={item.to}>
                   <Link
                     to={item.to}
-                    className="relative inline-block whitespace-nowrap rounded-md px-3 py-3 text-[11px] font-bold uppercase tracking-[0.12em] text-foreground/60 transition-colors hover:bg-muted/60 hover:text-foreground xl:text-[12px] after:absolute after:inset-x-3 after:bottom-1.5 after:h-[2.5px] after:rounded-full after:bg-gradient-to-r after:from-[#ff9a3d] after:to-[#f2620f] after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100"
+                    className="group relative inline-block whitespace-nowrap px-3 py-3 text-[11px] font-bold uppercase tracking-[0.12em] text-foreground/60 transition-all duration-300 ease-out hover:-translate-y-[1px] hover:text-foreground xl:text-[12px] after:absolute after:inset-x-3 after:bottom-1.5 after:h-[2px] after:rounded-full after:bg-gradient-to-r after:from-[#ff9a3d] after:via-[#f2620f] after:to-[#d92240] after:opacity-0 after:scale-x-[0.3] after:origin-center after:transition-all after:duration-500 after:ease-[cubic-bezier(0.16,1,0.3,1)] hover:after:opacity-100 hover:after:scale-x-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)] focus-visible:rounded-md"
                     activeProps={{
                       className:
-                        "text-foreground after:scale-x-100",
+                        "text-foreground after:opacity-100 after:scale-x-100",
                     }}
                     activeOptions={{ exact: item.to === "/" }}
                   >
@@ -215,10 +215,10 @@ export function SiteHeader() {
                   onClick={() => setMoreOpen((v) => !v)}
                   aria-haspopup="menu"
                   aria-expanded={moreOpen}
-                  className={`inline-flex items-center gap-1 rounded-md px-3 py-3 text-[11px] font-bold uppercase tracking-[0.12em] transition-colors xl:text-[12px] ${
+                  className={`relative inline-flex items-center gap-1 px-3 py-3 text-[11px] font-bold uppercase tracking-[0.12em] transition-all duration-300 ease-out hover:-translate-y-[1px] xl:text-[12px] after:absolute after:inset-x-3 after:bottom-1.5 after:h-[2px] after:rounded-full after:bg-gradient-to-r after:from-[#ff9a3d] after:via-[#f2620f] after:to-[#d92240] after:transition-all after:duration-500 after:ease-[cubic-bezier(0.16,1,0.3,1)] ${
                     moreOpen
-                      ? "bg-muted/60 text-foreground"
-                      : "text-foreground/60 hover:bg-muted/60 hover:text-foreground"
+                      ? "text-foreground after:opacity-100 after:scale-x-100 after:origin-center"
+                      : "text-foreground/60 hover:text-foreground after:opacity-0 after:scale-x-[0.3] after:origin-center hover:after:opacity-100 hover:after:scale-x-100"
                   }`}
                 >
                   Mais
