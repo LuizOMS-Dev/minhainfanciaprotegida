@@ -148,20 +148,10 @@ function Index() {
         </div>
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-20 sm:pt-24 sm:pb-28 lg:pt-28 lg:pb-36">
-          <div className="hero-rise inline-flex items-center gap-2.5 rounded-full border border-white/20 bg-white/10 py-1.5 pl-2 pr-4 text-[11px] font-bold tracking-[0.2em] uppercase text-white backdrop-blur-md" style={{ animationDelay: "0.05s" }}>
-            <span className="inline-flex items-center gap-1 rounded-full bg-[color:var(--orange)] px-2.5 py-1 text-[10px] tracking-[0.14em] text-[color:var(--navy-deep)]">
-              <span className="animate-dot-blink inline-block size-1.5 rounded-full bg-[color:var(--navy-deep)]" />
-              Ao vivo
-            </span>
-            Maio Laranja · 18 de Maio
-          </div>
-
-          <h1 className="hero-rise mt-7 font-display text-[44px] sm:text-6xl lg:text-7xl xl:text-[92px] font-normal leading-[1.0] tracking-tight text-balance max-w-5xl" style={{ animationDelay: "0.18s" }}>
+          <h1 className="hero-rise font-display text-[44px] sm:text-6xl lg:text-7xl xl:text-[92px] font-normal leading-[1.0] tracking-tight text-balance max-w-5xl" style={{ animationDelay: "0.1s" }}>
             Proteger é dever de{" "}
-            <span className="word-rotator italic text-transparent bg-clip-text bg-gradient-to-r from-[#ffb25e] via-[color:var(--orange)] to-[#ff7a3d]">
-              <span>todos nós.</span>
-              <span>cada lar.</span>
-              <span>cada escola.</span>
+            <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-[#ffb25e] via-[color:var(--orange)] to-[#ff7a3d]">
+              todos nós.
             </span>
           </h1>
 
