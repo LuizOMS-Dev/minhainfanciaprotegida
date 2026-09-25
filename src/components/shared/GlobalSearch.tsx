@@ -185,10 +185,10 @@ export function GlobalSearch({ compact = false }: { compact?: boolean }) {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="inline-flex size-10 items-center justify-center rounded-full border border-border/70 bg-card/70 text-muted-foreground hover:text-foreground hover:bg-card hover:border-[color:var(--orange)]/50 hover:shadow-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]/40"
+          className="inline-flex size-10 items-center justify-center rounded-full text-foreground/60 transition-all hover:bg-[#fff0e2] hover:text-[#c24a0e] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]/50 dark:hover:bg-white/10 dark:hover:text-[color:var(--orange)]"
           aria-label="Abrir busca global (Ctrl+K)"
         >
-          <Search className="size-4 text-[color:var(--orange)]" aria-hidden />
+          <Search className="size-[18px]" strokeWidth={2.25} aria-hidden />
         </button>
       ) : (
       <>
