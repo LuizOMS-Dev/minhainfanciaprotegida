@@ -20,12 +20,16 @@ export function Reveal({ children, delay = 0, className = "", as: Tag = "div" }:
       node.classList.add("is-visible");
       return;
     }
+    // Rede de segurança: se o observer nunca disparar (JS parcial,
+    // chunk bloqueado, aba em background), revela após 2.5s + delay.
+    const fallback = window.setTimeout(() => node.classList.add("is-visible"), 2500 + delay);
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const el = entry.target as HTMLElement;
             window.setTimeout(() => el.classList.add("is-visible"), delay);
+            window.clearTimeout(fallback);
             io.unobserve(el);
           }
         });
@@ -33,7 +37,10 @@ export function Reveal({ children, delay = 0, className = "", as: Tag = "div" }:
       { threshold: 0.12, rootMargin: "0px 0px -60px 0px" },
     );
     io.observe(node);
-    return () => io.disconnect();
+    return () => {
+      window.clearTimeout(fallback);
+      io.disconnect();
+    };
   }, [delay]);
 
   return (

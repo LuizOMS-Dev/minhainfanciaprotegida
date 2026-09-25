@@ -141,7 +141,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
     ],
     scripts: [
+      // Marca HTML como .js o mais cedo possível — o CSS só esconde
+      // .reveal quando essa classe existe. Sem JS, conteúdo fica visível.
       {
+        children: "document.documentElement.classList.add('js');",
+      },      {
         type: "application/ld+json",
         children: JSON.stringify([
           organizationSchema,
@@ -181,6 +185,9 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <noscript>
+          <style>{`html.js .reveal,.reveal{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
         {children}
         <Scripts />
       </body>
