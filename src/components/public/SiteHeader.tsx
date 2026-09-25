@@ -125,9 +125,10 @@ export function SiteHeader() {
           scrolled ? "bg-background/98" : ""
         }`}
       >
-        {/* Linha 1 — full-bleed, marca e ações coladas nas bordas */}
+        {/* Linha 1 — marca + ações, centralizada */}
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div
-          className={`flex items-center justify-between gap-4 px-3 transition-all sm:px-5 lg:px-8 ${
+          className={`flex items-center justify-between gap-4 transition-all ${
             scrolled ? "h-13 lg:h-14" : "h-16 lg:h-[68px]"
           }`}
         >
@@ -186,6 +187,7 @@ export function SiteHeader() {
                 {open ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
               </button>
             </div>
+        </div>
         </div>
 
         {/* Navegação desktop — centralizada */}
