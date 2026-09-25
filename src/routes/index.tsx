@@ -147,19 +147,19 @@ function Index() {
           <div className="animate-aurora absolute bottom-[-20%] left-[35%] size-[30rem] rounded-full bg-[#3b5bff]/15 blur-[120px]" style={{ animationDelay: "-9s" }} />
         </div>
 
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-20 sm:pt-24 sm:pb-28 lg:pt-28 lg:pb-36">
-          <h1 className="hero-rise font-display text-[44px] sm:text-6xl lg:text-7xl xl:text-[92px] font-normal leading-[1.0] tracking-tight text-balance max-w-5xl" style={{ animationDelay: "0.1s" }}>
+        <div className="mx-auto flex min-h-[88vh] w-full max-w-7xl flex-col items-center justify-center px-4 py-20 text-center sm:px-6 lg:px-8">
+          <h1 className="hero-rise font-display text-6xl sm:text-7xl lg:text-8xl xl:text-[104px] font-normal leading-[1.0] tracking-tight text-balance max-w-6xl" style={{ animationDelay: "0.1s" }}>
             Proteger é dever de{" "}
             <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-[#ffb25e] via-[color:var(--orange)] to-[#ff7a3d]">
               todos nós.
             </span>
           </h1>
 
-          <p className="hero-rise mt-6 max-w-2xl text-lg sm:text-xl text-white/75 leading-relaxed" style={{ animationDelay: "0.32s" }}>
+          <p className="hero-rise mt-7 max-w-3xl text-xl sm:text-2xl text-white/80 leading-relaxed" style={{ animationDelay: "0.24s" }}>
             Educar para prevenir. Denunciar para proteger. Juntos contra o abuso e a exploração sexual de crianças e adolescentes.
           </p>
 
-          <div className="hero-rise mt-10 flex flex-wrap items-center gap-3 sm:gap-4" style={{ animationDelay: "0.45s" }}>
+          <div className="hero-rise mt-11 flex flex-wrap items-center justify-center gap-3 sm:gap-4" style={{ animationDelay: "0.38s" }}>
             <Link
               to="/sinais"
               className="cta-shine group inline-flex items-center gap-2 rounded-2xl bg-gradient-to-b from-[#ff9a3d] to-[#f2620f] text-white px-7 py-4 text-base font-bold shadow-[0_16px_40px_-12px_rgb(242_98_15/0.7)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_50px_-12px_rgb(242_98_15/0.8)] active:translate-y-0"
@@ -184,7 +184,7 @@ function Index() {
             </Link>
           </div>
 
-          <div className="mt-14 grid grid-cols-2 gap-3 lg:grid-cols-4">
+          <div className="mt-12 grid w-full grid-cols-2 gap-3 lg:grid-cols-4">
             {[
               ["100", "Disque Direitos Humanos", "0.58s", "0deg"],
               ["190", "Polícia Militar", "0.66s", "1.5deg"],
@@ -205,7 +205,7 @@ function Index() {
             ))}
           </div>
 
-          <div className="hero-rise mt-12 flex items-center gap-3 text-white/50" style={{ animationDelay: "0.95s" }} aria-hidden>
+          <div className="hero-rise mt-12 flex items-center justify-center gap-3 text-white/50" style={{ animationDelay: "0.95s" }} aria-hidden>
             <span className="flex h-9 w-6 items-start justify-center rounded-full border border-white/25 p-1.5">
               <span className="animate-scroll-hint size-1.5 rounded-full bg-white/80" />
             </span>
