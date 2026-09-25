@@ -126,24 +126,24 @@ export function SiteHeader() {
         }`}
       >
         <div
-          className={`mx-auto flex max-w-[1500px] items-center gap-2 px-4 transition-all sm:px-6 lg:px-8 ${
-            scrolled ? "h-14 lg:h-16" : "h-16 lg:h-[76px]"
+          className={`mx-auto flex max-w-[1500px] items-center gap-4 px-4 transition-all sm:px-6 lg:px-8 ${
+            scrolled ? "h-16 lg:h-[72px]" : "h-[76px] lg:h-[84px]"
           }`}
         >
           {/* Marca */}
           <Link
             to="/"
-            className="group flex min-w-0 shrink-0 items-center gap-2.5"
+            className="group flex min-w-0 shrink-0 items-center gap-3"
             aria-label="Página inicial"
           >
-            <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff9a3d] to-[#f2620f] shadow-[0_6px_16px_-6px_rgb(242_98_15/0.6)] transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
-              <ShieldAlert className="size-5 text-white" aria-hidden />
+            <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff9a3d] to-[#ef5b0c] shadow-[0_8px_20px_-8px_rgb(242_98_15/0.65)] ring-1 ring-white/40 transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
+              <ShieldAlert className="size-6 text-white" strokeWidth={2.25} aria-hidden />
             </span>
             <span className="hidden min-w-0 flex-col leading-none min-[400px]:flex">
-              <span className="truncate font-display text-[16px] font-semibold tracking-tight text-foreground">
+              <span className="truncate font-display text-[21px] font-semibold tracking-tight text-foreground antialiased">
                 Infância Protegida
               </span>
-              <span className="mt-1 text-[9px] font-extrabold uppercase tracking-[0.24em] text-[#f2620f]">
+              <span className="mt-1.5 text-[10px] font-extrabold uppercase tracking-[0.3em] text-[#ef5b0c]">
                 Maio Laranja
               </span>
             </span>
@@ -235,9 +235,9 @@ export function SiteHeader() {
           </nav>
 
           {/* Ações desktop */}
-          <div className="hidden shrink-0 items-center gap-2.5 xl:flex">
+          <div className="hidden shrink-0 items-center gap-1.5 xl:flex">
             <GlobalSearch compact />
-            <span className="h-6 w-px bg-border/70" aria-hidden />
+            <span className="mx-1 h-6 w-px bg-border/50" aria-hidden />
             <Link
               to="/denuncia"
               className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-b from-[#d92240] to-[#a11226] px-4 py-2.5 text-[11px] font-extrabold uppercase tracking-wider text-white shadow-[0_8px_20px_-8px_rgb(217_34_64/0.7)] transition-all hover:shadow-[0_10px_24px_-8px_rgb(217_34_64/0.8)] hover:brightness-110 active:translate-y-px 2xl:px-5 2xl:text-[12px]"
