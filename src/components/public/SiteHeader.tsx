@@ -119,89 +119,47 @@ export function SiteHeader() {
         </div>
       </div>
 
-      {/* Barra principal */}
+      {/* Barra principal — linha única */}
       <div
         className={`border-b border-border/50 bg-background/95 backdrop-blur-xl transition-all ${
           scrolled ? "bg-background/98" : ""
         }`}
       >
-        {/* Linha 1 — marca + ações, centralizada */}
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div
-          className={`flex items-center justify-between gap-4 transition-all ${
-            scrolled ? "h-13 lg:h-14" : "h-16 lg:h-[68px]"
+          className={`mx-auto flex max-w-[1500px] items-center gap-2 px-4 transition-all sm:px-6 lg:px-8 ${
+            scrolled ? "h-14 lg:h-16" : "h-16 lg:h-[76px]"
           }`}
         >
-            {/* Marca */}
-            <Link
-              to="/"
-              className="group flex min-w-0 shrink-0 items-center gap-3"
-              aria-label="Página inicial"
-            >
-              <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff9a3d] to-[#f2620f] shadow-[0_6px_16px_-6px_rgb(242_98_15/0.6)] transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
-                <ShieldAlert className="size-5 text-white" aria-hidden />
+          {/* Marca */}
+          <Link
+            to="/"
+            className="group flex min-w-0 shrink-0 items-center gap-2.5"
+            aria-label="Página inicial"
+          >
+            <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff9a3d] to-[#f2620f] shadow-[0_6px_16px_-6px_rgb(242_98_15/0.6)] transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
+              <ShieldAlert className="size-5 text-white" aria-hidden />
+            </span>
+            <span className="hidden min-w-0 flex-col leading-none min-[400px]:flex">
+              <span className="truncate font-display text-[16px] font-semibold tracking-tight text-foreground">
+                Infância Protegida
               </span>
-              <span className="flex min-w-0 flex-col leading-none">
-                <span className="truncate font-display text-[17px] font-semibold tracking-tight text-foreground">
-                  Infância Protegida
-                </span>
-                <span className="mt-1 hidden text-[10px] font-extrabold uppercase tracking-[0.24em] text-[#f2620f] sm:block">
-                  Maio Laranja
-                </span>
+              <span className="mt-1 text-[9px] font-extrabold uppercase tracking-[0.24em] text-[#f2620f]">
+                Maio Laranja
               </span>
-            </Link>
+            </span>
+          </Link>
 
-            {/* Ações desktop */}
-            <div className="hidden items-center gap-3 lg:flex">
-              <div className="w-[230px]">
-                <GlobalSearch />
-              </div>
-              <span className="h-6 w-px bg-border/70" aria-hidden />
-              <Link
-                to="/denuncia"
-                className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-b from-[#d92240] to-[#a11226] px-5 py-2.5 text-[12px] font-extrabold uppercase tracking-wider text-white shadow-[0_8px_20px_-8px_rgb(217_34_64/0.7)] transition-all hover:shadow-[0_10px_24px_-8px_rgb(217_34_64/0.8)] hover:brightness-110 active:translate-y-px"
-              >
-                <Phone className="size-3.5" aria-hidden />
-                Denuncie Agora
-              </Link>
-            </div>
-
-            {/* Mobile */}
-            <div className="flex items-center gap-1.5 lg:hidden">
-              <GlobalSearch />
-              <Link
-                to="/denuncia"
-                className="hidden items-center gap-1.5 rounded-full bg-gradient-to-b from-[#d92240] to-[#a11226] px-4 py-2.5 text-[11px] font-extrabold uppercase tracking-wider text-white shadow-sm sm:inline-flex"
-                aria-label="Denunciar agora"
-              >
-                <Phone className="size-3.5" aria-hidden />
-                Denunciar
-              </Link>
-              <button
-                onClick={() => setOpen((v) => !v)}
-                className="inline-flex size-11 min-h-11 min-w-11 items-center justify-center rounded-xl text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
-                aria-label={open ? "Fechar menu" : "Abrir menu"}
-                aria-expanded={open}
-                aria-controls="mobile-nav"
-              >
-                {open ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
-              </button>
-            </div>
-        </div>
-        </div>
-
-        {/* Navegação desktop — centralizada */}
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          {/* Navegação inline (desktop largo) */}
           <nav
-            className="hidden items-center justify-center lg:flex"
+            className="hidden min-w-0 flex-1 items-center justify-center xl:flex"
             aria-label="Navegação principal"
           >
-            <ul className="flex items-center gap-0.5 xl:gap-1">
+            <ul className="flex items-center">
               {primaryNav.map((item) => (
                 <li key={item.to}>
                   <Link
                     to={item.to}
-                    className="group relative inline-block whitespace-nowrap px-3 py-3 text-[11px] font-bold uppercase tracking-[0.12em] text-foreground/60 transition-all duration-300 ease-out hover:-translate-y-[1px] hover:text-foreground xl:text-[12px] after:absolute after:inset-x-3 after:bottom-1.5 after:h-[2px] after:rounded-full after:bg-gradient-to-r after:from-[#ff9a3d] after:via-[#f2620f] after:to-[#d92240] after:opacity-0 after:scale-x-[0.3] after:origin-center after:transition-all after:duration-500 after:ease-[cubic-bezier(0.16,1,0.3,1)] hover:after:opacity-100 hover:after:scale-x-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)] focus-visible:rounded-md"
+                    className="group relative inline-block whitespace-nowrap px-2 py-3 text-[10px] font-bold uppercase tracking-[0.1em] text-foreground/60 transition-all duration-300 ease-out hover:-translate-y-[1px] hover:text-foreground 2xl:px-2.5 2xl:text-[11px] after:absolute after:inset-x-2 after:bottom-1.5 after:h-[2px] after:rounded-full after:bg-gradient-to-r after:from-[#ff9a3d] after:via-[#f2620f] after:to-[#d92240] after:opacity-0 after:scale-x-[0.3] after:origin-center after:transition-all after:duration-500 after:ease-[cubic-bezier(0.16,1,0.3,1)] hover:after:opacity-100 hover:after:scale-x-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)] focus-visible:rounded-md"
                     activeProps={{
                       className:
                         "text-foreground after:opacity-100 after:scale-x-100",
@@ -212,13 +170,13 @@ export function SiteHeader() {
                   </Link>
                 </li>
               ))}
-              <li className="relative ml-1" ref={moreRef}>
+              <li className="relative" ref={moreRef}>
                 <button
                   type="button"
                   onClick={() => setMoreOpen((v) => !v)}
                   aria-haspopup="menu"
                   aria-expanded={moreOpen}
-                  className={`relative inline-flex items-center gap-1 px-3 py-3 text-[11px] font-bold uppercase tracking-[0.12em] transition-all duration-300 ease-out hover:-translate-y-[1px] xl:text-[12px] after:absolute after:inset-x-3 after:bottom-1.5 after:h-[2px] after:rounded-full after:bg-gradient-to-r after:from-[#ff9a3d] after:via-[#f2620f] after:to-[#d92240] after:transition-all after:duration-500 after:ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                  className={`relative inline-flex items-center gap-1 whitespace-nowrap px-2 py-3 text-[10px] font-bold uppercase tracking-[0.1em] transition-all duration-300 ease-out hover:-translate-y-[1px] 2xl:px-2.5 2xl:text-[11px] after:absolute after:inset-x-2 after:bottom-1.5 after:h-[2px] after:rounded-full after:bg-gradient-to-r after:from-[#ff9a3d] after:via-[#f2620f] after:to-[#d92240] after:transition-all after:duration-500 after:ease-[cubic-bezier(0.16,1,0.3,1)] ${
                     moreOpen
                       ? "text-foreground after:opacity-100 after:scale-x-100 after:origin-center"
                       : "text-foreground/60 hover:text-foreground after:opacity-0 after:scale-x-[0.3] after:origin-center hover:after:opacity-100 hover:after:scale-x-100"
@@ -226,7 +184,7 @@ export function SiteHeader() {
                 >
                   Mais
                   <ChevronDown
-                    className={`size-3.5 transition-transform duration-300 ${moreOpen ? "rotate-180" : ""}`}
+                    className={`size-3 transition-transform duration-300 ${moreOpen ? "rotate-180" : ""}`}
                     aria-hidden
                   />
                 </button>
@@ -275,12 +233,49 @@ export function SiteHeader() {
               </li>
             </ul>
           </nav>
+
+          {/* Ações desktop */}
+          <div className="hidden shrink-0 items-center gap-2.5 xl:flex">
+            <div className="w-[170px] 2xl:w-[210px]">
+              <GlobalSearch />
+            </div>
+            <span className="h-6 w-px bg-border/70" aria-hidden />
+            <Link
+              to="/denuncia"
+              className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-b from-[#d92240] to-[#a11226] px-4 py-2.5 text-[11px] font-extrabold uppercase tracking-wider text-white shadow-[0_8px_20px_-8px_rgb(217_34_64/0.7)] transition-all hover:shadow-[0_10px_24px_-8px_rgb(217_34_64/0.8)] hover:brightness-110 active:translate-y-px 2xl:px-5 2xl:text-[12px]"
+            >
+              <Phone className="size-3.5" aria-hidden />
+              Denuncie Agora
+            </Link>
+          </div>
+
+          {/* Mobile / tablet */}
+          <div className="ml-auto flex items-center gap-1.5 xl:hidden">
+            <GlobalSearch />
+            <Link
+              to="/denuncia"
+              className="hidden items-center gap-1.5 rounded-full bg-gradient-to-b from-[#d92240] to-[#a11226] px-4 py-2.5 text-[11px] font-extrabold uppercase tracking-wider text-white shadow-sm sm:inline-flex"
+              aria-label="Denunciar agora"
+            >
+              <Phone className="size-3.5" aria-hidden />
+              Denunciar
+            </Link>
+            <button
+              onClick={() => setOpen((v) => !v)}
+              className="inline-flex size-11 min-h-11 min-w-11 items-center justify-center rounded-xl text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
+              aria-label={open ? "Fechar menu" : "Abrir menu"}
+              aria-expanded={open}
+              aria-controls="mobile-nav"
+            >
+              {open ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Drawer mobile */}
       {open && (
-        <div id="mobile-nav" className="border-t border-border/60 bg-background lg:hidden animate-fade-in">
+        <div id="mobile-nav" className="border-t border-border/60 bg-background xl:hidden animate-fade-in">
           <nav
             className="flex max-h-[calc(100dvh-9rem)] flex-col gap-0.5 overflow-y-auto px-4 py-4"
             aria-label="Navegação móvel"
