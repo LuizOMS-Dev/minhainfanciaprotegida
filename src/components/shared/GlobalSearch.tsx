@@ -115,7 +115,7 @@ function buildIndex(): Entry[] {
   ];
 }
 
-export function GlobalSearch() {
+export function GlobalSearch({ compact = false }: { compact?: boolean }) {
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
   const [active, setActive] = useState(0);
@@ -181,6 +181,17 @@ export function GlobalSearch() {
 
   return (
     <>
+      {compact ? (
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="inline-flex size-10 items-center justify-center rounded-full border border-border/70 bg-card/70 text-muted-foreground hover:text-foreground hover:bg-card hover:border-[color:var(--orange)]/50 hover:shadow-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]/40"
+          aria-label="Abrir busca global (Ctrl+K)"
+        >
+          <Search className="size-4 text-[color:var(--orange)]" aria-hidden />
+        </button>
+      ) : (
+      <>
       <button
         type="button"
         onClick={() => setOpen(true)}
@@ -198,6 +209,8 @@ export function GlobalSearch() {
       >
         <Search className="size-5" />
       </button>
+      </>
+      )}
 
       {open && (
         <div

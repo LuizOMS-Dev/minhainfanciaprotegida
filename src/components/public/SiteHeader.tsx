@@ -159,7 +159,7 @@ export function SiteHeader() {
                 <li key={item.to}>
                   <Link
                     to={item.to}
-                    className="group relative inline-block whitespace-nowrap px-2 py-3 text-[10px] font-bold uppercase tracking-[0.1em] text-foreground/60 transition-all duration-300 ease-out hover:-translate-y-[1px] hover:text-foreground 2xl:px-2.5 2xl:text-[11px] after:absolute after:inset-x-2 after:bottom-1.5 after:h-[2px] after:rounded-full after:bg-gradient-to-r after:from-[#ff9a3d] after:via-[#f2620f] after:to-[#d92240] after:opacity-0 after:scale-x-[0.3] after:origin-center after:transition-all after:duration-500 after:ease-[cubic-bezier(0.16,1,0.3,1)] hover:after:opacity-100 hover:after:scale-x-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)] focus-visible:rounded-md"
+                    className="group relative inline-block whitespace-nowrap px-2.5 py-3 text-[11px] font-bold uppercase tracking-[0.12em] text-foreground/60 transition-all duration-300 ease-out hover:-translate-y-[1px] hover:text-foreground 2xl:text-[12px] after:absolute after:inset-x-2.5 after:bottom-1.5 after:h-[2px] after:rounded-full after:bg-gradient-to-r after:from-[#ff9a3d] after:via-[#f2620f] after:to-[#d92240] after:opacity-0 after:scale-x-[0.3] after:origin-center after:transition-all after:duration-500 after:ease-[cubic-bezier(0.16,1,0.3,1)] hover:after:opacity-100 hover:after:scale-x-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)] focus-visible:rounded-md"
                     activeProps={{
                       className:
                         "text-foreground after:opacity-100 after:scale-x-100",
@@ -176,7 +176,7 @@ export function SiteHeader() {
                   onClick={() => setMoreOpen((v) => !v)}
                   aria-haspopup="menu"
                   aria-expanded={moreOpen}
-                  className={`relative inline-flex items-center gap-1 whitespace-nowrap px-2 py-3 text-[10px] font-bold uppercase tracking-[0.1em] transition-all duration-300 ease-out hover:-translate-y-[1px] 2xl:px-2.5 2xl:text-[11px] after:absolute after:inset-x-2 after:bottom-1.5 after:h-[2px] after:rounded-full after:bg-gradient-to-r after:from-[#ff9a3d] after:via-[#f2620f] after:to-[#d92240] after:transition-all after:duration-500 after:ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                  className={`relative inline-flex items-center gap-1 whitespace-nowrap px-2.5 py-3 text-[11px] font-bold uppercase tracking-[0.12em] transition-all duration-300 ease-out hover:-translate-y-[1px] 2xl:text-[12px] after:absolute after:inset-x-2.5 after:bottom-1.5 after:h-[2px] after:rounded-full after:bg-gradient-to-r after:from-[#ff9a3d] after:via-[#f2620f] after:to-[#d92240] after:transition-all after:duration-500 after:ease-[cubic-bezier(0.16,1,0.3,1)] ${
                     moreOpen
                       ? "text-foreground after:opacity-100 after:scale-x-100 after:origin-center"
                       : "text-foreground/60 hover:text-foreground after:opacity-0 after:scale-x-[0.3] after:origin-center hover:after:opacity-100 hover:after:scale-x-100"
@@ -236,9 +236,7 @@ export function SiteHeader() {
 
           {/* Ações desktop */}
           <div className="hidden shrink-0 items-center gap-2.5 xl:flex">
-            <div className="w-[170px] 2xl:w-[210px]">
-              <GlobalSearch />
-            </div>
+            <GlobalSearch compact />
             <span className="h-6 w-px bg-border/70" aria-hidden />
             <Link
               to="/denuncia"
