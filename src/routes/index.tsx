@@ -125,108 +125,102 @@ const stats = [
 function Index() {
   return (
     <>
-      {/* HERO */}
+      {/* HERO — aurora animada + entrada escalonada */}
       <section className="relative isolate overflow-hidden bg-[color:var(--navy-deep)] text-white">
         <div className="absolute inset-0 -z-10 overflow-hidden" aria-hidden>
           <img
             src={heroImg}
             alt=""
             aria-hidden
-            className="absolute inset-0 h-full w-full object-cover opacity-50 mix-blend-luminosity animate-kenburns"
+            className="absolute inset-0 h-full w-full object-cover opacity-40 mix-blend-luminosity animate-kenburns"
           />
           <div
             className="absolute inset-0"
             style={{
               backgroundImage:
-                "linear-gradient(to top, rgba(8,14,32,0.95) 0%, rgba(11,20,45,0.7) 45%, rgba(11,20,45,0.4) 100%)",
+                "linear-gradient(to top, rgba(8,14,32,0.96) 0%, rgba(11,20,45,0.72) 45%, rgba(11,20,45,0.42) 100%)",
             }}
           />
+          {/* Auroras */}
+          <div className="animate-aurora absolute -left-32 top-[-10%] size-[34rem] rounded-full bg-[#f2620f]/25 blur-[110px]" />
+          <div className="animate-aurora absolute right-[-8%] top-[30%] size-[28rem] rounded-full bg-[#d92240]/20 blur-[110px]" style={{ animationDelay: "-5s" }} />
+          <div className="animate-aurora absolute bottom-[-20%] left-[35%] size-[30rem] rounded-full bg-[#3b5bff]/15 blur-[120px]" style={{ animationDelay: "-9s" }} />
         </div>
 
-        {/* Ornamento floral decorativo */}
-        <div className="pointer-events-none absolute -bottom-10 -right-10 hidden md:block opacity-[0.08]" aria-hidden>
-          <svg width="420" height="420" viewBox="0 0 100 100" fill="none" className="text-[color:var(--orange)]">
-            <path
-              d="M50 10C55 35 75 35 90 50C75 65 55 65 50 90C45 65 25 65 10 50C25 35 45 35 50 10Z"
-              fill="currentColor"
-            />
-          </svg>
-        </div>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-20 sm:pt-24 sm:pb-28 lg:pt-28 lg:pb-36">
+          <div className="hero-rise inline-flex items-center gap-2.5 rounded-full border border-white/20 bg-white/10 py-1.5 pl-2 pr-4 text-[11px] font-bold tracking-[0.2em] uppercase text-white backdrop-blur-md" style={{ animationDelay: "0.05s" }}>
+            <span className="inline-flex items-center gap-1 rounded-full bg-[color:var(--orange)] px-2.5 py-1 text-[10px] tracking-[0.14em] text-[color:var(--navy-deep)]">
+              <span className="animate-dot-blink inline-block size-1.5 rounded-full bg-[color:var(--navy-deep)]" />
+              Ao vivo
+            </span>
+            Maio Laranja · 18 de Maio
+          </div>
 
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-24 sm:pt-28 sm:pb-32 lg:pt-36 lg:pb-44">
-          <Reveal>
-            <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--orange)]/40 bg-[color:var(--orange)]/15 px-4 py-1.5 text-[11px] font-bold tracking-[0.22em] uppercase text-[color:var(--orange)] backdrop-blur-md">
-              <span className="relative inline-flex size-2">
-                <span className="absolute inset-0 rounded-full bg-[color:var(--orange)] animate-ping-slow" />
-                <span className="relative inline-block size-2 rounded-full bg-[color:var(--orange)]" />
-              </span>
-              Maio Laranja · 18 de Maio
-            </div>
-          </Reveal>
+          <h1 className="hero-rise mt-7 font-display text-[44px] sm:text-6xl lg:text-7xl xl:text-[92px] font-normal leading-[1.0] tracking-tight text-balance max-w-5xl" style={{ animationDelay: "0.18s" }}>
+            Proteger é dever de{" "}
+            <span className="word-rotator italic text-transparent bg-clip-text bg-gradient-to-r from-[#ffb25e] via-[color:var(--orange)] to-[#ff7a3d]">
+              <span>todos nós.</span>
+              <span>cada lar.</span>
+              <span>cada escola.</span>
+            </span>
+          </h1>
 
-          <Reveal delay={120}>
-            <h1 className="mt-6 font-display text-5xl sm:text-6xl lg:text-7xl xl:text-[88px] font-normal leading-[1.02] tracking-tight text-balance max-w-4xl">
-              Proteção é compromisso de{" "}
-              <span className="italic text-[color:var(--orange)]">todos nós.</span>
-            </h1>
-          </Reveal>
+          <p className="hero-rise mt-6 max-w-2xl text-lg sm:text-xl text-white/75 leading-relaxed" style={{ animationDelay: "0.32s" }}>
+            Educar para prevenir. Denunciar para proteger. Juntos contra o abuso e a exploração sexual de crianças e adolescentes.
+          </p>
 
-          <Reveal delay={240}>
-            <p className="mt-6 max-w-2xl text-lg sm:text-xl text-white/80 leading-relaxed">
-              Educar para prevenir. Denunciar para proteger. Juntos contra o abuso e a exploração sexual de crianças e adolescentes.
-            </p>
-          </Reveal>
+          <div className="hero-rise mt-10 flex flex-wrap items-center gap-3 sm:gap-4" style={{ animationDelay: "0.45s" }}>
+            <Link
+              to="/sinais"
+              className="cta-shine group inline-flex items-center gap-2 rounded-2xl bg-gradient-to-b from-[#ff9a3d] to-[#f2620f] text-white px-7 py-4 text-base font-bold shadow-[0_16px_40px_-12px_rgb(242_98_15/0.7)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_50px_-12px_rgb(242_98_15/0.8)] active:translate-y-0"
+            >
+              <Eye className="size-5" aria-hidden />
+              Como Identificar Sinais
+              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1.5" aria-hidden />
+            </Link>
+            <Link
+              to="/biblioteca"
+              className="inline-flex items-center gap-2 rounded-2xl border border-white/20 bg-white/[0.07] px-7 py-4 text-base font-bold text-white backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-white/35 hover:bg-white/[0.14]"
+            >
+              <BookOpen className="size-5" aria-hidden />
+              Materiais de Apoio
+            </Link>
+            <Link
+              to="/denuncia"
+              className="group inline-flex items-center gap-2 rounded-2xl border border-[#ff5d78]/40 bg-[#d92240]/20 px-7 py-4 text-base font-bold text-white backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:bg-[#d92240]/40"
+            >
+              <span className="animate-dot-blink inline-block size-2 rounded-full bg-[#ff5d78]" />
+              Denunciar Agora
+            </Link>
+          </div>
 
-          <Reveal delay={360}>
-            <div className="mt-10 flex flex-wrap items-center gap-4">
-              <Link
-                to="/sinais"
-                className="group inline-flex items-center gap-2 rounded-xl bg-[color:var(--orange)] text-[color:var(--navy-deep)] px-7 py-4 text-base font-bold shadow-orange hover:shadow-2xl hover:-translate-y-0.5 transition"
+          <div className="mt-14 grid grid-cols-2 gap-3 lg:grid-cols-4">
+            {[
+              ["100", "Disque Direitos Humanos", "0.58s", "0deg"],
+              ["190", "Polícia Militar", "0.66s", "1.5deg"],
+              ["192", "SAMU", "0.74s", "-1.5deg"],
+              ["181", "Disque-Denúncia", "0.82s", "0deg"],
+            ].map(([num, label, delay, rot]) => (
+              <a
+                key={num}
+                href={`tel:${num}`}
+                className="hero-rise animate-card-float group rounded-2xl border border-white/12 bg-white/[0.06] backdrop-blur-xl px-5 py-5 transition-colors duration-300 hover:border-[color:var(--orange)]/40 hover:bg-white/[0.1]"
+                style={{ animationDelay: `${delay}, 0s`, ["--float-rot" as string]: rot } as React.CSSProperties}
               >
-                <Eye className="size-5" aria-hidden />
-                Como Identificar Sinais
-                <ArrowRight className="size-4 transition group-hover:translate-x-1" aria-hidden />
-              </Link>
-              <Link
-                to="/biblioteca"
-                className="inline-flex items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-7 py-4 text-base font-bold text-white backdrop-blur-lg hover:bg-white/20 transition"
-              >
-                <BookOpen className="size-5" aria-hidden />
-                Materiais de Apoio
-              </Link>
-              <Link
-                to="/denuncia"
-                className="inline-flex items-center gap-2 rounded-xl bg-[color:var(--red-inst)]/95 px-7 py-4 text-base font-bold text-white hover:bg-[color:var(--red-inst)] transition"
-              >
-                <Phone className="size-5" aria-hidden />
-                Denunciar Agora
-              </Link>
-            </div>
-          </Reveal>
+                <span className="font-display text-3xl sm:text-4xl font-semibold text-white transition-colors duration-300 group-hover:text-[color:var(--orange)]">
+                  {num}
+                </span>
+                <span className="mt-1 block text-xs sm:text-sm text-white/65">{label}</span>
+              </a>
+            ))}
+          </div>
 
-          <Reveal delay={480}>
-            <div className="mt-16 grid grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 rounded-2xl overflow-hidden border border-white/10">
-              {[
-                ["100", "Disque Direitos Humanos"],
-                ["190", "Polícia Militar"],
-                ["192", "SAMU"],
-                ["181", "Disque-Denúncia"],
-              ].map(([num, label]) => (
-                <div
-                  key={num}
-                  className="bg-[color:var(--navy-deep)]/80 backdrop-blur px-5 py-5 flex flex-col gap-1"
-                >
-                  <a
-                    href={`tel:${num}`}
-                    className="font-display text-3xl sm:text-4xl font-semibold text-[color:var(--orange)] hover:underline underline-offset-4"
-                  >
-                    {num}
-                  </a>
-                  <span className="text-xs sm:text-sm text-white/75">{label}</span>
-                </div>
-              ))}
-            </div>
-          </Reveal>
+          <div className="hero-rise mt-12 flex items-center gap-3 text-white/50" style={{ animationDelay: "0.95s" }} aria-hidden>
+            <span className="flex h-9 w-6 items-start justify-center rounded-full border border-white/25 p-1.5">
+              <span className="animate-scroll-hint size-1.5 rounded-full bg-white/80" />
+            </span>
+            <span className="text-xs font-semibold uppercase tracking-[0.22em]">Explore a causa</span>
+          </div>
         </div>
       </section>
 
