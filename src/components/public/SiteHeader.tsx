@@ -94,26 +94,23 @@ export function SiteHeader() {
     >
       {/* Faixa de emergência */}
       <div
-        className="w-full text-white"
+        className="strip-shine animate-strip-flow w-full text-white"
         style={{
           backgroundImage:
-            "linear-gradient(100deg, #7a0e1c 0%, #b81830 45%, #e02645 70%, #7a0e1c 100%)",
+            "linear-gradient(100deg, #7a0e1c 0%, #b81830 30%, #f0435e 50%, #b81830 70%, #7a0e1c 100%)",
         }}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-4 py-2 text-[11px] tracking-wide sm:gap-2.5 sm:px-6 sm:text-xs lg:px-8">
-          <span className="relative flex size-1.5 shrink-0">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-70" />
-            <span className="relative inline-flex size-1.5 rounded-full bg-white" />
-          </span>
+          <span className="animate-dot-blink inline-flex size-1.5 shrink-0 rounded-full bg-white shadow-[0_0_8px_2px_rgb(255_255_255/0.7)]" />
           <span className="font-extrabold uppercase tracking-[0.22em]">
             Denuncie agora
           </span>
           <a
             href="tel:100"
-            className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 font-bold text-[#a11226] shadow-sm transition-all hover:bg-white/90 hover:shadow active:scale-95"
+            className="animate-cta-pulse inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 font-bold text-[#a11226] transition-all hover:bg-white/90 hover:shadow active:scale-95"
             aria-label="Ligar para Disque 100"
           >
-            <Phone className="size-3" aria-hidden />
+            <Phone className="animate-bell size-3" aria-hidden />
             Disque 100
           </a>
           <span className="hidden font-medium text-white/80 md:inline">
