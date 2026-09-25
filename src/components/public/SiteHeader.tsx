@@ -126,7 +126,7 @@ export function SiteHeader() {
         }`}
       >
         <div
-          className={`mx-auto flex max-w-[1500px] items-center gap-4 px-4 transition-all sm:px-6 lg:px-8 ${
+          className={`mx-auto flex max-w-[1600px] items-center gap-4 pl-2 pr-4 transition-all sm:pl-4 sm:pr-6 lg:pl-5 lg:pr-8 ${
             scrolled ? "h-16 lg:h-[72px]" : "h-[76px] lg:h-[84px]"
           }`}
         >
