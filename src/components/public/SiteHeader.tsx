@@ -89,85 +89,91 @@ export function SiteHeader() {
   return (
     <header
       className={`sticky top-0 z-50 transition-shadow duration-300 ${
-        scrolled ? "shadow-md" : ""
+        scrolled ? "shadow-[0_8px_30px_-12px_rgb(0_0_0/0.25)]" : ""
       }`}
     >
-      {/* Faixa de emergência — gradiente vermelho com pill Disque 100 */}
+      {/* Faixa de emergência */}
       <div
         className="w-full text-white"
         style={{
           backgroundImage:
-            "linear-gradient(90deg, #8a1220 0%, #b81830 35%, #d92240 65%, #8a1220 100%)",
+            "linear-gradient(100deg, #7a0e1c 0%, #b81830 45%, #e02645 70%, #7a0e1c 100%)",
         }}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-center gap-2 sm:gap-3 text-[11px] sm:text-xs tracking-wide">
-          <ShieldAlert className="size-3.5 text-white/90 shrink-0" aria-hidden />
-          <span className="font-bold uppercase tracking-[0.18em]">Denuncie agora</span>
-          <span className="text-white/55" aria-hidden>•</span>
+        <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-4 py-2 text-[11px] tracking-wide sm:gap-2.5 sm:px-6 sm:text-xs lg:px-8">
+          <span className="relative flex size-1.5 shrink-0">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-70" />
+            <span className="relative inline-flex size-1.5 rounded-full bg-white" />
+          </span>
+          <span className="font-extrabold uppercase tracking-[0.22em]">
+            Denuncie agora
+          </span>
           <a
             href="tel:100"
-            className="inline-flex items-center gap-1.5 rounded-full border border-white/35 bg-white/10 px-2.5 py-0.5 font-semibold hover:bg-white/20 transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 font-bold text-[#a11226] shadow-sm transition-all hover:bg-white/90 hover:shadow active:scale-95"
             aria-label="Ligar para Disque 100"
           >
             <Phone className="size-3" aria-hidden />
             Disque 100
           </a>
-          <span className="hidden sm:inline text-white/85 font-normal">
-            24h, gratuito e anônimo
+          <span className="hidden font-medium text-white/80 md:inline">
+            24h · gratuito e anônimo
           </span>
         </div>
       </div>
 
-      {/* Header principal — duas linhas */}
+      {/* Barra principal */}
       <div
-        className={`border-b border-border/60 bg-background/95 backdrop-blur-xl transition-colors ${
-          scrolled ? "bg-background/90" : ""
+        className={`border-b border-border/50 bg-background/95 backdrop-blur-xl transition-all ${
+          scrolled ? "bg-background/98" : ""
         }`}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {/* Linha 1 — Marca + ações */}
-          <div className="flex items-center justify-between h-14 lg:h-[58px] gap-4">
-            {/* Marca (logo oficial: escudo laranja) */}
+          <div
+            className={`flex items-center justify-between gap-4 transition-all ${
+              scrolled ? "h-13 lg:h-14" : "h-16 lg:h-[68px]"
+            }`}
+          >
+            {/* Marca */}
             <Link
               to="/"
-              className="flex items-center gap-2.5 sm:gap-3 group shrink-0 min-w-0"
+              className="group flex min-w-0 shrink-0 items-center gap-3"
               aria-label="Página inicial"
             >
-              <span className="relative inline-flex size-9 items-center justify-center rounded-full bg-gradient-orange shadow-orange shrink-0 transition-transform group-hover:scale-105">
-                <span className="absolute inset-0 rounded-full bg-[color:var(--orange)]/40 animate-ping-slow" />
-                <ShieldAlert className="size-4 text-[color:var(--navy-deep)]" aria-hidden />
+              <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff9a3d] to-[#f2620f] shadow-[0_6px_16px_-6px_rgb(242_98_15/0.6)] transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3">
+                <ShieldAlert className="size-5 text-white" aria-hidden />
               </span>
-              <span className="flex flex-col leading-tight min-w-0">
-                <span className="font-display text-[14px] sm:text-[15px] font-semibold tracking-tight text-foreground truncate">
+              <span className="flex min-w-0 flex-col leading-none">
+                <span className="truncate font-display text-[17px] font-semibold tracking-tight text-foreground">
                   Infância Protegida
                 </span>
-                <span className="hidden sm:block text-[9px] font-bold uppercase tracking-[0.22em] text-[color:var(--orange)]/90 truncate">
-                  Campanha Maio Laranja
+                <span className="mt-1 hidden text-[10px] font-extrabold uppercase tracking-[0.24em] text-[#f2620f] sm:block">
+                  Maio Laranja
                 </span>
               </span>
             </Link>
 
             {/* Ações desktop */}
-            <div className="hidden lg:flex items-center gap-3">
-              <div className="w-[220px]">
+            <div className="hidden items-center gap-3 lg:flex">
+              <div className="w-[230px]">
                 <GlobalSearch />
               </div>
-
+              <span className="h-6 w-px bg-border/70" aria-hidden />
               <Link
                 to="/denuncia"
-                className="inline-flex items-center gap-2 rounded-lg bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-3.5 py-2 text-[11px] font-bold uppercase tracking-wider hover:bg-[color:var(--red-inst)]/90 transition-all shadow-sm hover:shadow-md active:translate-y-px whitespace-nowrap"
+                className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-gradient-to-b from-[#d92240] to-[#a11226] px-5 py-2.5 text-[12px] font-extrabold uppercase tracking-wider text-white shadow-[0_8px_20px_-8px_rgb(217_34_64/0.7)] transition-all hover:shadow-[0_10px_24px_-8px_rgb(217_34_64/0.8)] hover:brightness-110 active:translate-y-px"
               >
                 <Phone className="size-3.5" aria-hidden />
                 Denuncie Agora
               </Link>
             </div>
 
-            {/* Mobile: busca + denuncie + menu */}
-            <div className="flex lg:hidden items-center gap-1">
+            {/* Mobile */}
+            <div className="flex items-center gap-1.5 lg:hidden">
               <GlobalSearch />
               <Link
                 to="/denuncia"
-                className="hidden sm:inline-flex items-center gap-1.5 rounded-lg bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-3 py-2 text-[11px] font-bold uppercase tracking-wider shadow-sm"
+                className="hidden items-center gap-1.5 rounded-full bg-gradient-to-b from-[#d92240] to-[#a11226] px-4 py-2.5 text-[11px] font-extrabold uppercase tracking-wider text-white shadow-sm sm:inline-flex"
                 aria-label="Denunciar agora"
               >
                 <Phone className="size-3.5" aria-hidden />
@@ -175,7 +181,7 @@ export function SiteHeader() {
               </Link>
               <button
                 onClick={() => setOpen((v) => !v)}
-                className="inline-flex size-11 min-h-11 min-w-11 items-center justify-center rounded-md text-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
+                className="inline-flex size-11 min-h-11 min-w-11 items-center justify-center rounded-xl text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
                 aria-label={open ? "Fechar menu" : "Abrir menu"}
                 aria-expanded={open}
                 aria-controls="mobile-nav"
@@ -185,20 +191,20 @@ export function SiteHeader() {
             </div>
           </div>
 
-          {/* Linha 2 — Navegação principal (desktop) */}
+          {/* Navegação desktop */}
           <nav
-            className="hidden lg:flex items-center justify-center border-t border-border/60 py-2"
+            className="hidden items-center justify-center lg:flex"
             aria-label="Navegação principal"
           >
-            <ul className="flex items-center gap-1 xl:gap-2">
+            <ul className="flex items-center gap-0.5 xl:gap-1">
               {primaryNav.map((item) => (
                 <li key={item.to}>
                   <Link
                     to={item.to}
-                    className="relative inline-block px-2.5 py-1.5 text-[11px] xl:text-[12px] font-bold uppercase tracking-[0.14em] text-foreground/65 hover:text-foreground transition-colors whitespace-nowrap after:absolute after:inset-x-2.5 after:-bottom-2.5 after:h-[2px] after:bg-[color:var(--orange)] after:scale-x-0 after:origin-center after:transition-transform hover:after:scale-x-100"
+                    className="relative inline-block whitespace-nowrap rounded-md px-3 py-3 text-[11px] font-bold uppercase tracking-[0.12em] text-foreground/60 transition-colors hover:bg-muted/60 hover:text-foreground xl:text-[12px] after:absolute after:inset-x-3 after:bottom-1.5 after:h-[2.5px] after:rounded-full after:bg-gradient-to-r after:from-[#ff9a3d] after:to-[#f2620f] after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100"
                     activeProps={{
                       className:
-                        "text-[color:var(--orange)] after:scale-x-100",
+                        "text-foreground after:scale-x-100",
                     }}
                     activeOptions={{ exact: item.to === "/" }}
                   >
@@ -212,28 +218,32 @@ export function SiteHeader() {
                   onClick={() => setMoreOpen((v) => !v)}
                   aria-haspopup="menu"
                   aria-expanded={moreOpen}
-                  className="inline-flex items-center gap-1 px-2.5 py-1.5 text-[11px] xl:text-[12px] font-bold uppercase tracking-[0.14em] text-foreground/65 hover:text-foreground transition-colors"
+                  className={`inline-flex items-center gap-1 rounded-md px-3 py-3 text-[11px] font-bold uppercase tracking-[0.12em] transition-colors xl:text-[12px] ${
+                    moreOpen
+                      ? "bg-muted/60 text-foreground"
+                      : "text-foreground/60 hover:bg-muted/60 hover:text-foreground"
+                  }`}
                 >
                   Mais
                   <ChevronDown
-                    className={`size-3 transition-transform ${moreOpen ? "rotate-180" : ""}`}
+                    className={`size-3.5 transition-transform duration-300 ${moreOpen ? "rotate-180" : ""}`}
                     aria-hidden
                   />
                 </button>
                 {moreOpen && (
                   <div
                     role="menu"
-                    className="absolute right-0 mt-3 w-[340px] rounded-2xl border border-border bg-background/95 backdrop-blur-xl shadow-2xl shadow-black/10 overflow-hidden animate-fade-in z-50"
+                    className="absolute right-0 z-50 mt-2 w-[360px] overflow-hidden rounded-2xl border border-border/70 bg-background shadow-2xl shadow-black/15 animate-fade-in"
                   >
-                    <div className="px-4 py-3 border-b border-border bg-gradient-to-br from-[color:var(--orange-soft)] to-transparent">
-                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--orange)]">
+                    <div className="border-b border-border/60 bg-gradient-to-br from-[#fff3e8] to-transparent px-5 py-4 dark:from-white/5">
+                      <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#f2620f]">
                         Explorar
                       </p>
-                      <p className="text-sm font-medium text-foreground/80 mt-0.5">
+                      <p className="mt-1 font-display text-lg font-semibold text-foreground">
                         Mais sobre o projeto
                       </p>
                     </div>
-                    <div className="p-2 max-h-[70vh] overflow-y-auto">
+                    <div className="max-h-[65vh] overflow-y-auto p-2.5">
                       {moreNav.map((m) => {
                         const Icon = m.icon;
                         return (
@@ -242,17 +252,17 @@ export function SiteHeader() {
                             to={m.to}
                             role="menuitem"
                             onClick={() => setMoreOpen(false)}
-                            className="group flex items-start gap-3 px-3 py-2.5 rounded-xl hover:bg-muted transition-colors"
-                            activeProps={{ className: "bg-muted" }}
+                            className="group flex items-start gap-3 rounded-xl px-3 py-3 transition-colors hover:bg-muted/70"
+                            activeProps={{ className: "bg-muted/70" }}
                           >
-                            <span className="mt-0.5 inline-flex size-9 items-center justify-center rounded-lg bg-[color:var(--orange-soft)] text-[color:var(--orange)] group-hover:bg-gradient-orange group-hover:text-[color:var(--navy-deep)] transition-colors shrink-0">
-                              <Icon className="size-4" aria-hidden />
+                            <span className="mt-0.5 inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#fff0e2] text-[#f2620f] transition-all group-hover:bg-gradient-to-br group-hover:from-[#ff9a3d] group-hover:to-[#f2620f] group-hover:text-white dark:bg-white/10">
+                              <Icon className="size-[18px]" aria-hidden />
                             </span>
                             <span className="min-w-0 flex-1">
-                              <span className="block text-sm font-semibold text-foreground">
+                              <span className="block text-sm font-bold text-foreground">
                                 {m.label}
                               </span>
-                              <span className="block text-xs text-muted-foreground leading-snug mt-0.5">
+                              <span className="mt-0.5 block text-xs leading-snug text-muted-foreground">
                                 {m.desc}
                               </span>
                             </span>
@@ -270,9 +280,9 @@ export function SiteHeader() {
 
       {/* Drawer mobile */}
       {open && (
-        <div id="mobile-nav" className="lg:hidden border-t border-border bg-background animate-fade-in">
+        <div id="mobile-nav" className="border-t border-border/60 bg-background lg:hidden animate-fade-in">
           <nav
-            className="px-4 py-4 flex flex-col gap-1 max-h-[calc(100dvh-8rem)] overflow-y-auto"
+            className="flex max-h-[calc(100dvh-9rem)] flex-col gap-0.5 overflow-y-auto px-4 py-4"
             aria-label="Navegação móvel"
           >
             {mobileNav.map((item) => (
@@ -280,8 +290,8 @@ export function SiteHeader() {
                 key={item.to}
                 to={item.to}
                 onClick={() => setOpen(false)}
-                className="px-3 py-3 min-h-11 rounded-md text-sm font-medium text-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
-                activeProps={{ className: "text-[color:var(--orange)] bg-muted" }}
+                className="flex min-h-11 items-center rounded-xl px-4 py-3 text-[15px] font-semibold text-foreground transition-colors hover:bg-muted/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
+                activeProps={{ className: "bg-[#fff0e2] text-[#c24a0e] dark:bg-white/10 dark:text-[color:var(--orange)]" }}
                 activeOptions={{ exact: item.to === "/" }}
               >
                 {item.label}
@@ -290,7 +300,7 @@ export function SiteHeader() {
             <Link
               to="/denuncia"
               onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-[color:var(--red-inst)] text-[color:var(--red-inst-foreground)] px-4 py-3 min-h-11 font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
+              className="mt-3 inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-gradient-to-b from-[#d92240] to-[#a11226] px-4 py-3 font-extrabold uppercase tracking-wider text-white shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--orange)]"
             >
               <Phone className="size-4" aria-hidden /> Denunciar agora
             </Link>
